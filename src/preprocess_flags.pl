@@ -1145,6 +1145,7 @@ modeanalysis(sharefree_amgu).
 modeanalysis(shfrlin_amgu).
 modeanalysis(sharefree_clique).
 modeanalysis(sharefree_clique_def).
+modeanalysis(shlin).
 % structure
 modeanalysis(aeq).
 modeanalysis(depthk).

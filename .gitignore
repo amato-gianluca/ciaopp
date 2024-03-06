@@ -1,0 +1,6 @@
+*~
+*.itf
+*.po
+*.asr
+*_co.pl
+src/ciaopp_config_auto.pl

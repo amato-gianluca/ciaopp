@@ -32,7 +32,33 @@ This module implements the Sharing X Linearity abstract domain.
 
 asub('$bottom').
 asub((Sh, Lin)) :-
-   list(list(var),Sh),
+   asub_sh(Sh),
+   list(var, Lin).
+
+:- regtype asub_sh(A) # "@var{A} is a non-empty abstract substitution".
+
+asub_sh([]).
+asub_sh([S]) :-
+   set_vars(S).
+asub_sh([S1,S2|Rest]) :-
+   set_vars(S1),
+   S1 @< S2,
+   asub_sh([S2|Rest]).
+
+:- regtype set_vars(A) #  "@var{A} is a set of variables".
+
+set_vars([X]) :-
+   var(X).
+set_vars([X1,X2|Rest]) :-
+   var(X1),
+   X1 @< X2,
+   set_vars([X2|Rest]).
+
+:- regtype asub_u(A) #  "@var{A} is an unordered abstract substitution".
+
+asub_u('$bottom').
+asub_u((Sh, Lin)) :-
+   list(list(var), Sh),
    list(var, Lin).
 
 %-------------------------------------------------------------------------
@@ -50,8 +76,7 @@ asub((Sh, Lin)) :-
    + (not_fails, is_det).
 
 unknown_entry(_Sg,Vars,(Entry_sh, Entry_lin)):-
-   powerset(Vars,Sh),
-   sort_list_of_lists(Sh,Entry_sh),
+   powerset(Vars,Entry_sh),
    Entry_lin = Vars.
 
 %-------------------------------------------------------------------------
@@ -62,7 +87,7 @@ unknown_entry(_Sg,Vars,(Entry_sh, Entry_lin)):-
 
 :- dom_impl(_, abs_sort/2, [noq]).
 :- pred abs_sort(+ASub_u,-ASub)
-   : asub(ASub_u) => asub(ASub)
+   : asub_u(ASub_u) => asub(ASub)
    + (not_fails, is_det).
 
 abs_sort('$bottom','$bottom'):- !.
@@ -76,7 +101,7 @@ abs_sort((Sh_u,Lin_u),(Sh,Lin)):-
 % Projects the abstract substitution ASub onto the variables of list Vars
 % resulting in the projected abstract substitution Proj.
 %
-% TODO: Understand the role of Sg and HvFv_u
+% TODO: Understand the role of Sg and HvFv_u.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, project/5, [noq]).

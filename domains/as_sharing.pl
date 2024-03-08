@@ -1,4 +1,4 @@
-:- module(as_sharing, [], [assertions,regtypes,basicmodes,nativeprops,datafacts]).
+:- module(as_sharing, [], [assertions,regtypes,basicmodes,nativeprops]).
 
 %:- use_package(trace).
 :- use_package(rtchecks).
@@ -15,10 +15,11 @@ This module is an independent reimplementation of the Sharing domain.
 :- dom_def(as_sharing, [default]).
 
 :- use_module(library(lists), [list_to_list_of_lists/2,powerset/2]).
-:- use_module(library(lsets), [sort_list_of_lists/2,closure_under_union/2]).
-:- use_module(library(sets), [ord_intersection/3,ord_union/3,ord_subtract/3,ord_intersect/2,insert/3,ord_test_member/3]).
-:- use_module(domain(sharing), [call_to_entry/9,exit_to_prime/7,project_share/3,lub/3,extend/5,unknown_call/4]).
-:- use_module(domain(share_aux), [if_not_nil/4]).
+:- use_module(library(lsets), [sort_list_of_lists/2,merge_list_of_lists/2,closure_under_union/2,ord_split_lists_from_list/4]).
+:- use_module(library(sets), [ord_intersection/3,ord_union/3,ord_subtract/3,ord_intersect/2,insert/3,ord_test_member/3,ord_member/2]).
+:- use_module(library(terms_check), [unifiable/3]).
+:- use_module(library(terms_vars), [varset/2]).
+:- use_module(engine(io_basic)).
 
 :- regtype asub(A) # "@var{A} is an abstract substitution".
 
@@ -51,6 +52,23 @@ asub_u('$bottom').
 asub_u(Sh) :-
    list(list(var), Sh).
 
+%------------------------------------------------------------------------
+% augment_asub(+ASub,+Vars,-ASub0)
+%
+% Augment the abstract substitution ASub adding the variables Vars and
+% then resulting the abstract substitution ASub0.
+%-------------------------------------------------------------------------
+
+:- dom_impl(_, augment_asub/3, [noq]).
+:- pred augment_asub(+ASub,+Vars,-ASub0)
+   : asub * list(var) * var => asub(ASub0)
+   + (not_fails, is_det).
+
+augment_asub(ASub,[],ASub).
+augment_asub(ASub,Vars,ASub0):-
+   list_to_list_of_lists(Vars,Vars0),
+   ord_union(ASub,Vars0,ASub0).
+
 %-------------------------------------------------------------------------
 % unknown_entry(+Sg,+Vars,-Entry)
 %
@@ -66,8 +84,7 @@ asub_u(Sh) :-
    + (not_fails, is_det).
 
 unknown_entry(_Sg,Vars,Entry):-
-   powerset(Vars,Sh),
-   sort_list_of_lists(Sh,Entry).
+   powerset(Vars,Entry).
 
 %-------------------------------------------------------------------------
 % abs_sort(+ASub_u,-ASub)
@@ -90,7 +107,7 @@ abs_sort(ASub_u, ASub):-
 % Projects the abstract substitution ASub onto the variables of list Vars
 % resulting in the projected abstract substitution Proj.
 %
-% TODO: Understand the role of Sg and HvFv_u
+% TODO: Understand the role of Sg and HvFv_u.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, project/5, [noq]).
@@ -98,9 +115,9 @@ abs_sort(ASub_u, ASub):-
    : cgoal * list(var) * term * asub * var => asub(Proj)
    + (not_fails, is_det).
 
-project(_Sg,_Vars,_HvFv_u,'$bottom','$bottom').
+project(_Sg,_Vars,_HvFv_u,'$bottom','$bottom'):- !.
 project(_Sg,Vars,_HvFv_u,ASub,Proj):-
-   project_share(Vars,ASub,Proj).
+   project_sh(ASub,Vars,Proj).
 
 %-------------------------------------------------------------------------
 % call_to_entry(+Sv,+Sg,Hv,+Head,+ClauseKey,+Fv,+Proj,-Entry,-ExtraInfo)
@@ -119,9 +136,13 @@ project(_Sg,Vars,_HvFv_u,ASub,Proj):-
    => (asub(Entry), term(ExtraInfo))
    + (not_fails, is_det).
 
-% TODO: Implement linearity
-call_to_entry(Sv,Sg,Hv,Head,ClauseKey,Fv,Proj,Entry,ExtraInfo):-
-   sharing:call_to_entry(Sv,Sg,Hv,Head,ClauseKey,Fv,Proj,Entry,ExtraInfo).
+call_to_entry(_Sv,Sg,Hv,Head,_ClauseKey,Fv,Proj,Entry,no):-
+   unifiable(Sg,Head,Unifier), !,
+   augment_asub(Proj,Hv,ASub),
+   amgu_sh_iterate(ASub,Unifier,Entry0),
+   project_sh(Entry0,Hv,Entry1),
+   augment_asub(Entry1,Fv,Entry).
+call_to_entry(_Sv,_Sg,_Hv,_Head,_ClauseKey,_Fv,_Proj,'$bottom',_).
 
 %-------------------------------------------------------------------------
 % exit_to_prime(Sg,Hv,Head,Sv,Exit,ExtraInfo,Prime)
@@ -138,10 +159,12 @@ call_to_entry(Sv,Sg,Hv,Head,ClauseKey,Fv,Proj,Entry,ExtraInfo):-
    => (asub(Prime))
    + (not_fails, is_det).
 
-% TODO: Implement linearity
 exit_to_prime(_Sg,_Hv,_Head,_Sv,'$bottom',_Flag,'$bottom'):- !.
-exit_to_prime(Sg,Hv,Head,Sv,Exit,ExtraInfo,Prime) :-
-   sharing:exit_to_prime(Sg,Hv,Head,Sv,Exit,ExtraInfo,Prime).
+exit_to_prime(Sg,_Hv,Head,Sv,Exit,_ExtraInfo,Prime) :-
+   unifiable(Sg,Head,Unifier), !,
+   augment_asub(Exit,Sv,ASub),
+   amgu_sh_iterate(ASub,Unifier,Prime0),
+   project_sh(Prime0,Sv,Prime).
 
 %-------------------------------------------------------------------------
 % compute_lub(+ListASub,-LubASub)
@@ -163,7 +186,7 @@ compute_lub([ASub1,ASub2|Rest],LubASub):-
 compute_lub_el('$bottom',ASub,ASub):- !.
 compute_lub_el(ASub,'$bottom',ASub):- !.
 compute_lub_el(ASub1,ASub2,Lub):-
-   sharing:lub(ASub1,ASub2,Lub).
+   ord_union(ASub1,ASub2,Lub).
 
 %-------------------------------------------------------------------------
 % extend(+Sg,+Prime,+Sv,+Call,-Succ)
@@ -186,9 +209,19 @@ extend(_Sg,'$bottom',_Sv,_Call,Succ):- !,
    Succ = '$bottom'.
 extend(_Sg,_Prime,[],Call,Succ):- !,
    Call = Succ.
-% TODO: Implement linearity
-extend(Sg,Prime,Sv,Call,Succ):-
-   sharing:extend(Sg,Prime,Sv,Call,Succ).
+extend(_Sg,Prime,Sv,Call,Succ):-
+    ord_split_lists_from_list(Sv,Call,Intersect,Disjunct),
+    closure_under_union(Intersect,Star),
+    prune_success(Star,Prime,Sv,Disjunct,Succ).
+
+prune_success([],_Prime,_Sv,Succ,Succ).
+prune_success([Xs|Xss],Prime,Sv,Call,Succ) :-
+    ord_intersection(Xs,Sv,Xs_proj),
+    ( ord_member(Xs_proj,Prime) ->
+        insert(Call,Xs,Temp)
+    ; Temp = Call
+    ),
+    prune_success(Xss,Prime,Sv,Temp,Succ).
 
 %-------------------------------------------------------------------------
 % call_to_success_fact(Sg,Hv,Head,K,Sv,Call,Proj,Prime,Succ)
@@ -274,11 +307,12 @@ input_user_interface(_Struct,Qv,ASub,Sg,_MaybeCallASub):-
 
 :- dom_impl(_, asub_to_native/5, [noq]).
 :- pred asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)
-   : asub * list(var) * term * var * var.
+   : asub * list(var) * term * var * var
+   + (is_det).
 
-asub_to_native('$bottom',_Qv,_OutFlag,[],[]) :- !, fail.
-asub_to_native(Sh,_Qv,_OutFlag,NativeStat,[]):-
-    if_not_nil(Sh,sharing(Sh),NativeStat,[]).
+asub_to_native('$bottom',_Qv,_OutFlag,_NativeStat,_NativeComp) :- !, fail.
+asub_to_native(ASub,_Qv,_OutFlag,NativeStat,[]):-
+   if_not_nil(ASub,sharing(ASub),NativeStat,[]).
 
 %-------------------------------------------------------------------------
 % unknown_call(Sg,Vars,Call,Succ)
@@ -294,9 +328,13 @@ asub_to_native(Sh,_Qv,_OutFlag,NativeStat,[]):-
    : cgoal * list(var) * asub * var => asub(Succ)
    + (not_fails, is_det).
 
+% this is (almost) the same implementation as in the share domain
 unknown_call(_Sg,_Vars,'$bottom','$bottom') :- !.
-unknown_call(Sg,Vars,Call,Succ):-
-    sharing:unknown_call(Sg,Vars,Call,Succ).
+unknown_call(_Sg,_Vars,[],[]) :- !.
+unknown_call(_Sg,Vars,Call,Succ):-
+   ord_split_lists_from_list(Vars,Call,Intersect,Rest),
+   closure_under_union(Intersect,Star),
+   ord_union(Star,Rest,Succ).
 
 %-------------------------------------------------------------------------
 
@@ -309,6 +347,16 @@ rel([X|Rest], Vars, [X|Rest_rel]) :-
    rel(Rest, Vars, Rest_rel).
 rel([_|Rest], Vars, Rest_rel) :-
    rel(Rest, Vars, Rest_rel).
+
+:- pred project_sh(+Sh, +Vars, -Proj)
+   : asub_sh * list(var) * var => asub_sh(Proj)
+   + (not_fails, is_det).
+
+project_sh([], _Vars, []) :- !.
+project_sh([S|Rest], Vars, Sh_ex) :-
+   ord_intersection(S, Vars, S_ex),
+   project_sh(Rest, Vars, Rest_ex),
+   ( S_ex = [] -> Sh_ex = Rest_ex ; insert(Rest_ex, S_ex, Sh_ex)).
 
 :- pred aexists_sh(+Sh, +Vars, -Sh_ex)
    : asub_sh * list(var) * var => asub_sh(Sh_ex).
@@ -350,6 +398,20 @@ bin0(X, [Y|Rest], Result) :-
    bin0(X, Rest, Rest_bin),
    insert(Rest_bin, XY, Result).
 
+:- pred amgu_sh_iterate(+Sh, +Sub, -Sh_mgu)
+   : asub_sh * list * var => asub_sh(Sh_mgu)
+   + (not_fails, is_det).
+
+amgu_sh_iterate(Sh, [], Sh).
+amgu_sh_iterate(Sh, [X=T|Rest], Sh_mgu) :-
+   varset(T, Vars_t),
+   amgu_sh(Sh, X, Vars_t, Sh0),
+   amgu_sh_iterate(Sh0, Rest, Sh_mgu).
+
+:- pred amgu_sh(+Sh, ?Vars_x, +Vars_t, -Sh_mgu)
+   : asub_sh * var * list(var) * var => asub_sh(Sh_mgu)
+   + (not_fails, is_det).
+
 amgu_sh(Sh, Vars_x, Vars_t, Sh_mgu) :-
    rel(Sh, [Vars_x], Sh_x),
    rel(Sh, Vars_t, Sh_t),
@@ -359,3 +421,6 @@ amgu_sh(Sh, Vars_x, Vars_t, Sh_mgu) :-
    star(Sh_t, Sh_t_star),
    bin(Sh_x_star, Sh_t_star, Sh0),
    ord_union(Sh0, Sh_nrel, Sh_mgu).
+
+if_not_nil([],_,Xs,Xs):- !.
+if_not_nil(_,X,[X|Xs],Xs).

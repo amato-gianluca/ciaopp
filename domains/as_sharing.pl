@@ -14,11 +14,11 @@ This module is an independent reimplementation of the Sharing domain.
 :- include(ciaopp(plai/plai_domain)).
 :- dom_def(as_sharing, [default]).
 
-:- use_module(library(lists), [list_to_list_of_lists/2,powerset/2]).
-:- use_module(library(lsets), [sort_list_of_lists/2,merge_list_of_lists/2,closure_under_union/2,ord_split_lists_from_list/4]).
-:- use_module(library(sets), [ord_intersection/3,ord_union/3,ord_subtract/3,ord_intersect/2,insert/3,ord_test_member/3,ord_member/2,ord_disjoint/2]).
-:- use_module(library(terms_check), [unifiable/3, unifier/1]).
-:- use_module(library(terms_vars), [varset/2]).
+:- use_module(library(lists)).
+:- use_module(library(lsets)).
+:- use_module(library(sets)).
+:- use_module(library(terms_check)).
+:- use_module(library(terms_vars)).
 :- use_module(domain(sharing), [input_interface/4, input_user_interface/5, special_builtin/5]).
 
 % :- use_module(engine(io_basic)).
@@ -204,7 +204,7 @@ project(_Sg,Vars,_HvFv_u,ASub,Proj) :-
 call_to_entry(_Sv,Sg,Hv,Head,_ClauseKey,Fv,Proj,Entry,Unifier) :-
    unifiable(Sg,Head,Unifier),
    augment_asub(Proj,Hv,ASub),
-   amgu_sh(ASub,Unifier,Entry0),
+   amgu_sh_f(ASub,Hv,Unifier,Entry0),
    project_sh(Entry0,Hv,Entry1),
    augment_asub(Entry1,Fv,Entry).
 
@@ -228,7 +228,7 @@ call_to_entry(_Sv,Sg,Hv,Head,_ClauseKey,Fv,Proj,Entry,Unifier) :-
 exit_to_prime(_Sg,_Hv,_Head,_Sv,'$bottom',_Unifier,'$bottom'). % TODO: optimize with cut
 exit_to_prime(_Sg,_Hv,_Head,Sv,Exit,Unifier,Prime) :-
    augment_asub(Exit,Sv,ASub),
-   amgu_sh(ASub,Unifier,Prime0),
+   amgu_sh_f(ASub,Sv,Unifier,Prime0),
    project_sh(Prime0,Sv,Prime).
 
 %-------------------------------------------------------------------------
@@ -345,7 +345,7 @@ special_builtin(SgKey,Sg,Subgoal,Type,Condvars) :-
 
 :- dom_impl(_, input_interface/4, [noq]).
 :- pred input_interface(+Prop,-Kind,?Struc0,-Struc1)
-   : term * ivar * term * ivar => (atm(Kind), list(Struc0), list(Struct1)).
+   : term * ivar * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
 input_interface(Prop,Kind,Struc0,Struc1) :-
    sharing:input_interface(Prop,Kind,Struc0,Struc1).
@@ -363,7 +363,7 @@ input_interface(Prop,Kind,Struc0,Struc1) :-
 
 % Struct may be free if a pred assertion is specified without call conditions.
 :- pred input_user_interface(?Struct,+Qv,-ASub,+Sg,+MaybeCallASub)
-   : var_or_list * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
+   : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
    + (not_fails, is_det).
 
 input_user_interface(Struct,Qv,ASub,Sg,MaybeCallASub) :-
@@ -428,13 +428,13 @@ unknown_call(_Sg,Vars,Call,Succ) :-
 %------------------------------------------------------------------------%
 
 :- dom_impl(_, amgu/4, [noq]).
-:- pred amgu_sh_binding(+Sg,+Head,+ASub,-AMGU)
+:- pred amgu(+Sg,+Head,+ASub,-AMGU)
    : cgoal * cgoal * asub_sh * ivar => asub_sh(AMGU)
    + (not_fails, is_det).
 
 amgu(Sg,Head,ASub,AMGU):-
    unifiable(Sg,Head,Unifier),
-   amgu_sh(ASub, Unifier, AMGU).
+   amgu_sh_f(ASub, [], Unifier, AMGU).
 
 %------------------------------------------------------------------------
 % AUXILIARY OPERATIONS
@@ -453,8 +453,8 @@ amgu(Sg,Head,ASub,AMGU):-
 projected_gvars([],Vars,Vars) :- !.
 projected_gvars(_ASub,[],[]) :- !.
 projected_gvars(ASub, Vars, Gv) :-
-    merge_list_of_lists(ASub,NonGround),
-    ord_subtract(Vars,NonGround,Gv).
+   merge_list_of_lists(ASub,NonGround),
+   ord_subtract(Vars,NonGround,Gv).
 
 %-------------------------------------------------------------------------
 % rel(+Sh,+Vars,-Sh_rel,-Sh_nrel)
@@ -527,34 +527,51 @@ star_union(Sh, Star) :-
 % Sh_mgu is the result of the unification of Sh with the substitution Sub.
 %-------------------------------------------------------------------------
 
-:- pred amgu_sh(+Sh, +Sub,-Sh_mgu)
-   : asub_sh * unifier * ivar => asub_sh(Sh_mgu)
+:- pred amgu_sh_f(+Sh, +Fv, +Sub, -Sh_mgu)
+   : asub_sh * ordlist(var) * unifier * ivar => asub_sh(Sh_mgu)
    + (not_fails, is_det).
 
-amgu_sh(Sh, [], Sh).
-amgu_sh(Sh, [X=T|Rest], Sh_mgu) :-
-   amgu_sh_binding(Sh, X, T, Sh0),
-   amgu_sh(Sh0, Rest, Sh_mgu).
+amgu_sh_f(Sh, _Fv, [], Sh).
+amgu_sh_f(Sh, Fv, [X=T|Rest], Sh_mgu) :-
+   amgu_sh_binding(Sh, X, T, Fv, Sh0, Fv0),
+   amgu_sh_f(Sh0, Fv0, Rest, Sh_mgu).
 
-:- pred amgu_sh_binding(+Sh, ?Vars_x, ?Vars_t, -Sh_mgu)
-   : asub_sh * var * term * ivar => asub_sh(Sh_mgu)
+:- pred amgu_sh_binding(+Sh, ?Vars_x, ?Vars_t, +Fv, -Sh_mgu, -Fv_mgu)
+   : asub_sh * var * term *  ordlist(var) * ivar * ivar => (asub_sh(Sh_mgu), ordlist(var, Fv_mgu))
    + (not_fails, is_det).
+
+amgu_sh_binding(Sh, X, T, Fv, Sh_mgu, Fv_mgu) :-
+   ord_member(X, Fv), !,
+   varset(T, Vt),
+   rel(Sh, [X], Sh_x, Sh_x_neg),
+   rel(Sh, Vt, Sh_t, Sh_t_neg),
+   ord_intersection(Sh_x_neg, Sh_t_neg, Sh_rel_neg),
+   bin(Sh_x, Sh_t, Sh0),
+   ord_union(Sh_rel_neg, Sh0, Sh_mgu),
+   ord_subtract(Fv, [X], Fv_mgu).
+
+amgu_sh_binding(Sh, X, T, Fv, Sh_mgu, Fv_mgu) :-
+   varset(T, Vt),
+   ord_intersection_diff(Vt, Fv, Vt_f, Vt_nf),
+   rel(Sh, [X], Sh_x, Sh_x_neg),
+   rel(Sh, Vt_f, Sh_t_f, Sh_t_f_neg),
+   rel(Sh, Vt_nf, Sh_t_nf, Sh_t_nf_neg),
+   ord_intersect_all([Sh_x_neg, Sh_t_f_neg, Sh_t_nf_neg], Sh_rel_neg),
+   star_union(Sh_x, Sh_x_star),
+   star_union(Sh_t_f, Sh_t_f_star),
+   star_union(Sh_t_nf, Sh_t_nf_star),
+   bin(Sh_x, Sh_t_f_star, Sh0),
+   bin(Sh_x_star, Sh_t_nf_star, Sh1),
+   bin(Sh1, Sh_t_f_star, Sh2),
+   merge_list_of_lists([Sh_rel_neg, Sh0, Sh1, Sh2], Sh_mgu),
+   ord_subtract(Fv, Vt_f, Fv0),
+   ord_subtract(Fv0, [X], Fv_mgu).
 
 %-------------------------------------------------------------------------
-% amgu_sh(+Sh, X, T, -Sh_mgu)
+% amgu_sh_binding(+Sh, X, T, -Sh_mgu)
 %
 % Sh_mgu is the result of the unification of Sh with the binding {X/T}.
 %-------------------------------------------------------------------------
-
-amgu_sh_binding(Sh, X, T, Sh_mgu) :-
-   varset(T, Vt),
-   rel(Sh, [X], Sh_x, Sh_nox),
-   rel(Sh, Vt, Sh_t, Sh_not),
-   ord_intersection(Sh_not, Sh_nox, Sh_nrel),
-   star_union(Sh_x, Sh_x_star),
-   star_union(Sh_t, Sh_t_star),
-   bin(Sh_x_star, Sh_t_star, Sh0),
-   ord_union(Sh0, Sh_nrel, Sh_mgu).
 
 %------------------------------------------------------------------------
 % UNUSED AUXILIARY OPERATIONS

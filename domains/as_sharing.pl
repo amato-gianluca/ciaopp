@@ -1,4 +1,4 @@
-:- module(as_sharing, [], [assertions,regtypes,basicmodes,nativeprops]).
+:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops]).
 
 %:- use_package(trace).
 :- use_package(rtchecks).
@@ -19,9 +19,11 @@ This module is an independent reimplementation of the Sharing domain.
 :- use_module(library(sets)).
 :- use_module(library(terms_check)).
 :- use_module(library(terms_vars)).
-:- use_module(domain(sharing), [input_interface/4, input_user_interface/5, special_builtin/5]).
+:- use_module(library(iso_misc)).
 
-% :- use_module(engine(io_basic)).
+:- use_module(domain(sharing), [input_interface/4, input_user_interface/5]).
+
+%:- use_module(engine(io_basic)).
 
 %------------------------------------------------------------------------
 % ASSERTIONS
@@ -54,24 +56,21 @@ ordnlist(T, [X1,X2|Xs]) :-
 
 :- pop_prolog_flag(read_hiord).
 
-:- prop independent_from(+Term1, +Term2)
-   : term * term.
+:- prop independent_from(?Term1, ?Term2) # "@var{Term1} and @var{Term2} do not share variables".
 
 independent_from(Term1, Term2) :-
    varset(Term1, Vars1),
    varset(Term2, Vars2),
    ord_disjoint(Vars1, Vars2).
 
-:- prop superset_vars_of(+Term1, +Term2)
-   : term * term.
+:- prop superset_vars_of(?Term1, ?Term2) # "@var{Term2} has a superset of the variables of @var{Term1}".
 
 superset_vars_of(Term1, Term2) :-
    varset(Term1, Vars1),
    varset(Term2, Vars2),
    ord_subset(Vars1, Vars2).
 
-:- prop superset_vars_of(+Term1, +Term2)
-   : term * term.
+:- prop superset_vars_of(?Term1, ?Term2) # "@var{Term1} and @var{Term2} have the same variables".
 
 same_vars_of(Term1, Term2) :-
    varset(Term1, Vars1),
@@ -102,13 +101,26 @@ asub_u(ASub) :-
    list(list(var), ASub).
 
 :- prop predicate_of(+Goal,+Pred)
-   : cgoal * atm.
+   : cgoal * atm
+   # "@var{Pred} is the predicate of @var{Goal}".
 
-predicate_of(Goal,Pred) :-
+predicate_of(Goal, Pred) :-
+   remove_module(Pred, Pred0),
    functor(Goal, Name, Arity),
-   atom_concat(Name, '/', Pred0),
+   remove_module(Name, RealName),
+   atom_concat(RealName, '/', Pred1),
    atom_number(N, Arity),
-   atom_concat(Pred0, N, Pred).
+   atom_concat(Pred1, N, Pred0).
+
+:- prop remove_module(Atom, Atom0)
+   : atm * atm
+   # "@var{Atom0} is the result of removing the module name from @var{Atom}".
+
+remove_module(Atom, Atom0) :-
+   sub_atom(Atom, Pos, _, _, ':'), !,
+   Pos1 is Pos+1,
+   sub_atom(Atom, Pos1, _, 0, Atom0).
+remove_module(Atom, Atom).
 
 %------------------------------------------------------------------------
 % DOMAIN OPERATIONS
@@ -175,8 +187,11 @@ abs_sort(ASub_u, ASub) :-
 
 :- dom_impl(_, project/5, [noq]).
 :- pred project(+Sg, +Vars, +HvFv_u, +ASub, ?Proj)
-   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub_sh * ivar => asub(Proj)
+   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub * ivar => asub(Proj)
    + (not_fails, is_det).
+
+% the following lines are probably needed for builtins
+% project(_Sg, _Vars, _HvFv_u, '$bottom', '$bottom') :- !.
 
 project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
    project_sh(ASub, Vars, Proj).
@@ -304,7 +319,8 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 % domain dependent. The actual builtin is executed by body_succ_builtin,
 % whose base implementation calls either success_builtin for usual types of
 % builtins or call_to_success_builtin for particular predicates. The later is
-% called when Type is of the form special(SgKey).
+% called when Type is of the form special(SgKey). Condvars is used to pass
+% information to success_builtin.
 %
 % TODO: Understand the role of Sg, Subgoal and Condvars.
 %-------------------------------------------------------------------------
@@ -312,10 +328,28 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 :- dom_impl(_, special_builtin/5, [noq]).
 :- pred special_builtin(+SgKey, +Sg, +Subgoal, -Type, -Condvars)
    : {atm, predicate_of(Sg), predicate_of(Subgoal)} * cgoal * cgoal * ivar * ivar
-   => (atm(Type), var(Condvars)).
+   => (term(Type), term(Condvars))
+   + is_det.
 
-special_builtin(SgKey, Sg, Subgoal, Type, Condvars) :-
-   sharing:special_builtin(SgKey, Sg, Subgoal, Type, Condvars).
+special_builtin('true/0', _, _, unchanged, _).
+special_builtin('=/2', Sg, _ , '=/2', Sg).
+
+%-------------------------------------------------------------------------
+% success_builtin(+Type,+Sv,+Condvars,+HvFv_u,+Call,-Succ)
+%
+% Obtains the success for some particular builtins. Type and Condvars
+% come from the special_builtin predicate.
+%-------------------------------------------------------------------------
+
+:- dom_impl(_, success_builtin/6, [noq]).
+:- pred success_builtin(+Type,+Sv,?Condvars,+HvFv_u,+Call,-Succ)
+   : term * ordlist(var) * term * list(var) * asub_sh * ivar => asub(Succ)
+   + (not_fails, is_det).
+
+success_builtin(unchanged, _ , _ , _, Call, Call).
+success_builtin('=/2', _, T1=T2, _, Call, Result) :-
+   unifiable(T1, T2,  Unifier),
+   mgu_sh_f(Call, [], Unifier, Result).
 
 %-------------------------------------------------------------------------
 % input_interface(+Prop,+Kind,?Struc0,-Struc1)
@@ -509,9 +543,10 @@ star_union(Sh, Star) :-
    closure_under_union(Sh, Star).
 
 %-------------------------------------------------------------------------
-% amgu_sh(+Sh, +Sub, -Sh_mgu)
+% mgu_sh_f(+Sh, Fv, +Sub, -Sh_mgu)
 %
 % Sh_mgu is the result of the unification of Sh with the substitution Sub.
+% Variables in Fv are considered to be free.
 %-------------------------------------------------------------------------
 
 :- pred mgu_sh_f(+Sh, +Fv, +Sub, -Sh_mgu)

@@ -267,7 +267,7 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    : asub * asub * ivar => asub(ASub)
    + (not_fails, is_det).
 
-compute_lub_el('$bottom', ASub, ASub). % TODO: optimize with cut
+compute_lub_el('$bottom', ASub, ASub) :- !.
 compute_lub_el(ASub, '$bottom', ASub).% TODO: optimize with cut
 compute_lub_el(ASub1, ASub2, Lub) :-
    ord_union(ASub1, ASub2, Lub).

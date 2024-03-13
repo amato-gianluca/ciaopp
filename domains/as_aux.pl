@@ -1,14 +1,11 @@
 :- module(as_aux, [], [assertions,basicmodes,nativeprops]).
 
-%:- use_package(trace).
-:- use_package(rtchecks).
-
 :- doc(title, "Common module for Amato and Scozzari domains").
 :- doc(author, "Gianluca Amato").
 :- doc(author, "Francesca Scozzari").
 
 :- doc(module,"
-This module is in common among all domain by Amato and Scozzari.
+This module is in common among all domains in the as_* collection.
 ").
 
 :- use_module(library(sort)).
@@ -17,13 +14,12 @@ This module is in common among all domain by Amato and Scozzari.
 :- use_module(library(iso_misc)).
 :- use_module(library(idlists)).
 
-% :- use_module(engine(io_basic)).
-
 %------------------------------------------------------------------------
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop var_or_list(X) # "@var{X} is a variable or a list".
+:- prop var_or_list(X)
+   # "@var{X} is a variable or a list".
 :- export(var_or_list/1).
 
 var_or_list(X) :-
@@ -31,14 +27,16 @@ var_or_list(X) :-
 var_or_list(X) :-
    list(X).
 
-:- prop ordlist(T, S) # "@var{S} is an ordered list of elements of type T".
+:- prop ordlist(T, S)
+   # "@var{S} is an ordered list of elements of type T".
 :- export(ordlist/2).
 
 ordlist(_T, []).
 ordlist(T, S) :-
    ordnlist(T, S).
 
-:- prop ordlist(T) # "@var{S} is an ordered list of".
+:- prop ordlist(T)
+   # "@var{S} is an ordered list of".
 :- export(ordlist/1).
 
 ordlist(S) :-
@@ -46,7 +44,8 @@ ordlist(S) :-
 
 :- push_prolog_flag(read_hiord, on).
 
-:- prop ordnlist(T, S) # "@var{S} is an ordered non-empty list of elements of type T".
+:- prop ordnlist(T, S)
+   # "@var{S} is an ordered non-empty list of elements of type T".
 :- meta_predicate ordnlist(pred(1),?).
 :- export(ordnlist/2).
 
@@ -59,7 +58,8 @@ ordnlist(T, [X1,X2|Xs]) :-
 
 :- pop_prolog_flag(read_hiord).
 
-:- prop independent_from(?Term1, ?Term2) # "@var{Term1} and @var{Term2} do not share variables".
+:- prop independent_from(?Term1, ?Term2)
+   # "@var{Term1} and @var{Term2} do not share variables".
 :- export(independent_from/2).
 
 independent_from(Term1, Term2) :-
@@ -67,7 +67,8 @@ independent_from(Term1, Term2) :-
    varset(Term2, Vars2),
    ord_disjoint(Vars1, Vars2).
 
-:- prop superset_vars_of(?Term1, ?Term2) # "@var{Term2} has a superset of the variables of @var{Term1}".
+:- prop superset_vars_of(?Term1, ?Term2)
+   # "@var{Term2} has a superset of the variables of @var{Term1}".
 :- export(superset_vars_of/2).
 
 superset_vars_of(Term1, Term2) :-
@@ -75,7 +76,8 @@ superset_vars_of(Term1, Term2) :-
    varset(Term2, Vars2),
    ord_subset(Vars1, Vars2).
 
-:- prop same_vars_of(?Term1, ?Term2) # "@var{Term1} and @var{Term2} have the same variables".
+:- prop same_vars_of(?Term1, ?Term2)
+   # "@var{Term1} and @var{Term2} have the same variables".
 :- export(same_vars_of/2).
 
 same_vars_of(Term1, Term2) :-
@@ -122,7 +124,7 @@ if_not_nil(_, X, [X|Xs], Xs).
 
 :- pred all_couples(+List,+Pred)
    : list *  cgoal
-   # "The predicate @var{Pred} is true for all different couples of elements of @var{List}".
+   # "The predicate @var{Pred} is true for all couples of elements of @var{List}".
 :- meta_predicate all_couples(?, pred(2)).
 :- export(all_couples/2).
 
@@ -147,15 +149,19 @@ all_couples0(X, [Y|Ys], Pred) :-
 
 :- pred duplicates(+List, -Duplicates)
    : list * ivar => ordlist(Duplicates)
-   # "Put duplicates from @var{List} into @var{Duplicates}. Does not perform any
-   instantiation".
+   + (not_fails, is_det)
+   # "@var{Duplicates} contains the duplicate elements of @var{List}. It does not
+   perform any instantiation".
 
 duplicates(List, Duplicates) :-
    duplicates0(List, Duplicates0),
    sort(Duplicates0, Duplicates).
 
 :- pred duplicates0(+List, -Duplicates)
-   : list * ivar => list(Duplicates).
+   : list * ivar => list(Duplicates)
+   + (not_fails, is_det)
+   # "@var{Duplicates} contains the duplicate elements of @var{List}. It does not
+   perform any instantiation".
 
 duplicates0([], []).
 duplicates0([X|Tail], [X|Duplicates]) :-

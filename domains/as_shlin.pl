@@ -22,28 +22,29 @@ This module is an independent reimplementation of the Sharing X Linearity domain
 :- use_module(library(iso_misc)).
 
 :- use_module(domain(as_aux)).
-:- use_module(domain(as_sharing_aux)).
+:- use_module(domain(as_sharing)).
 :- use_module(domain(sharing), [input_interface/4, input_user_interface/5]).
 
-:- use_module(engine(io_basic)).
+%:- use_module(engine(io_basic)).
 
 %------------------------------------------------------------------------
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop asub(ASub) # "@var{ASub} is an abstract substitution".
-
 % the value $bottom has a special meaning withing the PLAI analyzer and MUST be
 % used to represent unreachable states.
+
+:- prop asub(ASub)
+   # "@var{ASub} is an abstract substitution".
 
 asub('$bottom'). % TODO: optimize with cut
 asub(ASub) :-
    nasub(ASub).
 
-:- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
-
 % in the lin component we do not keep the ground variables, since they are
 % automatically linear.
+
+:- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
 
 nasub((Sh, Lin)) :-
    asub_sh(Sh),
@@ -60,7 +61,7 @@ asub_u((Sh, Lin)) :-
    list(var, Lin).
 
 %------------------------------------------------------------------------
-% DOMAIN OPERATIONS
+% DOMAIN PREDICATES
 %-------------------------------------------------------------------------
 
 %------------------------------------------------------------------------
@@ -212,7 +213,7 @@ compute_lub_el('$bottom', ASub, ASub). % TODO: optimize with cut
 compute_lub_el(ASub, '$bottom', ASub).% TODO: optimize with cut
 compute_lub_el((Sh1, Lin1), (Sh2, Lin2), (Lub_sh, Lub_lin)) :-
    ord_union(Sh1, Sh2, Lub_sh),
-   ord_union(Lin1, Lin2, Lub_lin).
+   ord_intersection(Lin1, Lin2, Lub_lin).
 
 %-------------------------------------------------------------------------
 % extend(+Sg,+Prime,+Sv,+Call,-Succ)
@@ -230,6 +231,7 @@ compute_lub_el((Sh1, Lin1), (Sh2, Lin2), (Lub_sh, Lub_lin)) :-
 :- pred extend(+Sg,+Prime,+Sv,+Call,-Succ)
    : cgoal * asub * {ordlist(var), same_vars_of(Sg), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
+
 
 extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
@@ -433,7 +435,8 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    (Linx=yes, Ind=yes -> St = Rt ; star_union(Rt, St)),
    bin(Sx, St, Sxt),
    ord_union(Rel_neg, Sxt, MGU_sh),
-   (Linx = yes, Lint = yes ->
+   (
+   Linx = yes, Lint = yes ->
       ord_intersection(Vrx, Vrt, Vrtx),
       ord_subtract(Lin, Vrtx, Lin0)
    ; Linx = yes ->
@@ -449,7 +452,7 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
 %-------------------------------------------------------------------------
 % match_shlin(+ASub1, +Sv1, +ASub2, -Match)
 %
-% Match is the abstract matching between ASuv1 (over the variables in Sv1)
+% Match is the abstract matching between ASub1 (over the variables in Sv1)
 % and ASub2, where ASub1 is the abstract substitution which should not be
 % further instantiated.
 %
@@ -462,11 +465,33 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-match_shlin(ASub1, _Sv1, _ASub2, ASub1).
+match_shlin((Prime_sh, Prime_lin), Sv, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
+   match_sh(Prime_sh, Sv, Call_sh, Succ_sh),
+   ord_subtract(Call_lin, Sv, Call_lin_not_rel),
+   ord_union(Prime_lin, Call_lin_not_rel, Succ_lin).
 
 %------------------------------------------------------------------------
 % AUXILIARY OPERATIONS
 %-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
+% independent(+Sh, S, T)
+%
+% Determines where S and T are definitely independent given the sharing
+% information in Sh.
+%-------------------------------------------------------------------------
+
+:- pred ind(+Sh, ?S, ?T)
+  : asub_sh * term * term
+  + is_det.
+:- export(ind/3).
+
+ind(Sh, S, T) :-
+   varset(S, Vs),
+   varset(T, Vt),
+   rel(Sh, Vs, Sh_s, _),
+   rel(Sh, Vt, Sh_t, _),
+   ord_disjoint(Sh_s, Sh_t).
 
 %-------------------------------------------------------------------------
 % lin(+ShLin, T)

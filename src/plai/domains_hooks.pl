@@ -33,8 +33,8 @@
 :- use_module(domain(sharefree_clique), []).
 :- use_module(domain(sharing_clique_def), []).
 :- use_module(domain(sharefree_clique_def), []).
-:- use_module(domain(shlin), []).
 :- use_module(domain(as_sharing), []).
+:- use_module(domain(as_shlin), []).
 :- if(defined(has_ciaopp_bshare)).
 :- use_module(domain(bshare/bshare), []).
 :- endif.

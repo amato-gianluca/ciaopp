@@ -17,7 +17,6 @@ This module is an independent reimplementation of the Sharing X Linearity domain
 :- use_module(library(lists)).
 :- use_module(library(lsets)).
 :- use_module(library(sets)).
-:- use_module(library(terms_check)).
 :- use_module(library(terms_vars)).
 :- use_module(library(iso_misc)).
 
@@ -43,22 +42,14 @@ asub(ASub) :-
 
 :- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
 
-% TODO: fix operations so that in the lin component we never keep the ground
-% variables, since they are automatically linear.
-
-nasub((Sh, Lin)) :-
-   asub_sh(Sh),
-   ordlist(var, Lin).
-   % varset(Lin, VLin),
-   % varset(Sh, VSh),
-   % ord_subset(VLin, VSh).
+nasub(ASub) :-
+   asub_shlin(ASub).
 
 :- prop asub_u(ASub) # "@var{ASub} is an unordered abstract substitution".
 
 asub_u('$bottom'). % TODO: optimize with cut
-asub_u((Sh, Lin)) :-
-   asub_sh_u(Sh),
-   list(var, Lin).
+asub_u(ASub) :-
+   asub_shlin_u(ASub).
 
 %------------------------------------------------------------------------
 % DOMAIN PREDICATES
@@ -96,10 +87,8 @@ augment_asub((Sh, Lin), Vars, (Sh0, Lin0)) :-
    : cgoal * {ordlist(var), same_vars_of(Sg)} * ivar => asub(Entry)
    + (not_fails, is_det).
 
-unknown_entry(_Sg, Vars, (Sh, Lin)) :-
-   % note that powerset does not generate the empty set
-   powerset(Vars, Sh),
-   Lin = [].
+unknown_entry(_Sg, Vars, Entry) :-
+   top_shlin(Vars, Entry).
 
 %-------------------------------------------------------------------------
 % abs_sort(+ASub_u,-ASub)
@@ -131,9 +120,8 @@ abs_sort((Sh_u, Lin_u), (Sh, Lin)) :-
    : cgoal * {list(var), same_vars_of(Sg)} * list(var) * nasub * ivar => asub(Proj)
    + (not_fails, is_det).
 
-project(_Sg, Vars, _HvFv_u, (Sh, Lin), (Proj_sh, Proj_lin)) :-
-   project_sh(Sh, Vars, Proj_sh),
-   ord_intersection(Lin, Vars, Proj_lin).
+project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
+   project_shlin(ASub, Vars, Proj).
 
 %-------------------------------------------------------------------------
 % call_to_entry(+Sv,+Sg,Hv,+Head,+ClauseKey,+Fv,+Proj,-Entry,-ExtraInfo)
@@ -150,13 +138,13 @@ project(_Sg, Vars, _HvFv_u, (Sh, Lin), (Proj_sh, Proj_lin)) :-
 :- pred call_to_entry(+Sv, +Sg, +Hv, +Head, +ClauseKey, +Fv, +Proj, -Entry, -ExtraInfo)
    :  {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * cgoal * {ordlist(var), same_vars_of(Head)} * cgoal *
          term * {ordlist(var), independent_from(Hv)} * nasub * ivar * ivar
-   => (asub(Entry), unifier(ExtraInfo))
+   => (asub(Entry), unifier_no_cyclic(ExtraInfo))
    + (not_fails, is_det).
 
 % save unifier in the ExtraInfo parameter, so that we can use it in exit_to_prime
 
 call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
-   unifiable(Sg, Head, Unifier),
+   unifiable_with_occurs_check(Sg, Head, Unifier),
    augment_asub(Proj, Hv, ASub),
    mgu_shlin(ASub, Hv, Unifier, Entry0),
    project(Head, Hv, [], Entry0, Entry1),
@@ -173,7 +161,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 
 :- dom_impl(_, exit_to_prime/7, [noq]).
 :- pred exit_to_prime(+Sg, +Hv, +Head, +Sv, +Exit, +ExtraInfo, -Prime)
-   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * unifier * ivar
+   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * unifier_no_cyclic * ivar
    => (asub(Prime))
    + (not_fails, is_det).
 
@@ -292,7 +280,7 @@ special_builtin('=/2', Sg, _ , '=/2', Sg).
 
 success_builtin(unchanged, _ , _ , _, Call, Call).
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
-   unifiable(T1, T2,  Unifier),
+   unifiable_with_occurs_check(T1, T2,  Unifier),
    mgu_shlin(Call, [], Unifier, Result).
 
 %-------------------------------------------------------------------------
@@ -381,7 +369,7 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
 % TODO: optimize using a custom implementation
 
 unknown_call(Sg, Vars, Call, Succ) :-
-   unknown_entry(Sg, Vars, Top),
+   top_shlin(Vars, Top),
    extend(Sg, Top, Vars, Call, Succ).
 
 %------------------------------------------------------------------------%
@@ -399,7 +387,7 @@ unknown_call(Sg, Vars, Call, Succ) :-
    + (not_fails, is_det).
 
 amgu(Sg, Head, ASub, AMGU):-
-   unifiable(Sg, Head, Unifier),
+   unifiable_with_occurs_check(Sg, Head, Unifier),
    mgu_shlin(ASub, [], Unifier, AMGU).
 
 %------------------------------------------------------------------------%
@@ -422,9 +410,105 @@ glb((Sh0, Lin0),(Sh1, Lin1),(Glb_sh, Glb_lin)):-
    ord_intersection(Sh0, Sh1, Glb_sh),
    ord_union(Lin0, Lin1, Glb_lin).
 
+%------------------------------------------------------------------------
+% AUXILIARY ASSERTIONS
+%-------------------------------------------------------------------------
+
+:- prop asub_shlin(ShLin)
+   # "@var{ShLin} is a non-bottom sharing x linearity abstract substitution".
+:- export(asub_shlin/1).
+
+% TODO: fix operations so that in the lin component we never keep the ground
+% variables, since they are automatically linear.
+
+asub_shlin((Sh, Lin)) :-
+   asub_sh(Sh),
+   ordlist(var, Lin).
+   % varset(Lin, VLin),
+   % varset(Sh, VSh),
+   % ord_subset(VLin, VSh).
+
+:- regtype asub_shlin_u(ShLin) #  "@var{ShLin} is an unordered sharing x linearity abstract substitution".
+:- export(asub_shlin_u/1).
+
+asub_shlin_u(ShLin) :-
+   % note that list(ordlist(var)) would not work
+   list(list(var), ShLin).
+
+
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
+% top_shlin(+Vars,+Top)
+%
+% Top is the top ShLin element on variable Vars.
+%-------------------------------------------------------------------------
+
+:- pred top_shlin(+Vars, -Top)
+   : ordlist(var) * ivar => asub_shlin(Top)
+   + (not_fails, is_det).
+
+top_shlin(Vars, (Sh, [])) :-
+   top_sh(Vars, Sh).
+
+%-------------------------------------------------------------------------
+% project_shlin(+ShLin,+Vars,-Proj)
+%
+% Proj is the projection of ShLin onto the variables in Vars.
+%-------------------------------------------------------------------------
+
+:- pred project_shlin(+ShLin, +Vars, -Proj)
+   : asub_shlin * ordlist(var) * ivar => asub_shlin(Proj)
+   + (not_fails, is_det).
+:- export(project_shlin/3).
+
+project_shlin((Sh, Lin), Vars, (Proj_sh, Proj_lin)) :-
+   project_sh(Sh, Vars, Proj_sh),
+   ord_intersection(Lin, Vars, Proj_lin).
+
+%-------------------------------------------------------------------------
+% independent(+Sh, ?S, ?T)
+%
+% Determines where S and T are definitely independent given the sharing
+% information in Sh.
+%-------------------------------------------------------------------------
+
+:- pred ind(+Sh, ?S, ?T)
+  : asub_sh * term * term
+  + is_det.
+:- export(ind/3).
+
+ind(Sh, S, T) :-
+   varset(S, Vs),
+   varset(T, Vt),
+   rel(Sh, Vs, Sh_s, _),
+   rel(Sh, Vt, Sh_t, _),
+   ord_disjoint(Sh_s, Sh_t).
+
+%-------------------------------------------------------------------------
+% lin(+ShLin, ?T)
+%
+% Determines whether the term T is definitvely linear with respect to
+% the sharing and linearity information in ShLin.
+%-------------------------------------------------------------------------
+
+:- pred lin(+ShLin, ?T)
+   : asub * term
+   + is_det.
+
+:- export(lin/2).
+lin((Sh, Lin), T) :-
+   varset(T, Vt),
+   varset(Sh, Vsh),
+   ord_subtract(Vsh, Lin, NoLin),
+   ord_disjoint(Vt, NoLin),
+   all_couples(Vt, ind(Sh)),
+   varsbag(T, Bag, []),
+   duplicates(Bag, Duplicates),
+   ord_disjoint(Duplicates, Vsh).
+
 
 %-------------------------------------------------------------------------
 % mgu_shlin(+ASub, Fv, +Sub, -MGU)
@@ -435,7 +519,7 @@ glb((Sh0, Lin0),(Sh1, Lin1),(Glb_sh, Glb_lin)):-
 %-------------------------------------------------------------------------
 
 :- pred mgu_shlin(+ASub, +Fv, +Sub, -MGU)
-   : nasub * ordlist(var) * unifier * ivar => nasub(MGU)
+   : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
 
 mgu_shlin(ASub, _Fv, [], ASub).
@@ -498,48 +582,3 @@ match_shlin((Prime_sh, Prime_lin), Sv1, (Call_sh, Call_lin), (Succ_sh, Succ_lin)
    match_sh(Prime_sh, Sv1, Call_sh, Succ_sh),
    ord_subtract(Call_lin, Sv1, Call_lin_not_rel),
    ord_union(Prime_lin, Call_lin_not_rel, Succ_lin).
-
-%------------------------------------------------------------------------
-% AUXILIARY OPERATIONS
-%-------------------------------------------------------------------------
-
-%-------------------------------------------------------------------------
-% independent(+Sh, ?S, ?T)
-%
-% Determines where S and T are definitely independent given the sharing
-% information in Sh.
-%-------------------------------------------------------------------------
-
-:- pred ind(+Sh, ?S, ?T)
-  : asub_sh * term * term
-  + is_det.
-:- export(ind/3).
-
-ind(Sh, S, T) :-
-   varset(S, Vs),
-   varset(T, Vt),
-   rel(Sh, Vs, Sh_s, _),
-   rel(Sh, Vt, Sh_t, _),
-   ord_disjoint(Sh_s, Sh_t).
-
-%-------------------------------------------------------------------------
-% lin(+ShLin, ?T)
-%
-% Determines whether the term T is definitvely linear with respect to
-% the sharing and linearity information in ShLin.
-%-------------------------------------------------------------------------
-
-:- pred lin(+ShLin, ?T)
-   : asub * term
-   + is_det.
-
-:- export(lin/2).
-lin((Sh, Lin), T) :-
-   varset(T, Vt),
-   varset(Sh, Vsh),
-   ord_subtract(Vsh, Lin, NoLin),
-   ord_disjoint(Vt, NoLin),
-   all_couples(Vt, ind(Sh)),
-   varsbag(T, Bag, []),
-   duplicates(Bag, Duplicates),
-   ord_disjoint(Duplicates, Vsh).

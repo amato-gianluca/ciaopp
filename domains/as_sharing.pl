@@ -14,6 +14,7 @@ This module is an independent reimplementation of the Sharing domain.
 :- include(ciaopp(plai/plai_domain)).
 :- dom_def(as_sharing, [default]).
 
+:- use_module(ciaopp(preprocess_flags)).
 :- use_module(library(lists)).
 :- use_module(library(sets)).
 :- use_module(library(lsets)).
@@ -514,10 +515,14 @@ star_union(Sh, Star) :-
 % TODO: optimize by replacing Sub with a specialized version where terms are
 % replaced by their variables
 
-mgu_sh(Sh, _Fv, [], Sh).
-mgu_sh(Sh, Fv, [X=T|Rest], Sh_mgu) :-
+mgu_sh(Sh, Fv, Sub, Sh_mgu) :-
+   ( current_pp_flag(mgu_sh_optimize, on) ->  mgu_sh0(Sh, Fv, Sub, Sh_mgu)
+      ; mgu_sh0(Sh, [], Sub, Sh_mgu) ).
+
+mgu_sh0(Sh, _Fv, [], Sh).
+mgu_sh0(Sh, Fv, [X=T|Rest], Sh_mgu) :-
    mgu_sh_binding(Sh, X, T, Fv, Sh0, Fv0),
-   mgu_sh(Sh0, Fv0, Rest, Sh_mgu).
+   mgu_sh0(Sh0, Fv0, Rest, Sh_mgu).
 
 %-------------------------------------------------------------------------
 % mgu_sh_binding(+Sh, X, T, -Sh_mgu)

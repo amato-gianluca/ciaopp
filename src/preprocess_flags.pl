@@ -1091,6 +1091,11 @@ current_pp_flags(  num_test_cases      , 100).
 valid_flag_values( num_test_cases      , member(_,[25,50,100,200,400])).
 %:- endif.
 
+pp_flag(mgu_sh_optimize).
+pp_flag(mgu_sh_optimize, 'Choose whether to optimize the mgu operation for sharing').
+current_pp_flags(  mgu_sh_optimize      , on).
+valid_flag_values( mgu_sh_optimize      , member(_,[on, off])).
+
 % ---------------------------------------------------------------------------
 
 tmp_dir(source).

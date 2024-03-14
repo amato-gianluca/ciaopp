@@ -18,6 +18,13 @@ This module is in common among all domains in the as_* collection.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
+:- prop memberof(L, T)
+   # "@var{T} is a member of list @var{L}".
+:- export(memberof/2).
+
+memberof(L, T)
+   :- member(T, L).
+
 :- prop ordlist(T, S)
    # "@var{S} is an ordered list of elements of type T".
 :- export(ordlist/2).

@@ -85,10 +85,10 @@ augment_asub((Sh, Lin), Vars, (Sh0, Lin0)) :-
 %-------------------------------------------------------------------------
 % unknown_entry(+Sg,+Vars,-Entry)
 %
-% Entry is the "topmost" abstraction of variables Vars corresponding to
-% literal Sg.
+% Entry is the "topmost" abstraction for the variable in  Vars
+% appearing in the literal Sg.
 %
-% TODO: Understand the role of Sg.
+% It is used when to call or entry predicate exists
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_entry/3, [noq]).
@@ -120,10 +120,10 @@ abs_sort((Sh_u, Lin_u), (Sh, Lin)) :-
 %-------------------------------------------------------------------------
 % project(Sg,Vars,HvFv_u,ASub,Proj)
 %
-% Projects the abstract substitution ASub onto the variables of list Vars
-% resulting in the projected abstract substitution Proj.
-%
-% TODO: Understand the role of Sg and HvFv_u.
+% Projects the abstract substitution ASub onto the variables of list Vars,
+% corresponding to goal Sg, resulting in the projected abstract
+% substitution Proj. HvFv_u contains the unordered list of varibles of the
+% clause.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, project/5, [noq]).
@@ -263,7 +263,10 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 % called when Type is of the form special(SgKey). Condvars is used to pass
 % information to success_builtin.
 %
-% TODO: Understand the role of Subgoal.
+% Subgoal seems to be used when ciaopp is in transformation mode. Otherwise
+% it is the same of Sg.
+%
+% TODO: Understand with more precision the role of Subgoal.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, special_builtin/5, [noq]).
@@ -315,9 +318,10 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 % input_user_interface(?Struct,+Qv,-ASub,+Sg,+MaybeCallASub)
 %
 % ASub is the abstraction of the information collected in Struct (a domain
-% defined structure, see input_interface/4) on variables Qv.
+% defined structure, see input_interface/4) on variables Qv relative to
+% the literal Sg.
 %
-% TODO: understand the role of Sg and MaybeCallASub.
+% TODO: Understand the role of MaybeCallASub.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_user_interface/5, [noq]).
@@ -339,12 +343,15 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 % of abstract substitution ASub on variables Qv. These are later
 % translated to the properties which are visible in the preprocessing unit.
 %
-% TODO: understand the role of OutFlag.
+% OutFlag seems to be either yes (when called from asub_to_out) or no
+% (when called from asub_to_info).
+%
+% TODO: Understand with more precision the role of OutFlag.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, asub_to_native/5, [noq]).
 :- pred asub_to_native(+ASub, +Qv, +OutFlag, -NativeStat, -NativeComp)
-   : asub * {ordlist(var), superset_vars_of(ASub)} * term * ivar * ivar
+   : asub * {ordlist(var), superset_vars_of(ASub)} * memberof([yes,no]) * ivar * ivar
    + (is_det).
 
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.

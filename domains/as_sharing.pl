@@ -30,7 +30,6 @@ This module is an independent reimplementation of the Sharing domain.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-
 :- prop asub(ASub)
    # "@var{ASub} is an abstract substitution".
 
@@ -55,7 +54,7 @@ asub_u(ASub) :-
    asub_sh_u(ASub).
 
 %------------------------------------------------------------------------
-% DOMAIN PREDICATES
+% FIXED CIAOPP PREDICATES
 %-------------------------------------------------------------------------
 
 %------------------------------------------------------------------------
@@ -70,10 +69,8 @@ asub_u(ASub) :-
    : (nasub * {ordlist(var), independent_from(ASub)} * ivar) => nasub(ASub0)
    + (not_fails, is_det).
 
-% TODO: optimize with clause augment_asub(ASub,[],ASub).
 augment_asub(ASub, Vars, ASub0) :-
-   list_to_list_of_lists(Vars, Vars0),
-   ord_union(ASub, Vars0, ASub0).
+   augment_sh(ASub, Vars, ASub0).
 
 %-------------------------------------------------------------------------
 % unknown_entry(+Sg,+Vars,-Entry)
@@ -101,9 +98,9 @@ unknown_entry(_Sg, Vars, Entry) :-
    : asub_u * ivar => asub(ASub)
    + (not_fails, is_det).
 
-abs_sort('$bottom', '$bottom'). % TODO: optimize with cut
+abs_sort('$bottom', '$bottom') :- !.
 abs_sort(ASub_u, ASub) :-
-   sort_list_of_lists(ASub_u, ASub).
+   sort_sh(ASub_u, ASub).
 
 %-------------------------------------------------------------------------
 % project(Sg,Vars,HvFv_u,ASub,Proj)
@@ -144,10 +141,10 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
 
 call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
    unifiable_with_occurs_check(Sg, Head, Unifier),
-   augment_asub(Proj, Hv, ASub),
+   augment_sh(Proj, Hv, ASub),
    mgu_sh(ASub, Hv, Unifier, Entry0),
    project_sh(Entry0, Hv, Entry1),
-   augment_asub(Entry1, Fv, Entry).
+   augment_sh(Entry1, Fv, Entry).
 
 %-------------------------------------------------------------------------
 % exit_to_prime(Sg,Hv,Head,Sv,Exit,ExtraInfo,Prime)
@@ -168,7 +165,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 
 exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _Unifier, '$bottom'). % TODO: optimize with cut
 exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
-   augment_asub(Exit, Sv, ASub),
+   augment_sh(Exit, Sv, ASub),
    mgu_sh(ASub, Sv, Unifier, Prime0),
    project_sh(Prime0, Sv, Prime).
 
@@ -196,7 +193,7 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
 compute_lub_el('$bottom', ASub, ASub) :- !.
 compute_lub_el(ASub, '$bottom', ASub). % TODO: optimize with cut
 compute_lub_el(ASub1, ASub2, Lub) :-
-   ord_union(ASub1, ASub2, Lub).
+   lub_sh(ASub1, ASub2, Lub).
 
 %-------------------------------------------------------------------------
 % extend(+Sg,+Prime,+Sv,+Call,-Succ)
@@ -282,6 +279,75 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    mgu_sh(Call, [], Unifier, Result).
 
 %-------------------------------------------------------------------------
+% unknown_call(+Sg,+Vars,+Call,-Succ)
+%
+% Succ is the result of adding to Call the ``topmost'' abstraction of the
+% variables Vars involved in a literal Sg whose definition is not present
+% in the preprocessing unit.
+%
+% It is a particular type of match where the abstract substitution on
+% non-instantiable variables is the top of the domain.
+%-------------------------------------------------------------------------
+
+:- dom_impl(_, unknown_call/4, [noq]).
+:- pred unknown_call(+Sg, +Vars, +Call, -Succ)
+   : cgoal * {ordlist(var), same_vars_of(Sg)} * nasub * ivar => asub(Succ)
+   + (not_fails, is_det).
+
+% TODO: optimize adding the clause unknown_call(_Sg,_Vars,[],[])
+
+% TODO: optimize using a custom implementation such as:
+% unknown_call(Sg, Vars, Call, Succ) :-
+%   rel(Call, Vars, Intersect, Disjunct),
+%   star_union(Intersect, Star),
+%   ord_union(Star, Disjunct, Succ).
+
+unknown_call(_Sg, Vars, Call, Succ) :-
+   top_sh(Vars, Top),
+   match_sh(Top, Vars, Call, Succ).
+
+%------------------------------------------------------------------------%
+% amgu(+Sg,+Head,+ASub,-AMGU)
+%
+% AMGU is the abstract unification between ASub and the unifiers of Sg and
+% Head.
+%
+% TODO: understand which options enable the use of this predicate.
+%------------------------------------------------------------------------%
+
+:- dom_impl(_, amgu/4, [noq]).
+:- pred amgu(+Sg, +Head, +ASub, -AMGU)
+   : cgoal * cgoal * nasub * ivar => nasub(AMGU)
+   + (not_fails, is_det).
+
+amgu(Sg, Head, ASub, AMGU):-
+   unifiable_with_occurs_check(Sg, Head, Unifier),
+   mgu_sh(ASub, [], Unifier, AMGU).
+
+%------------------------------------------------------------------------%
+% glb(+ASub0,+ASub1,-GlbASub)
+%
+% GlbASub is the glb between ASub0 and ASub1.
+%
+% It is used to combine assertions provided by the user with trust
+% predicates with the result of the analysis.
+%------------------------------------------------------------------------%
+
+:- dom_impl(_, glb/3, [noq]).
+:- pred glb(+ASub0,+ASub1,-GlbASub)
+   : asub * asub * ivar => asub(GlbASub)
+   + (not_fails, is_det).
+
+glb('$bottom', _ASub1, '$bottom') :- !.
+glb(_ASub0, '$bottom', '$bottom'). % TODO: optimize with cut
+glb(ASub0, ASub1, Glb):-
+   glb_sh(ASub0, ASub1, Glb).
+
+%------------------------------------------------------------------------
+% VARIABLE CIAOPP PREDICATES
+%-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
 % input_interface(+Prop,?Kind,?Struc0,-Struc1)
 %
 % Prop is a native property that is relevant to domain (i.e., the domain
@@ -342,76 +408,11 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(ASub, sharing(ASub), NativeStat, NativeStat0),
-   projected_gvars(ASub, Qv, Gv),
+   gvars(ASub, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, []).
 
-%-------------------------------------------------------------------------
-% unknown_call(+Sg,+Vars,+Call,-Succ)
-%
-% Succ is the result of adding to Call the ``topmost'' abstraction of the
-% variables Vars involved in a literal Sg whose definition is not present
-% in the preprocessing unit.
-%
-% It is a particular type of match where the abstract substitution on
-% non-instantiable variables is the top of the domain.
-%-------------------------------------------------------------------------
-
-:- dom_impl(_, unknown_call/4, [noq]).
-:- pred unknown_call(+Sg, +Vars, +Call, -Succ)
-   : cgoal * {ordlist(var), same_vars_of(Sg)} * nasub * ivar => asub(Succ)
-   + (not_fails, is_det).
-
-% TODO: optimize adding the clause unknown_call(_Sg,_Vars,[],[])
-
-% TODO: optimize using a custom implementation such as:
-% unknown_call(Sg, Vars, Call, Succ) :-
-%   rel(Call, Vars, Intersect, Disjunct),
-%   star_union(Intersect, Star),
-%   ord_union(Star, Disjunct, Succ).
-
-unknown_call(Sg, Vars, Call, Succ) :-
-   top_sh(Vars, Top),
-   extend(Sg, Top, Vars, Call, Succ).
-
-%------------------------------------------------------------------------%
-% amgu(+Sg,+Head,+ASub,-AMGU)
-%
-% AMGU is the abstract unification between ASub and the unifiers of Sg and
-% Head.
-%
-% TODO: understand which options enable the use of this predicate.
-%------------------------------------------------------------------------%
-
-:- dom_impl(_, amgu/4, [noq]).
-:- pred amgu(+Sg, +Head, +ASub, -AMGU)
-   : cgoal * cgoal * nasub * ivar => nasub(AMGU)
-   + (not_fails, is_det).
-
-amgu(Sg, Head, ASub, AMGU):-
-   unifiable_with_occurs_check(Sg, Head, Unifier),
-   mgu_sh(ASub, [], Unifier, AMGU).
-
-%------------------------------------------------------------------------%
-% glb(+ASub0,+ASub1,-GlbASub)
-%
-% GlbASub is the glb between ASub0 and ASub1.
-%
-% It is used to combine assertions provided by the user with trust
-% predicates with the result of the analysis.
-%------------------------------------------------------------------------%
-
-:- dom_impl(_, glb/3, [noq]).
-:- pred glb(+ASub0,+ASub1,-GlbASub)
-   : asub * asub * ivar => asub(GlbASub)
-   + (not_fails, is_det).
-
-glb('$bottom', _ASub1, '$bottom') :- !.
-glb(_ASub0, '$bottom', '$bottom'). % TODO: optimize with cut
-glb(ASub0, ASub1, Glb):-
-    ord_intersection(ASub0, ASub1, Glb).
-
 %------------------------------------------------------------------------
-% AUXILIARY ASSERTIONS
+% DOMAIN ASSERTIONS
 %-------------------------------------------------------------------------
 
 :- prop asub_sh(Sh)
@@ -431,13 +432,27 @@ asub_sh_u(Sh) :-
    list(list(var), Sh).
 
 %-------------------------------------------------------------------------
-% AUXILIARY PREDICATES
+% DOMAIN PREDICATES
 %-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
+% sort_sh(+Sh_u,-Sh)
+%
+% Sh is the result of sorting abstract substitution Sh_u.
+%-------------------------------------------------------------------------
+
+:- pred sort_sh(+Sh_u, -Sh)
+   : asub_sh_u * ivar => asub_sh(Sh)
+   + (not_fails, is_det).
+:- export(sort_sh/2).
+
+sort_sh(Sh_u, Sh) :-
+   sort_list_of_lists(Sh_u, Sh).
 
 %-------------------------------------------------------------------------
 % top_sh(+Vars,+Top)
 %
-% Top is the top sharing element on variable Vars.
+% Top is the largest abstract substitution on variable Vars.
 %-------------------------------------------------------------------------
 
 :- pred top_sh(+Vars, -Top)
@@ -448,6 +463,23 @@ asub_sh_u(Sh) :-
 top_sh(Vars, Top) :-
    % note that powerset does not generate the empty set
    powerset(Vars, Top).
+
+%------------------------------------------------------------------------
+% augment_sh(+Sh,+Vars,-Sh0)
+%
+% Augment the abstract substitution Sh adding the fresh variables Vars
+% to get the abstract substitution Sh0.
+%-------------------------------------------------------------------------
+
+:- pred augment_sh(+Sh, +Vars, -Sh0)
+   : (asub_sh * {ordlist(var), independent_from(Sh)} * ivar) => asub_sh(Sh0)
+   + (not_fails, is_det).
+:- export(augment_sh/3).
+
+% TODO: optimize with clause augment_sh(Sh,[],Sh).
+augment_sh(Sh, Vars, Sh0) :-
+   list_to_list_of_lists(Vars, Vars0),
+   ord_union(Sh, Vars0, Sh0).
 
 %-------------------------------------------------------------------------
 % project_sh(+Sh,+Vars,-Proj)
@@ -467,77 +499,35 @@ project_sh([S|Rest], Vars, Sh_ex) :-
    ( S_ex = [] -> Sh_ex = Rest_ex ; insert(Rest_ex, S_ex, Sh_ex) ).
 
 %-------------------------------------------------------------------------
-% projected_gvars(+Sh,+Vars,-Gv)
+% lub_sh(+Sh1,+Sh2,Lub)
 %
-% Gv is the set of variables in Vars which are ground w.r.t. Sh.
+% Lub is the lub of Sh1 and Sh2.
 %-------------------------------------------------------------------------
 
-:- pred projected_gvars(+Sh, +Vars, -Gv)
-   : asub_sh * {ordlist(var), superset_vars_of(Sh)} * ivar
-   => ( ordlist(var, Gv), independent_from(Sh, Gv), superset_vars_of(Gv, Vars) )
+:- pred lub_sh(+Sh1, +Sh2, -Lub)
+   : asub_sh * asub_sh * ivar => asub_sh(Lub)
    + (not_fails, is_det).
-:- export(projected_gvars/3).
+:- export(lub_sh/3).
 
-% TODO: optimize adding the clause projected_gvars([], Vars, Vars) :- !.
-% TODO: optimize adding the clause projected_gvars(_ASub, [], []) :- !.
-projected_gvars(ASub, Vars, Gv) :-
-   merge_list_of_lists(ASub, NonGround),
-   ord_subtract(Vars, NonGround, Gv).
+lub_sh(Sh1, Sh2, Lub) :-
+   ord_union(Sh1, Sh2, Lub).
 
-%-------------------------------------------------------------------------
-% rel(+Sh,+Vars,-Sh_rel,-Sh_nrel)
+%------------------------------------------------------------------------%
+% glb_sh(+Sh1,+Sh2,-Glb)
 %
-% Partition sharing groups in Sh in those which are disjoint from Vars
-% (Sh_nrel) and those which are not (Sh_rel).
-%-------------------------------------------------------------------------
-
-:- pred rel(+Sh, +Vars, -Sh_rel, -Sh_nrel)
-   : asub_sh * ordlist(var) * ivar * ivar => (asub_sh(Sh_rel), asub_sh(Sh_nrel)).
-:- export(rel/4).
-
-rel(Sh, Vars, Sh_rel, Sh_nrel) :-
-   ord_split_lists_from_list(Vars, Sh, Sh_rel, Sh_nrel).
-
-%-------------------------------------------------------------------------
-% bin(+Sh1, +Sh2, -Sh)
+% GlbSh is the glb between Sh1 and Sh2.
 %
-% Sh is the binary union of Sh1 and Sh2.
-%-------------------------------------------------------------------------
+% It is used to combine assertions provided by the user with trust
+% predicates with the result of the analysis.
+%------------------------------------------------------------------------%
 
-:- pred bin(Sh1, Sh2, Sh)
-   : asub_sh * asub_sh * ivar => asub_sh(Sh)
+:- pred glb_sh(+Sh1,+Sh2,-Glb)
+   : asub_sh * asub_sh * ivar => asub(Glb)
    + (not_fails, is_det).
-:- export(bin/3).
+:- export(glb_sh/3).
 
-bin([], _, []).
-bin([X|Rest], Sh, Result) :-
-   bin0(X, Sh, Sh_bin),
-   bin(Rest, Sh, Rest_bin),
-   ord_union(Rest_bin, Sh_bin, Result).
-
-:- pred bin0(X, Sh2, Sh)
-   : ordnlist(var) * asub_sh * ivar => asub_sh(Sh)
-   + (not_fails, is_det).
-
-bin0(_, [], []).
-bin0(X, [Y|Rest], Result) :-
-   ord_union(X, Y, XY),
-   bin0(X, Rest, Rest_bin),
-   insert(Rest_bin, XY, Result).
-
-%-------------------------------------------------------------------------
-% star_union(+Sh, -Star)
-%
-% Star is the star union of the sharing groups in Sh.
-%-------------------------------------------------------------------------
-
-:- pred star_union(+Sh, -Star)
-   : asub_sh * ivar => asub_sh(Star)
-   + (not_fails, is_det).
-:- export(star_union/2).
-
-star_union(Sh, Star) :-
-   closure_under_union(Sh, Star).
+glb_sh(Sh1, Sh2, Glb):-
+    ord_intersection(Sh1, Sh2, Glb).
 
 %-------------------------------------------------------------------------
 % mgu_sh(+Sh, Fv, +Sub, -Sh_mgu)
@@ -636,25 +626,79 @@ match_sh0([Xs|Xss], Sh1, Sv1, PartialMatch) :-
    ord_intersection(Xs, Sv1, Xs_proj),
    ( ord_member(Xs_proj,Sh1) -> insert(PartialMatch0, Xs, PartialMatch); PartialMatch = PartialMatch0 ).
 
-%------------------------------------------------------------------------
-% UNUSED AUXILIARY PREDICATES
+%-------------------------------------------------------------------------
+% AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
-:- pred aexists_sh(+Sh, +Vars, -Sh_ex)
-   : asub_sh * ordlist(var) * ivar => asub_sh(Sh_ex)
+%-------------------------------------------------------------------------
+% rel(+Sh,+Vars,-Sh_rel,-Sh_nrel)
+%
+% Partition sharing groups in Sh in those which are disjoint from Vars
+% (Sh_nrel) and those which are not (Sh_rel).
+%-------------------------------------------------------------------------
+
+:- pred rel(+Sh, +Vars, -Sh_rel, -Sh_nrel)
+   : asub_sh * ordlist(var) * ivar * ivar => (asub_sh(Sh_rel), asub_sh(Sh_nrel)).
+:- export(rel/4).
+
+rel(Sh, Vars, Sh_rel, Sh_nrel) :-
+   ord_split_lists_from_list(Vars, Sh, Sh_rel, Sh_nrel).
+
+%-------------------------------------------------------------------------
+% bin(+Sh1, +Sh2, -Sh)
+%
+% Sh is the binary union of Sh1 and Sh2.
+%-------------------------------------------------------------------------
+
+:- pred bin(Sh1, Sh2, Sh)
+   : asub_sh * asub_sh * ivar => asub_sh(Sh)
+   + (not_fails, is_det).
+:- export(bin/3).
+
+bin([], _, []).
+bin([X|Rest], Sh, Result) :-
+   bin0(X, Sh, Sh_bin),
+   bin(Rest, Sh, Rest_bin),
+   ord_union(Rest_bin, Sh_bin, Result).
+
+:- pred bin0(X, Sh2, Sh)
+   : ordnlist(var) * asub_sh * ivar => asub_sh(Sh)
    + (not_fails, is_det).
 
-aexists_sh(Sh, Vars, Sh_ex) :-
-   aexists_sh0(Sh, Vars, Sh_ex0),
-   list_to_list_of_lists(Vars, Sh_ex1),
-   ord_union(Sh_ex0, Sh_ex1, Sh_ex).
+bin0(_, [], []).
+bin0(X, [Y|Rest], Result) :-
+   ord_union(X, Y, XY),
+   bin0(X, Rest, Rest_bin),
+   insert(Rest_bin, XY, Result).
 
-:- pred aexists_sh0(+Sh, +Vars, -Sh_ex)
-   : asub_sh * ordlist(var) * ivar => asub_sh(Sh_ex)
+%-------------------------------------------------------------------------
+% star_union(+Sh, -Star)
+%
+% Star is the star union of the sharing groups in Sh.
+%-------------------------------------------------------------------------
+
+:- pred star_union(+Sh, -Star)
+   : asub_sh * ivar => asub_sh(Star)
    + (not_fails, is_det).
+:- export(star_union/2).
 
-aexists_sh0([], _Vars, []) :- !.
-aexists_sh0([S|Rest], Vars, Sh_ex) :-
-   ord_subtract(S, Vars, S_ex),
-   aexists_sh0(Rest, Vars, Rest_ex),
-   ( S_ex = [] -> Sh_ex = Rest_ex ; insert(Rest_ex, S_ex, Sh_ex) ).
+star_union(Sh, Star) :-
+   closure_under_union(Sh, Star).
+
+%-------------------------------------------------------------------------
+% gvars(+Sh,+Vars,-Gv)
+%
+% Gv is the set of variables in Vars which are ground w.r.t. Sh.
+%-------------------------------------------------------------------------
+
+:- pred gvars(+Sh, +Vars, -Gv)
+   : asub_sh * {ordlist(var), superset_vars_of(Sh)} * ivar
+   => ( ordlist(var, Gv), independent_from(Sh, Gv), superset_vars_of(Gv, Vars) )
+   + (not_fails, is_det).
+:- export(gvars/3).
+
+% TODO: optimize adding the clause gvars([], Vars, Vars) :- !.
+% TODO: optimize adding the clause gvars(_Sh, [], []) :- !.
+gvars(Sh, Vars, Gv) :-
+   merge_list_of_lists(Sh, NonGround),
+   ord_subtract(Vars, NonGround, Gv).

@@ -41,10 +41,10 @@ asub('$bottom'). % TODO: optimize with cut
 asub(ASub) :-
    nasub(ASub).
 
-% in the lin component we do not keep the ground variables, since they are
-% automatically linear.
-
 :- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
+
+% TODO: fix operations so that in the lin component we never keep the ground
+% variables, since they are automatically linear.
 
 nasub((Sh, Lin)) :-
    asub_sh(Sh),
@@ -73,10 +73,10 @@ asub_u((Sh, Lin)) :-
 
 :- dom_impl(_, augment_asub/3, [noq]).
 :- pred augment_asub(+ASub, +Vars, -ASub0)
-   : (asub * {ordlist(var), independent_from(ASub)} * ivar) => asub(ASub0)
+   : (nasub * {ordlist(var), independent_from(ASub)} * ivar) => nasub(ASub0)
    + (not_fails, is_det).
 
-% TODO: optimize with clause augment_asub(ASub,[],ASub).
+% TODO: optimize with clause augment_asub(ASub,[],ASub)
 augment_asub((Sh, Lin), Vars, (Sh0, Lin0)) :-
    list_to_list_of_lists(Vars, Vars0),
    ord_union(Sh, Vars0, Sh0),
@@ -128,11 +128,8 @@ abs_sort((Sh_u, Lin_u), (Sh, Lin)) :-
 
 :- dom_impl(_, project/5, [noq]).
 :- pred project(+Sg, +Vars, +HvFv_u, +ASub, ?Proj)
-   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub * ivar => asub(Proj)
+   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * nasub * ivar => asub(Proj)
    + (not_fails, is_det).
-
-% the following lines are probably needed for builtins
-% project(_Sg, _Vars, _HvFv_u, '$bottom', '$bottom') :- !.
 
 project(_Sg, Vars, _HvFv_u, (Sh, Lin), (Proj_sh, Proj_lin)) :-
    project_sh(Sh, Vars, Proj_sh),
@@ -200,7 +197,7 @@ exit_to_prime(Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
    : list(asub) * ivar => asub(LubASub)
    + (not_fails, is_det).
 
-compute_lub([ASub], ASub) :- !.
+compute_lub([ASub], ASub).
 compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    compute_lub_el(ASub1, ASub2, ASub3),
    compute_lub([ASub3|ASubs], LubASub).
@@ -209,8 +206,8 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    : asub * asub * ivar => asub(ASub)
    + (not_fails, is_det).
 
-compute_lub_el('$bottom', ASub, ASub). % TODO: optimize with cut
-compute_lub_el(ASub, '$bottom', ASub).% TODO: optimize with cut
+compute_lub_el('$bottom', ASub, ASub) :- !.
+compute_lub_el(ASub, '$bottom', ASub). % TODO: optimize with cut
 compute_lub_el((Sh1, Lin1), (Sh2, Lin2), (Lub_sh, Lub_lin)) :-
    ord_union(Sh1, Sh2, Lub_sh),
    ord_intersection(Lin1, Lin2, Lub_lin).
@@ -232,8 +229,7 @@ compute_lub_el((Sh1, Lin1), (Sh2, Lin2), (Lub_sh, Lub_lin)) :-
    : cgoal * asub * {ordlist(var), same_vars_of(Sg), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
-
-extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
+extend(_Sg, '$bottom', _Sv, _Call, '$bottom').
 extend(_Sg, Prime, Sv, Call, Succ) :-
    match_shlin(Prime, Sv, Call, Succ).
 
@@ -267,7 +263,7 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 % called when Type is of the form special(SgKey). Condvars is used to pass
 % information to success_builtin.
 %
-% TODO: Understand the role of Sg, Subgoal and Condvars.
+% TODO: Understand the role of Subgoal.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, special_builtin/5, [noq]).
@@ -321,7 +317,7 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 % ASub is the abstraction of the information collected in Struct (a domain
 % defined structure, see input_interface/4) on variables Qv.
 %
-% TODO: understand the role of Sg and MaybeCallASub
+% TODO: understand the role of Sg and MaybeCallASub.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_user_interface/5, [noq]).
@@ -343,7 +339,7 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 % of abstract substitution ASub on variables Qv. These are later
 % translated to the properties which are visible in the preprocessing unit.
 %
-% TODO: understand the role of OutFlag
+% TODO: understand the role of OutFlag.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, asub_to_native/5, [noq]).
@@ -363,8 +359,10 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
 %
 % Succ is the result of adding to Call the ``topmost'' abstraction of the
 % variables Vars involved in a literal Sg whose definition is not present
-% in the preprocessing unit. I.e., it is like the conjunction of the
-% information in Call with the top for a subset of its variables.
+% in the preprocessing unit.
+%
+% It is a particular type of match where the abstract substitution on
+% non-instantiable variables is the top of the domain.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_call/4, [noq]).
@@ -373,12 +371,11 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
    + (not_fails, is_det).
 
 % TODO: optimize adding the clause unknown_call(_Sg,_Vars,[],[])
-% TODO: I don't think this is correct
-unknown_call(_Sg, Vars, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
-   rel(Call_sh, Vars, Intersect, Disjunct),
-   star_union(Intersect, Star),
-   ord_union(Star, Disjunct, Succ_sh),
-   ord_intersection(Call_lin, Vars, Succ_lin).
+% TODO: optimize using a custom implementation
+
+unknown_call(Sg, Vars, Call, Succ) :-
+   unknown_entry(Sg, Vars, Top),
+   extend(Sg, Top, Vars, Call, Succ).
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)
@@ -465,9 +462,10 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-match_shlin((Prime_sh, Prime_lin), Sv, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
-   match_sh(Prime_sh, Sv, Call_sh, Succ_sh),
-   ord_subtract(Call_lin, Sv, Call_lin_not_rel),
+% TODO: check correctness
+match_shlin((Prime_sh, Prime_lin), Sv1, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
+   match_sh(Prime_sh, Sv1, Call_sh, Succ_sh),
+   ord_subtract(Call_lin, Sv1, Call_lin_not_rel),
    ord_union(Prime_lin, Call_lin_not_rel, Succ_lin).
 
 %------------------------------------------------------------------------
@@ -475,7 +473,7 @@ match_shlin((Prime_sh, Prime_lin), Sv, (Call_sh, Call_lin), (Succ_sh, Succ_lin))
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% independent(+Sh, S, T)
+% independent(+Sh, ?S, ?T)
 %
 % Determines where S and T are definitely independent given the sharing
 % information in Sh.
@@ -494,7 +492,7 @@ ind(Sh, S, T) :-
    ord_disjoint(Sh_s, Sh_t).
 
 %-------------------------------------------------------------------------
-% lin(+ShLin, T)
+% lin(+ShLin, ?T)
 %
 % Determines whether the term T is definitvely linear with respect to
 % the sharing and linearity information in ShLin.

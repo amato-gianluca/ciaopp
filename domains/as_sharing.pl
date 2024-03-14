@@ -1,6 +1,6 @@
 :- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops]).
 
-%:- use_package(trace).
+:- use_package(debug).
 :- use_package(rtchecks).
 
 :- doc(title, "sharing abstract domain").
@@ -29,11 +29,12 @@ This module is an independent reimplementation of the Sharing domain.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-% the value '$bottom' has a special meaning withing the PLAI analyzer and MUST be
-% used to represent unreachable states.
 
 :- prop asub(ASub)
    # "@var{ASub} is an abstract substitution".
+
+% the value '$bottom' has a special meaning withing the PLAI analyzer and MUST be
+% used to represent unreachable states.
 
 asub('$bottom'). % TODO: optimize with cut
 asub(ASub) :-
@@ -65,7 +66,7 @@ asub_u(ASub) :-
 
 :- dom_impl(_, augment_asub/3, [noq]).
 :- pred augment_asub(+ASub, +Vars, -ASub0)
-   : (asub * {ordlist(var), independent_from(ASub)} * ivar) => asub(ASub0)
+   : (nasub * {ordlist(var), independent_from(ASub)} * ivar) => nasub(ASub0)
    + (not_fails, is_det).
 
 % TODO: optimize with clause augment_asub(ASub,[],ASub).
@@ -117,11 +118,8 @@ abs_sort(ASub_u, ASub) :-
 
 :- dom_impl(_, project/5, [noq]).
 :- pred project(+Sg, +Vars, +HvFv_u, +ASub, ?Proj)
-   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub * ivar => asub(Proj)
+   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * nasub * ivar => asub(Proj)
    + (not_fails, is_det).
-
-% the following lines are probably needed for builtins
-% project(_Sg, _Vars, _HvFv_u, '$bottom', '$bottom') :- !.
 
 project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
    project_sh(ASub, Vars, Proj).
@@ -188,7 +186,7 @@ exit_to_prime(Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
    : list(asub) * ivar => asub(LubASub)
    + (not_fails, is_det).
 
-compute_lub([ASub], ASub) :- !.
+compute_lub([ASub], ASub).
 compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    compute_lub_el(ASub1, ASub2, ASub3),
    compute_lub([ASub3|ASubs], LubASub).
@@ -198,7 +196,7 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    + (not_fails, is_det).
 
 compute_lub_el('$bottom', ASub, ASub) :- !.
-compute_lub_el(ASub, '$bottom', ASub).% TODO: optimize with cut
+compute_lub_el(ASub, '$bottom', ASub). % TODO: optimize with cut
 compute_lub_el(ASub1, ASub2, Lub) :-
    ord_union(ASub1, ASub2, Lub).
 
@@ -219,7 +217,7 @@ compute_lub_el(ASub1, ASub2, Lub) :-
    : cgoal * asub * {ordlist(var), same_vars_of(Sg), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
-extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
+extend(_Sg, '$bottom', _Sv, _Call, '$bottom').  % TODO: optimize with cut
 extend(_Sg, Prime, Sv, Call, Succ) :-
    match_sh(Prime, Sv, Call, Succ).
 
@@ -253,7 +251,7 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 % called when Type is of the form special(SgKey). Condvars is used to pass
 % information to success_builtin.
 %
-% TODO: Understand the role of Sg, Subgoal and Condvars.
+% TODO: Understand the role of Subgoal.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, special_builtin/5, [noq]).
@@ -307,7 +305,7 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 % ASub is the abstraction of the information collected in Struct (a domain
 % defined structure, see input_interface/4) on variables Qv.
 %
-% TODO: understand the role of Sg and MaybeCallASub
+% TODO: understand the role of Sg and MaybeCallASub.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_user_interface/5, [noq]).
@@ -328,7 +326,7 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 % of abstract substitution ASub on variables Qv. These are later
 % translated to the properties which are visible in the preprocessing unit.
 %
-% TODO: understand the role of OutFlag
+% TODO: understand the role of OutFlag.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, asub_to_native/5, [noq]).
@@ -347,8 +345,10 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 %
 % Succ is the result of adding to Call the ``topmost'' abstraction of the
 % variables Vars involved in a literal Sg whose definition is not present
-% in the preprocessing unit. I.e., it is like the conjunction of the
-% information in Call with the top for a subset of its variables.
+% in the preprocessing unit.
+%
+% It is a particular type of match where the abstract substitution on
+% non-instantiable variables is the top of the domain.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_call/4, [noq]).
@@ -357,11 +357,16 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    + (not_fails, is_det).
 
 % TODO: optimize adding the clause unknown_call(_Sg,_Vars,[],[])
-% TODO: I don't think this is correct
-unknown_call(_Sg, Vars, Call, Succ) :-
-   rel(Call, Vars, Intersect, Disjunct),
-   star_union(Intersect, Star),
-   ord_union(Star, Disjunct, Succ).
+
+% TODO: optimize using a custom implementation such as:
+% unknown_call(Sg, Vars, Call, Succ) :-
+%   rel(Call, Vars, Intersect, Disjunct),
+%   star_union(Intersect, Star),
+%   ord_union(Star, Disjunct, Succ).
+
+unknown_call(Sg, Vars, Call, Succ) :-
+   unknown_entry(Sg, Vars, Top),
+   extend(Sg, Top, Vars, Call, Succ).
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)
@@ -415,7 +420,7 @@ asub_sh_u(Sh) :-
    + (not_fails, is_det).
 :- export(project_sh/3).
 
-project_sh([], _Vars, []) :- !.
+project_sh([], _Vars, []).
 project_sh([S|Rest], Vars, Sh_ex) :-
    ord_intersection(S, Vars, S_ex),
    project_sh(Rest, Vars, Rest_ex),
@@ -433,8 +438,8 @@ project_sh([S|Rest], Vars, Sh_ex) :-
    + (not_fails, is_det).
 :- export(projected_gvars/3).
 
-projected_gvars([], Vars, Vars) :- !.
-projected_gvars(_ASub, [], []) :- !.
+% TODO: optimize adding the clause projected_gvars([], Vars, Vars) :- !.
+% TODO: optimize adding the clause projected_gvars(_ASub, [], []) :- !.
 projected_gvars(ASub, Vars, Gv) :-
    merge_list_of_lists(ASub, NonGround),
    ord_subtract(Vars, NonGround, Gv).
@@ -465,11 +470,14 @@ rel(Sh, Vars, Sh_rel, Sh_nrel) :-
 :- export(bin/3).
 
 bin([], _, []).
-bin(_, [], []).
 bin([X|Rest], Sh, Result) :-
    bin0(X, Sh, Sh_bin),
    bin(Rest, Sh, Rest_bin),
    ord_union(Rest_bin, Sh_bin, Result).
+
+:- pred bin0(X, Sh2, Sh)
+   : ordnlist(var) * asub_sh * ivar => asub_sh(Sh)
+   + (not_fails, is_det).
 
 bin0(_, [], []).
 bin0(X, [Y|Rest], Result) :-
@@ -502,6 +510,9 @@ star_union(Sh, Star) :-
    : asub_sh * ordlist(var) * unifier * ivar => asub_sh(Sh_mgu)
    + (not_fails, is_det).
 :- export(mgu_sh/4).
+
+% TODO: optimize by replacing Sub with a specialized version where terms are
+% replaced by their variables
 
 mgu_sh(Sh, _Fv, [], Sh).
 mgu_sh(Sh, Fv, [X=T|Rest], Sh_mgu) :-
@@ -586,13 +597,17 @@ match_sh0([Xs|Xss], Sh1, Sv1, PartialMatch) :-
 %-------------------------------------------------------------------------
 
 :- pred aexists_sh(+Sh, +Vars, -Sh_ex)
-   : asub_sh * ordlist(var) * ivar => asub_sh(Sh_ex).
+   : asub_sh * ordlist(var) * ivar => asub_sh(Sh_ex)
    + (not_fails, is_det).
 
 aexists_sh(Sh, Vars, Sh_ex) :-
    aexists_sh0(Sh, Vars, Sh_ex0),
    list_to_list_of_lists(Vars, Sh_ex1),
    ord_union(Sh_ex0, Sh_ex1, Sh_ex).
+
+:- pred aexists_sh0(+Sh, +Vars, -Sh_ex)
+   : asub_sh * ordlist(var) * ivar => asub_sh(Sh_ex)
+   + (not_fails, is_det).
 
 aexists_sh0([], _Vars, []) :- !.
 aexists_sh0([S|Rest], Vars, Sh_ex) :-

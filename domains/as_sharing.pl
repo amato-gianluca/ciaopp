@@ -24,6 +24,8 @@ This module is an independent reimplementation of the Sharing domain.
 :- use_module(domain(as_aux)).
 :- use_module(domain(sharing), [input_interface/4, input_user_interface/5]).
 
+%:- spy(asub_to_native).
+
 %:- use_module(engine(io_basic)).
 
 %------------------------------------------------------------------------
@@ -78,10 +80,8 @@ augment_asub(ASub, Vars, ASub0) :-
 %-------------------------------------------------------------------------
 % unknown_entry(+Sg,+Vars,-Entry)
 %
-% Entry is the "topmost" abstraction of variables Vars corresponding to
-% literal Sg.
-%
-% TODO: Understand the role of Sg.
+% Entry is the "topmost" abstraction for the variable in  Vars
+% appearing in the literal Sg.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_entry/3, [noq]).
@@ -111,10 +111,10 @@ abs_sort(ASub_u, ASub) :-
 %-------------------------------------------------------------------------
 % project(Sg,Vars,HvFv_u,ASub,Proj)
 %
-% Projects the abstract substitution ASub onto the variables of list Vars
-% resulting in the projected abstract substitution Proj.
-%
-% TODO: Understand the role of Sg and HvFv_u.
+% Projects the abstract substitution ASub onto the variables of list Vars,
+% corresponding to goal Sg, resulting in the projected abstract
+% substitution Proj. HvFv_u contains the unordered list of varibles of the
+% clause.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, project/5, [noq]).
@@ -149,7 +149,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
    unifiable(Sg, Head, Unifier),
    augment_asub(Proj, Hv, ASub),
    mgu_sh(ASub, Hv, Unifier, Entry0),
-   project(Head, Hv, [], Entry0, Entry1),
+   project_sh(Entry0, Hv, Entry1),
    augment_asub(Entry1, Fv, Entry).
 
 %-------------------------------------------------------------------------
@@ -170,10 +170,10 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 % take the unifier from the ExtraInfo parameter
 
 exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _Unifier, '$bottom'). % TODO: optimize with cut
-exit_to_prime(Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
+exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
    augment_asub(Exit, Sv, ASub),
    mgu_sh(ASub, Sv, Unifier, Prime0),
-   project(Sg, Sv, [], Prime0, Prime).
+   project_sh(Prime0, Sv, Prime).
 
 %-------------------------------------------------------------------------
 % compute_lub(+ListASub,-LubASub)
@@ -252,7 +252,10 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 % called when Type is of the form special(SgKey). Condvars is used to pass
 % information to success_builtin.
 %
-% TODO: Understand the role of Subgoal.
+% Subgoal seems to be used when ciaopp is in transformation mode. Otherwise
+% it is the same of Sg.
+%
+% TODO: Understand with more precision the role of Subgoal.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, special_builtin/5, [noq]).
@@ -304,16 +307,17 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 % input_user_interface(?Struct,+Qv,-ASub,+Sg,+MaybeCallASub)
 %
 % ASub is the abstraction of the information collected in Struct (a domain
-% defined structure, see input_interface/4) on variables Qv.
+% defined structure, see input_interface/4) on variables Qv relative to
+% the literal Sg.
 %
-% TODO: understand the role of Sg and MaybeCallASub.
+% TODO: Understand the role of MaybeCallASub.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_user_interface/5, [noq]).
 
 % Struct may be free if a pred assertion is specified without call conditions.
 :- pred input_user_interface(?Struct, +Qv, -ASub, +Sg, +MaybeCallASub)
-   : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
+   : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * cgoal => asub(ASub)
    + (not_fails, is_det).
 
 input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
@@ -327,12 +331,15 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 % of abstract substitution ASub on variables Qv. These are later
 % translated to the properties which are visible in the preprocessing unit.
 %
-% TODO: understand the role of OutFlag.
+% OutFlag seems to be either yes (when called from asub_to_out) or no
+% (when called from asub_to_info).
+%
+% TODO: Understand with more precision the role of OutFlag.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, asub_to_native/5, [noq]).
 :- pred asub_to_native(+ASub, +Qv, +OutFlag, -NativeStat, -NativeComp)
-   : asub * {ordlist(var), superset_vars_of(ASub)} * term * ivar * ivar
+   : asub * {ordlist(var), superset_vars_of(ASub)} * memberof([yes,no]) * ivar * ivar
    + (is_det).
 
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.

@@ -85,8 +85,8 @@ same_vars_of(Term1, Term2) :-
    varset(Term2, Vars2),
    Vars1 == Vars2.
 
-:- prop predicate_of(+Goal,+Pred)
-   : cgoal * atm
+:- prop predicate_of(+Goal,-Pred)
+   : cgoal * ivar => atm(Pred)
    # "@var{Pred} is the predicate of @var{Goal}".
 :- export(predicate_of/2).
 
@@ -98,8 +98,8 @@ predicate_of(Goal, Pred) :-
    atom_number(N, Arity),
    atom_concat(Pred1, N, Pred0).
 
-:- prop remove_module(Atom, Atom0)
-   : atm * atm
+:- prop remove_module(+Atom, -Atom0)
+   : atm * ivar => atm(Atom0)
    # "@var{Atom0} is the result of removing the module name from @var{Atom}".
 
 remove_module(Atom, Atom0) :-
@@ -145,13 +145,12 @@ all_couples0(X, [Y|Ys], Pred) :-
 
 :- pop_prolog_flag(read_hiord).
 
-:- export(duplicates/2).
-
 :- pred duplicates(+List, -Duplicates)
    : list * ivar => ordlist(Duplicates)
    + (not_fails, is_det)
    # "@var{Duplicates} contains the duplicate elements of @var{List}. It does not
    perform any instantiation".
+:- export(duplicates/2).
 
 duplicates(List, Duplicates) :-
    duplicates0(List, Duplicates0),

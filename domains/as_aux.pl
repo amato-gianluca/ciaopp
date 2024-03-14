@@ -18,15 +18,6 @@ This module is in common among all domains in the as_* collection.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop var_or_list(X)
-   # "@var{X} is a variable or a list".
-:- export(var_or_list/1).
-
-var_or_list(X) :-
-   var(X).
-var_or_list(X) :-
-   list(X).
-
 :- prop ordlist(T, S)
    # "@var{S} is an ordered list of elements of type T".
 :- export(ordlist/2).
@@ -113,7 +104,7 @@ remove_module(Atom, Atom).
 %-------------------------------------------------------------------------
 
 :- pred if_not_nil(+List, +Token, -List1, ?List2)
-   : list * term * ivar * var_or_list  => (term(List1), term(List2))
+   :: list(List2) : list * term * ivar * term  => (term(List1), term(List2))
    + (not_fails, is_det).
 :- export(if_not_nil/4).
 

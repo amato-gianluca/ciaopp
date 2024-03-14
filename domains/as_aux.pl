@@ -11,6 +11,7 @@ This module is in common among all domains in the as_* collection.
 :- use_module(library(sort)).
 :- use_module(library(sets)).
 :- use_module(library(terms_vars)).
+:- use_module(library(terms_check)).
 :- use_module(library(iso_misc)).
 :- use_module(library(idlists)).
 
@@ -106,6 +107,17 @@ remove_module(Atom, Atom0) :-
    sub_atom(Atom, Pos1, _, 0, Atom0).
 remove_module(Atom, Atom).
 
+:- prop unifier_no_cyclic(+Unifier)
+   : unifier
+   # "@var{Unifier} is a unifier without cyclic bindings".
+:- export(unifier_no_cyclic/1).
+
+unifier_no_cyclic([]).
+unifier_no_cyclic([X = T|Rest]) :-
+   varset(T, Vt),
+   ord_test_member(Vt, X, no),
+   unifier_no_cyclic(Rest).
+
 %------------------------------------------------------------------------
 % AUXILIARY OPERATIONS
 %-------------------------------------------------------------------------
@@ -167,3 +179,13 @@ duplicates0([X|Tail], [X|Duplicates]) :-
    duplicates0(Tail, Duplicates).
 duplicates0([_|Tail], Duplicates) :-
    duplicates0(Tail, Duplicates).
+
+:- pred unifiable_with_occurs_check(+T1, +T2, -Unifier)
+   : term * term * ivar => unifier(Unifier)
+   + is_det
+   # "@var{Unifier} is the unifier of @var{T1} and @var{T2} with occurs check".
+:- export(unifiable_with_occurs_check/3).
+
+unifiable_with_occurs_check(T1, T2, Unifier) :-
+   unifiable(T1, T2, Unifier),
+   unifier_no_cyclic(Unifier).

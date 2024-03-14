@@ -15,16 +15,14 @@ This module is an independent reimplementation of the Sharing domain.
 :- dom_def(as_sharing, [default]).
 
 :- use_module(ciaopp(preprocess_flags)).
+
 :- use_module(library(lists)).
 :- use_module(library(sets)).
 :- use_module(library(lsets)).
-:- use_module(library(terms_check)).
 :- use_module(library(terms_vars)).
 
 :- use_module(domain(as_aux)).
 :- use_module(domain(sharing), [input_interface/4, input_user_interface/5]).
-
-%:- spy(asub_to_native).
 
 %:- use_module(engine(io_basic)).
 
@@ -90,8 +88,7 @@ augment_asub(ASub, Vars, ASub0) :-
    + (not_fails, is_det).
 
 unknown_entry(_Sg, Vars, Entry) :-
-   % note that powerset does not generate the empty set
-   powerset(Vars,Entry).
+   top_sh(Vars,Entry).
 
 %-------------------------------------------------------------------------
 % abs_sort(+ASub_u,-ASub)
@@ -140,13 +137,13 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
 :- pred call_to_entry(+Sv, +Sg, +Hv, +Head, +ClauseKey, +Fv, +Proj, -Entry, -ExtraInfo)
    :  {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * cgoal * {ordlist(var), same_vars_of(Head)} * cgoal *
          term * {ordlist(var), independent_from(Hv)} * nasub * ivar * ivar
-   => (asub(Entry), unifier(ExtraInfo))
+   => (asub(Entry), unifier_no_cyclic(ExtraInfo))
    + (not_fails, is_det).
 
 % save unifier in the ExtraInfo parameter, so that we can use it in exit_to_prime
 
 call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
-   unifiable(Sg, Head, Unifier),
+   unifiable_with_occurs_check(Sg, Head, Unifier),
    augment_asub(Proj, Hv, ASub),
    mgu_sh(ASub, Hv, Unifier, Entry0),
    project_sh(Entry0, Hv, Entry1),
@@ -163,7 +160,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 
 :- dom_impl(_, exit_to_prime/7, [noq]).
 :- pred exit_to_prime(+Sg, +Hv, +Head, +Sv, +Exit, +ExtraInfo, -Prime)
-   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * unifier * ivar
+   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * unifier_no_cyclic * ivar
    => (asub(Prime))
    + (not_fails, is_det).
 
@@ -281,7 +278,7 @@ special_builtin('=/2', Sg, _ , '=/2', Sg).
 
 success_builtin(unchanged, _ , _ , _, Call, Call).
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
-   unifiable(T1, T2,  Unifier),
+   unifiable_with_occurs_check(T1, T2, Unifier),
    mgu_sh(Call, [], Unifier, Result).
 
 %-------------------------------------------------------------------------
@@ -373,7 +370,7 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 %   ord_union(Star, Disjunct, Succ).
 
 unknown_call(Sg, Vars, Call, Succ) :-
-   unknown_entry(Sg, Vars, Top),
+   top_sh(Vars, Top),
    extend(Sg, Top, Vars, Call, Succ).
 
 %------------------------------------------------------------------------%
@@ -391,7 +388,7 @@ unknown_call(Sg, Vars, Call, Succ) :-
    + (not_fails, is_det).
 
 amgu(Sg, Head, ASub, AMGU):-
-   unifiable(Sg, Head, Unifier),
+   unifiable_with_occurs_check(Sg, Head, Unifier),
    mgu_sh(ASub, [], Unifier, AMGU).
 
 %------------------------------------------------------------------------%
@@ -422,10 +419,11 @@ glb(ASub0, ASub1, Glb):-
 :- export(asub_sh/1).
 
 % we do not explicitly encode the empty sharing set.
-asub_sh(Sh)
-  :- ordlist(ordnlist(var), Sh).
 
-:- regtype asub_sh_u(Sh) #  "@var{ASub} is an unordered sharing abstract substitution".
+asub_sh(Sh) :-
+   ordlist(ordlist(var), Sh).
+
+:- regtype asub_sh_u(Sh) #  "@var{Sh} is an unordered sharing abstract substitution".
 :- export(asub_sh_u/1).
 
 asub_sh_u(Sh) :-
@@ -435,6 +433,21 @@ asub_sh_u(Sh) :-
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------
+% top_sh(+Vars,+Top)
+%
+% Top is the top sharing element on variable Vars.
+%-------------------------------------------------------------------------
+
+:- pred top_sh(+Vars, -Top)
+   : ordlist(var) * ivar => asub_sh(Top)
+   + (not_fails, is_det).
+:- export(top_sh/2).
+
+top_sh(Vars, Top) :-
+   % note that powerset does not generate the empty set
+   powerset(Vars, Top).
 
 %-------------------------------------------------------------------------
 % project_sh(+Sh,+Vars,-Proj)
@@ -534,7 +547,7 @@ star_union(Sh, Star) :-
 %-------------------------------------------------------------------------
 
 :- pred mgu_sh(+Sh, +Fv, +Sub, -Sh_mgu)
-   : asub_sh * ordlist(var) * unifier * ivar => asub_sh(Sh_mgu)
+   : asub_sh * ordlist(var) * unifier_no_cyclic * ivar => asub_sh(Sh_mgu)
    + (not_fails, is_det).
 :- export(mgu_sh/4).
 

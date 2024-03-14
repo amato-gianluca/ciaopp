@@ -282,7 +282,7 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    mgu_sh(Call, [], Unifier, Result).
 
 %-------------------------------------------------------------------------
-% input_interface(+Prop,+Kind,?Struc0,-Struc1)
+% input_interface(+Prop,?Kind,?Struc0,-Struc1)
 %
 % Prop is a native property that is relevant to domain (i.e., the domain
 % knows how to fully (Kind=perfect) or approximately (Kind=approx)
@@ -294,8 +294,8 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_interface/4, [noq]).
-:- pred input_interface(+Prop, -Kind, ?Struc0, -Struc1)
-   : term * ivar * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
+:- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
+   :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
 input_interface(Prop, Kind, Struc0, Struc1) :-
    sharing:input_interface(Prop, Kind, Struc0, Struc1).
@@ -386,6 +386,25 @@ unknown_call(Sg, Vars, Call, Succ) :-
 amgu(Sg, Head, ASub, AMGU):-
    unifiable(Sg, Head, Unifier),
    mgu_sh(ASub, [], Unifier, AMGU).
+
+%------------------------------------------------------------------------%
+% glb(+ASub0,+ASub1,-GlbASub)
+%
+% GlbASub is the glb between ASub0 and ASub1.
+%
+% It is used to combine assertions provided by the user with trust
+% predicates with the result of the analysis.
+%------------------------------------------------------------------------%
+
+:- dom_impl(_, glb/3, [noq]).
+:- pred glb(+ASub0,+ASub1,-GlbASub)
+   : asub * asub * ivar => asub(GlbASub)
+   + (not_fails, is_det).
+
+glb('$bottom', _ASub1, '$bottom') :- !.
+glb(_ASub0, '$bottom', '$bottom'). % TODO: optimize with cut
+glb(ASub0, ASub1, Glb):-
+    ord_intersection(ASub0, ASub1, Glb).
 
 %------------------------------------------------------------------------
 % AUXILIARY ASSERTIONS

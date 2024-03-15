@@ -416,15 +416,12 @@ glb(ASub0, ASub1, Glb):-
    # "@var{ShLin} is a non-bottom sharing x linearity abstract substitution".
 :- export(asub_shlin/1).
 
-% TODO: fix operations so that in the lin component we never keep the ground
-% variables, since they are automatically linear.
-
 asub_shlin((Sh, Lin)) :-
    asub_sh(Sh),
-   ordlist(var, Lin).
-   % varset(Lin, VLin),
-   % varset(Sh, VSh),
-   % ord_subset(VLin, VSh).
+   ordlist(var, Lin),
+   % Lin only contains variables in Sh, since ground variables are linear by definition
+   merge_list_of_lists(Sh, VSh),
+   ord_subset(Lin, VSh).
 
 :- regtype asub_shlin_u(ShLin) #  "@var{ShLin} is an unordered sharing x linearity abstract substitution".
 :- export(asub_shlin_u/1).
@@ -537,7 +534,7 @@ glb_shlin((Sh1, Lin1), (Sh2, Lin2), (Glb_sh, Glb_lin)):-
 %-------------------------------------------------------------------------
 
 :- pred mgu_shlin(+ASub, +Fv, +Sub, -MGU)
-   : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
+   : asub_shlin * ordlist(var) * unifier_no_cyclic * ivar => asub_shlin(MGU)
    + (not_fails, is_det).
 
 mgu_shlin(ASub, _Fv, [], ASub).
@@ -577,7 +574,8 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
       ord_union(Vrx, Vrt, Vrtx),
       ord_subtract(Lin, Vrtx, Lin0)
    ),
-   MGU_lin = Lin0.
+   merge_list_of_lists(MGU_sh, Vsh),
+   ord_intersection(Vsh, Lin0, MGU_lin).
 
 %-------------------------------------------------------------------------
 % match_shlin(+ASub1, +Sv1, +ASub2, -Match)
@@ -599,7 +597,9 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
 match_shlin((Prime_sh, Prime_lin), Sv1, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
    match_sh(Prime_sh, Sv1, Call_sh, Succ_sh),
    ord_subtract(Call_lin, Sv1, Call_lin_not_rel),
-   ord_union(Prime_lin, Call_lin_not_rel, Succ_lin).
+   merge_list_of_lists(Succ_sh, Vsh),
+   ord_intersection(Call_lin_not_rel, Vsh, Lin0),
+   ord_union(Prime_lin, Lin0, Succ_lin).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

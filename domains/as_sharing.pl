@@ -1,4 +1,4 @@
-:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops]).
+:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
 
 :- use_package(debug).
 :- use_package(rtchecks).
@@ -320,21 +320,29 @@ rel(Sh, Vars, Sh_rel, Sh_nrel) :-
    + (not_fails, is_det).
 :- export(bin/3).
 
-bin([], _, []).
-bin([X|Rest], Sh, Bin) :-
-   bin0(X, Sh, Sh_bin),
-   bin(Rest, Sh, Rest_bin),
-   ord_union(Rest_bin, Sh_bin, Bin).
+bin(Sh1, Sh2, Bin) :-
+   bin0(Sh1, Sh2, [], Bin).
 
-:- pred bin0(X, Sh, Bin)
-   : ordnlist(var) * nasub * ivar => nasub(Bin)
+:- pred bin0(Sh1, Sh2, Bin0, Bin)
+   : nasub * nasub * nasub * ivar => nasub(Bin)
    + (not_fails, is_det).
 
-bin0(_, [], []).
-bin0(X, [Y|Rest], Bin) :-
+bin0([], _, Bin, Bin).
+bin0([X|Rest], Sh, Bin0, Bin) :-
+   bin1(X, Sh, [], BinX),
+   ord_union(Bin0, BinX, Bin1),
+   bin0(Rest, Sh, Bin1, Bin).
+
+:- pred bin1(X, Sh, Bin0, Bin)
+   : ordnlist(var) * nasub * nasub * ivar => nasub(Bin)
+   + (not_fails, is_det).
+:- index bin1(?, +, ?, ?).
+
+bin1(_, [], Bin, Bin).
+bin1(X, [Y|Rest], Bin0, Bin) :-
    ord_union(X, Y, XY),
-   bin0(X, Rest, Rest_bin),
-   insert(Rest_bin, XY, Bin).
+   insert(Bin0, XY, Bin1),
+   bin1(X, Rest, Bin1, Bin).
 
 %-------------------------------------------------------------------------
 % star_union(+Sh,-Star)

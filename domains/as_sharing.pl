@@ -190,7 +190,7 @@ join(Sh1, Sh2, Join) :-
    + (not_fails, is_det).
 
 meet(Sh1, Sh2, Meet):-
-    ord_intersection(Sh1, Sh2, Meet).
+   ord_intersection(Sh1, Sh2, Meet).
 
 %-------------------------------------------------------------------------
 % mgu(+ASub,Fv,+Sub,MGU)
@@ -207,11 +207,12 @@ meet(Sh1, Sh2, Meet):-
    + (not_fails, is_det).
 
 mgu(Sh, Fv, Sub, MGU) :-
-   ( current_pp_flag(mgu_sh_optimize, on) ->
-      mgu0(Sh, Fv, Sub, MGU)
-   ;
-      mgu0(Sh, [], Sub, MGU) ).
+   current_pp_flag(mgu_sh_optimize, on), !,
+   mgu0(Sh, Fv, Sub, MGU).
+mgu(Sh, _Fv, Sub, MGU) :-
+   mgu0(Sh, [], Sub, MGU).
 
+:- index mgu0(?, ?, +, ?).
 mgu0(Sh, _Fv, [], Sh).
 mgu0(Sh, Fv, [X=T|Rest], MGU) :-
    mgu_binding(Sh, X, T, Fv, MGU0, Fv0),
@@ -232,29 +233,34 @@ mgu0(Sh, Fv, [X=T|Rest], MGU) :-
 mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    ord_member(X, Fv), !,
    varset(T, Vt),
-   rel(Sh, [X], Sh_x, Sh_x_neg),
-   rel(Sh, Vt, Sh_t, Sh_t_neg),
-   ord_intersection(Sh_x_neg, Sh_t_neg, Sh_rel_neg),
-   bin(Sh_x, Sh_t, Sh0),
-   ord_union(Sh_rel_neg, Sh0, MGU_sh),
-   ord_subtract(Fv, [X], MGU_fr).
+   rel(Sh, [X], Rel_X, NRel_X),
+   rel(Sh, Vt, Rel_T, NRel_T),
+   ord_intersection(NRel_X, NRel_T, NRel),
+   bin(Rel_X, Rel_T, MGU0),
+   ord_union(NRel, MGU0, MGU_sh),
+   ord_delete(Fv, X, MGU_fr).
 
 mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
-   varset(T, Vt),
-   ord_intersection_diff(Vt, Fv, Vt_f, Vt_nf),
-   rel(Sh, [X], Sh_x, Sh_x_neg),
-   rel(Sh, Vt_f, Sh_t_f, Sh_t_f_neg),
-   rel(Sh, Vt_nf, Sh_t_nf, Sh_t_nf_neg),
-   ord_intersect_all([Sh_x_neg, Sh_t_f_neg, Sh_t_nf_neg], Sh_rel_neg),
-   star_union(Sh_x, Sh_x_star),
-   star_union(Sh_t_f, Sh_t_f_star),
-   star_union(Sh_t_nf, Sh_t_nf_star),
-   bin(Sh_x, Sh_t_f_star, Sh0),
-   bin(Sh_x_star, Sh_t_nf_star, Sh1),
-   bin(Sh1, Sh_t_f_star, Sh2),
-   merge_list_of_lists([Sh_rel_neg, Sh0, Sh1, Sh2], MGU_sh),
-   ord_subtract(Fv, Vt_f, Fv0),
-   ord_subtract(Fv0, [X], MGU_fr).
+   unique_vars(T, Vars_t, UVars_t),
+   ord_intersection(UVars_t, Fv, Y),
+   ord_subtract(Vars_t, Y, Z),
+   rel(Sh, [X], Rel_X, NRel_X),
+   rel(Sh, Y, Rel_Y, NRel_Y),
+   rel(Sh, Z, Rel_Z, NRel_Z),
+   ord_intersect_all([NRel_X, NRel_Y, NRel_Z], NRel),
+   star_union(Rel_Y, Star_Y),
+   bin(Rel_X, Star_Y, Sh0),
+   (Rel_Z = [] ->
+      ord_union(NRel, Sh0, MGU_sh)
+   ;
+      star_union(Rel_X, Star_X),
+      star_union(Rel_Z, Star_Z),
+      bin(Star_X, Star_Z, Sh1),
+      bin(Sh1, Star_Y, Sh2),
+      merge_list_of_lists([NRel, Sh0, Sh1, Sh2], MGU_sh)
+   ),
+   ord_subtract(Fv, Vars_t, Fv0),
+   ord_delete(Fv0, X, MGU_fr).
 
 %-------------------------------------------------------------------------
 % match(+ASub1,+Sv1,+ASub2,-Match)
@@ -264,8 +270,8 @@ mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
 % further instantiated.
 %
 % With respect to the general definition of matching, we only consider
-% the special case in which the variables of ASub2 (not even provided as
-% are a superset of Sv1.
+% the special case in which the variables in ASub2 (not even provided as
+% input) are a superset of Sv1.
 %-------------------------------------------------------------------------
 
 :- pred match(+ASub1, +Sv1, +ASub2, -Match)
@@ -273,41 +279,45 @@ mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    + (not_fails, is_det).
 
 % TODO: Optimize with clause match(Sh1, [], Sh2, []).
-% TODO: Make it faster by converting to use tail recursion
-
 match(Sh1, Sv1, Sh2, Match) :-
    rel(Sh2, Sv1, Intersect, Disjunct),
    star_union(Intersect, Star),
-   match0(Star, Sh1, Sv1, Match0),
-   ord_union(Disjunct, Match0, Match).
+   match0(Star, Sh1, Sv1, [], StarMatch),
+   ord_union(Disjunct, StarMatch, Match).
 
-:- pred match0(+Sh2_star, +Sh1, +Sv1, -PartialMatch)
-   : nasub * nasub * {ordlist(var), superset_vars_of(Sh1)} * ivar => nasub(PartialMatch)
+:- pred match0(+Star, +Sh1, +Sv1, +Match0, -Match)
+   : nasub * nasub * {ordlist(var), superset_vars_of(Sh1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-match0([],_Sh1,_Sv1, []).
-match0([Xs|Xss], Sh1, Sv1, PartialMatch) :-
-   match0(Xss, Sh1, Sv1, PartialMatch0),
-   ord_intersection(Xs, Sv1, Xs_proj),
-   ( ord_member(Xs_proj,Sh1) -> insert(PartialMatch0, Xs, PartialMatch); PartialMatch = PartialMatch0 ).
+match0([],_Sh1,_Sv1, Match, Match).
+match0([X|Rest], Sh1, Sv1, Match0, Match) :-
+   ord_intersection(X, Sv1, X_proj),
+   ( ord_member(X_proj,Sh1) -> insert(Match0, X, Match1) ;  Match1 = Match0 ),
+   match0(Rest, Sh1, Sv1, Match1, Match).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% rel(+Sh,+Vars,-Sh_rel,-Sh_nrel)
+% rel(+Sh,+Vars,-Rel,-NRel)
 %
 % Partition sharing groups in Sh in those which are disjoint from Vars
-% (Sh_nrel) and those which are not (Sh_rel).
+% (NRel) and those which are not (Rel).
 %-------------------------------------------------------------------------
 
-:- pred rel(+Sh, +Vars, -Sh_rel, -Sh_nrel)
-   : nasub * ordlist(var) * ivar * ivar => (nasub(Sh_rel), nasub(Sh_nrel)).
+:- pred rel(+Sh, +Vars, -Rel, -NRel)
+   : nasub * ordlist(var) * ivar * ivar => (nasub(Rel), nasub(NRel)).
 :- export(rel/4).
 
-rel(Sh, Vars, Sh_rel, Sh_nrel) :-
-   ord_split_lists_from_list(Vars, Sh, Sh_rel, Sh_nrel).
+rel(Sh, [X], Rel, NRel) :-
+   % optimization for single variable
+   !,
+   ord_split_lists(Sh, X, Rel, NRel).
+rel(Sh, Vars, Rel, NRel) :-
+   ord_split_lists_from_list(Vars, Sh, Rel, NRel).
+   % alternative:
+   % split_lists_from_list(Vars, Sh, Rel, NRel).
 
 %-------------------------------------------------------------------------
 % bin(+Sh1,+Sh2,-Bin)
@@ -322,6 +332,9 @@ rel(Sh, Vars, Sh_rel, Sh_nrel) :-
 
 bin(Sh1, Sh2, Bin) :-
    bin0(Sh1, Sh2, [], Bin).
+   % alternative:
+   % setproduct_lists(Sh1, Sh2, Bin0, []),
+   % sort(Bin0, Bin).
 
 :- pred bin0(Sh1, Sh2, Bin0, Bin)
    : nasub * nasub * nasub * ivar => nasub(Bin)
@@ -359,6 +372,21 @@ star_union(Sh, Star) :-
    closure_under_union(Sh, Star).
 
 %-------------------------------------------------------------------------
+% nonground_vars(+Sh,-NGv)
+%
+% NGv is the set of non-ground variables in Sh.
+%-------------------------------------------------------------------------
+
+:- pred nonground_vars(+Sh, -NGv)
+   : nasub * ivar
+   => ( ordlist(var, NGv), same_vars_of(Sh, NGv) )
+   + (not_fails, is_det).
+:- export(nonground_vars/2).
+
+nonground_vars(Sh, NGv) :-
+   merge_list_of_lists(Sh, NGv).
+
+%-------------------------------------------------------------------------
 % ground_vars(+Sh,+Vars,-Gv)
 %
 % Gv is the set of variables in Vars which are ground w.r.t. Sh.
@@ -371,5 +399,5 @@ star_union(Sh, Star) :-
 :- export(ground_vars/3).
 
 ground_vars(Sh, Vars, Gv) :-
-   merge_list_of_lists(Sh, Sh_ng),
-   ord_subtract(Vars, Sh_ng, Gv).
+   nonground_vars(Sh, NGv),
+   ord_subtract(Vars, NGv, Gv).

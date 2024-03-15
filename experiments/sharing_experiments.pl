@@ -33,9 +33,8 @@ example3(f(U, H), f(U, K), S, T) :-
 % Example 7.13 "Optimality in Dependent Analysis of Sharing"
 
 example4(X, Y, Z) :-
-    example4bis(t(X), t(Y), t(Z))
+    example4bis(t(X), t(Y), t(Z)).
     % [X, Y, Z] is not possible here (need -fmgu_sh_optimize=on)
-    .
 
 % We refine the result of the sharing analysis to overcome the low precision
 % of forward unification in share.

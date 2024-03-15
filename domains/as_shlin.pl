@@ -339,8 +339,13 @@ amgu(Sg, Head, ASub, AMGU):-
 :- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
-input_interface(Prop, Kind, Struc0, Struc1) :-
-   sharing:input_interface(Prop, Kind, Struc0, Struc1).
+input_interface(linear(X), perfect, (Sh,Lin0), (Sh,Lin)) :-
+   ord_union(Lin0, X, Lin).
+input_interface(free(X), perfect, (Sh,Lin0), (Sh,Lin)) :-
+   var(X),
+   insert(Lin0, X, Lin).
+input_interface(Info, Kind, (Sh0,Lin), (Sh,Lin)) :-
+   sharing:input_interface(Info, Kind, Sh0, Sh).
 
 %-------------------------------------------------------------------------
 % input_user_interface(?Struct,+Qv,-ASub,+Sg,+MaybeCallASub)
@@ -359,9 +364,10 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
    : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
    + (not_fails, is_det).
 
-input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
-   sharing:input_user_interface(Struct, Qv, Sh, Sg, MaybeCallASub),
-   ASub = (Sh, []).
+input_user_interface((Sh, Lin), Qv, (ASub_sh,ASub_lin), Sg, MaybeCallASub):-
+   sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
+   merge_list_of_lists(ASub_sh, Vsh),
+   ord_intersection(Lin, Vsh, ASub_lin).
 
 %-------------------------------------------------------------------------
 % asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)

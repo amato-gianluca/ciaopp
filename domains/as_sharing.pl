@@ -30,13 +30,13 @@ This module is an independent reimplementation of the Sharing domain.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop asub(ASub)
-   # "@var{ASub} is an abstract substitution".
-
 % the value '$bottom' has a special meaning withing the PLAI analyzer and MUST be
 % used to represent unreachable states.
 
-asub('$bottom'). % TODO: optimize with cut
+:- prop asub(ASub)
+   # "@var{ASub} is an abstract substitution".
+
+asub('$bottom') :- !.
 asub(ASub) :-
    nasub(ASub).
 
@@ -46,11 +46,15 @@ asub(ASub) :-
 nasub(ASub) :-
    asub_sh(ASub).
 
-:- prop asub_u(ASub)
-   # "@var{ASub} is an unordered abstract substitution".
+:- prop asub_u(ASub) # "@var{ASub} is an unordered abstract substitution".
 
-asub_u('$bottom'). % TODO: optimize with cut
+asub_u('$bottom') :- !.
 asub_u(ASub) :-
+   nasub_u(ASub).
+
+:- prop nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
+
+nasub_u(ASub) :-
    asub_sh_u(ASub).
 
 %------------------------------------------------------------------------
@@ -77,6 +81,8 @@ augment_asub(ASub, Vars, ASub0) :-
 %
 % Entry is the "topmost" abstraction for the variable in  Vars
 % appearing in the literal Sg.
+%
+% It is used when no call or entry assertion exists
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_entry/3, [noq]).
@@ -107,7 +113,7 @@ abs_sort(ASub_u, ASub) :-
 %
 % Projects the abstract substitution ASub onto the variables of list Vars,
 % corresponding to goal Sg, resulting in the projected abstract
-% substitution Proj. HvFv_u contains the unordered list of varibles of the
+% substitution Proj. HvFv_u contains the unordered list of variables of the
 % clause.
 %-------------------------------------------------------------------------
 
@@ -127,7 +133,8 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
 % (the call substitution for Sg projected on its variables Sv) and then
 % projecting the resulting substitution onto Hv (the variables of Head)
 % plus Fv (the free variables of the relevant clause). ExtraInfo is
-% information which can be reused during the exit_to_prime step.
+% information which can be reused during the exit_to_prime step. Finally,
+% ClauseKey is the identifier of the clause under consideration.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, call_to_entry/9, [noq]).
@@ -163,7 +170,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 
 % take the unifier from the ExtraInfo parameter
 
-exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _Unifier, '$bottom'). % TODO: optimize with cut
+exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _Unifier, '$bottom') :- !.
 exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
    augment_sh(Exit, Sv, ASub),
    mgu_sh(ASub, Sv, Unifier, Prime0),
@@ -178,7 +185,7 @@ exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
 
 :- dom_impl(_, compute_lub/2, [noq]).
 :- pred compute_lub(+ListASub, -LubASub)
-   : list(asub) * ivar => asub(LubASub)
+   : nlist(asub) * ivar => asub(LubASub)
    + (not_fails, is_det).
 
 compute_lub([ASub], ASub).
@@ -186,12 +193,12 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    compute_lub_el(ASub1, ASub2, ASub3),
    compute_lub([ASub3|ASubs], LubASub).
 
-:- pred compute_lub(+ASub1, +ASub2, -ASub)
-   : asub * asub * ivar => asub(ASub)
+:- pred compute_lub(+ASub1, +ASub2, -Lub)
+   : asub * asub * ivar => asub(Lub)
    + (not_fails, is_det).
 
 compute_lub_el('$bottom', ASub, ASub) :- !.
-compute_lub_el(ASub, '$bottom', ASub). % TODO: optimize with cut
+compute_lub_el(ASub, '$bottom', ASub) :- !.
 compute_lub_el(ASub1, ASub2, Lub) :-
    lub_sh(ASub1, ASub2, Lub).
 
@@ -212,7 +219,7 @@ compute_lub_el(ASub1, ASub2, Lub) :-
    : cgoal * asub * {ordlist(var), same_vars_of(Sg), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
-extend(_Sg, '$bottom', _Sv, _Call, '$bottom').  % TODO: optimize with cut
+extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
    match_sh(Prime, Sv, Call, Succ).
 
@@ -254,7 +261,7 @@ call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
 
 :- dom_impl(_, special_builtin/5, [noq]).
 :- pred special_builtin(+SgKey, +Sg, +Subgoal, -Type, -Condvars)
-   : {atm, predicate_of(Sg), predicate_of(Subgoal)} * cgoal * cgoal * ivar * ivar
+   : {atm, predicate_of(Sg)} * cgoal * cgoal * ivar * ivar
    => (term(Type), term(Condvars))
    + is_det.
 
@@ -262,10 +269,11 @@ special_builtin('true/0', _, _, unchanged, _).
 special_builtin('=/2', Sg, _ , '=/2', Sg).
 
 %-------------------------------------------------------------------------
-% success_builtin(+Type,+Sv,+Condvars,+HvFv_u,+Call,-Succ)
+% success_builtin(+Type,+Sv,?Condvars,+HvFv_u,+Call,-Succ)
 %
-% Obtains the success for some particular builtins. Type and Condvars
-% come from the special_builtin predicate.
+% Obtains the success substitution for given builtins. Type and Condvars
+% come from the special_builtin predicate. Sv is the set of variable in
+% the builtin and HvFv_u is the set of all clause variables.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, success_builtin/6, [noq]).
@@ -294,9 +302,9 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    : cgoal * {ordlist(var), same_vars_of(Sg)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
-% TODO: optimize adding the clause unknown_call(_Sg,_Vars,[],[])
+% TODO: Optimize adding the clause unknown_call(_Sg,_Vars,[],[])
 
-% TODO: optimize using a custom implementation such as:
+% TODO: Optimize using a custom implementation such as:
 % unknown_call(Sg, Vars, Call, Succ) :-
 %   rel(Call, Vars, Intersect, Disjunct),
 %   star_union(Intersect, Star),
@@ -312,7 +320,8 @@ unknown_call(_Sg, Vars, Call, Succ) :-
 % AMGU is the abstract unification between ASub and the unifiers of Sg and
 % Head.
 %
-% TODO: understand which options enable the use of this predicate.
+% TODO: Understand which are the options which enable the use of this
+% predicate.
 %------------------------------------------------------------------------%
 
 :- dom_impl(_, amgu/4, [noq]).
@@ -339,7 +348,7 @@ amgu(Sg, Head, ASub, AMGU):-
    + (not_fails, is_det).
 
 glb('$bottom', _ASub1, '$bottom') :- !.
-glb(_ASub0, '$bottom', '$bottom'). % TODO: optimize with cut
+glb(_ASub0, '$bottom', '$bottom') :- !.
 glb(ASub0, ASub1, Glb):-
    glb_sh(ASub0, ASub1, Glb).
 
@@ -373,12 +382,12 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 % defined structure, see input_interface/4) on variables Qv relative to
 % the literal Sg.
 %
+% Struct may be free if a pred assertion is specified without call conditions.
+%
 % TODO: Understand the role of MaybeCallASub.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, input_user_interface/5, [noq]).
-
-% Struct may be free if a pred assertion is specified without call conditions.
 :- pred input_user_interface(?Struct, +Qv, -ASub, +Sg, +MaybeCallASub)
    : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * cgoal => asub(ASub)
    + (not_fails, is_det).
@@ -415,8 +424,8 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 % DOMAIN ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop asub_sh(Sh)
-   # "@var{Sh} is a non-bottom sharing abstract substitution".
+:- prop asub_sh(ASub)
+   # "@var{ASub} is a non-bottom sharing abstract substitution".
 :- export(asub_sh/1).
 
 % we do not explicitly encode the empty sharing set.
@@ -424,7 +433,7 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 asub_sh(Sh) :-
    ordlist(ordlist(var), Sh).
 
-:- regtype asub_sh_u(Sh) #  "@var{Sh} is an unordered sharing abstract substitution".
+:- regtype asub_sh_u(ASub) #  "@var{ASub} is an unordered sharing abstract substitution".
 :- export(asub_sh_u/1).
 
 asub_sh_u(Sh) :-
@@ -436,13 +445,13 @@ asub_sh_u(Sh) :-
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% sort_sh(+Sh_u,-Sh)
+% sort_sh(+ASub_u,-ASub)
 %
-% Sh is the result of sorting abstract substitution Sh_u.
+% ASub is the result of sorting abstract substitution ASub_u.
 %-------------------------------------------------------------------------
 
-:- pred sort_sh(+Sh_u, -Sh)
-   : asub_sh_u * ivar => asub_sh(Sh)
+:- pred sort_sh(+ASub_u, -ASub)
+   : nasub_u * ivar => nasub(ASub)
    + (not_fails, is_det).
 :- export(sort_sh/2).
 
@@ -456,7 +465,7 @@ sort_sh(Sh_u, Sh) :-
 %-------------------------------------------------------------------------
 
 :- pred top_sh(+Vars, -Top)
-   : ordlist(var) * ivar => asub_sh(Top)
+   : ordlist(var) * ivar => nasub(Top)
    + (not_fails, is_det).
 :- export(top_sh/2).
 
@@ -465,47 +474,53 @@ top_sh(Vars, Top) :-
    powerset(Vars, Top).
 
 %------------------------------------------------------------------------
-% augment_sh(+Sh,+Vars,-Sh0)
+% augment_sh(+ASub,+Vars,-Aug)
 %
-% Augment the abstract substitution Sh adding the fresh variables Vars
-% to get the abstract substitution Sh0.
+% Augment the abstract substitution ASub adding the fresh variables Vars
+% to get the abstract substitution Aug.
 %-------------------------------------------------------------------------
 
-:- pred augment_sh(+Sh, +Vars, -Sh0)
-   : (asub_sh * {ordlist(var), independent_from(Sh)} * ivar) => asub_sh(Sh0)
+:- pred augment_sh(+ASub, +Vars, -Aug)
+   : (nasub * {ordlist(var), independent_from(ASub)} * ivar) => nasub(Aug)
    + (not_fails, is_det).
 :- export(augment_sh/3).
 
-% TODO: optimize with clause augment_sh(Sh,[],Sh).
-augment_sh(Sh, Vars, Sh0) :-
-   list_to_list_of_lists(Vars, Vars0),
-   ord_union(Sh, Vars0, Sh0).
+augment_sh(Sh, Vars, Aug) :-
+   list_to_list_of_lists(Vars, Sh0),
+   ord_union(Sh, Sh0, Aug).
 
 %-------------------------------------------------------------------------
-% project_sh(+Sh,+Vars,-Proj)
+% project_sh(+ASub,+Vars,-Proj)
 %
-% Proj is the projection of Sh onto the variables in Vars.
+% Proj is the projection of ASub onto the variables in Vars.
 %-------------------------------------------------------------------------
 
-:- pred project_sh(+Sh, +Vars, -Proj)
-   : asub_sh * ordlist(var) * ivar => asub_sh(Proj)
+:- pred project_sh(+ASub, +Vars, -Proj)
+   : nasub * ordlist(var) * ivar => nasub(Proj)
    + (not_fails, is_det).
 :- export(project_sh/3).
 
-project_sh([], _Vars, []).
-project_sh([S|Rest], Vars, Sh_ex) :-
-   ord_intersection(S, Vars, S_ex),
-   project_sh(Rest, Vars, Rest_ex),
-   ( S_ex = [] -> Sh_ex = Rest_ex ; insert(Rest_ex, S_ex, Sh_ex) ).
+project_sh(Sh, Vars, Proj) :-
+   project_sh0(Sh, Vars, [], Proj).
+
+:- pred project_sh0(+Sh, +Vars, +Proj0, -Proj)
+   : nasub * ordlist(var) * nasub * ivar => nasub(Proj)
+   + (not_fails, is_det).
+
+project_sh0([], _Vars, Proj, Proj).
+project_sh0([S|Rest], Vars, Proj0, Proj) :-
+   ord_intersection(S, Vars, S_proj),
+   ( S_proj = [] -> Proj1 = Proj0 ; insert(Proj0, S_proj, Proj1) ),
+   project_sh0(Rest, Vars, Proj1, Proj).
 
 %-------------------------------------------------------------------------
-% lub_sh(+Sh1,+Sh2,Lub)
+% lub_sh(+ASub1,+ASub2,Lub)
 %
-% Lub is the lub of Sh1 and Sh2.
+% Lub is the lub of ASub1 and ASub2.
 %-------------------------------------------------------------------------
 
-:- pred lub_sh(+Sh1, +Sh2, -Lub)
-   : asub_sh * asub_sh * ivar => asub_sh(Lub)
+:- pred lub_sh(+ASub1, +ASub2, -Lub)
+   : nasub * nasub * ivar => nasub(Lub)
    + (not_fails, is_det).
 :- export(lub_sh/3).
 
@@ -513,16 +528,16 @@ lub_sh(Sh1, Sh2, Lub) :-
    ord_union(Sh1, Sh2, Lub).
 
 %------------------------------------------------------------------------%
-% glb_sh(+Sh1,+Sh2,-Glb)
+% glb_sh(+ASub1,+ASub2,-Glb)
 %
-% GlbSh is the glb between Sh1 and Sh2.
+% Glb is the glb between ASub1 and Sh2.
 %
 % It is used to combine assertions provided by the user with trust
 % predicates with the result of the analysis.
 %------------------------------------------------------------------------%
 
-:- pred glb_sh(+Sh1,+Sh2,-Glb)
-   : asub_sh * asub_sh * ivar => asub(Glb)
+:- pred glb_sh(+ASub1, +ASub2, -Glb)
+   : nasub * nasub * ivar => asub(Glb)
    + (not_fails, is_det).
 :- export(glb_sh/3).
 
@@ -530,50 +545,54 @@ glb_sh(Sh1, Sh2, Glb):-
     ord_intersection(Sh1, Sh2, Glb).
 
 %-------------------------------------------------------------------------
-% mgu_sh(+Sh, Fv, +Sub, -Sh_mgu)
+% mgu_sh(+ASub, Fv, +Sub, MGU)
 %
-% Sh_mgu is the result of the unification of Sh with the substitution Sub.
+% MGU is the result of the unification of ASub with the substitution  Sub.
 % Variables in Fv are considered to be free.
 %-------------------------------------------------------------------------
 
-:- pred mgu_sh(+Sh, +Fv, +Sub, -Sh_mgu)
-   : asub_sh * ordlist(var) * unifier_no_cyclic * ivar => asub_sh(Sh_mgu)
+% TODO: Uptimize by replacing ASub with a specialized version where terms are
+% replaced by their variables
+
+:- pred mgu_sh(+ASub, +Fv, +Sub, -MGU)
+   : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
 :- export(mgu_sh/4).
 
-% TODO: optimize by replacing Sub with a specialized version where terms are
-% replaced by their variables
-
-mgu_sh(Sh, Fv, Sub, Sh_mgu) :-
-   ( current_pp_flag(mgu_sh_optimize, on) ->  mgu_sh0(Sh, Fv, Sub, Sh_mgu)
-      ; mgu_sh0(Sh, [], Sub, Sh_mgu) ).
+mgu_sh(Sh, Fv, Sub, MGU) :-
+   ( current_pp_flag(mgu_sh_optimize, on) ->
+      mgu_sh0(Sh, Fv, Sub, MGU)
+   ;
+      mgu_sh0(Sh, [], Sub, MGU) ).
 
 mgu_sh0(Sh, _Fv, [], Sh).
-mgu_sh0(Sh, Fv, [X=T|Rest], Sh_mgu) :-
-   mgu_sh_binding(Sh, X, T, Fv, Sh0, Fv0),
-   mgu_sh0(Sh0, Fv0, Rest, Sh_mgu).
+mgu_sh0(Sh, Fv, [X=T|Rest], MGU) :-
+   mgu_sh_binding(Sh, X, T, Fv, MGU0, Fv0),
+   mgu_sh0(MGU0, Fv0, Rest, MGU).
 
 %-------------------------------------------------------------------------
-% mgu_sh_binding(+Sh, X, T, -Sh_mgu)
+% mgu_sh_binding(+Sh, +X, +T, +Fv, -MGU_sh, -MGU_fr)
 %
-% Sh_mgu is the result of the unification of Sh with the binding {X/T}.
+% MGU_sh is the result of the unification of Sh with the binding {X/T},
+% while MGU_fr is the set of definitively free variables after the
+% unification. Fv is the set of free variables before the unification.
 %-------------------------------------------------------------------------
 
-:- pred mgu_sh_binding(+Sh, ?Vars_x, ?Vars_t, +Fv, -Sh_mgu, -Fv_mgu)
-   : asub_sh * var * term *  ordlist(var) * ivar * ivar => (asub_sh(Sh_mgu), ordlist(var, Fv_mgu))
+:- pred mgu_sh_binding(+Sh, ?Vars_x, ?Vars_t, Fv, MGU_sh, MGU_fr)
+   : asub_sh * var * term * ordlist(var) * ivar * ivar => (nasub(MGU_sh), ordlist(var, MGU_fr))
    + (not_fails, is_det).
 
-mgu_sh_binding(Sh, X, T, Fv, Sh_mgu, Fv_mgu) :-
+mgu_sh_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    ord_member(X, Fv), !,
    varset(T, Vt),
    rel(Sh, [X], Sh_x, Sh_x_neg),
    rel(Sh, Vt, Sh_t, Sh_t_neg),
    ord_intersection(Sh_x_neg, Sh_t_neg, Sh_rel_neg),
    bin(Sh_x, Sh_t, Sh0),
-   ord_union(Sh_rel_neg, Sh0, Sh_mgu),
-   ord_subtract(Fv, [X], Fv_mgu).
+   ord_union(Sh_rel_neg, Sh0, MGU_sh),
+   ord_subtract(Fv, [X], MGU_fr).
 
-mgu_sh_binding(Sh, X, T, Fv, Sh_mgu, Fv_mgu) :-
+mgu_sh_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    varset(T, Vt),
    ord_intersection_diff(Vt, Fv, Vt_f, Vt_nf),
    rel(Sh, [X], Sh_x, Sh_x_neg),
@@ -586,29 +605,29 @@ mgu_sh_binding(Sh, X, T, Fv, Sh_mgu, Fv_mgu) :-
    bin(Sh_x, Sh_t_f_star, Sh0),
    bin(Sh_x_star, Sh_t_nf_star, Sh1),
    bin(Sh1, Sh_t_f_star, Sh2),
-   merge_list_of_lists([Sh_rel_neg, Sh0, Sh1, Sh2], Sh_mgu),
+   merge_list_of_lists([Sh_rel_neg, Sh0, Sh1, Sh2], MGU_sh),
    ord_subtract(Fv, Vt_f, Fv0),
-   ord_subtract(Fv0, [X], Fv_mgu).
+   ord_subtract(Fv0, [X], MGU_fr).
 
 %-------------------------------------------------------------------------
-% match_sh(+Sh1, +Sv1, +Sh2, -Match)
+% match_sh(+ASub1, +Sv1, +ASub2, -Match)
 %
-% Match is the abstract matching between Sh1 (over the variables in Sv1)
-% and Sh2, where Sh1 is the abstract substitution which should not be
+% Match is the abstract matching between ASub1 (over the variables in Sv1)
+% and ASub2, where ASub1 is the abstract substitution which should not be
 % further instantiated.
 %
 % With respect to the general definition of matching, we only consider
-% the special case in which the variables of Sh2 (not even provided as
+% the special case in which the variables of ASub2 (not even provided as
 % are a superset of Sv1.
 %-------------------------------------------------------------------------
 
-:- pred match_sh(+Sh1,+Sv1,+Sh2,-Match)
-   : asub_sh * {ordlist(var), superset_vars_of(Sh1)} * asub_sh * ivar => asub_sh(Match)
+:- pred match_sh(+ASub1, +Sv1, +ASub2, -Match)
+   : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 :- export(match_sh/4).
 
-% TODO: optimize with clause match_sh(Sh1, [], Sh2, []).
-% TODO: make it faster by converting to use tail recursion
+% TODO: Optimize with clause match_sh(Sh1, [], Sh2, []).
+% TODO: Make it faster by converting to use tail recursion
 
 match_sh(Sh1, Sv1, Sh2, Match) :-
    rel(Sh2, Sv1, Intersect, Disjunct),
@@ -645,31 +664,31 @@ rel(Sh, Vars, Sh_rel, Sh_nrel) :-
    ord_split_lists_from_list(Vars, Sh, Sh_rel, Sh_nrel).
 
 %-------------------------------------------------------------------------
-% bin(+Sh1, +Sh2, -Sh)
+% bin(+Sh1, +Sh2, -Bin)
 %
-% Sh is the binary union of Sh1 and Sh2.
+% Bin is the binary union of Sh1 and Sh2.
 %-------------------------------------------------------------------------
 
-:- pred bin(Sh1, Sh2, Sh)
-   : asub_sh * asub_sh * ivar => asub_sh(Sh)
+:- pred bin(Sh1, Sh2, Bin)
+   : asub_sh * asub_sh * ivar => asub_sh(Bin)
    + (not_fails, is_det).
 :- export(bin/3).
 
 bin([], _, []).
-bin([X|Rest], Sh, Result) :-
+bin([X|Rest], Sh, Bin) :-
    bin0(X, Sh, Sh_bin),
    bin(Rest, Sh, Rest_bin),
-   ord_union(Rest_bin, Sh_bin, Result).
+   ord_union(Rest_bin, Sh_bin, Bin).
 
-:- pred bin0(X, Sh2, Sh)
-   : ordnlist(var) * asub_sh * ivar => asub_sh(Sh)
+:- pred bin0(X, Sh, Bin)
+   : ordnlist(var) * asub_sh * ivar => asub_sh(Bin)
    + (not_fails, is_det).
 
 bin0(_, [], []).
-bin0(X, [Y|Rest], Result) :-
+bin0(X, [Y|Rest], Bin) :-
    ord_union(X, Y, XY),
    bin0(X, Rest, Rest_bin),
-   insert(Rest_bin, XY, Result).
+   insert(Rest_bin, XY, Bin).
 
 %-------------------------------------------------------------------------
 % star_union(+Sh, -Star)
@@ -697,8 +716,6 @@ star_union(Sh, Star) :-
    + (not_fails, is_det).
 :- export(gvars/3).
 
-% TODO: optimize adding the clause gvars([], Vars, Vars) :- !.
-% TODO: optimize adding the clause gvars(_Sh, [], []) :- !.
 gvars(Sh, Vars, Gv) :-
-   merge_list_of_lists(Sh, NonGround),
-   ord_subtract(Vars, NonGround, Gv).
+   merge_list_of_lists(Sh, Sh_ng),
+   ord_subtract(Vars, Sh_ng, Gv).

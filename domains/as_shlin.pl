@@ -393,7 +393,7 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
    gvars(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
-   if_not_nil(Lin, linearity(Lin), NativeStat1, []).
+   if_not_nil(Lin, linear(Lin), NativeStat1, []).
 
 %------------------------------------------------------------------------%
 % glb(+ASub0,+ASub1,-GlbASub)

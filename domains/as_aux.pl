@@ -189,3 +189,26 @@ duplicates0([_|Tail], Duplicates) :-
 unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
    unifier_no_cyclic(Unifier).
+
+:- pred duplicate_vars(+T, -Vars, -DVars)
+   : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
+   + (not_fails, is_det)
+   # "@var{Vars} is the list of variables in @var{T}, @var{DVars} is the list of
+   duplicate variables in T".
+:- export(duplicate_vars/3).
+
+duplicate_vars(T, Vars, DVars) :-
+   varsbag(T, Bag, []),
+   duplicates(Bag, DVars),
+   sort(Bag, Vars).
+
+:- pred unique_vars(+T, -Vars, -UVars)
+   : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
+   + (not_fails, is_det)
+   # "@var{Vars} is the list of variables in @var{T}, @var{UVars} is the list of
+   variables which only occur once in @var{T}".
+:- export(unique_vars/3).
+
+unique_vars(T, Vars, UVars) :-
+   duplicate_vars(T, Vars, DVars),
+   ord_subtract(Vars, DVars, UVars).

@@ -1,4 +1,4 @@
-:- module(as_shlin, [], [assertions, regtypes, basicmodes, nativeprops]).
+:- module(as_shlin, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
 
 :- use_package(debug).
 :- use_package(rtchecks).
@@ -36,6 +36,7 @@ This module is an independent reimplementation of the Sharing X Linearity domain
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
 input_interface(linear(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
+   list(var, X),
    ord_union(Lin0, X, Lin).
 input_interface(free(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
    var(X),
@@ -62,7 +63,7 @@ input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
 
 input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
-   merge_list_of_lists(ASub_sh, Vsh),
+   nonground_vars(ASub_sh, Vsh),
    ord_intersection(Lin, Vsh, ASub_lin).
 
 %-------------------------------------------------------------------------
@@ -101,7 +102,7 @@ nasub((Sh, Lin)) :-
    as_sharing:nasub(Sh),
    ordlist(var, Lin),
    % Lin only contains variables in Sh, since ground variables are linear by definition
-   merge_list_of_lists(Sh, VSh),
+   nonground_vars(Sh, VSh),
    ord_subset(Lin, VSh).
 
 :- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
@@ -208,6 +209,7 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
 :- pred mgu(+ASub, +Fv, +Sub, -MGU)
    : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
+:- index mgu(?, ?, +, ?).
 
 mgu(ShLin, _Fv, [], ShLin).
 mgu(ShLin, Fv, [X=T|Rest], MGU) :-
@@ -226,69 +228,69 @@ mgu(ShLin, Fv, [X=T|Rest], MGU) :-
 
 mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
-   varset(X, Vx),
-   varset(T, Vt),
-   rel(Sh, Vx, Rx, Rx_neg),
-   rel(Sh, Vt, Rt, Rt_neg),
-   varset(Rx, Vrx),
-   varset(Rt, Vrt),
-   ord_intersection(Rx_neg, Rt_neg, Rel_neg),
+   varset(X, Vars_x),
+   varset(T, Vars_t),
+   rel(Sh, Vars_x, Rx, NRel_x),
+   rel(Sh, Vars_t, Rt, NRel_t),
+   ord_intersection(NRel_x, NRel_t, NRel),
+   nonground_vars(Rx, Vars_Rx),
+   nonground_vars(Rt, Vars_Rt),
    (ind(Sh, X, T) -> Ind = yes ; Ind = no),
    (lin(ShLin, T) -> Lint = yes ; Lint = no),
    (lin(ShLin, X) -> Linx = yes ; Linx = no),
    (Lint=yes, Ind=yes -> Sx = Rx ; star_union(Rx, Sx)),
    (Linx=yes, Ind=yes -> St = Rt ; star_union(Rt, St)),
-   bin(Sx, St, Sxt),
-   ord_union(Rel_neg, Sxt, MGU_sh),
+   bin(Sx, St, Sh0),
+   ord_union(NRel, Sh0, MGU_sh),
    (
    Linx = yes, Lint = yes ->
-      ord_intersection(Vrx, Vrt, Vrtx),
-      ord_subtract(Lin, Vrtx, Lin0)
+      ord_intersection(Vars_Rx, Vars_Rt, Vars_Rx_and_Rt),
+      ord_subtract(Lin, Vars_Rx_and_Rt, Lin0)
    ; Linx = yes ->
-      ord_subtract(Lin, Vrx, Lin0)
+      ord_subtract(Lin, Vars_Rx, Lin0)
    ; Lint = yes ->
-      ord_subtract(Lin, Vrt, Lin0)
+      ord_subtract(Lin, Vars_Rt, Lin0)
    ;
-      ord_union(Vrx, Vrt, Vrtx),
-      ord_subtract(Lin, Vrtx, Lin0)
+      ord_union(Vars_Rx, Vars_Rt, Vars_Rx_or_Rt),
+      ord_subtract(Lin, Vars_Rx_or_Rt, Lin0)
    ),
-   merge_list_of_lists(MGU_sh, Vsh),
-   ord_intersection(Vsh, Lin0, MGU_lin).
+   nonground_vars(MGU_sh, Vars_MGU),
+   ord_intersection(Vars_MGU, Lin0, MGU_lin).
 
 %-------------------------------------------------------------------------
-% match(+ASub1,+Sv1,+ASub2,-Match)
+% match(+Prime,+Pv,+Call,-Match)
 %
-% Match is the abstract matching between ASub1 (over the variables in Sv1)
-% and ASub2, where ASub1 is the abstract substitution which should not be
+% Match is the abstract matching between Prime (over the variables in Pv)
+% and Call, where Prime is the abstract substitution which should not be
 % further instantiated.
 %
 % With respect to the general definition of matching, we only consider
-% the special case in which the variables in ASub2 (not even provided in
-% input) are a superset of Sv1.
+% the special case in which the variables in Call (not even provided
+% explicityl input) are a superset of Pv.
 %-------------------------------------------------------------------------
 
-:- pred match(+ASub1, +Sv1, _ASub2, -Match)
-   : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
+:- pred match(+Prime, +Pv, +Call, -Match)
+   : nasub * {ordlist(var), superset_vars_of(Prime)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-match((Prime_sh, Prime_lin), Sv1, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
-   as_sharing:match(Prime_sh, Sv1, Call_sh, Succ_sh), % we do not use linearity here
-   ord_subtract(Call_lin, Sv1, Call_lin_noprime),
-   merge_list_of_lists(Prime_sh, Prime_noground),
-   ord_subtract(Prime_noground, Prime_lin, Prime_nonlin),
-   rel(Call_sh, Prime_nonlin, Call_sh_rel_nonlin, _),
-   merge_list_of_lists(Call_sh_rel_nonlin, Call_nonprime),
-   ord_subtract(Call_lin_noprime, Call_nonprime, Lin1),
-   ord_union(Prime_lin, Lin1, Lin2),
-   merge_list_of_lists(Succ_sh, Succ_noground),
-   ord_intersection(Lin2, Succ_noground, Succ_lin).
+match(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
+   Prime = (Prime_sh, Prime_lin),
+   as_sharing:match(Prime_sh, Pv, Call_sh, Match_sh), % we do not use linearity here
+   nonlin_vars(Prime, Prime_nolin),
+   rel(Call_sh, Prime_nolin, Call_sh_rel_nolin, _),
+   nonground_vars(Call_sh_rel_nolin, Call_removelin),
+   ord_subtract(Call_lin, Pv, Call_lin0),
+   ord_subtract(Call_lin0, Call_removelin, Call_lin1),
+   ord_union(Prime_lin, Call_lin1, Match_lin0),
+   nonground_vars(Match_sh, Match_noground),
+   ord_intersection(Match_lin0, Match_noground, Match_lin).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% independent(+Sh,?S,?T)
+% ind(+Sh,?S,?T)
 %
 % Determines where S and T are definitely independent given the sharing
 % information in Sh.
@@ -317,14 +319,39 @@ ind(Sh, S, T) :-
 :- pred lin(+ShLin, ?T)
    : asub * term
    + is_det.
-
 :- export(lin/2).
-lin((Sh, Lin), T) :-
-   varset(T, Vt),
-   merge_list_of_lists(Sh, Sh_ng),
-   ord_subtract(Sh_ng, Lin, Sh_nlin),
-   ord_disjoint(Vt, Sh_nlin),
-   all_couples(Vt, ind(Sh)),
-   varsbag(T, Bag_t, []),
-   duplicates(Bag_t, Duplicates_t),
-   ord_disjoint(Duplicates_t, Sh_ng).
+
+lin(ShLin, T) :-
+   ShLin = (Sh, _),
+   duplicate_vars(T, Vars_t, DVars_t),
+   nonlin_vars(ShLin, NGv, NLin),
+   ord_disjoint(Vars_t, NLin),
+   all_couples(Vars_t, ind(Sh)),
+   ord_disjoint(NGv, DVars_t).
+
+%-------------------------------------------------------------------------
+% nonlin_vars(+ShLin,-NGv,-NLin)
+%
+% Determines the set of non-linear and non-ground variables in ShLin.
+%-------------------------------------------------------------------------
+
+:- pred nonlin_vars(+ShLin, -NGv, -NLin)
+   : asub * ivar * ivar => (ordlist(var, NGv), ordlist(var, NLin))
+   + (not_fails, is_det).
+
+nonlin_vars((Sh, Lin), NGv, NLin) :-
+   nonground_vars(Sh, NGv),
+   ord_subtract(NGv, Lin, NLin).
+
+%-------------------------------------------------------------------------
+% nonlin_vars(+ShLin,-NLin)
+%
+% Determines the set of non-linear variables in ShLin.
+%-------------------------------------------------------------------------
+
+:- pred nonlin_vars(+ShLin, -NLin)
+   : asub * ivar  => ordlist(var, NLin)
+   + (not_fails, is_det).
+
+nonlin_vars(ShLin, NLin) :-
+   nonlin_vars(ShLin, _, NLin).

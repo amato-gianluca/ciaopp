@@ -238,11 +238,13 @@ extend(_Sg, Prime, Sv, Call, Succ) :-
    => ( nasub(Prime), nasub(Succ), superset_vars_of(Prime, Sv) )
    + (not_fails, is_det).
 
-% TODO: Optimize, by avoiding the use call_to_entry and exit_to_prime
-call_to_success_fact(Sg, Hv, Head, K, Sv, Call, Proj, Prime, Succ) :-
-   call_to_entry(Sv, Sg, Hv, Head, K, [], Proj, Entry, ExtraInfo),
-   exit_to_prime(Sg, Hv, Head, Sv, Entry, ExtraInfo, Prime),
-   extend(Sg, Prime, Sv, Call, Succ).
+call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
+   unifiable_with_occurs_check(Sg, Head, Unifier),
+   augment_shlin(Call, Hv, Call0),
+   mgu_shlin(Call0, Hv, Unifier, Succ0),
+   varset(Call, Vcall),
+   project_shlin(Succ0, Sv, Prime),
+   project_shlin(Succ0, Vcall, Succ).
 
 %-------------------------------------------------------------------------
 % special_builtin(+SgKey,+Sg,+Subgoal,-Type,-Condvars)

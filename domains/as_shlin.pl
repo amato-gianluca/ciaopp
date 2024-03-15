@@ -599,13 +599,17 @@ mgu_shlin_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-% TODO: check correctness
 match_shlin((Prime_sh, Prime_lin), Sv1, (Call_sh, Call_lin), (Succ_sh, Succ_lin)) :-
-   match_sh(Prime_sh, Sv1, Call_sh, Succ_sh),
-   ord_subtract(Call_lin, Sv1, Call_lin_not_rel),
-   merge_list_of_lists(Succ_sh, Vsh),
-   ord_intersection(Call_lin_not_rel, Vsh, Lin0),
-   ord_union(Prime_lin, Lin0, Succ_lin).
+   match_sh(Prime_sh, Sv1, Call_sh, Succ_sh), % we do not use linearity here
+   ord_subtract(Call_lin, Sv1, Call_lin_noprime),
+   merge_list_of_lists(Prime_sh, Prime_noground),
+   ord_subtract(Prime_noground, Prime_lin, Prime_nonlin),
+   rel(Call_sh, Prime_nonlin, Call_sh_rel_nonlin, _),
+   merge_list_of_lists(Call_sh_rel_nonlin, Call_nonprime),
+   ord_subtract(Call_lin_noprime, Call_nonprime, Lin1),
+   ord_union(Prime_lin, Lin1, Lin2),
+   merge_list_of_lists(Succ_sh, Succ_noground),
+   ord_intersection(Lin2, Succ_noground, Succ_lin).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

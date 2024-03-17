@@ -568,6 +568,10 @@ guard dom_as_sharing(X) :-
     member(modes=M, X),
     M == as_sharing.
 
+guard dom_as_shlin(X) :-
+    member(modes=M, X),
+    M == as_shlin.
+
 % to be removed when old_menu is removed
 guard ana_or_check_output(X)  :-
     ana_or_check(X),

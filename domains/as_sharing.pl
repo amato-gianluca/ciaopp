@@ -1,4 +1,4 @@
-:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
+:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
 
 :- use_package(debug).
 :- use_package(rtchecks).
@@ -79,7 +79,7 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(ASub, sharing(ASub), NativeStat, NativeStat0),
-   ground_vars(ASub, Qv, Gv),
+   gvars(ASub, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, []).
 
 %------------------------------------------------------------------------
@@ -368,36 +368,32 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
    + (not_fails, is_det).
 :- export(star_union/2).
 
-star_union(Sh, Star) :-
-   closure_under_union(Sh, Star).
+star_union(Sh) := ~closure_under_union(Sh).
 
 %-------------------------------------------------------------------------
-% nonground_vars(+Sh,-NGv)
+% vars(+Sh,-NGv)
 %
 % NGv is the set of non-ground variables in Sh.
 %-------------------------------------------------------------------------
 
-:- pred nonground_vars(+Sh, -NGv)
+:- pred vars(+Sh, -NGv)
    : nasub * ivar
    => ( ordlist(var, NGv), same_vars_of(Sh, NGv) )
    + (not_fails, is_det).
-:- export(nonground_vars/2).
+:- export(vars/2).
 
-nonground_vars(Sh, NGv) :-
-   merge_list_of_lists(Sh, NGv).
+vars(Sh) := ~merge_list_of_lists(Sh).
 
 %-------------------------------------------------------------------------
-% ground_vars(+Sh,+Vars,-Gv)
+% gvars(+Sh,+Vars,-Gv)
 %
 % Gv is the set of variables in Vars which are ground w.r.t. Sh.
 %-------------------------------------------------------------------------
 
-:- pred ground_vars(+Sh, +Vars, -Gv)
+:- pred gvars(+Sh, +Vars, -Gv)
    : nasub * {ordlist(var), superset_vars_of(Sh)} * ivar
    => ( ordlist(var, Gv), independent_from(Sh, Gv), superset_vars_of(Gv, Vars) )
    + (not_fails, is_det).
-:- export(ground_vars/3).
+:- export(gvars/3).
 
-ground_vars(Sh, Vars, Gv) :-
-   nonground_vars(Sh, NGv),
-   ord_subtract(Vars, NGv, Gv).
+gvars(Sh, Vars) := ~ord_subtract(Vars, ~vars(Sh)).

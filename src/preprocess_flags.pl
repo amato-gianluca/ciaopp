@@ -1106,6 +1106,11 @@ pp_flag(mgu_sh_optimize, 'Choose whether to optimize the mgu operation for shari
 current_pp_flags(  mgu_sh_optimize      , on).
 valid_flag_values( mgu_sh_optimize      , member(_,[on, off])).
 
+pp_flag(mgu_shlin_noindcheck).
+pp_flag(mgu_shlin_noindcheck, 'Choose whether to remove independence check in the mgu operation for sharin * lin').
+current_pp_flags(  mgu_shlin_noindcheck      , on).
+valid_flag_values( mgu_shlin_noindcheck      , member(_,[on, off])).
+
 % ---------------------------------------------------------------------------
 
 tmp_dir(source).

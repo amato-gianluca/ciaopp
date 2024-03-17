@@ -233,7 +233,7 @@ mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    Sh0 = ~ord_intersection(NSh_x, NSh_t),
    (lin(ShLin, T) -> Lint = yes ; Lint = no),
    (lin(ShLin, X) -> Linx = yes ; Linx = no),
-   ( current_pp_flag(mgu_shlin_noindcheck, on) ->
+   ( current_pp_flag(mgu_shlin_optimize, noindcheck) ->
       mgu_binding_sh_noind(Sh_x, Sh_t, Linx, Lint, Sh1)
    ;
       (ind(Sh, X, T) -> Ind = yes ; Ind = no),

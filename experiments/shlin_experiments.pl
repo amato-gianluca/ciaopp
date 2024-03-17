@@ -18,6 +18,8 @@ example2(X) :-
     % we do not add the assertion var(X).
     nothing.
 
+% Example 30, Hill et al 2004, "A Correct, Precise and Efficient Integration ..."
+
 :- entry example3(X, X1, X2, Y, Y1, Y2, Z):
     (mshare([[X,X1], [X, X2], [X, Y, Z], [Y, Y1], [Y, Y2]]),
      linear([X, X1, X2, Y, Y1, Y2, Z])).

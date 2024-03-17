@@ -257,7 +257,7 @@ mgu_binding_sh_noind(Sh_x, Sh_t, _, _) := ~bin(~star_union(Sh_x), ~star_union(Sh
 mgu_binding_lin(Lin, Sx, St, yes, yes) := ~ord_subtract(Lin, ~ord_intersection(Sx, St)) :- !.
 mgu_binding_lin(Lin, Sx, _St, yes, _) := ~ord_subtract(Lin, Sx) :- !.
 mgu_binding_lin(Lin, _Sx, St, _, yes) := ~ord_subtract(Lin, St) :- !.
-mgu_binding_lin(Lin, Sx, St, _, :) := ~ord_subtract(Lin, ~ord_union(Sx, St)).
+mgu_binding_lin(Lin, Sx, St, _, _) := ~ord_subtract(Lin, ~ord_union(Sx, St)).
 
 %-------------------------------------------------------------------------
 % match(+Prime,+Pv,+Call,-Match)

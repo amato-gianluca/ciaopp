@@ -261,7 +261,7 @@ mgu_shlinearizable([_O|Rest], Bt, Result) :-
 
 star_union_real(L, [[]|Star]) :- star_union(L, Star).
 
-mgu_binding_additional([], _, _, []).
+mgu_binding_additional([], _, _, _, []).
 mgu_binding_additional([O|Rest], Powerset_rel_x, Bt, Lin, Result) :-
    chiMax(O, Lin, Bt, Mul),
    mgu_binding_additional0(O, Powerset_rel_x, Mul, Result0),
@@ -271,19 +271,23 @@ mgu_binding_additional([O|Rest], Powerset_rel_x, Bt, Lin, Result) :-
 
 mgu_binding_additional0(_O, [], _Mul, []).
 mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
-   length(O, Size),
+   length(Z, Size),
    Size >= 1,
    Size =< Mul, !,
    vars(Z, Vz),
-   insert(Vz, O, Y),
+   ord_union(O, Vz, Y),
    mgu_binding_additional0(O, Rest, Mul, RestResult).
+mgu_binding_additional0(O, [_Z|Rest], Mul, Result) :-
+   mgu_binding_additional0(O, Rest, Mul, Result).
 
+%:- spy(mgu_binding_optimal/4).
+:- export(mgu_binding_optimal/4).
 mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
    bag_vars(T, Bt),
    bag_support(Bt, Vt),
-   rel(Sh, [X], TmpRel_x, _),
-   rel(Sh, Vt, TmpRel_t, _),
+   rel(Sh, [X], TmpRel_x, NRel_x),
+   rel(Sh, Vt, TmpRel_t, NRel_t),
    ord_subtract(TmpRel_x, TmpRel_t, Rel_x),
    ord_subtract(TmpRel_t, TmpRel_x, Rel_t),
    ord_intersection(TmpRel_x, TmpRel_t, Rel_xt),
@@ -297,28 +301,27 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
          star_union(Rel_xt_linearizable, Rel_xt_linearizable_plus),
          binall([Rel_t_inf, Rel_x_plus, Rel_xt_star], Bin0),
          binall([[[]|Rel_xt], Rel_xt_nlin, Rel_x_plus, Rel_xt_star], Bin1),
-         % ADD HERE
          powerset(Rel_x, Powerset_rel_x),
          mgu_binding_additional(Rel_t_nat, Powerset_rel_x, Bt, Lin, Rel_a),
          star_union_real(Rel_xt_one, Rel_xt_one_plus),
          bin(Rel_a, Rel_xt_one_plus, Bin2),
-         % ADD HERE
-         merge_list_of_lists([Bin0, Bin1, Bin2, Rel_xt_linearizable_plus], MGU_sh)
+         merge_list_of_lists([Bin0, Bin1, Bin2, Rel_xt_linearizable_plus], BinRes)
       ;
+         ord_union(Rel_xt_nlin, Rel_t_nlin, Rel_a),
          ord_union(TmpRel_t, TmpRel_x, Rel),
          star_union_real(Rel, Rel_star),
+         binall([Rel_a, TmpRel_x, Rel_star], Bin0),
          star_union(Rel_t_one, Rel_t_one_plus),
-         ord_union(Rel_xt_nlin, Rel_t_nlin, Rel_a),
-         ord_union(Rel_x, Rel_xt, Rel_b),
-         binall([Rel_a, Rel_b, Rel_star], Bin0),
-         ord_union(Rel_x, Rel_xt_one, Rel_c),
-         star_union(Rel_xt_one, Rel_xt_one_plus),
-         binall([Rel_t_one_plus, Rel_c, Rel_xt_one_plus], Bin1),
-         binall([Bin0, Bin1, [[]|Rel_xt_one_plus]], MGU_sh)
+         ord_union(Rel_x, Rel_xt_one, Rel_b),
+         star_union_real(Rel_xt_one, Rel_xt_one_star),
+         binall([Rel_t_one_plus, Rel_b, Rel_xt_one_star], Bin1),
+         merge_list_of_lists([Bin0, Bin1, Rel_xt_one_plus], BinRes)
    ),
+   ord_intersection(NRel_x, NRel_t, NRel),
+   ord_union(NRel, BinRes, MGU_sh),
    (lin(ShLin, T) -> Lint = yes ; Lint = no),
    (lin(ShLin, X) -> Linx = yes ; Linx = no),
-   mgu_binding_lin(Lin, ~vars(Rel_x), ~vars(Rel_t), Linx, Lint, Lin0),
+   mgu_binding_lin(Lin, ~vars(TmpRel_x), ~vars(TmpRel_t), Linx, Lint, Lin0),
    ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
 
 mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
@@ -457,7 +460,7 @@ nonlin_vars(ShLin) := ~nonlin_vars(ShLin, _).
 
 multiplicity(inf) :- !.
 multiplicity(X) :-
-   nnegint(X).
+   X > 0.
 
 :- pred chiMax(+O, +Lin, +Bag, -Mul)
    : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(V)

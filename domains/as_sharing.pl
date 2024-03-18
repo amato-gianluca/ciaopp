@@ -357,6 +357,17 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
    insert(Bin0, XY, Bin1),
    bin1(X, Rest, Bin1, Bin).
 
+:- pred binall(ShList, Bin)
+   : list(nasub) * ivar => nasub(Bin)
+   + (not_fails, is_det).
+:- export(binall/2).
+
+binall([], []).
+binall([X], X).
+binall([X,Y|Rest], Bin) :-
+   bin(X, Y, Bin0),
+   binall([Bin0|Rest], Bin).
+
 %-------------------------------------------------------------------------
 % star_union(+Sh,-Star)
 %

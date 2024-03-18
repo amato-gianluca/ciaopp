@@ -14,10 +14,10 @@
 isbag(_T, []).
 isbag(T, [X-V]) :-
    T(X),
-   nnegint(V).
+   V > 0.
 isbag(T, [X1-V1,X2-V2|Rest]) :-
    X1 @< X2,
-   nnegint(V1),
+   V1 > 0,
    T(X1),
    isbag([X2-V2|Rest]).
 

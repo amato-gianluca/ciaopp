@@ -14,6 +14,7 @@ This module is an independent reimplementation of the Sharing X Linearity domain
 
 :- include(as_template).
 :- use_module(domain(as_sharing)).
+:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % I/O CIAOPP PREDICATES
@@ -213,7 +214,11 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
 
 mgu(ShLin, _Fv, [], ShLin).
 mgu(ShLin, Fv, [X=T|Rest], MGU) :-
-   mgu_binding(ShLin, X, T, MGU0),
+   ( current_pp_flag(mgu_shlin_optimize, optimal) ->
+      mgu_binding_optimal(ShLin, X, T, MGU0)
+   ;
+      mgu_binding(ShLin, X, T, MGU0)
+   ),
    mgu(MGU0, Fv, Rest, MGU).
 
 %-------------------------------------------------------------------------
@@ -222,9 +227,99 @@ mgu(ShLin, Fv, [X=T|Rest], MGU) :-
 % MGU is the result of the unification of ShLin with the binding {X/T}.
 %-------------------------------------------------------------------------
 
-:- pred mgu_binding(+ShLin, ?Vars_x, ?Vars_t, MGU)
-   : asub * var * term * ivar => asub(MGU)
-   + (not_fails, is_det).
+:- pred mgu_shsplit(Sh,  Lin, Bt, BagInf, BagOne, BagNat, BagNLin).
+:- export(mgu_shsplit/7).
+
+mgu_shsplit([], _Lin, _Bt, [], [], [], []).
+mgu_shsplit([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
+   mgu_shsplit(Rest, Lin, Bt, BagInf0, BagOne0, BagNat0, BagNLin0),
+   chiMax(O, Lin, Bt, Mul),
+   (
+      Mul = inf ->
+         BagInf = [O|BagInf0],
+         BagOne = BagOne0,
+         BagNat = BagNat0,
+         BagNLin = [O|BagNLin0]
+      ; Mul = 1 ->
+         BagInf = BagInf0,
+         BagOne = [O|BagOne0],
+         BagNat = [O|BagNat0],
+         BagNLin = BagNLin0
+      ;
+         BagInf = BagInf0,
+         BagOne = BagOne0,
+         BagNat = [O|BagNat0],
+         BagNLin = [O|BagNLin0]
+   ).
+
+mgu_shlinearizable([], _Bt, []).
+mgu_shlinearizable([O|Rest], Bt, [O|ResultRest]) :-
+   linearizable(O, Bt), !,
+   mgu_shlinearizable(Rest, Bt, ResultRest).
+mgu_shlinearizable([_O|Rest], Bt, Result) :-
+   mgu_shlinearizable(Rest, Bt, Result).
+
+star_union_real(L, [[]|Star]) :- star_union(L, Star).
+
+mgu_binding_additional([], _, _, []).
+mgu_binding_additional([O|Rest], Powerset_rel_x, Bt, Lin, Result) :-
+   chiMax(O, Lin, Bt, Mul),
+   mgu_binding_additional0(O, Powerset_rel_x, Mul, Result0),
+   sort(Result0, Result1),
+   mgu_binding_additional(Rest, Powerset_rel_x, Bt, Lin, ResultRest),
+   ord_union(Result1, ResultRest, Result).
+
+mgu_binding_additional0(_O, [], _Mul, []).
+mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
+   length(O, Size),
+   Size >= 1,
+   Size =< Mul, !,
+   vars(Z, Vz),
+   insert(Vz, O, Y),
+   mgu_binding_additional0(O, Rest, Mul, RestResult).
+
+mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
+   ShLin = (Sh, Lin),
+   bag_vars(T, Bt),
+   bag_support(Bt, Vt),
+   rel(Sh, [X], TmpRel_x, _),
+   rel(Sh, Vt, TmpRel_t, _),
+   ord_subtract(TmpRel_x, TmpRel_t, Rel_x),
+   ord_subtract(TmpRel_t, TmpRel_x, Rel_t),
+   ord_intersection(TmpRel_x, TmpRel_t, Rel_xt),
+   mgu_shsplit(Rel_t, Lin, Bt, Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin),
+   mgu_shsplit(Rel_xt, Lin, Bt, _, Rel_xt_one, _, Rel_xt_nlin),
+   mgu_shlinearizable(Rel_xt, Bt, Rel_xt_linearizable),
+   (
+      ord_member(X, Lin) ->
+         star_union(Rel_x, Rel_x_plus),
+         star_union_real(Rel_xt, Rel_xt_star),
+         star_union(Rel_xt_linearizable, Rel_xt_linearizable_plus),
+         binall([Rel_t_inf, Rel_x_plus, Rel_xt_star], Bin0),
+         binall([[[]|Rel_xt], Rel_xt_nlin, Rel_x_plus, Rel_xt_star], Bin1),
+         % ADD HERE
+         powerset(Rel_x, Powerset_rel_x),
+         mgu_binding_additional(Rel_t_nat, Powerset_rel_x, Bt, Lin, Rel_a),
+         star_union_real(Rel_xt_one, Rel_xt_one_plus),
+         bin(Rel_a, Rel_xt_one_plus, Bin2),
+         % ADD HERE
+         merge_list_of_lists([Bin0, Bin1, Bin2, Rel_xt_linearizable_plus], MGU_sh)
+      ;
+         ord_union(TmpRel_t, TmpRel_x, Rel),
+         star_union_real(Rel, Rel_star),
+         star_union(Rel_t_one, Rel_t_one_plus),
+         ord_union(Rel_xt_nlin, Rel_t_nlin, Rel_a),
+         ord_union(Rel_x, Rel_xt, Rel_b),
+         binall([Rel_a, Rel_b, Rel_star], Bin0),
+         ord_union(Rel_x, Rel_xt_one, Rel_c),
+         star_union(Rel_xt_one, Rel_xt_one_plus),
+         binall([Rel_t_one_plus, Rel_c, Rel_xt_one_plus], Bin1),
+         binall([Bin0, Bin1, [[]|Rel_xt_one_plus]], MGU_sh)
+   ),
+   (lin(ShLin, T) -> Lint = yes ; Lint = no),
+   (lin(ShLin, X) -> Linx = yes ; Linx = no),
+   mgu_binding_lin(Lin, ~vars(Rel_x), ~vars(Rel_t), Linx, Lint, Lin0),
+   ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
 
 mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
@@ -356,3 +451,62 @@ nonlin_vars((Sh, Lin), NGv, NLin) :-
    + (not_fails, is_det).
 
 nonlin_vars(ShLin) := ~nonlin_vars(ShLin, _).
+
+:- prop multiplicity(X)
+   # "@var{X} is a non negative integer or the atom 'inf'".
+
+multiplicity(inf) :- !.
+multiplicity(X) :-
+   nnegint(X).
+
+:- pred chiMax(+O, +Lin, +Bag, -Mul)
+   : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(V)
+   + (not_fails, is_det)
+   # "@var{Mul} is the maximum multiplicity of the sharing group @var{O} with linear
+   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bag}".
+:- export(chiMax/4).
+
+chiMax(O, Lin, T, V) :-
+   chiMax0(O, Lin, T, 0, V).
+
+chiMax0([], _Lin, _Bt, M, M) :- !.
+chiMax0(_O, _Lin, [], M, M) :- !.
+chiMax0(_O, _Lin, _Bt, inf, inf) :- !.
+chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         (
+            ord_member(X, Lin)  ->
+               Mul1 is Mul0 + N,
+               chiMax0(RestO, Lin, RestBt, Mul1, Mul)
+            ;
+               Mul = inf
+         )
+      ; Rel = '<' ->
+         chiMax0(RestO, Lin, [Y-N|RestBt], Mul0, Mul)
+      ; Rel = '>' ->
+         chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
+   ).
+
+:- pred linearizable(+O, +Bt)
+   : ordlist(var) * isbag
+   + is_det
+   # "Determines if sharing group @var{O} is linear w.r.t. the term
+   represented by the bag of variables @var{Bag}, assuming all variables are linear.".
+:- export(linearizable/2).
+
+linearizable(O, Bt) :- linearizable0(O, Bt, 0).
+
+linearizable0([], _, _) :- !.
+linearizable0(_, [], _) :- !.
+linearizable0([X|RestO], [Y-N|RestBt], Status) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         ( Status = 0, N = 1 ->  linearizable0(RestO, RestBt, 1) ; fail )
+      ; Rel = '<' ->
+         linearizable0(RestO, [Y-N|RestBt], Status)
+      ; Rel = '>' ->
+         linearizable0([X|RestO], RestBt, Status)
+   ).

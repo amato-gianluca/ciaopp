@@ -26,7 +26,15 @@ example2(X) :-
 
 example3(X, X1, X2, Y, Y1, Y2, Z) :-
     X = Y,
-    % [X,X1,X2,Y,Y2] is not possible ma proving it requires option mgu_shlin_noindcheck=on
+    % [X,X1,X2,Y,Y2] is not possible ma proving it requires option mgu_shlin_optimize=noindcheck
     nothing.
+
+% Example 5.17, Amato and Scozzari 2010, "On the interaction between sharingand linearity"
+
+:- entry example4(V, W, X, Y, Z): (mshare([[X,V],[X,Y],[Z,W]]), linear([V, W, X, Y])).
+
+example4(V, W, X, Y, Z) :-
+    X = f(Y, Z).
+    % [V,X,Y] is not possible ma proving it requires option mgu_shlin_optimize=optimal
 
 nothing.

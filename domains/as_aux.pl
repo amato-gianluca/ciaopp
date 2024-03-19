@@ -1,4 +1,7 @@
-:- module(as_aux, [], [assertions,basicmodes,nativeprops]).
+:- module(as_aux, [], [assertions, basicmodes, nativeprops, indexer]).
+
+:- use_package(debug).
+:- use_package(rtchecks).
 
 :- doc(title, "Common module for Amato and Scozzari domains").
 :- doc(author, "Gianluca Amato").
@@ -29,6 +32,7 @@ memberof(L, T)
 :- prop ordlist(T, S)
    # "@var{S} is an ordered list of elements of type T".
 :- export(ordlist/2).
+:- index ordlist(?, +).
 
 ordlist(_T, []).
 ordlist(T, S) :-
@@ -47,6 +51,7 @@ ordlist(S) :-
    # "@var{S} is an ordered non-empty list of elements of type T".
 :- meta_predicate ordnlist(pred(1),?).
 :- export(ordnlist/2).
+:- index ordlistn(?, +).
 
 ordnlist(T, [X]) :-
    T(X).
@@ -134,7 +139,8 @@ if_not_nil(_, X, [X|Xs], Xs).
 
 :- pred all_couples(+List,+Pred)
    : list *  cgoal
-   # "The predicate @var{Pred} is true for all couples of elements of @var{List}".
+   # "The predicate @var{Pred} is true for all couples of (distinct) elements
+   in @var{List}.".
 :- meta_predicate all_couples(?, pred(2)).
 :- export(all_couples/2).
 
@@ -143,10 +149,7 @@ all_couples([X|Xs], Pred) :-
    all_couples0(X, Xs, Pred),
    all_couples(Xs, Pred).
 
-:- pred all_couples0(?Term,+List,+Pred)
-   : term * list * cgoal
-   # "The predicate @var{Pred} is true for all different couples (@var(Term), X)
-   with X in @var(List)".
+:- index all_couples0(?, +, ?).
 
 all_couples0(_, [], _).
 all_couples0(X, [Y|Ys], Pred) :-
@@ -155,32 +158,27 @@ all_couples0(X, [Y|Ys], Pred) :-
 
 :- pop_prolog_flag(read_hiord).
 
-:- pred duplicates(+List, -Duplicates)
-   : list * ivar => ordlist(Duplicates)
+:- pred duplicates(+List, -Dup)
+   : list * ivar => ordlist(Dup)
    + (not_fails, is_det)
-   # "@var{Duplicates} contains the duplicate elements of @var{List}. It does not
-   perform any instantiation".
+   # "@var{Dup} contains the duplicate elements of @var{List}.".
 :- export(duplicates/2).
 
-duplicates(List, Duplicates) :-
-   duplicates0(List, Duplicates0),
-   sort(Duplicates0, Duplicates).
+% TODO: think whether we should use bags to implement this predicate
 
-:- pred duplicates0(+List, -Duplicates)
-   : list * ivar => list(Duplicates)
-   + (not_fails, is_det)
-   # "@var{Duplicates} contains the duplicate elements of @var{List}. It does not
-   perform any instantiation".
+duplicates(List, Dup) :-
+   duplicates0(List, Dup0),
+   sort(Dup0, Dup).
 
 duplicates0([], []).
-duplicates0([X|Tail], [X|Duplicates]) :-
+duplicates0([X|Tail], [X|Dup]) :-
    memberchk(X, Tail),
    !,
-   duplicates0(Tail, Duplicates).
-duplicates0([_|Tail], Duplicates) :-
-   duplicates0(Tail, Duplicates).
+   duplicates0(Tail, Dup).
+duplicates0([_|Tail], Dup) :-
+   duplicates0(Tail, Dup).
 
-:- pred unifiable_with_occurs_check(+T1, +T2, -Unifier)
+:- pred unifiable_with_occurs_check(?T1, ?T2, -Unifier)
    : term * term * ivar => unifier(Unifier)
    + is_det
    # "@var{Unifier} is the unifier of @var{T1} and @var{T2} with occurs check".
@@ -190,11 +188,11 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
    unifier_no_cyclic(Unifier).
 
-:- pred duplicate_vars(+T, -Vars, -DVars)
+:- pred duplicate_vars(?T, -Vars, -DVars)
    : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
    + (not_fails, is_det)
    # "@var{Vars} is the list of variables in @var{T}, @var{DVars} is the list of
-   duplicate variables in T".
+   duplicate variables in T.".
 :- export(duplicate_vars/3).
 
 duplicate_vars(T, Vars, DVars) :-
@@ -202,11 +200,11 @@ duplicate_vars(T, Vars, DVars) :-
    duplicates(Bag, DVars),
    sort(Bag, Vars).
 
-:- pred unique_vars(+T, -Vars, -UVars)
+:- pred unique_vars(?T, -Vars, -UVars)
    : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
    + (not_fails, is_det)
-   # "@var{Vars} is the list of variables in @var{T}, @var{UVars} is the list of
-   variables which only occur once in @var{T}".
+   # "@var{Vars} is the list of variables in  @var{T}, @var{UVars} is the list of
+   variables which only occur once in @var{T}.".
 :- export(unique_vars/3).
 
 unique_vars(T, Vars, UVars) :-

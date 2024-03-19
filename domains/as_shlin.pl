@@ -6,7 +6,7 @@
 
 :- doc(title, "sharing * linarity abstract domain").
 :- doc(module,"
-This module is an independent reimplementation of the Sharing X Linearity domain.
+This module is an independent reimplementation of the Sharing * Linearity domain.
 ").
 
 :- include(ciaopp(plai/plai_domain)).
@@ -214,20 +214,68 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
 
 mgu(ShLin, _Fv, [], ShLin).
 mgu(ShLin, Fv, [X=T|Rest], MGU) :-
-   ( current_pp_flag(mgu_shlin_optimize, optimal) ->
-      mgu_binding_optimal(ShLin, X, T, MGU0)
-   ;
-      mgu_binding(ShLin, X, T, MGU0)
+   (
+      current_pp_flag(mgu_shlin_optimize, optimal) ->
+         mgu_binding_optimal(ShLin, X, T, MGU0)
+      ;
+         mgu_binding(ShLin, X, T, MGU0)
    ),
    mgu(MGU0, Fv, Rest, MGU).
 
 %-------------------------------------------------------------------------
-% mgu_binding(+ShLin,X,T,-MGU)
+% mgu_binding_optimal(+ShLin,X,T,-MGU)
 %
-% MGU is the result of the unification of ShLin with the binding {X/T}.
+% MGU is the result of the unification of ShLin with the binding {X/T}
+% with the optimal algorithm.
 %-------------------------------------------------------------------------
 
-:- pred mgu_shsplit(Sh,  Lin, Bt, BagInf, BagOne, BagNat, BagNLin).
+mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
+   ShLin = (Sh, Lin),
+   bag_vars(T, Bt),
+   bag_support(Bt, Vt),
+   rel(Sh, [X], Sh_x, NSh_x),
+   rel(Sh, Vt, Sh_t, NSh_t),
+   ord_intersection(NSh_x, NSh_t, NRel),
+   ord_subtract(Sh_x, Sh_t, Rel_x),
+   ord_subtract(Sh_t, Sh_x, Rel_t),
+   ord_intersection(Sh_x, Sh_t, Rel_xt),
+   mgu_shsplit(Rel_t, Lin, Bt, Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin),
+   mgu_shsplit(Rel_xt, Lin, Bt, _, Rel_xt_one, _, Rel_xt_nlin),
+   mgu_shlinearizable(Rel_xt, Bt, Rel_xt_linearizable),
+   (
+      ord_member(X, Lin) ->
+         star_union(Rel_x, Rel_x_plus),
+         star_union_real(Rel_xt, Rel_xt_star),
+         bin(Rel_x_plus, Rel_xt_star, BinTmp0),
+         bin(Rel_t_inf, BinTmp0, Bin0),
+         bin_all([[[]|Rel_xt], Rel_xt_nlin, BinTmp0], Bin1),
+         powerset(Rel_x, Rel_x_power),
+         mgu_binding_additional(Rel_t_nat, Rel_x_power, Bt, Lin, Rel_a),
+         star_union_real(Rel_xt_one, Rel_xt_one_star),
+         bin(Rel_a, Rel_xt_one_star, Bin2),
+         star_union(Rel_xt_linearizable, Rel_xt_linearizable_plus),
+         merge_list_of_lists([Bin0, Bin1, Bin2, Rel_xt_linearizable_plus], BinRes)
+      ;
+         ord_union(Rel_xt_nlin, Rel_t_nlin, Rel_a),
+         ord_union(Sh_t, Sh_x, Rel),
+         star_union_real(Rel, Rel_star),
+         bin_all([Rel_a, Sh_x, Rel_star], Bin0),
+         star_union(Rel_t_one, Rel_t_one_plus),
+         ord_union(Rel_x, Rel_xt_one, Rel_b),
+         star_union(Rel_xt_one, Rel_xt_one_plus),
+         bin_all([Rel_t_one_plus, Rel_b, [[]|Rel_xt_one_plus]], Bin1),
+         merge_list_of_lists([Bin0, Bin1, Rel_xt_one_plus], BinRes)
+   ),
+   ord_union(NRel, BinRes, MGU_sh),
+   (lin(ShLin, T) -> Lint = yes ; Lint = no),
+   (lin(ShLin, X) -> Linx = yes ; Linx = no),
+   mgu_binding_lin(Lin, ~vars(Sh_x), ~vars(Sh_t), Linx, Lint, Lin0),
+   ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
+
+:- pred mgu_shsplit(+Sh, +Lin, +Bt, -BagInf, -BagOne, -BagNat, -BagNLin)
+   # "Split the shring groups in @var{Sh} on the last four arguments
+      according to their maximum multiplicity w.r.t. the set of linear
+      variables @var{Lin} and the term represented by the bag of variables @var{Bt}.".
 :- export(mgu_shsplit/7).
 
 mgu_shsplit([], _Lin, _Bt, [], [], [], []).
@@ -252,6 +300,11 @@ mgu_shsplit([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
          BagNLin = [O|BagNLin0]
    ).
 
+:- pred mgu_shlinearizable(+Sh, +Bt, -Result)
+   # "@var{Result} is the set of sharing groups in @var{Sh} which are linear w.r.t.
+      the term represented by the bag of variables @var{Bt} when all variables
+      are considered to be lienear,".
+
 mgu_shlinearizable([], _Bt, []).
 mgu_shlinearizable([O|Rest], Bt, [O|ResultRest]) :-
    linearizable(O, Bt), !,
@@ -259,20 +312,26 @@ mgu_shlinearizable([O|Rest], Bt, [O|ResultRest]) :-
 mgu_shlinearizable([_O|Rest], Bt, Result) :-
    mgu_shlinearizable(Rest, Bt, Result).
 
-star_union_real(L, [[]|Star]) :- star_union(L, Star).
+:- pred star_union_real(+Sh, -Star)
+   # "@var{Star} is the result of the star union of the set of sharing groups @var{Sh},
+   with the addition of the empty sharing group.".
+star_union_real(Sh, [[]|Star]) :- star_union(Sh, Star).
+
+:- pred mgu_binding_additional(+Sh, +Powerset_rel_x, +Bt, +Lin, -Result)
+   # "This computes the most complex part of the mgu for Sharing * Linearity, which
+   depends on the choice of particular subsets of ReL_x.".
 
 mgu_binding_additional([], _, _, _, []).
-mgu_binding_additional([O|Rest], Powerset_rel_x, Bt, Lin, Result) :-
+mgu_binding_additional([O|Rest], Rel_x_power, Bt, Lin, Result) :-
    chiMax(O, Lin, Bt, Mul),
-   mgu_binding_additional0(O, Powerset_rel_x, Mul, Result0),
+   mgu_binding_additional0(O, Rel_x_power, Mul, Result0),
    sort(Result0, Result1),
-   mgu_binding_additional(Rest, Powerset_rel_x, Bt, Lin, ResultRest),
+   mgu_binding_additional(Rest, Rel_x_power, Bt, Lin, ResultRest),
    ord_union(Result1, ResultRest, Result).
 
 mgu_binding_additional0(_O, [], _Mul, []).
 mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
    length(Z, Size),
-   Size >= 1,
    Size =< Mul, !,
    vars(Z, Vz),
    ord_union(O, Vz, Y),
@@ -280,82 +339,56 @@ mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
 mgu_binding_additional0(O, [_Z|Rest], Mul, Result) :-
    mgu_binding_additional0(O, Rest, Mul, Result).
 
-%:- spy(mgu_binding_optimal/4).
-:- export(mgu_binding_optimal/4).
-mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
-   ShLin = (Sh, Lin),
-   bag_vars(T, Bt),
-   bag_support(Bt, Vt),
-   rel(Sh, [X], TmpRel_x, NRel_x),
-   rel(Sh, Vt, TmpRel_t, NRel_t),
-   ord_subtract(TmpRel_x, TmpRel_t, Rel_x),
-   ord_subtract(TmpRel_t, TmpRel_x, Rel_t),
-   ord_intersection(TmpRel_x, TmpRel_t, Rel_xt),
-   mgu_shsplit(Rel_t, Lin, Bt, Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin),
-   mgu_shsplit(Rel_xt, Lin, Bt, _, Rel_xt_one, _, Rel_xt_nlin),
-   mgu_shlinearizable(Rel_xt, Bt, Rel_xt_linearizable),
-   (
-      ord_member(X, Lin) ->
-         star_union(Rel_x, Rel_x_plus),
-         star_union_real(Rel_xt, Rel_xt_star),
-         star_union(Rel_xt_linearizable, Rel_xt_linearizable_plus),
-         binall([Rel_t_inf, Rel_x_plus, Rel_xt_star], Bin0),
-         binall([[[]|Rel_xt], Rel_xt_nlin, Rel_x_plus, Rel_xt_star], Bin1),
-         powerset(Rel_x, Powerset_rel_x),
-         mgu_binding_additional(Rel_t_nat, Powerset_rel_x, Bt, Lin, Rel_a),
-         star_union_real(Rel_xt_one, Rel_xt_one_plus),
-         bin(Rel_a, Rel_xt_one_plus, Bin2),
-         merge_list_of_lists([Bin0, Bin1, Bin2, Rel_xt_linearizable_plus], BinRes)
-      ;
-         ord_union(Rel_xt_nlin, Rel_t_nlin, Rel_a),
-         ord_union(TmpRel_t, TmpRel_x, Rel),
-         star_union_real(Rel, Rel_star),
-         binall([Rel_a, TmpRel_x, Rel_star], Bin0),
-         star_union(Rel_t_one, Rel_t_one_plus),
-         ord_union(Rel_x, Rel_xt_one, Rel_b),
-         star_union_real(Rel_xt_one, Rel_xt_one_star),
-         binall([Rel_t_one_plus, Rel_b, Rel_xt_one_star], Bin1),
-         merge_list_of_lists([Bin0, Bin1, Rel_xt_one_plus], BinRes)
-   ),
-   ord_intersection(NRel_x, NRel_t, NRel),
-   ord_union(NRel, BinRes, MGU_sh),
-   (lin(ShLin, T) -> Lint = yes ; Lint = no),
-   (lin(ShLin, X) -> Linx = yes ; Linx = no),
-   mgu_binding_lin(Lin, ~vars(TmpRel_x), ~vars(TmpRel_t), Linx, Lint, Lin0),
-   ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
+%-------------------------------------------------------------------------
+% mgu_binding(+ShLin,X,T,-MGU)
+%
+% MGU is the result of the unification of ShLin with the binding {X/T}.
+% This is the non-optimal algorith, with or without independent check.
+%-------------------------------------------------------------------------
 
 mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
-   rel(Sh, ~varset(X), Sh_x, NSh_x),
+   rel(Sh, [X], Sh_x, NSh_x),
    rel(Sh, ~varset(T), Sh_t, NSh_t),
-   Sh0 = ~ord_intersection(NSh_x, NSh_t),
+   ord_intersection(NSh_x, NSh_t, NSh),
    (lin(ShLin, T) -> Lint = yes ; Lint = no),
    (lin(ShLin, X) -> Linx = yes ; Linx = no),
-   ( current_pp_flag(mgu_shlin_optimize, noindcheck) ->
-      mgu_binding_sh_noind(Sh_x, Sh_t, Linx, Lint, Sh1)
-   ;
-      (ind(Sh, X, T) -> Ind = yes ; Ind = no),
-      mgu_binding_sh(Sh_x, Sh_t, Ind, Linx, Lint, Sh1)
+   (
+      current_pp_flag(mgu_shlin_optimize, noindcheck) ->
+         mgu_binding_sh_noind(Sh_x, Sh_t, Linx, Lint, Sh0)
+      ;
+         (ind(Sh, X, T) -> Ind = yes ; Ind = no),
+         mgu_binding_sh(Sh_x, Sh_t, Ind, Linx, Lint, Sh0)
    ),
-   MGU_sh = ~ord_union(Sh0, Sh1),
-   Lin0 = ~mgu_binding_lin(Lin, ~vars(Sh_x), ~vars(Sh_t), Linx, Lint),
-   MGU_lin = ~ord_intersection(Lin0, ~vars(MGU_sh)).
+   ord_union(NSh, Sh0, MGU_sh),
+   mgu_binding_lin(Lin, ~vars(Sh_x), ~vars(Sh_t), Linx, Lint, Lin0),
+   ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
 
-mgu_binding_sh(Sh_x, Sh_t, Ind, Linx, Lint) := ~bin(R_x, R_t) :-
-   R_x = (Lint=yes, Ind=yes ? Sh_x | ~star_union(Sh_x)),
-   R_t = (Linx=yes, Ind=yes ? Sh_t | ~star_union(Sh_t)).
+mgu_binding_sh_noind(Sh_x, Sh_t, yes, yes, Res) :- !,
+   star_union(~ord_intersection(Sh_x, Sh_t), Sh_xt),
+   bin(~ord_union(Sh_x, ~bin(Sh_x, Sh_xt)), ~ord_union(Sh_t, ~bin(Sh_t, Sh_xt)), Res).
+mgu_binding_sh_noind(Sh_x, Sh_t, _, yes,Res) :- !,
+   bin(Sh_x, ~star_union(Sh_t), Res).
+mgu_binding_sh_noind(Sh_x, Sh_t, yes, _, Res) :- !,
+   bin(Sh_t, ~star_union(Sh_x), Res).
+mgu_binding_sh_noind(Sh_x, Sh_t, _, _, Res) :- !,
+   bin(~star_union(Sh_x), ~star_union(Sh_t), Res).
 
-mgu_binding_sh_noind(Sh_x, Sh_t, yes, yes) := ~bin(~ord_union(Sh_x, ~bin(Sh_x, Sh_xt)), ~ord_union(Sh_t, ~bin(Sh_t, Sh_xt))) :-
-   !,
-   Sh_xt = ~star_union(~ord_intersection(Sh_x, Sh_t)).
-mgu_binding_sh_noind(Sh_x, Sh_t, _, yes) := ~bin(Sh_x, ~star_union(Sh_t)) :- !.
-mgu_binding_sh_noind(Sh_x, Sh_t, yes, _) := ~bin(Sh_t, ~star_union(Sh_x)) :- !.
-mgu_binding_sh_noind(Sh_x, Sh_t, _, _) := ~bin(~star_union(Sh_x), ~star_union(Sh_t)).
+mgu_binding_sh(Sh_x, Sh_t, Ind, Linx, Lint, Res) :-
+   (Lint=yes, Ind=yes -> R_x = Sh_x ; star_union(Sh_x, R_x)),
+   (Linx=yes, Ind=yes -> R_t = Sh_t ; star_union(Sh_t, R_t)),
+   bin(R_x, R_t, Res).
 
-mgu_binding_lin(Lin, Sx, St, yes, yes) := ~ord_subtract(Lin, ~ord_intersection(Sx, St)) :- !.
-mgu_binding_lin(Lin, Sx, _St, yes, _) := ~ord_subtract(Lin, Sx) :- !.
-mgu_binding_lin(Lin, _Sx, St, _, yes) := ~ord_subtract(Lin, St) :- !.
-mgu_binding_lin(Lin, Sx, St, _, _) := ~ord_subtract(Lin, ~ord_union(Sx, St)).
+mgu_binding_lin(Lin, Sx, St, yes, yes, Res) :- !,
+   ord_intersection(Sx, St, Sxt),
+   ord_subtract(Lin, Sxt, Res).
+mgu_binding_lin(Lin, Sx, _St, yes, _, Res) :- !,
+   ord_subtract(Lin, Sx, Res).
+mgu_binding_lin(Lin, _Sx, St, _, yes, Res) :- !,
+   ord_subtract(Lin, St, Res).
+mgu_binding_lin(Lin, Sx, St, _, _, Res) :-
+   ord_union(Sx, St, Sxt),
+   ord_subtract(Lin, Sxt, Res).
 
 %-------------------------------------------------------------------------
 % match(+Prime,+Pv,+Call,-Match)
@@ -389,17 +422,12 @@ match(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
-%-------------------------------------------------------------------------
-% ind(+Sh,?S,?T)
-%
-% Determines where S and T are definitely independent given the sharing
-% information in Sh.
-%-------------------------------------------------------------------------
-
 :- pred ind(+Sh, ?S, ?T)
    % I am not able to use as_sharing:nasub in the call assertion
    : term * term * term
-   + is_det.
+   + is_det
+   # "Determines whether the terms @var{S} and @var{T} are definitively
+    independent with respect to the sharing information in @var{Sh}".
 :- export(ind/3).
 
 ind(Sh, S, T) :-
@@ -409,51 +437,38 @@ ind(Sh, S, T) :-
    rel(Sh, Vt, Rel_t, _),
    ord_disjoint(Rel_s, Rel_t).
 
-%-------------------------------------------------------------------------
-% lin(+ShLin,?T)
-%
-% Determines whether the term T is definitvely linear with respect to
-% the sharing and linearity information in ShLin.
-%-------------------------------------------------------------------------
-
 :- pred lin(+ShLin, ?T)
    : asub * term
-   + is_det.
+   + is_det
+   # "Determines whether the term @var{T} is definitvely linear with respect to
+    the sharing and linearity information in @var{ShLin}.".
 :- export(lin/2).
 
 lin(ShLin, T) :-
    ShLin = (Sh, _),
    duplicate_vars(T, Vars_t, DVars_t),
-   nonlin_vars(ShLin, NGv, NLin),
+   nonlinground_vars(ShLin, NGv, NLin),
    ord_disjoint(Vars_t, NLin),
    all_couples(Vars_t, ind(Sh)),
    ord_disjoint(NGv, DVars_t).
 
-%-------------------------------------------------------------------------
-% nonlin_vars(+ShLin,-NGv,-NLin)
-%
-% Determines the set of non-linear and non-ground variables in ShLin.
-%-------------------------------------------------------------------------
-
-:- pred nonlin_vars(+ShLin, -NGv, -NLin)
-   : asub * ivar * ivar => (ordlist(var, NGv), ordlist(var, NLin))
-   + (not_fails, is_det).
-
-nonlin_vars((Sh, Lin), NGv, NLin) :-
-   vars(Sh, NGv),
-   ord_subtract(NGv, Lin, NLin).
-
-%-------------------------------------------------------------------------
-% nonlin_vars(+ShLin,-NLin)
-%
-% Determines the set of non-linear variables in ShLin.
-%-------------------------------------------------------------------------
-
 :- pred nonlin_vars(+ShLin, -NLin)
    : asub * ivar  => ordlist(var, NLin)
-   + (not_fails, is_det).
+   + (not_fails, is_det)
+   # "@var{NLin} is the set of non-linear variables in @var{ShLin}.".
 
-nonlin_vars(ShLin) := ~nonlin_vars(ShLin, _).
+nonlin_vars(ShLin, NLin) :-
+   nonlinground_vars(ShLin, _, NLin).
+
+:- pred nonlinground_vars(+ShLin, -NGv, -NLin)
+   : asub * ivar * ivar => (ordlist(var, NGv), ordlist(var, NLin))
+   + (not_fails, is_det)
+   # "@var{NLin} is the set of non-linear variables in @var{ShLin}, while
+   @var{NGv} is the set of non-ground variables.".
+
+nonlinground_vars((Sh, Lin), NGv, NLin) :-
+   vars(Sh, NGv),
+   ord_subtract(NGv, Lin, NLin).
 
 :- prop multiplicity(X)
    # "@var{X} is a non negative integer or the atom 'inf'".
@@ -474,7 +489,6 @@ chiMax(O, Lin, T, V) :-
 
 chiMax0([], _Lin, _Bt, M, M) :- !.
 chiMax0(_O, _Lin, [], M, M) :- !.
-chiMax0(_O, _Lin, _Bt, inf, inf) :- !.
 chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
    compare(Rel, X, Y),
    (
@@ -492,24 +506,24 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
          chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
    ).
 
-:- pred linearizable(+O, +Bt)
+:- pred linearizable(+O, +Bag)
    : ordlist(var) * isbag
    + is_det
-   # "Determines if sharing group @var{O} is linear w.r.t. the term
+   # "Determines if the sharing group @var{O} is linear w.r.t. the term
    represented by the bag of variables @var{Bag}, assuming all variables are linear.".
 :- export(linearizable/2).
 
-linearizable(O, Bt) :- linearizable0(O, Bt, 0).
+linearizable(O, Bag) :- linearizable0(O, Bag, 0).
 
 linearizable0([], _, _) :- !.
 linearizable0(_, [], _) :- !.
-linearizable0([X|RestO], [Y-N|RestBt], Status) :-
+linearizable0([X|RestO], [Y-N|RestBag], Status) :-
    compare(Rel, X, Y),
    (
       Rel = '=' ->
-         ( Status = 0, N = 1 ->  linearizable0(RestO, RestBt, 1) ; fail )
+         ( Status = 0, N = 1 ->  linearizable0(RestO, RestBag, 1) ; fail )
       ; Rel = '<' ->
-         linearizable0(RestO, [Y-N|RestBt], Status)
+         linearizable0(RestO, [Y-N|RestBag], Status)
       ; Rel = '>' ->
-         linearizable0([X|RestO], RestBt, Status)
+         linearizable0([X|RestO], RestBag, Status)
    ).

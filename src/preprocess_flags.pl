@@ -1111,6 +1111,11 @@ pp_flag(mgu_shlin_optimize, 'Choose the optimization for the mgu operation on sh
 current_pp_flags(  mgu_shlin_optimize   , optimal).
 valid_flag_values( mgu_shlin_optimize   , member(_,[optimal, noindcheck, off])).
 
+pp_flag(match_shlin_optimize).
+pp_flag(match_shlin_optimize, 'Choose the optimization for the match operation on sharin * lin').
+current_pp_flags(  match_shlin_optimize   , optimal).
+valid_flag_values( match_shlin_optimize   , member(_,[optimal, off])).
+
 % ---------------------------------------------------------------------------
 
 tmp_dir(source).

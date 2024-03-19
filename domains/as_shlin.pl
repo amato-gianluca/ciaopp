@@ -276,7 +276,6 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    # "Split the shring groups in @var{Sh} on the last four arguments
       according to their maximum multiplicity w.r.t. the set of linear
       variables @var{Lin} and the term represented by the bag of variables @var{Bt}.".
-:- export(mgu_shsplit/7).
 
 mgu_shsplit([], _Lin, _Bt, [], [], [], []).
 mgu_shsplit([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
@@ -407,7 +406,7 @@ mgu_binding_lin(Lin, Sx, St, _, _, Res) :-
    + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
-   current_pp_flag(mgu_shlin_optimize, optimal) ->
+   current_pp_flag(match_shlin_optimize, optimal) ->
       match_optimal(Prime, Pv, Call, Match)
    ;
       match_standard(Prime, Pv, Call, Match).
@@ -424,8 +423,6 @@ match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    vars(Match_sh, Match_noground),
    ord_intersection(Match_lin0, Match_noground, Match_lin).
 
-:- export(match_optimal/4).
-
 match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
    rel(Sh2, Pv, Sh2s, Sh2p),
    powerset(Sh2s, Sh2s_power),
@@ -437,8 +434,6 @@ match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
    ord_union(Lin1, Match_lin2, Match_lin3),
    ord_intersection(Match_lin3, ~vars(Match_sh), Match_lin).
 
-:- export(match_sbar/3).
-
 match_sbar([], _, []).
 match_sbar([B|Rest], Lin1, [B|Sbar]) :-
    ord_disjoint(B, Lin1), !,
@@ -446,16 +441,12 @@ match_sbar([B|Rest], Lin1, [B|Sbar]) :-
 match_sbar([_B|Rest], Lin1, Sbar) :-
    match_sbar(Rest, Lin1, Sbar).
 
-:- export(match_optimal0/8).
-
 match_optimal0([], _Lin1, _Pv, _Sh2s_power, _Lin2, _Sbar, [], []).
 match_optimal0([B|Rest], Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0) :-
    match_optimal0(Rest, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_shrest, Match_linrest),
    match_optimal1(B, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh1, Match_lin1),
    ord_union(Match_sh1, Match_shrest, Match_sh0),
    ord_union(Match_lin1, Match_linrest, Match_lin0).
-
-:- export(match_optimal1/8).
 
 match_optimal1(_B, _Lin1, _Pv, [], _Lin2, _Sbar, [], []) :- !.
 match_optimal1(B, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-

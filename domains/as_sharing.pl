@@ -1,4 +1,4 @@
-:- module(as_sharing, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
+:- module(as_sharing, [], [assertions, basicmodes, nativeprops, indexer]).
 
 :- use_package(debug).
 :- use_package(rtchecks).
@@ -299,15 +299,11 @@ match0([X|Rest], Sh1, Sv1, Match0, Match) :-
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
-%-------------------------------------------------------------------------
-% rel(+Sh,+Vars,-Rel,-NRel)
-%
-% Partition sharing groups in Sh in those which are disjoint from Vars
-% (NRel) and those which are not (Rel).
-%-------------------------------------------------------------------------
-
 :- pred rel(+Sh, +Vars, -Rel, -NRel)
-   : nasub * ordlist(var) * ivar * ivar => (nasub(Rel), nasub(NRel)).
+   : nasub * ordlist(var) * ivar * ivar => (nasub(Rel), nasub(NRel))
+   + (not_fails, is_det)
+   # "Partition sharing groups in @var{Sh} in those which are disjoint
+      from @var{Vars} (@var{NRel}) and those which are not (@var{Rel}).".
 :- export(rel/4).
 
 rel(Sh, [X], Rel, NRel) :-
@@ -319,15 +315,11 @@ rel(Sh, Vars, Rel, NRel) :-
    % alternative:
    % split_lists_from_list(Vars, Sh, Rel, NRel).
 
-%-------------------------------------------------------------------------
-% bin(+Sh1,+Sh2,-Bin)
-%
-% Bin is the binary union of Sh1 and Sh2.
-%-------------------------------------------------------------------------
-
 :- pred bin(Sh1, Sh2, Bin)
    : nasub * nasub * ivar => nasub(Bin)
-   + (not_fails, is_det).
+   + (not_fails, is_det)
+   # "@var{Bin} is binary union extended elementwise to sharing sets @var{Sh1}
+      and @var{Sh2}.".
 :- export(bin/3).
 
 bin(Sh1, Sh2, Bin) :-
@@ -336,19 +328,12 @@ bin(Sh1, Sh2, Bin) :-
    % setproduct_lists(Sh1, Sh2, Bin0, []),
    % sort(Bin0, Bin).
 
-:- pred bin0(Sh1, Sh2, Bin0, Bin)
-   : nasub * nasub * nasub * ivar => nasub(Bin)
-   + (not_fails, is_det).
-
 bin0([], _, Bin, Bin).
 bin0([X|Rest], Sh, Bin0, Bin) :-
    bin1(X, Sh, [], BinX),
    ord_union(Bin0, BinX, Bin1),
    bin0(Rest, Sh, Bin1, Bin).
 
-:- pred bin1(X, Sh, Bin0, Bin)
-   : ordnlist(var) * nasub * nasub * ivar => nasub(Bin)
-   + (not_fails, is_det).
 :- index bin1(?, +, ?, ?).
 
 bin1(_, [], Bin, Bin).
@@ -357,54 +342,44 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
    insert(Bin0, XY, Bin1),
    bin1(X, Rest, Bin1, Bin).
 
-:- pred binall(ShList, Bin)
+:- pred bin_all(ShList, Bin)
    : list(nasub) * ivar => nasub(Bin)
-   + (not_fails, is_det).
-:- export(binall/2).
+   + (not_fails, is_det)
+   # "@var{Bin} is the bin operator applies to all sharing sets in @var{ShList}.".
+:- export(bin_all/2).
 
-binall([], []).
-binall([X], X).
-binall([X,Y|Rest], Bin) :-
+bin_all([], []).
+bin_all([X], X).
+bin_all([X,Y|Rest], Bin) :-
    bin(X, Y, Bin0),
-   binall([Bin0|Rest], Bin).
-
-%-------------------------------------------------------------------------
-% star_union(+Sh,-Star)
-%
-% Star is the star union of the sharing groups in Sh.
-%-------------------------------------------------------------------------
+   bin_all([Bin0|Rest], Bin).
 
 :- pred star_union(+Sh, -Star)
    : nasub * ivar => nasub(Star)
-   + (not_fails, is_det).
+   + (not_fails, is_det)
+   # "@var{Star} is the star union of the sharing groups in @var{Sh}.".
 :- export(star_union/2).
 
-star_union(Sh) := ~closure_under_union(Sh).
-
-%-------------------------------------------------------------------------
-% vars(+Sh,-NGv)
-%
-% NGv is the set of non-ground variables in Sh.
-%-------------------------------------------------------------------------
+star_union(Sh, Star) :-
+   closure_under_union(Sh, Star).
 
 :- pred vars(+Sh, -NGv)
    : nasub * ivar
    => ( ordlist(var, NGv), same_vars_of(Sh, NGv) )
-   + (not_fails, is_det).
+   + (not_fails, is_det)
+   # "@var{NGv} is the set of non-ground variables in @var{Sh}.".
 :- export(vars/2).
 
-vars(Sh) := ~merge_list_of_lists(Sh).
-
-%-------------------------------------------------------------------------
-% gvars(+Sh,+Vars,-Gv)
-%
-% Gv is the set of variables in Vars which are ground w.r.t. Sh.
-%-------------------------------------------------------------------------
+vars(Sh, NGv) :-
+   merge_list_of_lists(Sh, NGv).
 
 :- pred gvars(+Sh, +Vars, -Gv)
    : nasub * {ordlist(var), superset_vars_of(Sh)} * ivar
    => ( ordlist(var, Gv), independent_from(Sh, Gv), superset_vars_of(Gv, Vars) )
-   + (not_fails, is_det).
+   + (not_fails, is_det)
+   # "@var{Gv} is the set of variables in @var{Vars} which are ground w.r.t. @var{Sh}".
 :- export(gvars/3).
 
-gvars(Sh, Vars) := ~ord_subtract(Vars, ~vars(Sh)).
+gvars(Sh, Vars, Gv) :-
+   vars(Sh, NGv),
+   ord_subtract(Vars, NGv, Gv).

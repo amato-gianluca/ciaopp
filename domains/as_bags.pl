@@ -1,13 +1,17 @@
-:- module(as_bags, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
+:- module(as_bags, [], [assertions, basicmodes, nativeprops, indexer]).
+
+:- use_package(debug).
+:- use_package(rtchecks).
 
 :- use_module(library(sets)).
 :- use_module(library(terms_vars)).
+:- use_module(domain(as_aux)).
 
 :- push_prolog_flag(read_hiord, on).
 
-:- prop isbag(+T, +X)
+:- prop isbag(+T, ?B)
    + is_det
-   # "The argument is a bag of elements of type T".
+   # "@var{B} is a bag of elements of type @var{T}.".
 :- export(isbag/2).
 :- index isbag(?, +).
 
@@ -21,27 +25,27 @@ isbag(T, [X1-V1,X2-V2|Rest]) :-
    T(X1),
    isbag([X2-V2|Rest]).
 
-:- prop isbag(+X)
+:- prop isbag(?B)
    + is_det
-   # "The argument is a bag".
+   # "@var{B} is a bag".
 :- export(isbag/1).
 
-isbag(X) :- isbag(term, X).
+isbag(B) :- isbag(term, B).
 
 :- pop_prolog_flag(read_hiord).
 
 :- prop bag_empty(?B)
-   :: isbag(B) => isbag(B)
-   + (is_det)
-   # "The result is the union of the two bags.".
+   => isbag(B)
+   + is_det
+   # "@var{B} is an empty bag".
 :- export(bag_empty/1).
 
 bag_empty([]).
 
 :- prop bag_support(+B, -S)
-   : isbag * ivar  => list(S).
+   : isbag * ivar => ordlist(S).
    + (not_fails, is_det)
-   # "S is the support of B.".
+   # "@var{S} is the support of @var{B}.".
 :- export(bag_support/2).
 
 bag_support([], []).
@@ -49,9 +53,10 @@ bag_support([X-_|RestB], [X|RestS]) :-
    bag_support(RestB, RestS).
 
 :- prop bag_from_set(+S, -B)
-   : list * ivar => isbag(B)
+   : ordlist * ivar => isbag(B)
    + (not_fails, is_det)
-   # "B is the bag corresponding to the set S.".
+   # "@var{B} is the bag corresponding to the set @var{S} where all
+   elements have multiplicity one.".
 :- export(bag_from_set/2).
 
 bag_from_set([], []).
@@ -61,7 +66,8 @@ bag_from_set([X|RestS], [X-1|RestB]) :-
 :- prop bag_from_list(+S, -B)
    : list * ivar => isbag(B)
    + (not_fails, is_det)
-   # "B is the bag corresponding to the listS.".
+   # "@var{B} is the bag corresponding to the list @var{S} where the
+   multiplicity of each element is the number of its occurrences in @var{S}.".
 :- export(bag_from_list/2).
 
 bag_from_list(S, B) :-
@@ -72,12 +78,11 @@ bag_from_list0([X|Rest], B0, B) :-
    bag_union(B0, [X-1], B1),
    bag_from_list0(Rest, B1, B).
 
-:- export(bag_union/3).
-
-:- pred bag_union(B1, B2, B)
+:- pred bag_union(+B1, +B2, -B)
    : isbag * isbag * ivar => isbag(B)
    + (not_fails, is_det)
-   # "The result is the union of the two bags.".
+   # "@var{B} is the multiset union of @var{B1} and @var{B2}.".
+:- export(bag_union/3).
 
 bag_union([], B2, B2).
 bag_union(B1, [], B1).
@@ -93,10 +98,10 @@ bag_union0(<, X1, V1, X2, V2, Rest1, Rest2, [X1-V1|Rest]) :-
 bag_union0(>, X1, V1, X2, V2, Rest1, Rest2, [X2-V2|Rest]) :-
    bag_union([X1-V1|Rest1], Rest2, Rest).
 
-:- pred bag_projection(B, S, Proj)
-   : isbag * isbag * ivar => isbag(B)
+:- pred bag_projection(+B, +S, -Proj)
+   : isbag * ordlist * ivar => isbag(B)
    + (not_fails, is_det)
-   # "The result is the projection of @var{B} on the set @var{S}.".
+   # "@var{Proj} is the projection of the bag @var{B} on the set of variables @var{S}.".
 :- export(bag_projection/3).
 
 bag_projection([], _S, []).
@@ -112,12 +117,12 @@ bag_projection0(<, _X, _V, RestB, Y, RestS, B) :-
 bag_projection0(>, X, V, RestB, _Y, RestS, B) :-
    bag_projection([X-V|RestB], RestS, B).
 
-:- pred bag_vars(?T, +B)
+:- pred bag_vars(?T, -B)
    : term * ivar => isbag(B)
    + (not_fails, is_det)
-   # "@var{B} is the bag of variables in @var{T}.".
+   # "@var{B} is the bag of variables occuring in @var{T}.".
 :- export(bag_vars/2).
 
 bag_vars(T, B) :-
-    varsbag(T, Vars, []),
-    bag_from_list(Vars, B).
+   varsbag(T, Vars, []),
+   bag_from_list(Vars, B).

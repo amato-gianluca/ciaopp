@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(engine(io_basic)).
+:- use_module(engine(io_basic)).
 
 :- doc(title, "sharing * linarity abstract domain").
 :- doc(module,"
@@ -432,8 +432,10 @@ match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
    match_sbar(Sh2s, Lin1, Sbar),
    match_optimal0(Sh1, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0),
    ord_union(Sh2p, Match_sh0, Match_sh),
-   ord_intersect_all(Match_lin0, Match_lin1),
-   ord_union(Lin1, Match_lin1, Match_lin).
+   ( Sh2p = [] -> Match_lin1 = Match_lin0 ; insert(Match_lin0, Lin2, Match_lin1)),
+   ord_intersect_all(Match_lin1, Match_lin2),
+   ord_union(Lin1, Match_lin2, Match_lin3),
+   ord_intersection(Match_lin3, ~vars(Match_sh), Match_lin).
 
 :- export(match_sbar/3).
 
@@ -447,27 +449,32 @@ match_sbar([_B|Rest], Lin1, Sbar) :-
 :- export(match_optimal0/8).
 
 match_optimal0([], _Lin1, _Pv, _Sh2s_power, _Lin2, _Sbar, [], []).
-match_optimal0([O|Rest], Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0) :-
+match_optimal0([B|Rest], Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0) :-
    match_optimal0(Rest, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_shrest, Match_linrest),
-   match_optimal1(O, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh1, Match_lin1),
+   match_optimal1(B, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh1, Match_lin1),
    ord_union(Match_sh1, Match_shrest, Match_sh0),
    ord_union(Match_lin1, Match_linrest, Match_lin0).
 
 :- export(match_optimal1/8).
 
-match_optimal1(_O, _Lin1, _Pv, [], _Lin2, _Sbar, [], []).
-match_optimal1(O, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
-   match_optimal1(O, Lin1, Pv, Rest, Lin2, Sbar, Match_sh_rest, Match_lin_rest),
+match_optimal1(_B, _Lin1, _Pv, [], _Lin2, _Sbar, [], []) :- !.
+match_optimal1(B, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
    nl(X, NLX),
    ord_disjoint(NLX, Lin1),
    merge_list_of_lists(X, UX),
-   ord_intersection(UX, Pv, O),
-   ord_union(O, UX, Match_first0),
+   ord_intersection(UX, Pv, UXPv),
+   UXPv == B,
+   !,
+   ord_union(B, UX, Match_first0),
    ord_subtract(Lin2, NLX, Match_lin1),
-   ord_intersection(UX, Sbar, Match_lin2),
-   ord_subtract(Match_lin1, Match_lin2, Match_lin0),
-   ord_union(Match_first0, Match_sh_rest, Match_sh),
-   ord_union(Match_lin0, Match_lin_rest, Match_lin).
+   ord_intersection(X, Sbar, Match_lin2),
+   merge_list_of_lists(Match_lin2, Match_lin3),
+   ord_subtract(Match_lin1, Match_lin3, Match_lin0),
+   match_optimal1(B, Lin1, Pv, Rest, Lin2, Sbar, Match_sh_rest, Match_lin_rest),
+   insert(Match_sh_rest, Match_first0, Match_sh),
+   insert(Match_lin_rest, Match_lin0, Match_lin).
+match_optimal1(B, Lin1,  Pv, [_X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
+   match_optimal1(B, Lin1, Pv, Rest, Lin2, Sbar, Match_sh, Match_lin).
 
 :- export(nl/2).
 nl([], []).

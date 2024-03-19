@@ -406,7 +406,13 @@ mgu_binding_lin(Lin, Sx, St, _, _, Res) :-
    : nasub * {ordlist(var), superset_vars_of(Prime)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-match(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
+match(Prime, Pv, Call, Match) :-
+   current_pp_flag(mgu_shlin_optimize, optimal) ->
+      match_optimal(Prime, Pv, Call, Match)
+   ;
+      match_standard(Prime, Pv, Call, Match).
+
+match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    Prime = (Prime_sh, Prime_lin),
    as_sharing:match(Prime_sh, Pv, Call_sh, Match_sh), % we do not use linearity here
    nonlin_vars(Prime, Prime_nolin),
@@ -417,6 +423,64 @@ match(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    ord_union(Prime_lin, Call_lin1, Match_lin0),
    vars(Match_sh, Match_noground),
    ord_intersection(Match_lin0, Match_noground, Match_lin).
+
+:- export(match_optimal/4).
+
+match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
+   rel(Sh2, Pv, Sh2s, Sh2p),
+   powerset(Sh2s, Sh2s_power),
+   match_sbar(Sh2s, Lin1, Sbar),
+   match_optimal0(Sh1, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0),
+   ord_union(Sh2p, Match_sh0, Match_sh),
+   ord_intersect_all(Match_lin0, Match_lin1),
+   ord_union(Lin1, Match_lin1, Match_lin).
+
+:- export(match_sbar/3).
+
+match_sbar([], _, []).
+match_sbar([B|Rest], Lin1, [B|Sbar]) :-
+   ord_disjoint(B, Lin1), !,
+   match_sbar(Rest, Lin1, Sbar).
+match_sbar([_B|Rest], Lin1, Sbar) :-
+   match_sbar(Rest, Lin1, Sbar).
+
+:- export(match_optimal0/8).
+
+match_optimal0([], _Lin1, _Pv, _Sh2s_power, _Lin2, _Sbar, [], []).
+match_optimal0([O|Rest], Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0) :-
+   match_optimal0(Rest, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_shrest, Match_linrest),
+   match_optimal1(O, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh1, Match_lin1),
+   ord_union(Match_sh1, Match_shrest, Match_sh0),
+   ord_union(Match_lin1, Match_linrest, Match_lin0).
+
+:- export(match_optimal1/8).
+
+match_optimal1(_O, _Lin1, _Pv, [], _Lin2, _Sbar, [], []).
+match_optimal1(O, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
+   match_optimal1(O, Lin1, Pv, Rest, Lin2, Sbar, Match_sh_rest, Match_lin_rest),
+   nl(X, NLX),
+   ord_disjoint(NLX, Lin1),
+   merge_list_of_lists(X, UX),
+   ord_intersection(UX, Pv, O),
+   ord_union(O, UX, Match_first0),
+   ord_subtract(Lin2, NLX, Match_lin1),
+   ord_intersection(UX, Sbar, Match_lin2),
+   ord_subtract(Match_lin1, Match_lin2, Match_lin0),
+   ord_union(Match_first0, Match_sh_rest, Match_sh),
+   ord_union(Match_lin0, Match_lin_rest, Match_lin).
+
+:- export(nl/2).
+nl([], []).
+nl([X|Rest], NL) :-
+   nl(Rest, NL0),
+   nl0(X, Rest, NL1),
+   ord_union(NL0, NL1, NL).
+
+nl0(_X1, [], []).
+nl0(X1, [X2 | Rest], NL) :-
+   nl0(X1, Rest, NL0),
+   ord_intersection(X1, X2, X),
+   ord_union(X, NL0, NL).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

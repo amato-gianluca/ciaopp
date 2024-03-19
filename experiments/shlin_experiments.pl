@@ -37,4 +37,17 @@ example4(V, W, X, Y, Z) :-
     X = f(Y, Z).
     % [V,X,Y] is not possible ma proving it requires option mgu_shlin_optimize=optimal
 
+% Section 6.3 new paper on matching
+
+% It does not seem possible to replicate the example, due to the fact that
+% matching is used in PLAI differently than in the paper.
+
+:- entry example5(X, Y, Z): (mshare([[X, Y], [Y, Z]]), linear([X, Y, Z])).
+
+example5(X, Y, Z) :-
+    mymember(X, [Y]).
+
+mymember(U, [U|V]) :- nothing.
+mymember(U, [V|W]) :- mymember(U, W).
+
 nothing.

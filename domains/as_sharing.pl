@@ -226,7 +226,7 @@ mgu0(Sh, Fv, [X=T|Rest], MGU) :-
 % unification. Fv is the set of free variables before the unification.
 %-------------------------------------------------------------------------
 
-:- pred mgu_binding(+Sh, ?Vars_x, ?Vars_t, Fv, MGU_sh, MGU_fr)
+:- pred mgu_binding(+Sh, ?Vars_x, ?Vars_t, +Fv, -MGU_sh, -MGU_fr)
    : nasub * var * term * ordlist(var) * ivar * ivar => (nasub(MGU_sh), ordlist(var, MGU_fr))
    + (not_fails, is_det).
 
@@ -315,7 +315,7 @@ rel(Sh, Vars, Rel, NRel) :-
    % alternative:
    % split_lists_from_list(Vars, Sh, Rel, NRel).
 
-:- pred bin(Sh1, Sh2, Bin)
+:- pred bin(+Sh1, +Sh2, -Bin)
    : nasub * nasub * ivar => nasub(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is binary union extended elementwise to sharing sets @var{Sh1}
@@ -342,7 +342,7 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
    insert(Bin0, XY, Bin1),
    bin1(X, Rest, Bin1, Bin).
 
-:- pred bin_all(ShList, Bin)
+:- pred bin_all(+ShList, -Bin)
    : list(nasub) * ivar => nasub(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is the bin operator applies to all sharing sets in @var{ShList}.".

@@ -162,7 +162,7 @@ exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
 
 :- dom_impl(_, compute_lub/2, [noq]).
 :- pred compute_lub(+ListASub, -LubASub)
-   : nlist(asub) * ivar => asub(LubASub)
+   : list(asub) * ivar => asub(LubASub)
    + (not_fails, is_det).
 
 compute_lub([ASub], ASub).

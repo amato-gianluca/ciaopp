@@ -51,3 +51,12 @@ mymember(U, [U|V]) :- nothing.
 mymember(U, [V|W]) :- mymember(U, W).
 
 nothing.
+
+% A new example to test the optimal matching
+:- entry example6(X, Y, Z): (mshare([[X, Y], [X, Z]]), linear([X])).
+
+example6(X, Y, Z) :-
+    q(X).
+    % Y and Z cannot share here, but proving this requires matching_shlin_optimize=optimal.
+
+q(X).

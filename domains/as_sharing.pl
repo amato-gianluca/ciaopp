@@ -97,6 +97,18 @@ nasub_u(Sh) :-
    % note that list(ordlist(var)) does not work
    list(list(var), Sh).
 
+:- prop asub_sh(ASub) # "@var{ASub} is a non empty abstract substitution".
+:- export(asub_sh/1).
+
+asub_sh(Sh) :-
+   nasub(Sh).
+
+:- prop asub_sh_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
+:- export(asub_sh_u/1).
+
+asub_sh_u(Sh) :-
+   nasub_u(Sh).
+
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
 %-------------------------------------------------------------------------

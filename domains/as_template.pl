@@ -350,3 +350,7 @@ glb(ASub0, ASub1, Glb):-
 :- redefining(meet/3).
 :- redefining(mgu/4).
 :- redefining(match/4).
+:- redefining(vars/2).
+:- redefining(linvars/2).
+:- redefining(groundvars/2).
+:- redefining(bin/3).

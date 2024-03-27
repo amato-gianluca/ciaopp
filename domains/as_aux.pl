@@ -40,6 +40,7 @@ ordlist(T, S) :-
 
 :- prop ordlist(T)
    # "@var{S} is an ordered list of".
+:- meta_predicate ordlist(pred(1),?).
 :- export(ordlist/1).
 
 ordlist(S) :-

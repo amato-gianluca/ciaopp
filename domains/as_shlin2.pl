@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(engine(io_basic)).
+:- use_module(engine(io_basic)).
 
 :- doc(title, "ShLin2 abstract domain").
 :- doc(module,"
@@ -63,8 +63,11 @@ input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
    : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
    + (not_fails, is_det).
 
-input_user_interface((Sh, Lin), _Qv, ASub, _Sg, _MaybeCallASub):-
-   from_shlin(Sh, Lin, ASub).
+input_user_interface((Sh, Lin), Qv, ASub, Sg, MaybeCallASub):-
+   sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
+   as_sharing:vars(ASub_sh, Vsh),
+   ord_intersection(Lin, Vsh, ASub_lin),
+   from_shlin(ASub_sh, ASub_lin, ASub).
 
 %-------------------------------------------------------------------------
 % asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)
@@ -159,8 +162,8 @@ nasub_u(ASub) :-
 
 :- export(normalize/2).
 :- test normalize(ASub_u, ASub): (ASub_u = []) => (ASub = []) + (not_fails, is_det).
-:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([], [])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
-:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([], []), ([X, Y], [X, Y])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
+:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
+:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([X, Y], [X, Y])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
 :- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X, Y]), ([X, Y], [Y])]) => (ASub = [([X, Y], [Y])]) + (not_fails, is_det).
 
 normalize(ASub_u, ASub) :-
@@ -246,12 +249,13 @@ augment0([X|Rest], [([X], [X])|RestAug]) :-
 
 :- export(project/3).
 :- test project(ASub, Vars, Proj): (ASub = [], Vars = [X, Y]) => (Proj = []) + (not_fails, is_det).
-:- test project(ASub, Vars, Proj): (ASub = [([X, Y, Z], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y]) => (Proj = [([X, Y], [X, Y])]) + (not_fails, is_det).
+:- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y]) => (Proj = [([X, Y], [X, Y])]) + (not_fails, is_det).
 :- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X]), ([X, Y, Z], [X, Y])], Vars = [X, Y]) => (Proj = [([X, Y], [X])]) + (not_fails, is_det).
 
 project(ASub, Vars, Proj) :-
    project0(ASub, Vars, Proj0),
-   normalize(Proj0, Proj).
+   sort(Proj0, Proj1),
+   remove_redundants(Proj1, Proj).
 
 project0([], _Vars, []).
 project0([(Sh, Lin)|Rest], Vars, [(Proj_sh, Proj_lin)|Proj_rest]) :-

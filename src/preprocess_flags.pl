@@ -71,7 +71,7 @@ persistent_dir(dbdir, '~/.ciao.d/ciaopp_flags').
 
 % :- multifile pp_flag/2.
 :- discontiguous pp_flag/2.
-:- pred pp_flag(Name,Help) 
+:- pred pp_flag(Name,Help)
     # "@var{Name} is a valid preprocess flag.@var{Help} is a
       description of what @var{Name} does.".
 
@@ -80,17 +80,17 @@ persistent_dir(dbdir, '~/.ciao.d/ciaopp_flags').
 
 % :- multifile current_pp_flags/2,
 :- discontiguous current_pp_flags/2.
-:- pred current_pp_flags(Name,Value) 
+:- pred current_pp_flags(Name,Value)
     :: pp_flag * flag_value
-    # "Current proprocess flags. These facts can be dynamically updated 
-       using @tt{set_pp_flag/2}. Initial facts are flag values by 
+    # "Current proprocess flags. These facts can be dynamically updated
+       using @tt{set_pp_flag/2}. Initial facts are flag values by
        default.".
 
 :- data current_pp_flags/2.
 
 % :- multifile valid_flag_values/2.
 :- discontiguous valid_flag_values/2.
-:- pred valid_flag_values(Name,Value_Checker) 
+:- pred valid_flag_values(Name,Value_Checker)
     :: pp_flag * cgoal
     # "@var{Value_Checker} is a goal that checks that a value given as
        first argument of this term is a valid value for @var{Name}.".
@@ -146,7 +146,7 @@ current_pp_flags(  ctchecks_intervals  , on). % TODO:[new-resources] was 'off' b
 valid_flag_values( ctchecks_intervals  , member(_, [on, off])).
 
 pp_flag(dump_pred).
-pp_flag(dump_pred, 'Whether to include predicate information in .dump files.'). 
+pp_flag(dump_pred, 'Whether to include predicate information in .dump files.').
 current_pp_flags(  dump_pred  , all).
 valid_flag_values( dump_pred  , member(_  , [all, nodep, off])).
 
@@ -171,8 +171,8 @@ valid_flag_values( inter_all   , member(_,
 current_pp_flags(  inter_all   , analyze).
 valid_flag_values( inter_all   , member(_,
                                             [
-                                             analyze, 
-                                             check_assertions, 
+                                             analyze,
+                                             check_assertions,
                                              check_certificate,
                                              optimize])).
 :- endif.
@@ -485,17 +485,17 @@ current_pp_flags(  depth              , 1).
 valid_flag_values( depth              , nnegint(_)).
 
 pp_flag(unf_depth).
-pp_flag(unf_depth, 'Numeric value indicating the depth limit for unfolding.'). 
+pp_flag(unf_depth, 'Numeric value indicating the depth limit for unfolding.').
 current_pp_flags(  unf_depth          , 1).
 valid_flag_values( unf_depth          , nnegint(_)).
 
 pp_flag(unf_bra_fac).
-pp_flag(unf_bra_fac, 'Numeric value indicating the maximal branching factor for non-leftmost unfolding.'). 
+pp_flag(unf_bra_fac, 'Numeric value indicating the maximal branching factor for non-leftmost unfolding.').
 current_pp_flags(  unf_bra_fac        , 1).
 valid_flag_values( unf_bra_fac        , nnegint(_)).
 
 pp_flag(sim_ari_exp).
-pp_flag(sim_ari_exp, 'Whether we should try to simplify arithmetic expressions or not.'). 
+pp_flag(sim_ari_exp, 'Whether we should try to simplify arithmetic expressions or not.').
 current_pp_flags(  sim_ari_exp        , pre).
 valid_flag_values( sim_ari_exp        , member(_,[off, pre, post, both]) ).
 
@@ -511,12 +511,12 @@ valid_flag_values( error_log          , member(_,[off, on])).
 
 pp_flag(fixpoint).
 pp_flag(fixpoint, 'Determines the fixpoint algorithm to be used during analysis.').
-current_pp_flags(  fixpoint           , plai). 
+current_pp_flags(  fixpoint           , plai).
 :- if(defined(has_ciaopp_extra)).
 valid_flag_values( fixpoint           , member(_,[plai,
                                               plai_gfp, plai_sp, % TODO:[new-resources] from new-resources branch, check
                                               dd, di, check_di,
-                                              check_di2, check_di3, 
+                                              check_di2, check_di3,
                                               check_di4, check_di5,
                                               poly_spec, % (new in has_ciaopp_extra)
                                               check_reduc_di,
@@ -525,7 +525,7 @@ valid_flag_values( fixpoint           , member(_,[plai,
 valid_flag_values( fixpoint           , member(_,[plai,
                                               plai_gfp, plai_sp, % TODO:[new-resources] from new-resources branch, check
                                               dd, di, check_di,
-                                              check_di2, check_di3, 
+                                              check_di2, check_di3,
                                               check_di4, check_di5,
                                               check_reduc_di,
                                               bu])).
@@ -587,7 +587,7 @@ valid_flag_values( intermod     , member(_, [off,on,auto])). % TODO: document 'a
 
 %% Menu options to select the modules to analyze in intermodular analysis
 pp_flag(mnu_modules_to_analyze).
-pp_flag(mnu_modules_to_analyze, 
+pp_flag(mnu_modules_to_analyze,
  'Selects which modules are to be analyzed during intermodular analysis.').
 current_pp_flags(  mnu_modules_to_analyze, all).
 valid_flag_values( mnu_modules_to_analyze, member(_, [current,all])).
@@ -634,9 +634,9 @@ valid_flag_values( use_check_as_trust , member(_, [off,on])).
 pp_flag(success_policy).
 pp_flag(success_policy, 'The policy for obtaining success information for imported predicates during inter-modular analysis.').
 current_pp_flags(  success_policy   , over_all).
-valid_flag_values( success_policy   , member(_, [over_best, over_first, over_all, 
-                                             top, under_first, under_best, 
-                                             under_all, bottom, bottom_up])). 
+valid_flag_values( success_policy   , member(_, [over_best, over_first, over_all,
+                                             top, under_first, under_best,
+                                             under_all, bottom, bottom_up])).
 
 pp_flag(ext_policy).
 pp_flag(ext_policy, 'Entries and successes for analysis.').
@@ -653,18 +653,18 @@ valid_flag_values(module_loading  , member(_, [one,all,threshold,threshold_scc])
 pp_flag(initial_guess).
 pp_flag(initial_guess, 'The policy for obtaining initial guess when computing the analysis of a predicate from the current module.').
 current_pp_flags(  initial_guess     , bottom).
-valid_flag_values( initial_guess     , member(_, [botfirst, botbest, botall, 
-                                               bottom])). 
+valid_flag_values( initial_guess     , member(_, [botfirst, botbest, botall,
+                                               bottom])).
 
 pp_flag(entry_policy).
 pp_flag(entry_policy, 'The policy for obtaining entry call patterns for exported predicates during inter-modular analysis.').
 current_pp_flags(  entry_policy       , all).
-valid_flag_values( entry_policy       , member(_, [all,top_level,force,force_assrt])). 
+valid_flag_values( entry_policy       , member(_, [all,top_level,force,force_assrt])).
 
 pp_flag(interleave_an_check).
 pp_flag(interleave_an_check, 'Whether to interleave analysis and checking during modular analysis or not.').
 current_pp_flags(  interleave_an_check       , off).
-valid_flag_values( interleave_an_check       , member(_, [on,off])). 
+valid_flag_values( interleave_an_check       , member(_, [on,off])).
 
 pp_flag(type_eval).
 pp_flag(type_eval, 'Whether to attempt concrete evaluation of types being inferred').
@@ -705,7 +705,7 @@ current_pp_flags(  local_control      , off).
 valid_flag_values( local_control      , member(_, [off, orig, inst, det, det_la,
                                               depth, first_sol,first_sol_d,
                                               all_sol, hom_emb,hom_emb_anc,
-                                              hom_emb_as, df_hom_emb_as, 
+                                              hom_emb_as, df_hom_emb_as,
                                               df_tree_hom_emb, df_hom_emb,
                                               decompile,df_hom_emb_as_orig])).
 
@@ -794,7 +794,7 @@ current_pp_flags(  incremental        , off).
 valid_flag_values( incremental        , member(_, [off,on])).
 
 pp_flag(del_strategy).
-pp_flag(del_strategy, 'Whether to use a top_down or a bottom_up deletion strategy. This flag is used only with incremental analysis. It can be changed between incremental analyses.'). 
+pp_flag(del_strategy, 'Whether to use a top_down or a bottom_up deletion strategy. This flag is used only with incremental analysis. It can be changed between incremental analyses.').
 current_pp_flags(  del_strategy       , top_down).
 valid_flag_values( del_strategy       , member(_, [top_down,bottom_up,bottom_up_cls])).
 
@@ -819,7 +819,7 @@ pp_flag(intermod_scheduling).
 pp_flag(intermod_scheduling, 'Global scheduling policy to be used in intermodular analysis.').
 current_pp_flags(  intermod_scheduling  , naive_bottom_up).
 valid_flag_values( intermod_scheduling  , member(_, [depth_first,
-    abs_depth_first, naive_top_down, naive_bottom_up, 
+    abs_depth_first, naive_top_down, naive_bottom_up,
     top_down_preanalysis, bottom_up_preanalysis])).
 
 pp_flag(widencall).
@@ -892,7 +892,7 @@ valid_flag_values( bshare_option  , member(_, [bSH,tSH,tNSH])).
 
 :- if(defined(has_ciaopp_java)).
 pp_flag(oo_types_dyn_info).
-pp_flag(oo_types_dyn_info, 'When analyzing types in Java-like programs, a value [off] relies on variable declaration; [on] forces more precise analysis.').  
+pp_flag(oo_types_dyn_info, 'When analyzing types in Java-like programs, a value [off] relies on variable declaration; [on] forces more precise analysis.').
 current_pp_flags(   oo_types_dyn_info,on).
 valid_flag_values( oo_types_dyn_info  , member(_, [off,on])).
 :- endif.
@@ -1000,7 +1000,7 @@ valid_flag_values(external_diff, atm(_)).
 %pp%  predicates (best available - analysis + assertions, or assertions)').
 %pp%  current_pp_flags(  ct_success_policy  , assrt).
 %pp%  valid_flag_values( ct_success_policy  , member(_, [assrt,best])).
-%pp%  
+%pp%
 %pp%  pp_flag(ct_entry_policy).
 %pp%  pp_flag(ct_entry_policy, 'Controls the source of call patterns \
 %pp%  of exported predicates (best available - analysis + assertions, or assertions)').
@@ -1146,6 +1146,7 @@ modeanalysis(sharefree_clique).
 modeanalysis(sharefree_clique_def).
 modeanalysis(as_sharing).
 modeanalysis(as_shlin).
+modeanalysis(as_shlin2).
 % structure
 modeanalysis(aeq).
 modeanalysis(depthk).
@@ -1190,7 +1191,7 @@ sublist2(X, L) :-
     sublist(X, L).
 
 %%------------------------------------------------------------------------
-:- regtype flag_value(V)  
+:- regtype flag_value(V)
     # "@var{V} is a value for a flag.".
 
 flag_value(X) :- atm(X).
@@ -1209,7 +1210,7 @@ current_pp_flag(Name,Value):-
     current_pp_flags(Name,Value).
 
 %------------------------------------------------------------------------
-:- pred set_pp_flag(Name,Value) 
+:- pred set_pp_flag(Name,Value)
     : ( pp_flag(Name) , valid_flag_value(Name,Value))
     # "Sets @var{Value} for preprocessor flag @var{Name}.".
 
@@ -1227,18 +1228,18 @@ set_pp_flag(Name,Value):-
 
 %%------------------------------------------------------------------------
 
-:- prop valid_flag_value(Name,Value) 
+:- prop valid_flag_value(Name,Value)
     : pp_flag * flag_value
     # "@var{Value} is a valid value for preprocessor flag @var{Name}.".
 
 % more kludges
-valid_flag_value(analysis_info,Value):- 
+valid_flag_value(analysis_info,Value):-
     !,
     valid_flag_value(dump_ai,Value).
 
 valid_flag_value(Name,Value):-
     valid_flag_values(Name,ValGen),
-    arg(1,ValGen,Value),           
+    arg(1,ValGen,Value),
     call(ValGen).
 
 :- data old_flag/2.

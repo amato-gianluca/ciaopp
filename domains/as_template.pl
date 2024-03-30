@@ -198,7 +198,21 @@ compute_lub_el(ASub1, ASub2, Lub) :-
 
 extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
-   match(Prime, Sv, Call, Succ).
+   ( current_pp_flag(extend_implementation, mgu) ->
+      % TODO: replace varset with a more efficient implementation
+      varset(Call, Vars),
+      copy_term_nat((Prime, Sv), (Prime0, Sv0)),
+      build_unifier(Sv, Sv0, MGU),
+      join(Prime0, Call, CallExtended),
+      mgu(CallExtended, [], MGU, Succ0),
+      project(Succ0, Vars, Succ)
+   ;
+      match(Prime, Sv, Call, Succ)
+   ).
+
+build_unifier([], [], []).
+build_unifier([V|Rest], [V0|Rest0], [V=V0|RestMGU]) :-
+   build_unifier(Rest, Rest0, RestMGU).
 
 %-------------------------------------------------------------------------
 % call_to_success_fact(+Sg,+Hv,+Head,+K,+Sv,+Call,+Proj,-Prime,-Succ)
@@ -283,9 +297,9 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
 
 % TODO: Optimize using a custom implementation
 
-unknown_call(_Sg, Vars, Call, Succ) :-
+unknown_call(Sg, Vars, Call, Succ) :-
    top(Vars, Top),
-   match(Top, Vars, Call, Succ).
+   extend(Sg, Top, Vars, Call, Succ).
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)

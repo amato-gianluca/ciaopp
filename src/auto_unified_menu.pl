@@ -23,6 +23,7 @@ all, 'Action'       # inter_all  - analyze_check :: all_menu_branch.
 
 ~munified(0), 'Abstract domain selection' # dom_sel          - auto   .
 ~munified(0), '| Aliasing/Modes'          # modes            - shfr   <- dom_manual.
+~munified(0), '| Extend implementation'   # extend_implementation - matching  <- dom_as.
 ~munified(0), '| Optimize mgu for Sharing' # mgu_sh_optimize - on  <- dom_as_sharing.
 ~munified(0), '| Optimize mgu for Sharin * Lin' # mgu_shlin_optimize - optimal  <- dom_as_shlin.
 ~munified(0), '| Optimize match for Sharin * Lin' # match_shlin_optimize - optimal  <- dom_as_shlin.

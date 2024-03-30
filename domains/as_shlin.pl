@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-:- use_module(engine(io_basic)).
+%:- use_module(engine(io_basic)).
 
 :- doc(title, "sharing * linarity abstract domain").
 :- doc(module,"

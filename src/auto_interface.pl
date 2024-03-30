@@ -564,6 +564,10 @@ guard dom_manual(X) :-
     member(dom_sel=I, X),
     I == manual.
 
+guard dom_as(X) :-
+    member(modes=M, X),
+    member(M, [as_sharing, as_shlin, as_shlin2]).
+
 guard dom_as_sharing(X) :-
     member(modes=M, X),
     M == as_sharing.

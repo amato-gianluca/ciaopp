@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-:- use_module(engine(io_basic)).
+%:- use_module(engine(io_basic)).
 
 :- doc(title, "ShLin2 abstract domain").
 :- doc(module,"
@@ -408,17 +408,8 @@ mgu_binding(ASub, X, T, MGU0) :-
    : (Prime=[([X, Y],[])], Pv=[X, Y, Z], Call=[([X, Y], [X]), ([Y, U], [U]), ([Z, U], []), ([U],[U])])
    => (Match=[([X, Y],[]), ([X, Y, U],[]), ([U],[U])]) + (not_fails, is_det).
 
-match(Prime, Pv, Call, Match) :-
-   vars(Call, Vars),
-   copy_term_nat((Prime, Pv), (Prime0, Pv0)),
-   build_unifier(Pv, Pv0, MGU),
-   join(Prime0, Call, CallExtended),
-   mgu(CallExtended, [], MGU, Match0),
-   project(Match0, Vars, Match).
-
-build_unifier([], [], []).
-build_unifier([V|Rest], [V0|Rest0], [V=V0|RestMGU]) :-
-   build_unifier(Rest, Rest0, RestMGU).
+match(_Prime, _Pv, _Call, _Match) :-
+   fail.
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

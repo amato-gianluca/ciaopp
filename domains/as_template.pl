@@ -203,7 +203,9 @@ extend(_Sg, Prime, Sv, Call, Succ) :-
       varset(Call, Vars),
       copy_term_nat((Prime, Sv), (Prime0, Sv0)),
       build_unifier(Sv, Sv0, MGU),
-      join(Prime0, Call, CallExtended),
+      % TODO: replace sort with a more specific implementation
+      sort(Prime0, Prime1),
+      join(Prime1, Call, CallExtended),
       mgu(CallExtended, [], MGU, Succ0),
       project(Succ0, Vars, Succ)
    ;

@@ -408,8 +408,38 @@ mgu_binding(ASub, X, T, MGU0) :-
    : (Prime=[([X, Y],[])], Pv=[X, Y, Z], Call=[([X, Y], [X]), ([Y, U], [U]), ([Z, U], []), ([U],[U])])
    => (Match=[([X, Y],[]), ([X, Y, U],[]), ([U],[U])]) + (not_fails, is_det).
 
-match(_Prime, _Pv, _Call, _Match) :-
-   fail.
+match(Prime, Pv, Call, Match) :-
+   rel(Call, Pv, NRel, Rel),
+   relbar(Rel, Pv, Relbar),
+   match0(Prime, Lv, Rel, Relbar, Match0,),
+
+match0([], _Pv, _Rel, _Relbar, []).
+match0([(Sh, Lin)|Rest], Pv, Rel, Relbar, [Match|RestMatch]) :-
+   match1(Sh, Lin, Pv, Call, Match),
+   match0(Rest, Pv, Call, RestMatch).
+
+match1(Sh, Lin, Pv, Rel, Relbar, Match) :-
+   star_union(Rel, Rel_star),
+   match2(Sh, Lin, Pv, Rel_star, Relbar, Match)
+
+match2(_Sh, _Lin, _Pv, [], _Relbar, []).
+match2(Sh, Lin, Pv, [(X_sh, X_lin)|Rest_rel_star], Relbar, [Res|RestRes]) :-
+   Sh == X_sh,
+   ord_subset(Lin, X_lin),
+   match_meet(Sh, Lin, X_sh, X_lin, Pv, Res_sh, Res_lin),
+
+match_meet(Lin1, Lin2, Vars1, Lin) :-
+   ord_intersection(Lin1, Lin2, Lina),
+   ord_intersection(Lin2, Vars, Linb),
+   ord_union(Lina, Linb, Lin).
+
+relbar([], Vars, []).
+relbar([(Sh, Lin)|Rest], Vars, [(Sh, Lin)|RestBar]) :-
+   ord_disjoint(Vars, Lin), !,
+   relbar(Rest, Vars, RestBar).
+relbar([(Sh, Lin)|Rest], Vars, RestBar) :-
+   relbar(Rest, Vars, RestBar).
+
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
@@ -579,3 +609,25 @@ star_union(ASub, Star):-
    sharing(ASub, Sh),
    as_sharing:star_union(Sh, ShStar),
    from_sharing(ShStar, Star).
+
+:- pred rel(+ASub, +Vars, -NRel, -Rel)
+   : nasub * ordlist(var) * ivar * ivar => (nasub(NRel), nasub(Rel))
+   + (not_fails, is_det)
+   # "@var{Rel} is the set of relevant sharing groups in @var{ASub} wrt the variables in @var{Vars}.".
+
+:- export(rel/4).
+:- test rel(ASub, Vars, NRel, Rel): (ASub = [], Vars = [X, Y]) => (Rel = []) + (not_fails, is_det).
+:- test rel(ASub, Vars, NRel, Rel):
+   (ASub = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y])
+   => (Rel = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z])]) + (not_fails, is_det).
+
+rel([], _Vars, [], []).
+rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
+   ( ord_disjoint(Sh, Vars) ->
+      NRel = [(Sh, Lin)|NRel0],
+      Rel = Rel0
+   ;
+      NRel = NRel0,
+      Rel = [(Sh, Lin)|Rel0]
+   ),
+   rel(Rest, Vars, NRel0, Rel0).

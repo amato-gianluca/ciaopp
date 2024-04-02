@@ -371,3 +371,4 @@ glb(ASub0, ASub1, Glb):-
 :- redefining(groundvars/2).
 :- redefining(star_union/2).
 :- redefining(bin/3).
+:- redefining(rel/4).

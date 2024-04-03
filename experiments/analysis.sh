@@ -12,9 +12,9 @@ ciaopp -o as_shlin_noopt.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optim
 ciaopp -o as_shlin_opt_mgu.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=optimal -fextend_implementation=mgu
 ciaopp -o as_shlin_noindcheck_mgu.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=noindcheck -fextend_implementation=mgu
 ciaopp -o as_shlin_noopt_mgu.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=off -fextend_implementation=mgu
-ciaopp -o as_sharing_opt.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=on
+ciaopp -o as_sharing_opt.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=optimal
 ciaopp -o as_sharing_noopt.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=off
-ciaopp -o as_sharing_opt_mgu.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=on -fextend_implementation=mgu
+ciaopp -o as_sharing_opt_mgu.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=optimal -fextend_implementation=mgu
 ciaopp -o as_sharing_noopt_mgu.pl -A $FILE -fmodes=as_sharing $OPTIONS -fmgu_sh_optimize=off -fextend_implementation=mgu
 ciaopp -o share.pl -A $FILE -fmodes=share_amgu $OPTIONS
 ciaopp -o shfrlin.pl -A $FILE -fmodes=shfrlin_amgu $OPTIONS

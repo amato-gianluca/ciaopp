@@ -1,7 +1,7 @@
 :- module(as_shlin2, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
 
 :- use_package(debug).
-:- use_package(rtchecks).
+%:- use_package(rtchecks).
 %:- use_module(engine(io_basic)).
 
 :- doc(title, "ShLin2 abstract domain").
@@ -407,6 +407,9 @@ mgu_binding(ASub, X, T, MGU0) :-
 :- test match(Prime, Pv, Call, Match)
    : (Prime=[([X, Y],[])], Pv=[X, Y, Z], Call=[([X, Y], [X]), ([Y, U], [U]), ([Z, U], []), ([U],[U])])
    => (Match=[([X, Y],[]), ([X, Y, U],[]), ([U],[U])]) + (not_fails, is_det).
+:- test match(Prime, Pv, Call, Match)
+   : (Prime=[([X],[])], Pv=[X, Y, Z], Call=[([X], [X]),  ([X, U], [X, U]), ([X, V], [V]), ([U, V],[U, V])])
+   => (Match=[([X],[]), ([X, U], []), ([X, U, V],[]), ([X, V],[]), ([U,V], [U,V])]) + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
    rel(Call, Pv, NRel, Rel),
@@ -416,8 +419,8 @@ match(Prime, Pv, Call, Match) :-
    normalize(Match1, Match).
 
 match0(_Prime, _Pv, [], []).
-match0(_Prime, Pv, [X|Rest_subs], Match) :-
-   bin_all(X, (X_sh, X_lin)),
+match0(Prime, Pv, [X|Rest_subs], Match) :-
+   binlist(X, (X_sh, X_lin)),
    match1(Prime, Pv, X, X_sh, X_lin, Match0),
    match0(Prime, Pv, Rest_subs, RestMatch),
    append(Match0, RestMatch, Match).
@@ -425,23 +428,19 @@ match0(_Prime, Pv, [X|Rest_subs], Match) :-
 match1([], _Pv, _X, _X_sh, _X_lin,  []).
 match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
    ord_intersection(X_sh, Pv, X_sh_restricted),
-   X_sh_restricted = Sh,
+   X_sh_restricted == Sh, !,
    % compute o \meet \uplus X
    ord_intersection_diff(X_lin, Pv, X_lin_restricted, X_lin_new),
    ord_intersection(Lin, X_lin_restricted, Lin0),
    ord_union(Lin0, X_lin_new, Lin1),
    % compute bar T
    relbar(X, Lin, X_bar),
-   bin_all(X_bar, (X_bar_sh, _)),
-   ord_intersection(Lin1, X_bar_sh, Lin2),
-   Match = (Sh, Lin2),
+   binlist(X_bar, (X_bar_sh, _)),
+   ord_subtract(Lin1, X_bar_sh, Lin2),
+   Match = (X_sh, Lin2),
    match1(Rest, Pv, X, X_sh, X_lin, RestMatch).
-
-bin_all([], []).
-bin_all([ShLin], [ShLin]).
-bin_all([ShLin1, ShLin2|Rest], Bin) :-
-   bin(ShLin1, ShLin2, Bin1),
-   bin_all([Bin1|Rest], Bin).
+match1([_|Rest], Pv, X, X_sh, X_lin, Match) :-
+   match1(Rest, Pv, X, X_sh, X_lin, Match).
 
 relbar([], _Vars, []).
 relbar([(Sh, Lin)|Rest], Vars, [(Sh, Lin)|RestBar]) :-
@@ -570,6 +569,20 @@ split([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
          Rel_nlin = [(Sh, Lin)|Rel_nlin0]
    ).
 
+:- pred binpair(ShLin1, ShLin2, Bin)
+   : shlin2group * shlin2group * ivar => shlin2group(Bin)
+   + (not_fails, is_det)
+   # "@var{Bin} is the combination of two sharing groups @var{ShLin1} and @var{ShLin2}.".
+
+:- export(binpair/3).
+:- test binpair(ShLin1, ShLin2, Bin): (ShLin1 = ([X, Y], [X]), ShLin2 = ([X, Z], [X, Z])) => (Bin = ([X, Y, Z], [Z])) + (not_fails, is_det).
+
+binpair((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
+   ord_union(Sh1, Sh2, Sh),
+   ord_subtract(Lin1, Sh2, Lina),
+   ord_subtract(Lin2, Sh1, Linb),
+   ord_union(Lina, Linb, Lin).
+
 :- pred bin(+ASub1, +ASub2, -Bin)
    : nasub * nasub * ivar => nasub(Bin)
    + (not_fails, is_det)
@@ -595,13 +608,24 @@ bin0([X|Rest], Sh, Bin0, Bin) :-
 %:- index bin1(?, +, ?, ?).
 
 bin1(_, [], Bin, Bin).
-bin1((Sh1, Lin1), [(Sh2, Lin2)|Rest], Bin0, Bin) :-
-   ord_union(Sh1, Sh2, Sh),
-   ord_subtract(Lin1, Sh2, Lina),
-   ord_subtract(Lin2, Sh1, Linb),
-   ord_union(Lina, Linb, Lin),
-   insert(Bin0, (Sh, Lin), Bin1),
-   bin1((Sh1, Lin1), Rest, Bin1, Bin).
+bin1(ShLin1, [ShLin2|Rest], Bin0, Bin) :-
+   binpair(ShLin1, ShLin2, ShLin),
+   insert(Bin0, ShLin, Bin1),
+   bin1(ShLin1, Rest, Bin1, Bin).
+
+:- pred binlist(+ASub, -Bin)
+   : nasub * ivar => nasub(Bin)
+   + (not_fails, is_det)
+   # "@var{Bin} is the combination of two abstract substitutions @var{ASub}.".
+
+:- export(binlist/2).
+:- test binlist(ASub, Bin): (ASub = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])]) => (Bin = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
+
+binlist([], []).
+binlist([ShLin], ShLin).
+binlist([ShLin1, ShLin2|Rest], Bin) :-
+   binpair(ShLin1, ShLin2, ShLin),
+   binlist([ShLin|Rest], Bin).
 
 :- pred star_union(+ASub, -Star)
    : nasub * ivar => nasub(Star)

@@ -1,7 +1,7 @@
 :- module(as_shlin2, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
 
 :- use_package(debug).
-%:- use_package(rtchecks).
+:- use_package(rtchecks).
 %:- use_module(engine(io_basic)).
 
 :- doc(title, "ShLin2 abstract domain").
@@ -108,11 +108,10 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 :- test shlin2group(O) : (O = ([X, Y], [X, Y])) => true + (not_fails, is_det).
 :- test shlin2group(O) : (O = ([X, Y], [X])) => true + (not_fails, is_det).
 :- test shlin2group(O) : (O = ([X, Z], [X, Y])) + (fails, is_det).
-:- test shlin2group(O) : (O = ([], [])) + (fails, is_det).
+%:- test shlin2group(O) : (O = ([], [])) + (fails, is_det).
 
 shlin2group((Sh, Lin)) :-
-   Sh \= [],
-   ordnlist(var, Sh),
+   ordlist(var, Sh),
    ordlist(var, Lin),
    ord_subset(Lin, Sh).
 
@@ -121,7 +120,7 @@ shlin2group((Sh, Lin)) :-
 :- export(nasub/1).
 :- test nasub(ASub): (ASub = []) + (not_fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X]), ([X, Y], [Y]), ([X, Y, Z], [X])]) + (not_fails, is_det).
-:- test nasub(ASub): (ASub = [([],[]), ([X, Y], [X])]) + (fails, is_det).
+%:- test nasub(ASub): (ASub = [([],[]), ([X, Y], [X])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y, Z], [X]), ([Z], []), ([Y], [])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X, Y]), ([X, Y], [X])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X]), ([X, Y], [X, Y])]) + (fails, is_det).
@@ -410,6 +409,9 @@ mgu_binding(ASub, X, T, MGU0) :-
 :- test match(Prime, Pv, Call, Match)
    : (Prime=[([X],[])], Pv=[X, Y, Z], Call=[([X], [X]),  ([X, U], [X, U]), ([X, V], [V]), ([U, V],[U, V])])
    => (Match=[([X],[]), ([X, U], []), ([X, U, V],[]), ([X, V],[]), ([U,V], [U,V])]) + (not_fails, is_det).
+:- test match(Prime, Pv, Call, Match)
+   : (Prime=[([X],[X])], Pv=[X], Call=[([X, Y], [X]), ([X, Z], [X])])
+   => (Match=[([X,Y],[X]),([X,Y,Z],[X]),([X,Z],[X])] ) + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
    rel(Call, Pv, NRel, Rel),
@@ -428,12 +430,10 @@ match0(Prime, Pv, [X|Rest_subs], Match) :-
 match1([], _Pv, _X, _X_sh, _X_lin,  []).
 match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
    ord_intersection(X_sh, Pv, X_sh_restricted),
+   ord_intersection(X_lin, Pv, X_lin_restricted),
+   ord_subset(Lin, X_lin_restricted),
    X_sh_restricted == Sh, !,
-   % compute o \meet \uplus X
-   ord_intersection_diff(X_lin, Pv, X_lin_restricted, X_lin_new),
-   ord_intersection(Lin, X_lin_restricted, Lin0),
-   ord_union(Lin0, X_lin_new, Lin1),
-   % compute bar T
+   ord_union(X_lin, Lin, Lin1),
    relbar(X, Lin, X_bar),
    binlist(X_bar, (X_bar_sh, _)),
    ord_subtract(Lin1, X_bar_sh, Lin2),
@@ -613,15 +613,15 @@ bin1(ShLin1, [ShLin2|Rest], Bin0, Bin) :-
    insert(Bin0, ShLin, Bin1),
    bin1(ShLin1, Rest, Bin1, Bin).
 
-:- pred binlist(+ASub, -Bin)
-   : nasub * ivar => nasub(Bin)
+:- pred binlist(+ASub, ?Bin)
+   : nasub(ASub) => shlin2group(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is the combination of two abstract substitutions @var{ASub}.".
 
 :- export(binlist/2).
 :- test binlist(ASub, Bin): (ASub = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])]) => (Bin = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
 
-binlist([], []).
+binlist([], ([],[])).
 binlist([ShLin], ShLin).
 binlist([ShLin1, ShLin2|Rest], Bin) :-
    binpair(ShLin1, ShLin2, ShLin),

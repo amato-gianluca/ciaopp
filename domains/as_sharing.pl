@@ -219,7 +219,7 @@ meet(Sh1, Sh2, Meet):-
    + (not_fails, is_det).
 
 mgu(Sh, Fv, Sub, MGU) :-
-   current_pp_flag(mgu_sh_optimize, on), !,
+   current_pp_flag(mgu_sh_optimize, optimal), !,
    mgu0(Sh, Fv, Sub, MGU).
 mgu(Sh, _Fv, Sub, MGU) :-
    mgu0(Sh, [], Sub, MGU).

@@ -1098,8 +1098,8 @@ valid_flag_values(extend_implementation , member(_,[mgu, matching])).
 
 pp_flag(mgu_sh_optimize).
 pp_flag(mgu_sh_optimize, 'Choose whether to optimize the mgu operation for sharing').
-current_pp_flags(  mgu_sh_optimize      , on).
-valid_flag_values( mgu_sh_optimize      , member(_,[on, off])).
+current_pp_flags(  mgu_sh_optimize      , optimal).
+valid_flag_values( mgu_sh_optimize      , member(_,[optimal, off])).
 
 pp_flag(mgu_shlin_optimize).
 pp_flag(mgu_shlin_optimize, 'Choose the optimization for the mgu operation on sharin * lin').
@@ -1110,6 +1110,11 @@ pp_flag(match_shlin_optimize).
 pp_flag(match_shlin_optimize, 'Choose the optimization for the match operation on sharin * lin').
 current_pp_flags(  match_shlin_optimize   , optimal).
 valid_flag_values( match_shlin_optimize   , member(_,[optimal, off])).
+
+pp_flag(mgu_shlin2_optimize).
+pp_flag(mgu_shlin2_optimize, 'Choose the optimization for the mgu operation on ShLin2').
+current_pp_flags(  mgu_shlin2_optimize   , optimal).
+valid_flag_values( mgu_shlin2_optimize   , member(_,[optimal, off])).
 
 % ---------------------------------------------------------------------------
 

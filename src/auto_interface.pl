@@ -576,6 +576,10 @@ guard dom_as_shlin(X) :-
     member(modes=M, X),
     M == as_shlin.
 
+guard dom_as_shlin2(X) :-
+    member(modes=M, X),
+    M == as_shlin2.
+
 % to be removed when old_menu is removed
 guard ana_or_check_output(X)  :-
     ana_or_check(X),

@@ -410,36 +410,45 @@ mgu_binding(ASub, X, T, MGU0) :-
 
 match(Prime, Pv, Call, Match) :-
    rel(Call, Pv, NRel, Rel),
-   relbar(Rel, Pv, Relbar),
-   match0(Prime, Lv, Rel, Relbar, Match0,),
+   powerset(Rel, Rel_subs),
+   match0(Prime, Pv, Rel_subs, Match0),
+   append(NRel, Match0, Match1),
+   normalize(Match1, Match).
 
-match0([], _Pv, _Rel, _Relbar, []).
-match0([(Sh, Lin)|Rest], Pv, Rel, Relbar, [Match|RestMatch]) :-
-   match1(Sh, Lin, Pv, Call, Match),
-   match0(Rest, Pv, Call, RestMatch).
+match0(_Prime, _Pv, [], []).
+match0(_Prime, Pv, [X|Rest_subs], Match) :-
+   bin_all(X, (X_sh, X_lin)),
+   match1(Prime, Pv, X, X_sh, X_lin, Match0),
+   match0(Prime, Pv, Rest_subs, RestMatch),
+   append(Match0, RestMatch, Match).
 
-match1(Sh, Lin, Pv, Rel, Relbar, Match) :-
-   star_union(Rel, Rel_star),
-   match2(Sh, Lin, Pv, Rel_star, Relbar, Match)
+match1([], _Pv, _X, _X_sh, _X_lin,  []).
+match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
+   ord_intersection(X_sh, Pv, X_sh_restricted),
+   X_sh_restricted = Sh,
+   % compute o \meet \uplus X
+   ord_intersection_diff(X_lin, Pv, X_lin_restricted, X_lin_new),
+   ord_intersection(Lin, X_lin_restricted, Lin0),
+   ord_union(Lin0, X_lin_new, Lin1),
+   % compute bar T
+   relbar(X, Lin, X_bar),
+   bin_all(X_bar, (X_bar_sh, _)),
+   ord_intersection(Lin1, X_bar_sh, Lin2),
+   Match = (Sh, Lin2),
+   match1(Rest, Pv, X, X_sh, X_lin, RestMatch).
 
-match2(_Sh, _Lin, _Pv, [], _Relbar, []).
-match2(Sh, Lin, Pv, [(X_sh, X_lin)|Rest_rel_star], Relbar, [Res|RestRes]) :-
-   Sh == X_sh,
-   ord_subset(Lin, X_lin),
-   match_meet(Sh, Lin, X_sh, X_lin, Pv, Res_sh, Res_lin),
+bin_all([], []).
+bin_all([ShLin], [ShLin]).
+bin_all([ShLin1, ShLin2|Rest], Bin) :-
+   bin(ShLin1, ShLin2, Bin1),
+   bin_all([Bin1|Rest], Bin).
 
-match_meet(Lin1, Lin2, Vars1, Lin) :-
-   ord_intersection(Lin1, Lin2, Lina),
-   ord_intersection(Lin2, Vars, Linb),
-   ord_union(Lina, Linb, Lin).
-
-relbar([], Vars, []).
+relbar([], _Vars, []).
 relbar([(Sh, Lin)|Rest], Vars, [(Sh, Lin)|RestBar]) :-
    ord_disjoint(Vars, Lin), !,
    relbar(Rest, Vars, RestBar).
-relbar([(Sh, Lin)|Rest], Vars, RestBar) :-
+relbar([_|Rest], Vars, RestBar) :-
    relbar(Rest, Vars, RestBar).
-
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

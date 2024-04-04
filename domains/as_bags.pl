@@ -84,8 +84,8 @@ bag_from_list0([X|Rest], B0, B) :-
    # "@var{B} is the multiset union of @var{B1} and @var{B2}.".
 :- export(bag_union/3).
 
-bag_union([], B2, B2).
-bag_union(B1, [], B1).
+bag_union([], B2, B2) :- !.
+bag_union(B1, [], B1) :- !.
 bag_union([X1-V1|Rest1], [X2-V2|Rest2], B) :-
    compare(Rel, X1, X2),
    bag_union0(Rel, X1, V1, X2, V2, Rest1, Rest2, B).

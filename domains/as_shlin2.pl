@@ -337,30 +337,33 @@ meet1(Sh1, Lin1, [(Sh2, Lin2)|Rest], Meet) :-
    : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
 
-:- export(mgu/4).
-:- test mgu(ASub, Fv, Sub, MGU): (ASub=[], Fv=[], Sub=[X=t(Y,Z), Y=Z]) => (MGU=[]) + (not_fails, is_det).
-:- test mgu(ASub, Fv, Sub, MGU)
-   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U])
-   => (MGU=[([U, X], [U,X]), ([V],[V]), ([Y],[Y]), ([Z],[Z]) ]) + (not_fails, is_det).
-:- test mgu(ASub, Fv, Sub, MGU)
-   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V)])
-   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y],[V, Y]), ([Z],[Z]) ]) + (not_fails, is_det).
-:- test mgu(ASub, Fv, Sub, MGU)
-   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V), Z=V])
-   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
-:- test mgu(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
-   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),  ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
-:- test mgu(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
-   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
-
-
 mgu(ASub, Fv, Sub, MGU) :-
    (current_pp_flag(mgu_shlin2_optimize, optimal) ->
       mgu_optimal(ASub, Fv, Sub, MGU)
    ;
-      mgu_standard(ASub, Fv, Sub, MGU)).
+      mgu_standard(ASub, Fv, Sub, MGU)
+   ).
+
+:- export(mgu_optimal/4).
+:- test mgu_optimal(ASub, Fv, Sub, MGU): (ASub=[], Fv=[], Sub=[X=t(Y,Z), Y=Z]) => (MGU=[]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U])
+   => (MGU=[([U, X], [U,X]), ([V],[V]), ([Y],[Y]), ([Z],[Z]) ]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V)])
+   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y],[V, Y]), ([Z],[Z]) ]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V), Z=V])
+   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),  ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])], Fv=[], Sub=[X=r(Y, Y)])
+   => (MGU=[([X,U,Y],[]),([X,U,Y,V],[]),([X,Y],[]),([X,Y,V],[])]) + (not_fails, is_det).
 
 :- index mgu_optimal(?, ?, +, ?).
 
@@ -374,7 +377,8 @@ mgu_binding_optimal(ASub, X, T, MGU) :-
    add_multiplicity(ASub, [X-1], Bt, NRel, RelMul),
    powerset(RelMul, RelSubs),
    mgu_binding_optimal0(RelSubs, MGU0),
-   ord_union(NRel, MGU0, MGU).
+   ord_union(NRel, MGU0, MGU1),
+   normalize(MGU1, MGU).
 
 mgu_binding_optimal0([], []).
 mgu_binding_optimal0([XMul|Rest], MGUs) :-
@@ -386,26 +390,25 @@ mgu_binding_optimal0([XMul|Rest], MGUs) :-
    (
       LinTypeX = non_linear, member(LinTypeT,[non_linear, strong_nl]) ->
          binlist2(X, MGU),
-         insert(MGU, RestMGUs, MGUs)
-      ; LinTypeX = non_linear, LinTypeT = linear, Xxlen =< 1,  Xtlen  >= 1 ->
+         insert(RestMGUs, MGU, MGUs)
+      ; LinTypeX = non_linear, LinTypeT = linear, Xxlen =< 1, Xtlen >= 1 ->
          binlist2(Xxt, Xxtplus),
          binlist2(Xt, Xtplus),
          binlist(Xx, Xxplus),
          binlist([Xxplus, Xtplus, Xxtplus], MGU),
-         insert(MGU, RestMGUs, MGUs)
+         insert(RestMGUs, MGU, MGUs)
       ; LinTypeX = linear, LinTypeT = strong_nl, Xxlen >= 1, Xtlen =< 1 ->
          binlist2(Xxt, Xxtplus),
          binlist(Xt, Xtplus),
          binlist2(Xx, Xxplus),
          binlist([Xxplus, Xtplus, Xxtplus], MGU),
-         insert(MGU, RestMGUs, MGUs)
+         insert(RestMGUs, MGU, MGUs)
       ; LinTypeX = linear, LinTypeT \= strong_nl, Xtlen =< 1 ->
          binlist2(Xxt, Xxtplus),
          binlist(Xt, Xtplus),
          binlist(Xx, Xxplus),
          binlist([Xxplus, Xtplus, Xxtplus], MGU0),
          powerset(Xx, Zinc),
-         length(Xx, Xxlen),
          mgu_binding_optimal1([[]|Zinc], MGU0, Xxlen, XtMul, MGUs0),
          ord_union(MGUs0, RestMGUs, MGUs)
       ;
@@ -416,38 +419,41 @@ mgu_binding_optimal1([], _MGU0, _XxLen, _XtMul, []).
 mgu_binding_optimal1([Zinc|ZRest], MGU0, XxLen, XtMul, [MGU|MGURest]) :-
    length(Zinc, ZincLen),
    Zlen is ZincLen + XxLen,
-   Zlen = XtMul,
+   Zlen = XtMul, !,
    binlist(Zinc, MGU1),
-   ord_union(MGU0, MGU1, MGU),
+   binpair(MGU0, MGU1, MGU),
    mgu_binding_optimal1(ZRest, MGU0, XxLen, XtMul, MGURest).
+mgu_binding_optimal1([_|ZRest], MGU0, XxLen, XtMul, MGURest) :-
+   mgu_binding_optimal1(ZRest, MGU0, XxLen, XtMul, MGURest).
+
 
 mgu_linearity_type([], linear, linear, []).
 mgu_linearity_type([ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT, [ShLin|Rest]) :-
    mgu_linearity_type(XRest, LinTypeX0, LinTypeT0, Rest),
-   (MulX > 1 -> LinTypeX = non_linear ; LinTypeX = LinTypeX0),
+   ( \+ member(MulX, [0,1]) -> LinTypeX = non_linear ; LinTypeX = LinTypeX0 ),
    (
       MulT = inf ->
          LinTypeT = strong_nl
-      ; MulX > 1, MulT > 1  ->
+      ; MulT > 1, \+ member(MulX, [0,1])  ->
          LinTypeT = strong_nl
-      ; MulT > 1 , LinTypeT0 = linear ->
+      ; MulT > 1 , LinTypeT0 \= strong_nl ->
          LinTypeT = non_linear
       ;
-         LinTypeT = linear
+         LinTypeT = LinTypeT0
    ).
 
 mgu_split([], [], [], [], M, M).
 mgu_split([ShLin-(MulX, MulT)|Rest], Xx, Xt, Xxt, M0, M) :-
    (
-      MulX>1, MulT > 1 ->
+      MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
          Xx = [ShLin|Xx0],
          Xt = [ShLin|Xt0],
          mgu_split(Rest, Xx0, Xt0, Xxt0, M0, M)
-      ; MulX > 1 ->
+      ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
          mgu_split(Rest, Xx0, Xt, Xxt, M0, M)
-      ; MulT > 1 ->
+      ; MulT \= 0 ->
          Xt = [ShLin|Xt0],
          M1 is M0 + MulT,
          mgu_split(Rest, Xx, Xt0, Xxt, M1, M)
@@ -466,6 +472,24 @@ add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
          RelMul = [(Sh, Lin)-(Mulx, Mult)|Rel0],
          add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
    ).
+
+:- export(mgu_standard/4).
+:- test mgu_standard(ASub, Fv, Sub, MGU): (ASub=[], Fv=[], Sub=[X=t(Y,Z), Y=Z]) => (MGU=[]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U])
+   => (MGU=[([U, X], [U,X]), ([V],[V]), ([Y],[Y]), ([Z],[Z]) ]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V)])
+   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y],[V, Y]), ([Z],[Z]) ]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V), Z=V])
+   => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),  ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
 
 :- index mgu_standard(?, ?, +, ?).
 
@@ -727,7 +751,7 @@ bin1(ShLin1, [ShLin2|Rest], Bin0, Bin) :-
    bin1(ShLin1, Rest, Bin1, Bin).
 
 :- pred binlist(+ASub, ?Bin)
-   : nasub(ASub) => shlin2group(Bin)
+   : list(shlin2group, ASub) => shlin2group(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is the combination of two abstract substitutions @var{ASub}.".
 
@@ -740,7 +764,7 @@ binlist([ShLin1, ShLin2|Rest], Bin) :-
    binpair(ShLin1, ShLin2, ShLin),
    binlist([ShLin|Rest], Bin).
 
-binlist2([], []).
+binlist2([], ([],[])).
 binlist2([(Sh, _Lin)], (Sh, [])).
 binlist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], Bin) :-
    ord_union(Sh1, Sh2, Sh),

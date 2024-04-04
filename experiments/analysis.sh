@@ -3,8 +3,9 @@
 FILE=shlin_experiments.pl
 OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on"
 
-ciaopp -o as_shlin2.pl -A $FILE -fmodes=as_shlin2 $OPTIONS
-ciaopp -o as_shlin2_mgu.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fextend_implementation=mgu
+ciaopp -o as_shlin2_opt.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal
+ciaopp -o as_shlin2.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=off
+ciaopp -o as_shlin2_mgu.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fextend_implementation=mgu -fmgu_shlin2_optimize=off
 ciaopp -o as_shlin_optopt.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=optimal -fmatch_shlin_optimize=optimal
 ciaopp -o as_shlin_opt.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=optimal -fmatch_shlin_optimize=off
 ciaopp -o as_shlin_noindcheck.pl -A $FILE -fmodes=as_shlin $OPTIONS -fmgu_shlin_optimize=noindcheck -fmatch_shlin_optimize=off

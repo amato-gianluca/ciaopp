@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(engine(io_basic)).
+%:- use_module(library(format)).
 
 :- doc(title, "ShLin2 abstract domain").
 :- doc(module,"
@@ -364,6 +364,8 @@ mgu(ASub, Fv, Sub, MGU) :-
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])], Fv=[], Sub=[X=r(Y, Y)])
    => (MGU=[([X,U,Y],[]),([X,U,Y,V],[]),([X,Y],[]),([X,Y,V],[])]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
 
 :- index mgu_optimal(?, ?, +, ?).
 
@@ -447,15 +449,13 @@ mgu_split([ShLin-(MulX, MulT)|Rest], Xx, Xt, Xxt, M0, M) :-
    (
       MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
-         Xx = [ShLin|Xx0],
-         Xt = [ShLin|Xt0],
-         mgu_split(Rest, Xx0, Xt0, Xxt0, M0, M)
+         mgu_split(Rest, Xx, Xt, Xxt0, M0, M)
       ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
          mgu_split(Rest, Xx0, Xt, Xxt, M0, M)
       ; MulT \= 0 ->
          Xt = [ShLin|Xt0],
-         M1 is M0 + MulT,
+         ( MulT \= inf, M0 \= inf -> M1 is M0 + MulT ; M1 = inf ),
          mgu_split(Rest, Xx, Xt0, Xxt, M1, M)
    ).
 
@@ -490,6 +490,8 @@ add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
 
 :- index mgu_standard(?, ?, +, ?).
 

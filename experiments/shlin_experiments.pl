@@ -1,4 +1,4 @@
-:- module(_1,[],[assertions,nativeprops]).
+:- module(_,[],[assertions,nativeprops]).
 
 :- set_prolog_flag(single_var_warnings, off).
 
@@ -37,7 +37,7 @@ example4(V, W, X, Y, Z) :-
     X = f(Y, Z).
     % [V,X,Y] is not possible ma proving it requires option mgu_shlin_optimize=optimal
 
-% Section 6.3 new paper on matching
+% Section 6.2 new paper on matching
 
 % It does not seem possible to replicate the example, due to the fact that
 % matching is used in PLAI differently than in the paper.

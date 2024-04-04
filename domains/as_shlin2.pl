@@ -37,13 +37,19 @@ This module is an implementation of the ShLin2 abstract domain.
 :- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
-input_interface(linear(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
+input_interface(linear(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
    list(var, X),
    ord_union(Lin0, X, Lin).
-input_interface(free(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
+input_interface(free(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
    var(X),
    insert(Lin0, X, Lin).
-input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
+ % TODO: we abus not_free for 2-sharing groups
+input_interface(not_free(X), perfect, (Sh, Lin, ShLin20), (Sh, Lin, ShLin2)) :-
+   list(shlin2group_u, X),
+   sort_deep(X, X0),
+   sort(X0, X1),
+   ord_union(ShLin20, X1, ShLin2).
+input_interface(Info, Kind, (Sh0, Lin, ShLin2), (Sh, Lin, ShLin2)) :-
    sharing:input_interface(Info, Kind, Sh0, Sh).
 
 %-------------------------------------------------------------------------
@@ -63,11 +69,15 @@ input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
    : term * {ordlist(var), same_vars_of(Sg)} * ivar * cgoal * term => asub(ASub)
    + (not_fails, is_det).
 
-input_user_interface((Sh, Lin), Qv, ASub, Sg, MaybeCallASub):-
+input_user_interface((Sh, Lin, ShLin2), Qv, ASub, Sg, MaybeCallASub):-
+   var(ShLin2), !,
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
    as_sharing:vars(ASub_sh, Vsh),
    ord_intersection(Lin, Vsh, ASub_lin),
    from_shlin(ASub_sh, ASub_lin, ASub).
+
+input_user_interface((_Sh, _Lin, ShLin2), _Qv, ASub, _Sg, _MaybeCallASub):-
+   normalize(ShLin2, ASub).
 
 %-------------------------------------------------------------------------
 % asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)
@@ -108,12 +118,26 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 :- test shlin2group(O) : (O = ([X, Y], [X, Y])) => true + (not_fails, is_det).
 :- test shlin2group(O) : (O = ([X, Y], [X])) => true + (not_fails, is_det).
 :- test shlin2group(O) : (O = ([X, Z], [X, Y])) + (fails, is_det).
+:- test shlin2group(O) : (O = ([X, Y], [Y, X]))+ (fails, is_det).
 %:- test shlin2group(O) : (O = ([], [])) + (fails, is_det).
 
 shlin2group((Sh, Lin)) :-
    ordlist(var, Sh),
    ordlist(var, Lin),
    ord_subset(Lin, Sh).
+
+:- prop shlin2group_u(O) # "@var{O} is an unordered-sharing group in the ShLin2 domain".
+
+:- export(shlin2group_u/1).
+:- test shlin2group_u(O) : (O = ([X, Y], [X, Y])) => true + (not_fails, is_det).
+:- test shlin2group_u(O) : (O = ([X, Y], [X])) => true + (not_fails, is_det).
+:- test shlin2group_u(O) : (O = ([X, Z], [X, Y])) => true + (not_fails, is_det).
+:- test shlin2group_u(O) : (O = ([X, Y], [Y, X])) => true + (not_fails, is_det).
+%:- test shlin2group_u(O) : (O = ([], [])) + (fails, is_det).
+
+shlin2group_u((Sh, Lin)) :-
+   list(var, Sh),
+   list(var, Lin).
 
 :- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
 
@@ -143,7 +167,7 @@ no_redundants0(_Sh, _Lin, _Rest).
 :- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
 
 nasub_u(ASub) :-
-   list(shlin2group, ASub).
+   list(shlin2group_u, ASub).
 
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
@@ -166,8 +190,15 @@ nasub_u(ASub) :-
 :- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X, Y]), ([X, Y], [Y])]) => (ASub = [([X, Y], [Y])]) + (not_fails, is_det).
 
 normalize(ASub_u, ASub) :-
-   sort(ASub_u, ASub0),
+   sort_deep(ASub_u, ASub_u0),
+   sort(ASub_u0, ASub0),
    remove_redundants(ASub0, ASub).
+
+sort_deep([], []).
+sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
+   sort(Sh_u, Sh),
+   sort(Lin_u, Lin),
+   sort_deep(Rest_u, Rest).
 
 remove_redundants([], []).
 remove_redundants([([], _)|Rest], RestNorm) :- !,

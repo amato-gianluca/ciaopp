@@ -524,7 +524,7 @@ mgu_binding_standard(ASub, X, T, MGU0) :-
    => (Match=[([X],[]), ([X, U], []), ([X, U, V],[]), ([X, V],[]), ([U,V], [U,V])]) + (not_fails, is_det).
 :- test match(Prime, Pv, Call, Match)
    : (Prime=[([X],[X])], Pv=[X], Call=[([X, Y], [X]), ([X, Z], [X])])
-   => (Match=[([X,Y],[X]),([X,Y,Z],[X]),([X,Z],[X])] ) + (not_fails, is_det).
+   => (Match=[([X,Y],[X]),([X,Z],[X])]) + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
    rel(Call, Pv, NRel, Rel),

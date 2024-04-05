@@ -1,4 +1,4 @@
-:- module(as_shlin2, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
+:- module(as_shlin2, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
 
 :- use_package(debug).
 :- use_package(rtchecks).
@@ -6,7 +6,11 @@
 
 :- doc(title, "ShLin2 abstract domain").
 :- doc(module,"
-This module is an implementation of the ShLin2 abstract domain.
+This module is an implementation of the ShLin2 abstract domain. It is based on
+[A. King, A synergistic analysis for sharing and groundness which traces linearity.
+https://dx.doi.org/10.1007/3-540-57880-3_24]. The optimal mgu algorithm is
+implemented following [G. Amato, F. Scozzari. On the interaction between sharing
+and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 ").
 
 :- include(ciaopp(plai/plai_domain)).
@@ -37,18 +41,19 @@ This module is an implementation of the ShLin2 abstract domain.
 :- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
+ % TODO: we abuse not_free for 2-sharing groups.
+input_interface(not_free(X), perfect, (Sh, Lin, ShLin2_0), (Sh, Lin, ShLin2)) :-
+   list(shlin2group_u, X), !,
+   abs_sort(X, ASub1),
+   remove_redundants(ASub1, ASub2),
+   ( var(ShLin2_0) -> ShLin2 = ASub2 ; meet(ShLin2_0, ASub2, ShLin2) ).
 input_interface(linear(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
-   list(var, X),
-   ord_union(Lin0, X, Lin).
-input_interface(free(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
-   var(X),
+   list(var, X), !,
+   sort(X, X1),
+   ord_union(Lin0, X1, Lin).
+input_interface(free(X), approx, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
+   var(X), !,
    insert(Lin0, X, Lin).
- % TODO: we abus not_free for 2-sharing groups
-input_interface(not_free(X), perfect, (Sh, Lin, ShLin20), (Sh, Lin, ShLin2)) :-
-   list(shlin2group_u, X),
-   sort_deep(X, X0),
-   sort(X0, X1),
-   ord_union(ShLin20, X1, ShLin2).
 input_interface(Info, Kind, (Sh0, Lin, ShLin2), (Sh, Lin, ShLin2)) :-
    sharing:input_interface(Info, Kind, Sh0, Sh).
 
@@ -70,19 +75,15 @@ input_interface(Info, Kind, (Sh0, Lin, ShLin2), (Sh, Lin, ShLin2)) :-
    + (not_fails, is_det).
 
 input_user_interface((Sh, Lin, ShLin2), Qv, ASub, Sg, MaybeCallASub):-
-   var(ShLin2), !,
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
-   as_sharing:vars(ASub_sh, Vsh),
-   ord_intersection(Lin, Vsh, ASub_lin),
-   from_shlin(ASub_sh, ASub_lin, ASub).
-
-input_user_interface((_Sh, _Lin, ShLin2), _Qv, ASub, _Sg, _MaybeCallASub):-
-   normalize(ShLin2, ASub).
+   from_sharing(ASub_sh, ASub1),
+   (var(ShLin2) -> ASub2 = ASub1 ; meet(ASub1, ShLin2, ASub2)),
+   (var(Lin) -> ASub = ASub2 ; meet_lin(ASub2, Lin, ASub)).
 
 %-------------------------------------------------------------------------
 % asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)
 %
-% NativeStat and NativeComp are the list of native (state and
+% NativeStat and NativeComp are the list of native (stat<e and
 % computational, resp.) properties that are the concretization of abstract
 % of abstract substitution ASub on variables Qv. These are later
 % translated to the properties which are visible in the preprocessing unit.
@@ -348,7 +349,7 @@ meet1(Sh1, Lin1, [(Sh2, Lin2)|Rest], Meet) :-
    compare(Rel, Sh1, Sh2),
    (
       Rel = (=) ->
-         ord_intersection(Lin1, Lin2, Lin),
+         ord_union(Lin1, Lin2, Lin),
          Meet = [(Sh1, Lin)|RestMeet],
          meet1(Sh1, Lin1, Rest, RestMeet)
       ; Rel = (<) ->
@@ -719,6 +720,23 @@ nlin([(Sh, Lin)|Rest], NLin) :-
 :- test split(ASub, Bt, NRel, Rel_lin, Rel_nlin)
    : (ASub=[([X, Y],[Y]), ([X, Z],[X, Z]), ([Z],[])], Bt=[X-1,Y-2])
    => (NRel=[ ([Z],[])], Rel_lin=[([X, Z],[X, Z])], Rel_nlin=[([X, Y],[Y])]) + (not_fails, is_det).
+
+:- pred meet_lin(+ASub, +Lin, -ASubLin)
+   : nasub * ordlist(var) * ivar => nasub(ASubLin)
+   + (not_fails, is_det)
+   # "@var{ASubLin} is the abstract substitution obtained from @var{ASub} by making linear all
+   variables in @var{Lin}.".
+
+meet_lin(ASub, Lin, ASubLin) :-
+   meet_lin0(ASub, Lin, ASubLin0),
+   abs_sort(ASubLin0, ASubLin1),
+   remove_redundants(ASubLin1, ASubLin).
+
+meet_lin0([], _, []).
+meet_lin0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
+   ord_intersection(Sh, Lin, LinNew),
+   ord_union(LinNew, Lin0, Lin1),
+   meet_lin0(Rest0, Lin, Rest1).
 
 split([], _Bt, [], [], []).
 split([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-

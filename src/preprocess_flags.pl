@@ -1126,6 +1126,11 @@ pp_flag(mgu_shlin2_optimize, 'Choose the optimization for the mgu operation on S
 current_pp_flags(  mgu_shlin2_optimize   , optimal).
 valid_flag_values( mgu_shlin2_optimize   , member(_,[optimal, off])).
 
+pp_flag(shlin2_full_output).
+pp_flag(shlin2_full_output, 'Choose whether to output the full result of the shlin2 operation').
+current_pp_flags(  shlin2_full_output   , on).
+valid_flag_values( shlin2_full_output   , member(_,[on, off])).
+
 % ---------------------------------------------------------------------------
 
 tmp_dir(source).

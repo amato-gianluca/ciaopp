@@ -504,7 +504,6 @@ ind(Sh, S, T) :-
    + is_det
    # "Determines whether the term @var{T} is definitvely linear with respect to
     the sharing and linearity information in @var{ShLin}.".
-:- export(lin/2).
 
 lin(ShLin, T) :-
    ShLin = (Sh, _),

@@ -73,7 +73,9 @@ unknown_entry(_Sg, Vars, Entry) :-
 %-------------------------------------------------------------------------
 % abs_sort(+ASub_u,-ASub)
 %
-% ASub is the result of sorting abstract substitution ASub_u.
+% ASub is the result of sorting abstract substitution ASub_u. This
+% is probably needed when variables get renamed by internal PLAI
+% mechanisms.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, abs_sort/2, [noq]).
@@ -83,7 +85,7 @@ unknown_entry(_Sg, Vars, Entry) :-
 
 abs_sort('$bottom', '$bottom') :- !.
 abs_sort(ASub_u, ASub) :-
-   normalize(ASub_u, ASub).
+   reorder(ASub_u, ASub).
 
 %-------------------------------------------------------------------------
 % project(Sg,Vars,HvFv_u,ASub,Proj)
@@ -346,7 +348,7 @@ glb(ASub0, ASub1, Glb):-
 
 :- export(nasub/1).
 :- export(nasub_u/1).
-:- export(normalize/2).
+:- export(reorder/2).
 :- export(top/2).
 :- export(augment/3).
 :- export(project/3).
@@ -357,7 +359,7 @@ glb(ASub0, ASub1, Glb):-
 
 :- redefining(nasub/1).
 :- redefining(nasub_u/1).
-:- redefining(normalize/2).
+:- redefining(reorder/2).
 :- redefining(top/2).
 :- redefining(augment/3).
 :- redefining(project/3).

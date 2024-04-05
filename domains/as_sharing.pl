@@ -114,16 +114,16 @@ asub_sh_u(Sh) :-
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% normalize(+ASub_u,-ASub)
+% reorder(+ASub_u,-ASub)
 %
-% ASub is the result of normalizing abstract substitution ASub_u.
+% ASub is the result of sorting abstract substitution ASub_u.
 %-------------------------------------------------------------------------
 
-:- pred normalize(+ASub_u, -ASub)
+:- pred reorder(+ASub_u, -ASub)
    : nasub_u * ivar => nasub(ASub)
    + (not_fails, is_det).
 
-normalize(Sh_u, Sh) :-
+reorder(Sh_u, Sh) :-
    sort_list_of_lists(Sh_u, Sh).
 
 %-------------------------------------------------------------------------

@@ -44,9 +44,8 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
  % TODO: we abuse not_free for 2-sharing groups.
 input_interface(not_free(X), perfect, (Sh, Lin, ShLin2_0), (Sh, Lin, ShLin2)) :-
    list(shlin2group_u, X), !,
-   abs_sort(X, ASub1),
-   remove_redundants(ASub1, ASub2),
-   ( var(ShLin2_0) -> ShLin2 = ASub2 ; meet(ShLin2_0, ASub2, ShLin2) ).
+   normalize(X, ASub1),
+   ( var(ShLin2_0) -> ShLin2 = ASub1 ; meet(ShLin2_0, ASub1, ShLin2) ).
 input_interface(linear(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
    list(var, X), !,
    sort(X, X1),
@@ -180,57 +179,30 @@ nasub_u(ASub) :-
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% normalize(+ASub_u,-ASub)
+% redorder(+ASub_u,-ASub)
 %
-% ASub is the result of normalizing abstract substitution ASub_u.
+% ASub is the result of sorting abstract substitution ASub_u.
 %-------------------------------------------------------------------------
 
-:- pred normalize(+ASub_u, -ASub)
+:- pred reorder(+ASub_u, -ASub)
    : nasub_u * ivar => nasub(ASub)
    + (not_fails, is_det).
 
-:- export(normalize/2).
-:- test normalize(ASub_u, ASub): (ASub_u = []) => (ASub = []) + (not_fails, is_det).
-:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
-:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([X, Y], [X, Y])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
-:- test normalize(ASub_u, ASub): (ASub_u = [([X, Y], [X, Y]), ([X, Y], [Y])]) => (ASub = [([X, Y], [Y])]) + (not_fails, is_det).
+:- export(reorder/2).
+:- test reorder(ASub_u, ASub): (ASub_u = []) => (ASub = []) + (not_fails, is_det).
+:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
+:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([X, Y], [X, Y])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
+:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X, Y]), ([X, Y], [Y])]) => (ASub = [([X, Y], [Y])]) + (not_fails, is_det).
 
-normalize(ASub_u, ASub) :-
+reorder(ASub_u, ASub) :-
    sort_deep(ASub_u, ASub_u0),
-   sort(ASub_u0, ASub0),
-   remove_redundants(ASub0, ASub).
+   sort(ASub_u0, ASub).
 
 sort_deep([], []).
 sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
    sort(Sh_u, Sh),
    sort(Lin_u, Lin),
    sort_deep(Rest_u, Rest).
-
-remove_redundants([], []).
-remove_redundants([([], _)|Rest], RestNorm) :- !,
-   remove_redundants(Rest, RestNorm).
-remove_redundants([(Sh, Lin)|Rest], RestNorm) :-
-   remove_redundants0(Sh, Lin, Rest, Rest0, SelfRedundant),
-   (
-      SelfRedundant = yes ->
-         RestNorm = RestNorm0
-      ;
-         RestNorm = [(Sh, Lin)|RestNorm0]
-   ),
-   remove_redundants(Rest0, RestNorm0).
-
-remove_redundants0(Sh, Lin, [(Sh1, Lin1)|Rest], RestRemoved, SelfRedundant) :-
-   Sh == Sh1, !,
-   (
-      ord_subset(Lin, Lin1) ->
-         RestRemoved = RestRemoved0,
-         SelfRedundant = SelfRedundant0
-      ;
-         (ord_subset(Lin1, Lin) -> SelfRedundant = yes ; SelfRedundant = SelfRedundant0),
-         RestRemoved = [(Sh1, Lin1)|RestRemoved0]
-   ),
-   remove_redundants0(Sh, Lin, Rest, RestRemoved0, SelfRedundant0).
-remove_redundants0(_Sh, _Lin, ASub, ASub, no) :- !.
 
 %-------------------------------------------------------------------------
 % top(+Vars,+Top)
@@ -734,8 +706,7 @@ nlin([(Sh, Lin)|Rest], NLin) :-
 
 meet_lin(ASub, Lin, ASubLin) :-
    meet_lin0(ASub, Lin, ASubLin0),
-   abs_sort(ASubLin0, ASubLin1),
-   remove_redundants(ASubLin1, ASubLin).
+   normalize(ASubLin0, ASubLin).
 
 meet_lin0([], _, []).
 meet_lin0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
@@ -863,3 +834,34 @@ rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
       Rel = [(Sh, Lin)|Rel0]
    ),
    rel(Rest, Vars, NRel0, Rel0).
+
+normalize(ASub_u, ASub) :-
+   sort_deep(ASub_u, ASub_u0),
+   sort(ASub_u0, ASub0),
+   remove_redundants(ASub0, ASub).
+
+remove_redundants([], []).
+remove_redundants([([], _)|Rest], RestNorm) :- !,
+   remove_redundants(Rest, RestNorm).
+remove_redundants([(Sh, Lin)|Rest], RestNorm) :-
+   remove_redundants0(Sh, Lin, Rest, Rest0, SelfRedundant),
+   (
+      SelfRedundant = yes ->
+         RestNorm = RestNorm0
+      ;
+         RestNorm = [(Sh, Lin)|RestNorm0]
+   ),
+   remove_redundants(Rest0, RestNorm0).
+
+remove_redundants0(Sh, Lin, [(Sh1, Lin1)|Rest], RestRemoved, SelfRedundant) :-
+   Sh == Sh1, !,
+   (
+      ord_subset(Lin, Lin1) ->
+         RestRemoved = RestRemoved0,
+         SelfRedundant = SelfRedundant0
+      ;
+         (ord_subset(Lin1, Lin) -> SelfRedundant = yes ; SelfRedundant = SelfRedundant0),
+         RestRemoved = [(Sh1, Lin1)|RestRemoved0]
+   ),
+   remove_redundants0(Sh, Lin, Rest, RestRemoved0, SelfRedundant0).
+remove_redundants0(_Sh, _Lin, ASub, ASub, no) :- !.

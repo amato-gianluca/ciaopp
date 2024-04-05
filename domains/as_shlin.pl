@@ -117,17 +117,17 @@ nasub_u((Sh, Lin)) :-
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-% normalize(+ASub_u,-ASub)
+% redorder(+ASub_u,-ASub)
 %
-% ASub is the result of normalizing abstract substitution ASub_u.
+% ASub is the result of sorting abstract substitution ASub_u.
 %-------------------------------------------------------------------------
 
-:- pred normalize(+ASub_u, -ASub)
+:- pred reorder(+ASub_u, -ASub)
    : nasub_u * ivar => nasub(ASub)
    + (not_fails, is_det).
 
-normalize((Sh_u, Lin_u), (Sh, Lin)) :-
-   as_sharing:normalize(Sh_u, Sh),
+reorder((Sh_u, Lin_u), (Sh, Lin)) :-
+   as_sharing:reorder(Sh_u, Sh),
    sort(Lin_u, Lin).
 
 %-------------------------------------------------------------------------

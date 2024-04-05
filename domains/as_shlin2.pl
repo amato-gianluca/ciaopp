@@ -102,12 +102,17 @@ input_user_interface((Sh, Lin, ShLin2), Qv, ASub, Sg, MaybeCallASub):-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    sharing(ASub, Sh),
-   as_shlin2:lin(ASub, Lin),
+   lin(ASub, Lin),
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
-   gvars(Sh, Qv, Gv),
+   as_sharing:gvars(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
    if_not_nil(Lin, linear(Lin), NativeStat1, NativeStat2),
-   if_not_nil(ASub, shlin2(ASub), NativeStat2, []).
+   (
+      current_pp_flag(shlin2_full_output, on) ->
+         if_not_nil(ASub, shlin2(ASub), NativeStat2, [])
+      ;
+         NativeStat2 = []
+   ).
 
 %------------------------------------------------------------------------
 % DOMAIN ASSERTIONS

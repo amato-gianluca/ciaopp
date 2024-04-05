@@ -1,7 +1,7 @@
 #ciaopp -A prova.pl -fmodes=as_sharing -ftypes=none -foutput_lang=raw -ftrace_fixp=trace; cat prova_shlin_co.pl
 
 FILE=shlin2_experiments.pl
-OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on"
+OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on -fshlin2_full_output=off"
 
 ciaopp -o as_shlin2_opt.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal
 ciaopp -o as_shlin2_opt_mgu.pl -A $FILE -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal -fextend_implementation=mgu

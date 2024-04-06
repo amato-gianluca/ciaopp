@@ -12,11 +12,14 @@ This module is in common among all domains in the as_* collection.
 ").
 
 :- use_module(library(sort)).
+:- use_module(library(lists)).
 :- use_module(library(sets)).
 :- use_module(library(terms_vars)).
 :- use_module(library(terms_check)).
 :- use_module(library(iso_misc)).
 :- use_module(library(idlists)).
+
+:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % ASSERTIONS
@@ -124,6 +127,14 @@ unifier_no_cyclic([X = T|Rest]) :-
    ord_test_member(Vt, X, no),
    unifier_no_cyclic(Rest).
 
+:- prop multiplicity(X)
+   # "@var{X} is a non negative integer or the atom 'inf'".
+:- export(multiplicity/1).
+
+multiplicity(inf) :- !.
+multiplicity(X) :-
+   X >= 0.
+
 %------------------------------------------------------------------------
 % AUXILIARY OPERATIONS
 %-------------------------------------------------------------------------
@@ -211,3 +222,45 @@ duplicate_vars(T, Vars, DVars) :-
 unique_vars(T, Vars, UVars) :-
    duplicate_vars(T, Vars, DVars),
    ord_subtract(Vars, DVars, UVars).
+
+:- pred chiMax(+Sh, +Lin, +Bag, -Mul)
+   : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(Mul)
+   + (not_fails, is_det)
+   # "@var{Mul} is the maximum multiplicity of the sharing group @var{Sh} with linear
+   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bag}".
+:- export(chiMax/4).
+
+chiMax(O, Lin, T, V) :-
+   chiMax0(O, Lin, T, 0, V).
+
+chiMax0([], _Lin, _Bt, M, M) :- !.
+chiMax0(_O, _Lin, [], M, M) :- !.
+chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         (
+            ord_member(X, Lin)  ->
+               Mul1 is Mul0 + N,
+               chiMax0(RestO, Lin, RestBt, Mul1, Mul)
+            ;
+               Mul = inf
+         )
+      ; Rel = '<' ->
+         chiMax0(RestO, Lin, [Y-N|RestBt], Mul0, Mul)
+      ; Rel = '>' ->
+         chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
+   ).
+
+:- export(powerset/3).
+powerset(S, N, PowerN) :-
+   powerset(S, Power),
+   powerset0([[]|Power], N, PowerN).
+
+powerset0([], _, []).
+powerset0([S|Rest], N, [S|ResRest]) :-
+   length(S, S_len),
+   S_len = N, !,
+   powerset0(Rest, N, ResRest).
+powerset0([_|Rest], N, Res) :-
+   powerset0(Rest, N, Res).

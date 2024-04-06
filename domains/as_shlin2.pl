@@ -18,7 +18,6 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 
 :- include(as_template).
 :- use_module(domain(as_sharing)).
-:- use_module(domain(as_shlin)).
 :- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
@@ -117,28 +116,26 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 % DOMAIN ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop shlin2group(O) # "@var{O} is a sharing group in the ShLin2 domain".
+:- prop shlin2group(ShLin ) # "@var{ShLin} is a sharing group in the ShLin2 domain".
 
 :- export(shlin2group/1).
-:- test shlin2group(O) : (O = ([X, Y], [X, Y])) => true + (not_fails, is_det).
-:- test shlin2group(O) : (O = ([X, Y], [X])) => true + (not_fails, is_det).
-:- test shlin2group(O) : (O = ([X, Z], [X, Y])) + (fails, is_det).
-:- test shlin2group(O) : (O = ([X, Y], [Y, X]))+ (fails, is_det).
-%:- test shlin2group(O) : (O = ([], [])) + (fails, is_det).
+:- test shlin2group(ShLin) : (ShLin = ([X, Y], [X, Y])) => true + (not_fails, is_det).
+:- test shlin2group(ShLin) : (ShLin = ([X, Y], [X])) => true + (not_fails, is_det).
+:- test shlin2group(ShLin) : (ShLin = ([X, Z], [X, Y])) + (fails, is_det).
+:- test shlin2group(ShLin) : (ShLin = ([X, Y], [Y, X]))+ (fails, is_det).
 
 shlin2group((Sh, Lin)) :-
    ordlist(var, Sh),
    ordlist(var, Lin),
    ord_subset(Lin, Sh).
 
-:- prop shlin2group_u(O) # "@var{O} is an unordered-sharing group in the ShLin2 domain".
+:- regtype shlin2group_u(ShLin) # "@var{ShLin} is an unordered-sharing group in the ShLin2 domain".
 
 :- export(shlin2group_u/1).
-:- test shlin2group_u(O) : (O = ([X, Y], [X, Y])) => true + (not_fails, is_det).
-:- test shlin2group_u(O) : (O = ([X, Y], [X])) => true + (not_fails, is_det).
-:- test shlin2group_u(O) : (O = ([X, Z], [X, Y])) => true + (not_fails, is_det).
-:- test shlin2group_u(O) : (O = ([X, Y], [Y, X])) => true + (not_fails, is_det).
-%:- test shlin2group_u(O) : (O = ([], [])) + (fails, is_det).
+:- test shlin2group_u(ShLin) : (ShLin = ([X, Y], [X, Y])) => true + (not_fails, is_det).
+:- test shlin2group_u(ShLin) : (ShLin = ([X, Y], [X])) => true + (not_fails, is_det).
+:- test shlin2group_u(ShLin) : (ShLin = ([X, Z], [X, Y])) => true + (not_fails, is_det).
+:- test shlin2group_u(ShLin) : (ShLin = ([X, Y], [Y, X])) => true + (not_fails, is_det).
 
 shlin2group_u((Sh, Lin)) :-
    list(var, Sh),
@@ -149,12 +146,13 @@ shlin2group_u((Sh, Lin)) :-
 :- export(nasub/1).
 :- test nasub(ASub): (ASub = []) + (not_fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X]), ([X, Y], [Y]), ([X, Y, Z], [X])]) + (not_fails, is_det).
-%:- test nasub(ASub): (ASub = [([],[]), ([X, Y], [X])]) + (fails, is_det).
+:- test nasub(ASub): (ASub = [([],[]), ([X, Y], [X])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y, Z], [X]), ([Z], []), ([Y], [])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X, Y]), ([X, Y], [X])]) + (fails, is_det).
 :- test nasub(ASub): (ASub = [([X, Y], [X]), ([X, Y], [X, Y])]) + (fails, is_det).
 
 nasub(ASub) :-
+   (ASub = [(Sh,_Lin)|_Rest ] -> Sh \= [] ; true),
    ordlist(shlin2group, ASub),
    no_redundants(ASub).
 
@@ -165,6 +163,8 @@ no_redundants([(Sh, Lin)|Rest]) :-
 
 no_redundants0(Sh, Lin, [(Sh1, Lin1)|Rest]) :-
    Sh == Sh1, !,
+   % due to the ordering, if (Sh, Lin) is more general than (Sh, Lin1), it comes
+   % first in the abstract substitution.
    \+ ord_subset(Lin, Lin1),
    no_redundants0(Sh, Lin, Rest).
 no_redundants0(_Sh, _Lin, _Rest).
@@ -191,18 +191,12 @@ nasub_u(ASub) :-
 :- export(reorder/2).
 :- test reorder(ASub_u, ASub): (ASub_u = []) => (ASub = []) + (not_fails, is_det).
 :- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
-:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([X, Y], [X, Y])]) => (ASub = [([X, Y], [X])]) + (not_fails, is_det).
-:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X, Y]), ([X, Y], [Y])]) => (ASub = [([X, Y], [Y])]) + (not_fails, is_det).
+:- test reorder(ASub_u, ASub): (ASub_u = [([X, Y], [X]), ([Y, X], [Y])])
+   => (ASub = [([X, Y], [X]), ([X, Y], [Y])]) + (not_fails, is_det).
 
 reorder(ASub_u, ASub) :-
    sort_deep(ASub_u, ASub_u0),
    sort(ASub_u0, ASub).
-
-sort_deep([], []).
-sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
-   sort(Sh_u, Sh),
-   sort(Lin_u, Lin),
-   sort_deep(Rest_u, Rest).
 
 %-------------------------------------------------------------------------
 % top(+Vars,+Top)
@@ -220,7 +214,7 @@ sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
 
 top(Vars, Top) :-
    as_sharing:top(Vars, Sh),
-   from_shlin(Sh, [], Top).
+   from_sharing(Sh, Top).
 
 %------------------------------------------------------------------------
 % augment(+ASub,+Vars,-Aug)
@@ -234,8 +228,10 @@ top(Vars, Top) :-
    + (not_fails, is_det).
 
 :- export(augment/3).
-:- test augment(Asub, Vars, Aug): (Asub = [], Vars = [X, Y]) => (Aug = [ ([X], [X]), ([Y], [Y]) ]) + (not_fails, is_det).
-:- test augment(Asub, Vars, Aug): (_ = [X], Asub = [([U, V], [U])], Vars = [X, Y]) => (Aug = [ ([X], [X]), ([U,V], [U]), ([Y], [Y]) ]) + (not_fails, is_det).
+:- test augment(Asub, Vars, Aug): (Asub = [], Vars = [X, Y])
+   => (Aug = [ ([X], [X]), ([Y], [Y]) ]) + (not_fails, is_det).
+:- test augment(Asub, Vars, Aug): (_ = [X], Asub = [([U, V], [U])], Vars = [X, Y])
+   => (Aug = [ ([X], [X]), ([U,V], [U]), ([Y], [Y]) ]) + (not_fails, is_det).
 
 augment(ASub, Vars, Aug) :-
    augment0(Vars, ASub0),
@@ -257,8 +253,10 @@ augment0([X|Rest], [([X], [X])|RestAug]) :-
 
 :- export(project/3).
 :- test project(ASub, Vars, Proj): (ASub = [], Vars = [X, Y]) => (Proj = []) + (not_fails, is_det).
-:- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y]) => (Proj = [([X, Y], [X, Y])]) + (not_fails, is_det).
-:- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X]), ([X, Y, Z], [X, Y])], Vars = [X, Y]) => (Proj = [([X, Y], [X])]) + (not_fails, is_det).
+:- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y])
+   => (Proj = [([X, Y], [X, Y])]) + (not_fails, is_det).
+:- test project(ASub, Vars, Proj): (ASub = [([X, Y], [X]), ([X, Y, Z], [X, Y])], Vars = [X, Y])
+   => (Proj = [([X, Y], [X])]) + (not_fails, is_det).
 
 project(ASub, Vars, Proj) :-
    project0(ASub, Vars, Proj0),
@@ -274,7 +272,7 @@ project0([(Sh, Lin)|Rest], Vars, [(Proj_sh, Proj_lin)|Proj_rest]) :-
 %-------------------------------------------------------------------------
 % join(+ASub1,+ASub2,Join)
 %
-% Join is the lub (join) og ASub1 and ASub2.
+% Join is the lub (join) of ASub1 and ASub2.
 %-------------------------------------------------------------------------
 
 :- pred join(+ASub1, +ASub2, -Join)
@@ -285,7 +283,7 @@ project0([(Sh, Lin)|Rest], Vars, [(Proj_sh, Proj_lin)|Proj_rest]) :-
 :- test join(ASub1, ASub2, Join): (ASub1 = [], ASub2 = [([X], [X])]) => (Join = ASub2) + (not_fails, is_det).
 :- test join(ASub1, ASub2, Join): (ASub2 = [], ASub1 = [([X], [X])]) => (Join = ASub1) + (not_fails, is_det).
 :- test join(ASub1, ASub2, Join): (ASub1 = [([X, Y], [X]), ([U], [])], ASub2 = [([X, Y], [X, Y]), ([V], [V])])
-                                => (Join = [([X, Y], [X]), ([U], []), ([V], [V])]) + (not_fails, is_det).
+   => (Join = [([X, Y], [X]), ([U], []), ([V], [V])]) + (not_fails, is_det).
 
 join(ASub1, [], ASub1) :- !.
 join([], ASub2, ASub2) :- !.
@@ -306,8 +304,12 @@ join(ASub1, ASub2, ASub) :-
 :- export(meet/3).
 :- test meet(ASub1, ASub2, Meet): (ASub1 = [], ASub2 = [([X], [X])]) => (Meet = []) + (not_fails, is_det).
 :- test meet(ASub1, ASub2, Meet): (ASub2 = [], ASub1 = [([X], [X])]) => (Meet = []) + (not_fails, is_det).
-:- test meet(ASub1, ASub2, Meet): (ASub1 = [([X, Y, Z], [X, Y]), ([U], [U])], ASub2 = [([X, Y, Z], [X, Y]), ([X, Y, Z], [Y, Z])])
-                                => (Meet = [([X, Y, Z], [Y])]) + (not_fails, is_det) .
+:- test meet(ASub1, ASub2, Meet): (ASub1 = [([X, Y, Z], [X, Y]), ([U], [U])], ASub2 = [([X, Y, Z], [Y, Z])])
+   => (Meet = [([X, Y, Z], [X, Y, Z])]) + (not_fails, is_det) .
+:- test meet(ASub1, ASub2, Meet)
+   : (ASub1 = [([U, V, X, Y], [U]), ([U, V, X, Y], [V])], ASub2 = [([U, V, X, Y], [X]), ([U, V, X, Y], [Y])])
+   => (Meet = [([U, V, X, Y], [U, X]), ([U, V, X, Y], [U, Y]), ([U, V, X, Y], [V , X]), ([U, V, X, Y], [V, Y])])
+   + (not_fails, is_det).
 
 meet(_ASub1, [], []) :- !.
 meet([], _ASub2, []) :- !.
@@ -320,6 +322,8 @@ meet0([(Sh1, Lin1)|Rest], ASub2, Meet):-
    meet1(Sh1, Lin1, ASub2, Meet0),
    meet0(Rest, ASub2, Meet1),
    ord_union(Meet0, Meet1, Meet).
+
+:- index meet1(?, ?, +, ?).
 
 meet1(_Sh1, _Lin1, [], []).
 meet1(Sh1, Lin1, [(Sh2, Lin2)|Rest], Meet) :-
@@ -353,6 +357,10 @@ mgu(ASub, Fv, Sub, MGU) :-
       mgu_standard(ASub, Fv, Sub, MGU)
    ).
 
+%--------------------- OPTIMAL MGU ---------------------------
+% This is the mgu in [G. Amato, F. Scozzari. On the interaction between sharing and linearity].
+% http://dx.doi.org/10.1017/S1471068409990160
+
 :- export(mgu_optimal/4).
 :- test mgu_optimal(ASub, Fv, Sub, MGU): (ASub=[], Fv=[], Sub=[X=t(Y,Z), Y=Z]) => (MGU=[]) + (not_fails, is_det).
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
@@ -385,62 +393,90 @@ mgu_optimal(ASub, Fv, [X=T|Rest], MGU) :-
 
 mgu_binding_optimal(ASub, X, T, MGU) :-
    bag_vars(T, Bt),
-   add_multiplicity(ASub, [X-1], Bt, NRel, RelMul),
+   mgu_add_multiplicity(ASub, [X-1], Bt, NRel, RelMul),
    powerset(RelMul, RelSubs),
+   % TODO: try to optimize mgu_binding_optimal0 by directly generating valid combinations of
+   % Xx, Xt and Xxt instead of taking in input all RelSubs.
    mgu_binding_optimal0(RelSubs, MGU0),
    ord_union(NRel, MGU0, MGU1),
-   normalize(MGU1, MGU).
+   remove_redundants(MGU1, MGU).
+
+:- pred mgu_add_multiplicity(+ASub, +Bx, +Bt, -NRel, -RelMul)
+   : nasub * isbag * isbag * ivar * ivar => nasub(NRel)
+   + (not_fails, is_det)
+   # "Split sharing groups in @var{ASub} in those which are relevant (@var{RelMul}) for the binding X=T
+      and those which are not (@var{NRel}). @var{Bx} and @var{Bt} are the bags of variables for terms
+      X and T, respectively. Relevant sharing groups inb @var{RelMul} are also annotated with their
+      multiplicities in both X and T.".
+
+mgu_add_multiplicity([], _Bx, _Bt, [], []).
+mgu_add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
+   chiMax(Sh, Lin, Bx, Mulx),
+   chiMax(Sh, Lin, Bt, Mult),
+   (
+      Mulx = 0 , Mult = 0 ->
+         NRel = [(Sh,Lin)|NRel0],
+         mgu_add_multiplicity(Rest, Bx, Bt, NRel0, RelMul)
+      ;
+         RelMul = [(Sh, Lin)-(Mulx, Mult)|Rel0],
+         mgu_add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
+   ).
 
 mgu_binding_optimal0([], []).
 mgu_binding_optimal0([XMul|Rest], MGUs) :-
    mgu_binding_optimal0(Rest, RestMGUs),
-   mgu_linearity_type(XMul, LinTypeX, LinTypeT, X),
-   mgu_split(XMul, Xx, Xt, Xxt, 0, XtMul),
+   mgu_linearity_type(XMul, LinTypeX, LinTypeT),
+   mgu_split(XMul, Xx, Xt, Xxt, XtMul),
    length(Xx, Xxlen),
    length(Xt, Xtlen),
    (
       LinTypeX = non_linear, member(LinTypeT,[non_linear, strong_nl]) ->
-         binlist2(X, MGU),
+         upluslist2(Xxt, Xxtplus),
+         upluslist2(Xt, Xtplus),
+         upluslist2(Xx, Xxplus),
+         upluslist2([Xxplus, Xtplus, Xxtplus], MGU),
          insert(RestMGUs, MGU, MGUs)
       ; LinTypeX = non_linear, LinTypeT = linear, Xxlen =< 1, Xtlen >= 1 ->
-         binlist2(Xxt, Xxtplus),
-         binlist2(Xt, Xtplus),
-         binlist(Xx, Xxplus),
-         binlist([Xxplus, Xtplus, Xxtplus], MGU),
+         upluslist2(Xxt, Xxtplus),
+         upluslist2(Xt, Xtplus),
+         upluslist(Xx, Xxplus),
+         upluslist([Xxplus, Xtplus, Xxtplus], MGU),
          insert(RestMGUs, MGU, MGUs)
       ; LinTypeX = linear, LinTypeT = strong_nl, Xxlen >= 1, Xtlen =< 1 ->
-         binlist2(Xxt, Xxtplus),
-         binlist(Xt, Xtplus),
-         binlist2(Xx, Xxplus),
-         binlist([Xxplus, Xtplus, Xxtplus], MGU),
+         upluslist2(Xxt, Xxtplus),
+         upluslist(Xt, Xtplus),
+         upluslist2(Xx, Xxplus),
+         upluslist([Xxplus, Xtplus, Xxtplus], MGU),
          insert(RestMGUs, MGU, MGUs)
-      ; LinTypeX = linear, LinTypeT \= strong_nl, Xtlen =< 1 ->
-         binlist2(Xxt, Xxtplus),
-         binlist(Xt, Xtplus),
-         binlist(Xx, Xxplus),
-         binlist([Xxplus, Xtplus, Xxtplus], MGU0),
-         powerset(Xx, Zinc),
-         mgu_binding_optimal1([[]|Zinc], MGU0, Xxlen, XtMul, MGUs0),
-         ord_union(MGUs0, RestMGUs, MGUs)
+      ; LinTypeX = linear, LinTypeT \= strong_nl, Xtlen =< 1, Xxlen =< XtMul ->
+         upluslist2(Xxt, Xxtplus),
+         upluslist(Xt, Xtplus),
+         upluslist(Xx, Xxplus),
+         upluslist([Xxplus, Xtplus, Xxtplus], MGU0),
+         Zinc_len is XtMul - Xxlen,
+         powerset(Xx, Zinc_len, Zinc),
+         mgu_binding_optimal1(Zinc, MGU0, MGU1),
+         ord_union(MGU1, RestMGUs, MGUs)
       ;
          MGUs = RestMGUs
    ).
 
-mgu_binding_optimal1([], _MGU0, _XxLen, _XtMul, []).
-mgu_binding_optimal1([Zinc|ZRest], MGU0, XxLen, XtMul, [MGU|MGURest]) :-
-   length(Zinc, ZincLen),
-   Zlen is ZincLen + XxLen,
-   Zlen = XtMul, !,
-   binlist(Zinc, MGU1),
-   binpair(MGU0, MGU1, MGU),
-   mgu_binding_optimal1(ZRest, MGU0, XxLen, XtMul, MGURest).
-mgu_binding_optimal1([_|ZRest], MGU0, XxLen, XtMul, MGURest) :-
-   mgu_binding_optimal1(ZRest, MGU0, XxLen, XtMul, MGURest).
+mgu_binding_optimal1([], _MGU0, []).
+mgu_binding_optimal1([Zinc|ZRest], MGU0, [MGU|MGURest]) :-
+   upluslist(Zinc, MGU1),
+   uplus(MGU0, MGU1, MGU),
+   mgu_binding_optimal1(ZRest, MGU0, MGURest).
 
+:- pred mgu_linearity_type(+XMul, -LinTypeX, -LinTypeT)
+   : term * ivar * ivar => term * atm * atm
+   + (not_fails, is_det)
+   # "Compute the linearity types of the annotated set of sharing group in @var{XMul}. @var{LinTypeX} is either
+   'linear' if all sharing groups in @var{XMul} are linear for X, or 'non_linear' otherwsoe. @var{LinTypeT} may
+   be either 'linear', 'non_linear' or 'strong_nl' (see paper).".
 
-mgu_linearity_type([], linear, linear, []).
-mgu_linearity_type([ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT, [ShLin|Rest]) :-
-   mgu_linearity_type(XRest, LinTypeX0, LinTypeT0, Rest),
+mgu_linearity_type([], linear, linear).
+mgu_linearity_type([_ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT) :-
+   mgu_linearity_type(XRest, LinTypeX0, LinTypeT0),
    ( \+ member(MulX, [0,1]) -> LinTypeX = non_linear ; LinTypeX = LinTypeX0 ),
    (
       MulT = inf ->
@@ -453,34 +489,31 @@ mgu_linearity_type([ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT, [ShLin|Rest])
          LinTypeT = LinTypeT0
    ).
 
-mgu_split([], [], [], [], M, M).
-mgu_split([ShLin-(MulX, MulT)|Rest], Xx, Xt, Xxt, M0, M) :-
+:- pred mgu_split(+XMul, -Xx, -Xt, -Xxt, -M)
+   : term * ivar * ivar * ivar * ivar => term * nasub * nasub * nasub * multiplicity
+   + (not_fails, is_det)
+   # "Split the sharing group with multiplicities in @var{XMul} into the components @var{Xx}, @var{Xt}, @var{Xxt},
+   which are relative to 'X only', 'T only' and 'both X and T'. It also returns in @var{M} the total multiplicity
+   of Xxt.".
+
+mgu_split([], [], [], [], 0).
+mgu_split([ShLin-(MulX, MulT)|Rest], Xx, Xt, Xxt, M) :-
    (
       MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
-         mgu_split(Rest, Xx, Xt, Xxt0, M0, M)
+         mgu_split(Rest, Xx, Xt, Xxt0, M)
       ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
-         mgu_split(Rest, Xx0, Xt, Xxt, M0, M)
+         mgu_split(Rest, Xx0, Xt, Xxt, M)
       ; MulT \= 0 ->
          Xt = [ShLin|Xt0],
-         ( MulT \= inf, M0 \= inf -> M1 is M0 + MulT ; M1 = inf ),
-         mgu_split(Rest, Xx, Xt0, Xxt, M1, M)
+         mgu_split(Rest, Xx, Xt0, Xxt, M0),
+         ( MulT \= inf, M0 \= inf -> M is M0 + MulT ; M = inf )
    ).
 
-
-add_multiplicity([], _Bx, _Bt, [], []).
-add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
-   chiMax(Sh, Lin, Bx, Mulx),
-   chiMax(Sh, Lin, Bt, Mult),
-   (
-      Mulx = 0 , Mult = 0 ->
-         NRel = [(Sh,Lin)|NRel0],
-         add_multiplicity(Rest, Bx, Bt, NRel0, RelMul)
-      ;
-         RelMul = [(Sh, Lin)-(Mulx, Mult)|Rel0],
-         add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
-   ).
+%--------------------- STANDARD MGU ---------------------------
+% This is the mgu in [A. King, A synergistic analysis for sharing and groundness which traces linearity]
+% https://dx.doi.org/10.1007/3-540-57880-3_24
 
 :- export(mgu_standard/4).
 :- test mgu_standard(ASub, Fv, Sub, MGU): (ASub=[], Fv=[], Sub=[X=t(Y,Z), Y=Z]) => (MGU=[]) + (not_fails, is_det).
@@ -570,7 +603,7 @@ match(Prime, Pv, Call, Match) :-
 
 match0(_Prime, _Pv, [], []).
 match0(Prime, Pv, [X|Rest_subs], Match) :-
-   binlist(X, (X_sh, X_lin)),
+   upluslist(X, (X_sh, X_lin)),
    match1(Prime, Pv, X, X_sh, X_lin, Match0),
    match0(Prime, Pv, Rest_subs, RestMatch),
    append(Match0, RestMatch, Match).
@@ -583,7 +616,7 @@ match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
    X_sh_restricted == Sh, !,
    ord_union(X_lin, Lin, Lin1),
    relbar(X, Lin, X_bar),
-   binlist(X_bar, (X_bar_sh, _)),
+   upluslist(X_bar, (X_bar_sh, _)),
    ord_subtract(Lin1, X_bar_sh, Lin2),
    Match = (X_sh, Lin2),
    match1(Rest, Pv, X, X_sh, X_lin, RestMatch).
@@ -717,7 +750,7 @@ meet_lin0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
 split([], _Bt, [], [], []).
 split([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
    split(Rest, Bt, NRel0, Rel_lin0, Rel_nlin0),
-   as_shlin:chiMax(Sh, Lin, Bt, Mul),
+   as_aux:chiMax(Sh, Lin, Bt, Mul),
    (
       Mul = 0 ->
          NRel = [(Sh, Lin)|NRel0],
@@ -733,19 +766,45 @@ split([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
          Rel_nlin = [(Sh, Lin)|Rel_nlin0]
    ).
 
-:- pred binpair(ShLin1, ShLin2, Bin)
-   : shlin2group * shlin2group * ivar => shlin2group(Bin)
+:- pred uplus(ShLin1, ShLin2, UPlus)
+   : shlin2group * shlin2group * ivar => shlin2group(UPlus)
    + (not_fails, is_det)
-   # "@var{Bin} is the combination of two sharing groups @var{ShLin1} and @var{ShLin2}.".
+   # "@var{UPlus} is the union of the 2-sharing groups @var{ShLin1} and @var{ShLin2}.".
 
-:- export(binpair/3).
-:- test binpair(ShLin1, ShLin2, Bin): (ShLin1 = ([X, Y], [X]), ShLin2 = ([X, Z], [X, Z])) => (Bin = ([X, Y, Z], [Z])) + (not_fails, is_det).
+:- export(uplus/3).
+:- test uplus(ShLin1, ShLin2, UPlus): (ShLin1 = ([X, Y], [X]), ShLin2 = ([X, Z], [X, Z])) => (UPlus = ([X, Y, Z], [Z])) + (not_fails, is_det).
 
-binpair((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
+uplus((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
    ord_union(Sh1, Sh2, Sh),
    ord_subtract(Lin1, Sh2, Lina),
    ord_subtract(Lin2, Sh1, Linb),
    ord_union(Lina, Linb, Lin).
+
+:- pred upluslist(+List, ?UPlus)
+   : list(shlin2group, List) => shlin2group(UPlus)
+   + (not_fails, is_det)
+   # "@var{UPlus} is the union of the 2-sharing groups in @var{List}.".
+
+:- export(upluslist/2).
+:- test upluslist(List, UPlus): (List = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])]) => (UPlus = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
+
+upluslist([], ([],[])).
+upluslist([ShLin], ShLin).
+upluslist([ShLin1, ShLin2|Rest], UPlus) :-
+   uplus(ShLin1, ShLin2, ShLin),
+   upluslist([ShLin|Rest], UPlus).
+
+:- pred upluslist2(+List, -UPlus)
+   : list(shlin2group, List) => shlin2group(UPlus)
+   + (not_fails, is_det)
+   # "@var{UPlus} is the union of the 2-sharing groups in @var{List} but ignoring
+   linearity information.".
+
+upluslist2([], ([],[])).
+upluslist2([(Sh, _Lin)], (Sh, [])).
+upluslist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], UPlus) :-
+   ord_union(Sh1, Sh2, Sh),
+   upluslist2([(Sh, [])|Rest], UPlus).
 
 :- pred bin(+ASub1, +ASub2, -Bin)
    : nasub * nasub * ivar => nasub(Bin)
@@ -773,29 +832,9 @@ bin0([X|Rest], Sh, Bin0, Bin) :-
 
 bin1(_, [], Bin, Bin).
 bin1(ShLin1, [ShLin2|Rest], Bin0, Bin) :-
-   binpair(ShLin1, ShLin2, ShLin),
+   uplus(ShLin1, ShLin2, ShLin),
    insert(Bin0, ShLin, Bin1),
    bin1(ShLin1, Rest, Bin1, Bin).
-
-:- pred binlist(+ASub, ?Bin)
-   : list(shlin2group, ASub) => shlin2group(Bin)
-   + (not_fails, is_det)
-   # "@var{Bin} is the combination of two abstract substitutions @var{ASub}.".
-
-:- export(binlist/2).
-:- test binlist(ASub, Bin): (ASub = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])]) => (Bin = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
-
-binlist([], ([],[])).
-binlist([ShLin], ShLin).
-binlist([ShLin1, ShLin2|Rest], Bin) :-
-   binpair(ShLin1, ShLin2, ShLin),
-   binlist([ShLin|Rest], Bin).
-
-binlist2([], ([],[])).
-binlist2([(Sh, _Lin)], (Sh, [])).
-binlist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], Bin) :-
-   ord_union(Sh1, Sh2, Sh),
-   binlist2([(Sh, [])|Rest], Bin).
 
 :- pred star_union(+ASub, -Star)
    : nasub * ivar => nasub(Star)
@@ -834,6 +873,12 @@ rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
       Rel = [(Sh, Lin)|Rel0]
    ),
    rel(Rest, Vars, NRel0, Rel0).
+
+sort_deep([], []).
+sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
+   sort(Sh_u, Sh),
+   sort(Lin_u, Lin),
+   sort_deep(Rest_u, Rest).
 
 normalize(ASub_u, ASub) :-
    sort_deep(ASub_u, ASub_u0),

@@ -531,42 +531,6 @@ nonlinground_vars((Sh, Lin), NGv, NLin) :-
    vars(Sh, NGv),
    ord_subtract(NGv, Lin, NLin).
 
-:- prop multiplicity(X)
-   # "@var{X} is a non negative integer or the atom 'inf'".
-
-multiplicity(inf) :- !.
-multiplicity(X) :-
-   X > 0.
-
-:- pred chiMax(+O, +Lin, +Bag, -Mul)
-   : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(V)
-   + (not_fails, is_det)
-   # "@var{Mul} is the maximum multiplicity of the sharing group @var{O} with linear
-   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bag}".
-:- export(chiMax/4).
-
-chiMax(O, Lin, T, V) :-
-   chiMax0(O, Lin, T, 0, V).
-
-chiMax0([], _Lin, _Bt, M, M) :- !.
-chiMax0(_O, _Lin, [], M, M) :- !.
-chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
-   compare(Rel, X, Y),
-   (
-      Rel = '=' ->
-         (
-            ord_member(X, Lin)  ->
-               Mul1 is Mul0 + N,
-               chiMax0(RestO, Lin, RestBt, Mul1, Mul)
-            ;
-               Mul = inf
-         )
-      ; Rel = '<' ->
-         chiMax0(RestO, Lin, [Y-N|RestBt], Mul0, Mul)
-      ; Rel = '>' ->
-         chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
-   ).
-
 :- pred linearizable(+O, +Bag)
    : ordlist(var) * isbag
    + is_det

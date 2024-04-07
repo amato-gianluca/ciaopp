@@ -43,7 +43,9 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
  % TODO: we abuse not_free for 2-sharing groups.
 input_interface(not_free(X), perfect, (Sh, Lin, ShLin2_0), (Sh, Lin, ShLin2)) :-
    list(shlin2group_u, X), !,
-   normalize(X, ASub1),
+   sort_deep(X, ASub_u),
+   sort(ASub_u, ASub0),
+   remove_redundants(ASub0, ASub1),
    ( var(ShLin2_0) -> ShLin2 = ASub1 ; meet(ShLin2_0, ASub1, ShLin2) ).
 input_interface(linear(X), perfect, (Sh, Lin0, ShLin2), (Sh, Lin, ShLin2)) :-
    list(var, X), !,
@@ -76,7 +78,7 @@ input_user_interface((Sh, Lin, ShLin2), Qv, ASub, Sg, MaybeCallASub):-
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
    from_sharing(ASub_sh, ASub1),
    (var(ShLin2) -> ASub2 = ASub1 ; meet(ASub1, ShLin2, ASub2)),
-   (var(Lin) -> ASub = ASub2 ; meet_lin(ASub2, Lin, ASub)).
+   (var(Lin) -> ASub = ASub2 ; linearize(ASub2, Lin, ASub)).
 
 %-------------------------------------------------------------------------
 % asub_to_native(+ASub,+Qv,+OutFlag,-NativeStat,-NativeComp)
@@ -291,6 +293,7 @@ project0([(Sh, Lin)|Rest], Vars, [(Proj_sh, Proj_lin)|Proj_rest]) :-
 join(ASub1, [], ASub1) :- !.
 join([], ASub2, ASub2) :- !.
 join(ASub1, ASub2, ASub) :-
+   % TODO: devise a predicate combining ord_union and remove_redundants
    ord_union(ASub1, ASub2, ASub0),
    remove_redundants(ASub0, ASub).
 
@@ -655,15 +658,17 @@ match(Prime, Pv, Call, Match) :-
    rel(Call, Pv, NRel, Rel),
    powerset(Rel, Rel_subs),
    match0(Prime, Pv, Rel_subs, Match0),
-   append(NRel, Match0, Match1),
-   normalize(Match1, Match).
+   remove_redundants(Match0, Match1),
+   ord_union(NRel, Match1, Match).
+
+:- index match0(?, ?, +, ?).
 
 match0(_Prime, _Pv, [], []).
 match0(Prime, Pv, [X|Rest_subs], Match) :-
    upluslist(X, (X_sh, X_lin)),
    match1(Prime, Pv, X, X_sh, X_lin, Match0),
    match0(Prime, Pv, Rest_subs, RestMatch),
-   append(Match0, RestMatch, Match).
+   ord_union(Match0, RestMatch, Match).
 
 match1([], _Pv, _X, _X_sh, _X_lin,  []).
 match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
@@ -671,11 +676,10 @@ match1([(Sh, Lin)|Rest], Pv, X, X_sh, X_lin, [Match|RestMatch]) :-
    ord_intersection(X_lin, Pv, X_lin_restricted),
    ord_subset(Lin, X_lin_restricted),
    X_sh_restricted == Sh, !,
-   ord_union(X_lin, Lin, Lin1),
    relbar(X, Lin, X_bar),
    upluslist(X_bar, (X_bar_sh, _)),
-   ord_subtract(Lin1, X_bar_sh, Lin2),
-   Match = (X_sh, Lin2),
+   ord_subtract(X_lin, X_bar_sh, Lin1),
+   Match = (X_sh, Lin1),
    match1(Rest, Pv, X, X_sh, X_lin, RestMatch).
 match1([_|Rest], Pv, X, X_sh, X_lin, Match) :-
    match1(Rest, Pv, X, X_sh, X_lin, Match).
@@ -745,21 +749,6 @@ sharing([(Sh, _Lin)|Rest], Sharing) :-
    sharing(Rest, RestSharing),
    insert(RestSharing, Sh, Sharing).
 
-:- pred lin(+ASub, -Lin)
-   : nasub * ivar => ordlist(var, Lin)
-   + (not_fails, is_det)
-   # "@var{Lin} is the set of definite linear non-ground variables in the abstract
-   substitution @var{ASub}, without the ground variables.".
-:- export(lin/2).
-:- test lin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
-:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [X]) + (not_fails, is_det).
-:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])]) => (Lin = [X, Y]) + (not_fails, is_det).
-
-lin(ASub, Lin) :-
-   vars(ASub, Vars),
-   nlin(ASub, NLin),
-   ord_subtract(Vars, NLin, Lin).
-
 :- pred nlin(+ASub, -NLin)
    : nasub * ivar => ordlist(var, NLin)
    + (not_fails, is_det)
@@ -776,22 +765,36 @@ nlin([(Sh, Lin)|Rest], NLin) :-
    ord_subtract(Sh, Lin, NLin0),
    ord_union(NLin0, RestNLin, NLin).
 
-:- pred meet_lin(+ASub, +Lin, -ASubLin)
+:- pred lin(+ASub, -Lin)
+   : nasub * ivar => ordlist(var, Lin)
+   + (not_fails, is_det)
+   # "@var{Lin} is the set of definite linear non-ground variables in the abstract
+   substitution @var{ASub}.".
+:- export(lin/2).
+:- test lin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
+:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [X]) + (not_fails, is_det).
+:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])]) => (Lin = [X, Y]) + (not_fails, is_det).
+
+lin(ASub, Lin) :-
+   vars(ASub, Vars),
+   nlin(ASub, NLin),
+   ord_subtract(Vars, NLin, Lin).
+
+:- pred linearize(+ASub, +Lin, -ASubLin)
    : nasub * ordlist(var) * ivar => nasub(ASubLin)
    + (not_fails, is_det)
    # "@var{ASubLin} is the abstract substitution obtained from @var{ASub} by making linear all
    variables in @var{Lin}.".
 
-meet_lin(ASub, Lin, ASubLin) :-
-   meet_lin0(ASub, Lin, ASubLin0),
-   normalize(ASubLin0, ASubLin).
+linearize(ASub, Lin, ASubLin) :-
+   linearize0(ASub, Lin, ASubLin0),
+   remove_redundants(ASubLin0, ASubLin).
 
-meet_lin0([], _, []).
-meet_lin0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
+linearize0([], _, []).
+linearize0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
    ord_intersection(Sh, Lin, LinNew),
    ord_union(LinNew, Lin0, Lin1),
-   meet_lin0(Rest0, Lin, Rest1).
-
+   linearize0(Rest0, Lin, Rest1).
 
 :- pred uplus(ShLin1, ShLin2, UPlus)
    : shlin2group * shlin2group * ivar => shlin2group(UPlus)
@@ -846,22 +849,22 @@ upluslist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], UPlus) :-
 :- test bin(ASub1, ASub2, Bin): (ASub1 = [([X], [X]), ([Y], [Y])], ASub2 = [([X, Y], []), ([Y], [Y])]) => (Bin = [ ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
 
 bin(Sh1, Sh2, Bin) :-
-   bin0(Sh1, Sh2, [], Bin0),
+   bin0(Sh1, Sh2, Bin0),
    remove_redundants(Bin0, Bin).
 
-bin0([], _, Bin, Bin).
-bin0([X|Rest], Sh, Bin0, Bin) :-
-   bin1(X, Sh, [], BinX),
-   ord_union(Bin0, BinX, Bin1),
-   bin0(Rest, Sh, Bin1, Bin).
+bin0([], _, []).
+bin0([X|Rest], Sh, Bin) :-
+   bin0(Rest, Sh, RestBin),
+   bin1(X, Sh, BinX),
+   ord_union(RestBin, BinX, Bin).
 
 %:- index bin1(?, +, ?, ?).
 
-bin1(_, [], Bin, Bin).
-bin1(ShLin1, [ShLin2|Rest], Bin0, Bin) :-
+bin1(_, [], []).
+bin1(ShLin1, [ShLin2|Rest], Bin) :-
+   bin1(ShLin1, Rest, RestBin),
    uplus(ShLin1, ShLin2, ShLin),
-   insert(Bin0, ShLin, Bin1),
-   bin1(ShLin1, Rest, Bin1, Bin).
+   insert(RestBin, ShLin, Bin).
 
 :- pred star_union(+ASub, -Star)
    : nasub * ivar => nasub(Star)
@@ -901,16 +904,22 @@ rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
    ),
    rel(Rest, Vars, NRel0, Rel0).
 
+:- pred sort_deep(L0, L1)
+   : list(shlin2group_u) * ivar => list(shlin2group, L1).
+   + (not_fails, is_det)
+   # "@var{L1} is the result of sorting each of the 2-sharing groups in the list @var{L0}.".
+
 sort_deep([], []).
 sort_deep([(Sh_u, Lin_u)|Rest_u], [(Sh, Lin)|Rest]) :-
    sort(Sh_u, Sh),
    sort(Lin_u, Lin),
    sort_deep(Rest_u, Rest).
 
-normalize(ASub_u, ASub) :-
-   sort_deep(ASub_u, ASub_u0),
-   sort(ASub_u0, ASub0),
-   remove_redundants(ASub0, ASub).
+:- pred remove_redundants(OL, ASub)
+   : ordlist(shlin2group) * ivar => nasub(ASub)
+   + (not_fails, is_det)
+   # "@var{ASub} is the abstract substitution resulting from removing the redundant 2-sharing groups in the
+   ordered list @var{OL}.".
 
 remove_redundants([], []).
 remove_redundants([([], _)|Rest], RestNorm) :- !,

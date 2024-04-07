@@ -252,15 +252,32 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
          chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
    ).
 
-:- export(powerset/3).
-powerset(S, N, PowerN) :-
-   powerset(S, Power),
-   powerset0([[]|Power], N, PowerN).
+:- export(chiMin/3).
+chiMin([], _, 0) :- !.
+chiMin(_O, [], 0) :- !.
+chiMin([X|RestO], [Y-N|RestBt], Mul) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         chiMin(RestO, RestBt, Mul0),
+         Mul is Mul0 + N
+      ; Rel = '<' ->
+         chiMin(RestO, [Y-N|RestBt], Mul)
+      ; Rel = '>' ->
+         chiMin([X|RestO], RestBt, Mul)
+   ).
 
-powerset0([], _, []).
-powerset0([S|Rest], N, [S|ResRest]) :-
-   length(S, S_len),
-   S_len = N, !,
-   powerset0(Rest, N, ResRest).
-powerset0([_|Rest], N, Res) :-
-   powerset0(Rest, N, Res).
+:- export(powerset/3).
+
+powerset(_S, 0, [[]]) :- !.
+powerset([], _N, []) :- !.
+powerset([X|Xs], N, P):-
+   N1 is N-1,
+   powerset(Xs, N1, P1),
+   add_to_all(P1, X, P2),
+   powerset(Xs, N, P3),
+   append(P2, P3, P).
+
+add_to_all([], _, []).
+add_to_all([X|Xs], Y, [[Y|X]|Ys]):-
+   add_to_all(Xs, Y, Ys).

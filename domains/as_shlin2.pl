@@ -383,6 +383,8 @@ mgu(ASub, Fv, Sub, MGU) :-
    => (MGU=[([X,U,Y],[]),([X,U,Y,V],[]),([X,Y],[]),([X,Y,V],[])]) + (not_fails, is_det).
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
+:- test mgu_optimal(ASub, Fv, Sub, MGU)
+   : (ASub=[([X, Y], [X])], Fv=[], Sub=[X=Y]) => (MGU = [([X,Y], [])]) + (not_fails, is_det).
 
 :- index mgu_optimal(?, ?, +, ?).
 
@@ -412,13 +414,14 @@ mgu_binding_optimal(ASub, X, T, MGU) :-
 mgu_add_multiplicity([], _Bx, _Bt, [], []).
 mgu_add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
    chiMax(Sh, Lin, Bx, Mulx),
-   chiMax(Sh, Lin, Bt, Mult),
+   chiMax(Sh, Lin, Bt, Mult_max),
    (
-      Mulx = 0 , Mult = 0 ->
+      Mulx = 0 , Mult_max = 0 ->
          NRel = [(Sh,Lin)|NRel0],
          mgu_add_multiplicity(Rest, Bx, Bt, NRel0, RelMul)
       ;
-         RelMul = [(Sh, Lin)-(Mulx, Mult)|Rel0],
+         chiMin(Sh, Bt, Mult_min),
+         RelMul = [(Sh, Lin)-(Mulx, Mult_max, Mult_min)|Rel0],
          mgu_add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
    ).
 
@@ -426,7 +429,7 @@ mgu_binding_optimal0([], []).
 mgu_binding_optimal0([XMul|Rest], MGUs) :-
    mgu_binding_optimal0(Rest, RestMGUs),
    mgu_linearity_type(XMul, LinTypeX, LinTypeT),
-   mgu_split(XMul, Xx, Xt, Xxt, XtMul),
+   mgu_split(XMul, Xx, Xt, Xxt, XtMul, XT_Lin),
    length(Xx, Xxlen),
    length(Xt, Xtlen),
    (
@@ -454,9 +457,17 @@ mgu_binding_optimal0([XMul|Rest], MGUs) :-
          upluslist(Xx, Xxplus),
          upluslist([Xxplus, Xtplus, Xxtplus], MGU0),
          Zinc_len is XtMul - Xxlen,
+         % be careful to the case when Xxlen = 0 and Xtlen > 0, since it cannot
+         % generate any result. Actually, this check is redudant in we only
+         % generate maximal Zinc as we do here
+         % (Xxlen = 0, Xtlen > 0-> Zinc = [] ; powerset(Xx, Zinc_len, Zinc)),
          powerset(Xx, Zinc_len, Zinc),
          mgu_binding_optimal1(Zinc, MGU0, MGU1),
-         ord_union(MGU1, RestMGUs, MGUs)
+         normalize(MGU1, MGU2),
+         ord_union(MGU2, RestMGUs, MGUs)
+      ; Xxlen = 0, Xtlen = 0, XT_Lin = yes ->
+         upluslist2(Xxt, MGU0),
+         insert(RestMGUs, MGU0, MGUs)
       ;
          MGUs = RestMGUs
    ).
@@ -475,7 +486,7 @@ mgu_binding_optimal1([Zinc|ZRest], MGU0, [MGU|MGURest]) :-
    be either 'linear', 'non_linear' or 'strong_nl' (see paper).".
 
 mgu_linearity_type([], linear, linear).
-mgu_linearity_type([_ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT) :-
+mgu_linearity_type([_ShLin-(MulX, MulT, _MulT_min)|XRest], LinTypeX, LinTypeT) :-
    mgu_linearity_type(XRest, LinTypeX0, LinTypeT0),
    ( \+ member(MulX, [0,1]) -> LinTypeX = non_linear ; LinTypeX = LinTypeX0 ),
    (
@@ -489,25 +500,26 @@ mgu_linearity_type([_ShLin-(MulX, MulT)|XRest], LinTypeX, LinTypeT) :-
          LinTypeT = LinTypeT0
    ).
 
-:- pred mgu_split(+XMul, -Xx, -Xt, -Xxt, -M)
-   : term * ivar * ivar * ivar * ivar => term * nasub * nasub * nasub * multiplicity
+:- pred mgu_split(+XMul, -Xx, -Xt, -Xxt, -M, -XT_L)
+   : term * ivar * ivar * ivar * ivar * ivar => term * nasub * nasub * nasub * multiplicity * atm
    + (not_fails, is_det)
    # "Split the sharing group with multiplicities in @var{XMul} into the components @var{Xx}, @var{Xt}, @var{Xxt},
    which are relative to 'X only', 'T only' and 'both X and T'. It also returns in @var{M} the total multiplicity
-   of Xxt.".
+   of @var{Xt}, and in @var{XT_L} whether @var{Xt} is linearizable or not.".
 
-mgu_split([], [], [], [], 0).
-mgu_split([ShLin-(MulX, MulT)|Rest], Xx, Xt, Xxt, M) :-
+mgu_split([], [], [], [], 0, yes).
+mgu_split([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
    (
       MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
-         mgu_split(Rest, Xx, Xt, Xxt0, M)
+         mgu_split(Rest, Xx, Xt, Xxt0, M, XT_L0),
+         ( MulT_min \= 1 -> XT_L = no ; XT_L = XT_L0)
       ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
-         mgu_split(Rest, Xx0, Xt, Xxt, M)
+         mgu_split(Rest, Xx0, Xt, Xxt, M, XT_L)
       ; MulT \= 0 ->
          Xt = [ShLin|Xt0],
-         mgu_split(Rest, Xx, Xt0, Xxt, M0),
+         mgu_split(Rest, Xx, Xt0, Xxt, M0, XT_L),
          ( MulT \= inf, M0 \= inf -> M is M0 + MulT ; M = inf )
    ).
 

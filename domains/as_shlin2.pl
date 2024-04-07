@@ -377,7 +377,8 @@ mgu(ASub, Fv, Sub, MGU) :-
    => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
-   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),  ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),
+      ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
@@ -409,9 +410,9 @@ mgu_binding_optimal(ASub, X, T, MGU) :-
 :- pred mgu_add_multiplicity(+ASub, +Bx, +Bt, -NRel, -RelMul)
    : nasub * isbag * isbag * ivar * ivar => nasub(NRel)
    + (not_fails, is_det)
-   # "Split sharing groups in @var{ASub} in those which are relevant (@var{RelMul}) for the binding X=T
+   # "Split the 2-sharing groups in @var{ASub} in those which are relevant (@var{RelMul}) for the binding X=T
       and those which are not (@var{NRel}). @var{Bx} and @var{Bt} are the bags of variables for terms
-      X and T, respectively. Relevant sharing groups inb @var{RelMul} are also annotated with their
+      X and T, respectively. Relevant 2-sharing groups in @var{RelMul} are also annotated with their
       multiplicities in both X and T (the latter in maximum and minimum variant).".
 
 mgu_add_multiplicity([], _Bx, _Bt, [], []).
@@ -432,7 +433,7 @@ mgu_binding_optimal0([], []).
 mgu_binding_optimal0([XMul|Rest], MGU) :-
    mgu_binding_optimal0(Rest, RestMGU),
    mgu_linearity_type(XMul, LinTypeX, LinTypeT),
-   mgu_split(XMul, Xx, Xt, Xxt, XtMul, XT_Lin),
+   mgu_split_optimal(XMul, Xx, Xt, Xxt, XtMul, XT_Lin),
    length(Xx, Xxlen),
    length(Xt, Xtlen),
    (
@@ -483,7 +484,7 @@ mgu_binding_optimal1([Zinc|ZRest], MGU0, [MGU|MGURest]) :-
 :- pred mgu_linearity_type(+XMul, -LinTypeX, -LinTypeT)
    : term * ivar * ivar => term * atm * atm
    + (not_fails, is_det)
-   # "Compute the linearity types of the annotated set of sharing group in @var{XMul}. @var{LinTypeX} is either
+   # "Compute the linearity types of the annotated set of 2-sharing groups in @var{XMul}. @var{LinTypeX} is either
    'linear' if all sharing groups in @var{XMul} are linear for X, or 'non_linear' otherwsoe. @var{LinTypeT} may
    be either 'linear', 'non_linear' or 'strong_nl' (see paper).".
 
@@ -502,26 +503,26 @@ mgu_linearity_type([_ShLin-(MulX, MulT, _MulT_min)|XRest], LinTypeX, LinTypeT) :
          LinTypeT = LinTypeT0
    ).
 
-:- pred mgu_split(+XMul, -Xx, -Xt, -Xxt, -M, -XT_L)
+:- pred mgu_split_optimal(+XMul, -Xx, -Xt, -Xxt, -M, -XT_L)
    : term * ivar * ivar * ivar * ivar * ivar => term * nasub * nasub * nasub * multiplicity * atm
    + (not_fails, is_det)
-   # "Split the sharing group with multiplicities in @var{XMul} into the components @var{Xx}, @var{Xt}, @var{Xxt},
+   # "Split the annotated 2-sharing groups in @var{XMul} into the components @var{Xx}, @var{Xt}, @var{Xxt},
    which are relative to 'X only', 'T only' and 'both X and T'. It also returns in @var{M} the total multiplicity
    of @var{Xt}, and in @var{XT_L} whether @var{Xt} is linearizable or not.".
 
-mgu_split([], [], [], [], 0, yes).
-mgu_split([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
+mgu_split_optimal([], [], [], [], 0, yes).
+mgu_split_optimal([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
    (
       MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
-         mgu_split(Rest, Xx, Xt, Xxt0, M, XT_L0),
+         mgu_split_optimal(Rest, Xx, Xt, Xxt0, M, XT_L0),
          ( MulT_min \= 1 -> XT_L = no ; XT_L = XT_L0)
       ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
-         mgu_split(Rest, Xx0, Xt, Xxt, M, XT_L)
+         mgu_split_optimal(Rest, Xx0, Xt, Xxt, M, XT_L)
       ; MulT \= 0 ->
          Xt = [ShLin|Xt0],
-         mgu_split(Rest, Xx, Xt0, Xxt, M0, XT_L),
+         mgu_split_optimal(Rest, Xx, Xt0, Xxt, M0, XT_L),
          ( MulT \= inf, M0 \= inf -> M is M0 + MulT ; M = inf )
    ).
 
@@ -542,12 +543,18 @@ mgu_split([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
    => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
-   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),  ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
+   => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),
+      ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([X, Y], [X])], Fv=[], Sub=[X=Y]) => (MGU = [([X,Y], [])]) + (not_fails, is_det).
+:- test mgu_standard(ASub, Fv, Sub, MGU)
+   : (ASub=[([U, V], [U]), ([U, X], [U, X]), ([V],[V]), ([X],[X])], Fv=[], Sub=[X=V])
+   => (MGU = [([U,V,X],[]),([V,X],[V,X])] ) + (not_fails, is_det).
 
 :- index mgu_standard(?, ?, +, ?).
 
@@ -556,29 +563,65 @@ mgu_standard(ASub, Fv, [X=T|Rest], MGU) :-
    mgu_binding_standard(ASub, X, T, MGU0),
    mgu_standard(MGU0, Fv, Rest, MGU).
 
-mgu_binding_standard(ASub, X, T, MGU0) :-
+mgu_binding_standard(ASub, X, T, MGU) :-
    bag_vars(T, Bt),
-   split(ASub, [X-1], NRel_x, Rel_x_lin, Rel_x_nlin),
-   split(ASub, Bt, NRel_t, Rel_t_lin, Rel_t_nlin),
+   mgu_split_standard(ASub, [X-1], NRel_x, Rel_x_lin, Rel_x_nlin),
+   mgu_split_standard(ASub, Bt, NRel_t, Rel_t_lin, Rel_t_nlin),
    ord_intersection(NRel_x, NRel_t, NRel),
    (
       Rel_x_nlin == [], ord_subset(Rel_x_lin, NRel_t) ->
          bin(Rel_x_lin, Rel_t_lin, ASub1),
          star_union(Rel_x_lin, Rel_x_lin_star),
          bin(Rel_x_lin_star, Rel_t_nlin, ASub2),
-         merge_list_of_lists([NRel, ASub1, ASub2], MGU0)
+         ord_union(ASub1, ASub2, ASub3),
+         remove_redundants(ASub3, ASub4),
+         ord_union(NRel, ASub4, MGU)
       ; Rel_t_nlin == [], ord_subset(Rel_t_lin, NRel_x) ->
          bin(Rel_t_lin, Rel_x_lin, ASub1),
          star_union(Rel_t_lin, Rel_t_lin_star),
          bin(Rel_t_lin_star, Rel_x_nlin, ASub2),
-         merge_list_of_lists([NRel, ASub1, ASub2], MGU0)
+         ord_union(ASub1, ASub2, ASub3),
+         remove_redundants(ASub3, ASub4),
+         ord_union(NRel, ASub4, MGU)
       ;
          ord_union(Rel_x_lin, Rel_x_nlin, Rel_x),
          star_union(Rel_x, Rel_x_star),
          ord_union(Rel_t_lin, Rel_t_nlin, Rel_t),
          star_union(Rel_t, Rel_t_star),
          bin(Rel_x_star, Rel_t_star, ASub1),
-         ord_union(NRel, ASub1, MGU0)
+         ord_union(NRel, ASub1, MGU)
+   ).
+
+:- pred mgu_split_standard(+ASub, +Bt, -NRel, -Rel_lin, -Rel_nlin)
+   : nasub * isbag(var) * ivar * ivar * ivar => (nasub(NRel), nasub(Rel_lin), nasub(Rel_nlin))
+   + (not_fails, is_det)
+   # "Split the 2-sharing groups in @var{ASub} wrt the bag of variables @var{Bt},
+   in the not-relevant, relevant linear and relevant non-linear groups.".
+
+:- export(mgu_split_standard/5).
+:- test mgu_split_standard(ASub, Bt, NRel, Rel_lin, Rel_nlin): (ASub=[], Bt=[X-2,Y-3])
+   => (NRel=[], Rel_lin=[], Rel_nlin=[]) + (not_fails, is_det).
+:- test mgu_split_standard(ASub, Bt, NRel, Rel_lin, Rel_nlin)
+   : (ASub=[([X, Y],[Y]), ([X, Z],[X, Z]), ([Z],[])], Bt=[X-1,Y-2])
+   => (NRel=[ ([Z],[])], Rel_lin=[([X, Z],[X, Z])], Rel_nlin=[([X, Y],[Y])]) + (not_fails, is_det).
+
+mgu_split_standard([], _Bt, [], [], []).
+mgu_split_standard([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
+   mgu_split_standard(Rest, Bt, NRel0, Rel_lin0, Rel_nlin0),
+   chiMax(Sh, Lin, Bt, Mul),
+   (
+      Mul = 0 ->
+         NRel = [(Sh, Lin)|NRel0],
+         Rel_lin = Rel_lin0,
+         Rel_nlin = Rel_nlin0
+      ; Mul = 1 ->
+         NRel = NRel0,
+         Rel_lin = [(Sh, Lin)|Rel_lin0],
+         Rel_nlin = Rel_nlin0
+      ;
+         NRel = NRel0,
+         Rel_lin = Rel_lin0,
+         Rel_nlin = [(Sh, Lin)|Rel_nlin0]
    ).
 
 %-------------------------------------------------------------------------
@@ -590,7 +633,7 @@ mgu_binding_standard(ASub, X, T, MGU0) :-
 %
 % With respect to the general definition of matching, we only consider
 % the special case in which the variables in Call (not even provided
-% explicityl input) are a superset of Pv.
+% explicitly as input) are a superset of Pv.
 %-------------------------------------------------------------------------
 
 :- pred match(+Prime, +Pv, +Call, -Match)
@@ -733,18 +776,6 @@ nlin([(Sh, Lin)|Rest], NLin) :-
    ord_subtract(Sh, Lin, NLin0),
    ord_union(NLin0, RestNLin, NLin).
 
-:- pred split(+ASub, +Bt, -NRel, -Rel_lin, -Rel_nlin)
-   : nasub * isbag(var) * ivar * ivar * ivar => (nasub(NRel), nasub(Rel_lin), nasub(Rel_nlin))
-   + (not_fails, is_det)
-   # "Split the 2-sharing groups in @var{ASub} wrt the bag of variables @var{Bt},
-   in the not-relevant, relevant linear and relevant non-linear groups.".
-
-:- export(split/5).
-:- test split(ASub, Bt, NRel, Rel_lin, Rel_nlin): (ASub=[], Bt=[X-2,Y-3]) => (NRel=[], Rel_lin=[], Rel_nlin=[]) + (not_fails, is_det).
-:- test split(ASub, Bt, NRel, Rel_lin, Rel_nlin)
-   : (ASub=[([X, Y],[Y]), ([X, Z],[X, Z]), ([Z],[])], Bt=[X-1,Y-2])
-   => (NRel=[ ([Z],[])], Rel_lin=[([X, Z],[X, Z])], Rel_nlin=[([X, Y],[Y])]) + (not_fails, is_det).
-
 :- pred meet_lin(+ASub, +Lin, -ASubLin)
    : nasub * ordlist(var) * ivar => nasub(ASubLin)
    + (not_fails, is_det)
@@ -761,24 +792,6 @@ meet_lin0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
    ord_union(LinNew, Lin0, Lin1),
    meet_lin0(Rest0, Lin, Rest1).
 
-split([], _Bt, [], [], []).
-split([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
-   split(Rest, Bt, NRel0, Rel_lin0, Rel_nlin0),
-   as_aux:chiMax(Sh, Lin, Bt, Mul),
-   (
-      Mul = 0 ->
-         NRel = [(Sh, Lin)|NRel0],
-         Rel_lin = Rel_lin0,
-         Rel_nlin = Rel_nlin0
-      ; Mul = 1 ->
-         NRel = NRel0,
-         Rel_lin = [(Sh, Lin)|Rel_lin0],
-         Rel_nlin = Rel_nlin0
-      ;
-         NRel = NRel0,
-         Rel_lin = Rel_lin0,
-         Rel_nlin = [(Sh, Lin)|Rel_nlin0]
-   ).
 
 :- pred uplus(ShLin1, ShLin2, UPlus)
    : shlin2group * shlin2group * ivar => shlin2group(UPlus)

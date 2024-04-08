@@ -4,9 +4,11 @@
 :- use_package(rtchecks).
 %:- use_module(engine(io_basic)).
 
-:- doc(title, "sharing * linarity abstract domain").
+:- doc(title, "Sharing * Lin abstract domain").
 :- doc(module,"
-This module is an independent reimplementation of the Sharing * Linearity domain.
+This module is an independent reimplementation of the Sharing * Lin abstract domain.
+The optimal mgu algorithm is implemented following [G. Amato, F. Scozzari. On the interaction
+between sharing and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 ").
 
 :- include(ciaopp(plai/plai_domain)).
@@ -37,10 +39,11 @@ This module is an independent reimplementation of the Sharing * Linearity domain
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
 input_interface(linear(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
-   list(var, X),
-   ord_union(Lin0, X, Lin).
+   list(var, X), !,
+   sort(X, X1),
+   ord_union(Lin0, X1, Lin).
 input_interface(free(X), perfect, (Sh, Lin0), (Sh, Lin)) :-
-   var(X),
+   var(X), !,
    insert(Lin0, X, Lin).
 input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
    sharing:input_interface(Info, Kind, Sh0, Sh).
@@ -64,7 +67,7 @@ input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
 
 input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
-   vars(ASub_sh, Vsh),
+   as_sharing:vars(ASub_sh, Vsh),
    ord_intersection(Lin, Vsh, ASub_lin).
 
 %-------------------------------------------------------------------------
@@ -89,7 +92,7 @@ input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
-   gvars(Sh, Qv, Gv),
+   as_sharing:gvars(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
    if_not_nil(Lin, linear(Lin), NativeStat1, []).
 
@@ -103,7 +106,7 @@ nasub((Sh, Lin)) :-
    as_sharing:nasub(Sh),
    ordlist(var, Lin),
    % Lin only contains variables in Sh, since ground variables are linear by definition
-   vars(Sh, VSh),
+   as_sharing:vars(Sh, VSh),
    ord_subset(Lin, VSh).
 
 :- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
@@ -198,7 +201,9 @@ join((Sh1, Lin1), (Sh2, Lin2), (Join_sh, Join_lin)) :-
 
 meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
    as_sharing:meet(Sh1, Sh2, Meet_sh),
-   ord_union(Lin1, Lin2, Meet_lin).
+   ord_union(Lin1, Lin2, Lin),
+   as_sharing:vars(Meet_sh, Vars),
+   ord_intersection(Lin, Vars, Meet_lin).
 
 %-------------------------------------------------------------------------
 % mgu(+ASub,Fv,+Sub,-MGU)
@@ -210,24 +215,22 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
 :- pred mgu(+ASub, +Fv, +Sub, -MGU)
    : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
-:- index mgu(?, ?, +, ?).
 
-mgu(ShLin, _Fv, [], ShLin).
-mgu(ShLin, Fv, [X=T|Rest], MGU) :-
-   (
-      current_pp_flag(mgu_shlin_optimize, optimal) ->
-         mgu_binding_optimal(ShLin, X, T, MGU0)
-      ;
-         mgu_binding(ShLin, X, T, MGU0)
-   ),
+mgu(ASub, Fv, Sub, MGU) :-
+   (current_pp_flag(mgu_shlin2_optimize, optimal) ->
+      mgu_optimal(ASub, Fv, Sub, MGU)
+   ;
+      mgu_standard(ASub, Fv, Sub, MGU)
+   ).
+
+%--------------------- OPTIMAL MGU ---------------------------
+% This is the mgu in [G. Amato, F. Scozzari. On the interaction between sharing and linearity].
+% http://dx.doi.org/10.1017/S1471068409990160
+
+mgu_optimal(ShLin, _Fv, [], ShLin).
+mgu_optimal(ShLin, Fv, [X=T|Rest], MGU) :-
+   mgu_binding_optimal(ShLin, X, T, MGU0),
    mgu(MGU0, Fv, Rest, MGU).
-
-%-------------------------------------------------------------------------
-% mgu_binding_optimal(+ShLin,X,T,-MGU)
-%
-% MGU is the result of the unification of ShLin with the binding {X/T}
-% with the optimal algorithm.
-%-------------------------------------------------------------------------
 
 mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
@@ -239,8 +242,8 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ord_subtract(Sh_x, Sh_t, Rel_x),
    ord_subtract(Sh_t, Sh_x, Rel_t),
    ord_intersection(Sh_x, Sh_t, Rel_xt),
-   mgu_shsplit(Rel_t, Lin, Bt, Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin),
-   mgu_shsplit(Rel_xt, Lin, Bt, _, Rel_xt_one, _, Rel_xt_nlin),
+   mgu_split(Rel_t, Lin, Bt, Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin),
+   mgu_split(Rel_xt, Lin, Bt, _, Rel_xt_one, _, Rel_xt_nlin),
    mgu_shlinearizable(Rel_xt, Bt, Rel_xt_linearizable),
    (
       ord_member(X, Lin) ->
@@ -272,14 +275,14 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    mgu_binding_lin(Lin, ~vars(Sh_x), ~vars(Sh_t), Linx, Lint, Lin0),
    ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
 
-:- pred mgu_shsplit(+Sh, +Lin, +Bt, -BagInf, -BagOne, -BagNat, -BagNLin)
+:- pred mgu_split(+Sh, +Lin, +Bt, -BagInf, -BagOne, -BagNat, -BagNLin)
    # "Split the shring groups in @var{Sh} on the last four arguments
       according to their maximum multiplicity w.r.t. the set of linear
       variables @var{Lin} and the term represented by the bag of variables @var{Bt}.".
 
-mgu_shsplit([], _Lin, _Bt, [], [], [], []).
-mgu_shsplit([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
-   mgu_shsplit(Rest, Lin, Bt, BagInf0, BagOne0, BagNat0, BagNLin0),
+mgu_split([], _Lin, _Bt, [], [], [], []).
+mgu_split([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
+   mgu_split(Rest, Lin, Bt, BagInf0, BagOne0, BagNat0, BagNLin0),
    chiMax(O, Lin, Bt, Mul),
    (
       Mul = inf ->
@@ -338,14 +341,14 @@ mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
 mgu_binding_additional0(O, [_Z|Rest], Mul, Result) :-
    mgu_binding_additional0(O, Rest, Mul, Result).
 
-%-------------------------------------------------------------------------
-% mgu_binding(+ShLin,X,T,-MGU)
-%
-% MGU is the result of the unification of ShLin with the binding {X/T}.
-% This is the non-optimal algorith, with or without independent check.
-%-------------------------------------------------------------------------
+%--------------------- STANDARD MGU ---------------------------
 
-mgu_binding(ShLin, X, T, (MGU_sh, MGU_lin)) :-
+mgu_standard(ShLin, _Fv, [], ShLin).
+mgu_standard(ShLin, Fv, [X=T|Rest], MGU) :-
+   mgu_binding_standard(ShLin, X, T, MGU0),
+   mgu(MGU0, Fv, Rest, MGU).
+
+mgu_binding_standard(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    ShLin = (Sh, Lin),
    rel(Sh, [X], Sh_x, NSh_x),
    rel(Sh, ~varset(T), Sh_t, NSh_t),

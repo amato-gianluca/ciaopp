@@ -67,7 +67,7 @@ input_interface(Info, Kind, (Sh0, Lin), (Sh, Lin)) :-
 
 input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
    sharing:input_user_interface(Sh, Qv, ASub_sh, Sg, MaybeCallASub),
-   as_sharing:vars(ASub_sh, Vsh),
+   vars(ASub_sh, Vsh),
    ord_intersection(Lin, Vsh, ASub_lin).
 
 %-------------------------------------------------------------------------
@@ -92,7 +92,7 @@ input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
-   as_sharing:gvars(Sh, Qv, Gv),
+   gvars(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
    if_not_nil(Lin, linear(Lin), NativeStat1, []).
 
@@ -104,10 +104,10 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
 :- redefining(nasub/1).
 
 nasub((Sh, Lin)) :-
-   as_sharing:nasub(Sh),
+   asub_sh(Sh),
    ordlist(var, Lin),
    % Lin only contains variables in Sh, since ground variables are linear by definition
-   as_sharing:vars(Sh, VSh),
+   vars(Sh, VSh),
    ord_subset(Lin, VSh).
 
 :- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
@@ -210,7 +210,7 @@ join((Sh1, Lin1), (Sh2, Lin2), (Join_sh, Join_lin)) :-
 meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
    as_sharing:meet(Sh1, Sh2, Meet_sh),
    ord_union(Lin1, Lin2, Lin),
-   as_sharing:vars(Meet_sh, Vars),
+   vars(Meet_sh, Vars),
    ord_intersection(Lin, Vars, Meet_lin).
 
 %-------------------------------------------------------------------------
@@ -262,7 +262,7 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
          bin(Rel_t_inf, BinTmp0, Bin0),
          bin_all([[[]|Rel_xt], Rel_xt_nlin, BinTmp0], Bin1),
          powerset(Rel_x, Rel_x_power),
-         mgu_binding_additional(Rel_t_nat, Rel_x_power, Bt, Lin, Rel_a),
+         mgu_binding_optimal0(Rel_t_nat, Rel_x_power, Bt, Lin, Rel_a),
          star_union_real(Rel_xt_one, Rel_xt_one_star),
          bin(Rel_a, Rel_xt_one_star, Bin2),
          star_union(Rel_xt_linearizable, Rel_xt_linearizable_plus),
@@ -284,37 +284,59 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    mgu_binding_lin(Lin, ~vars(Sh_x), ~vars(Sh_t), Linx, Lint, Lin0),
    ord_intersection(Lin0, ~vars(MGU_sh), MGU_lin).
 
+:- pred mgu_binding_optimal0(+Sh, +Powerset_rel_x, +Bt, +Lin, -Result)
+   # "This computes the most complex part of the mgu for Sharing * Linearity, which
+   depends on the choice of particular subsets of Rel_x.".
+
+mgu_binding_optimal0([], _, _, _, []).
+mgu_binding_optimal0([O|Rest], Rel_x_power, Bt, Lin, Result) :-
+   chiMax(O, Lin, Bt, Mul),
+   mgu_binding_optimal1(O, Rel_x_power, Mul, Result0),
+   sort(Result0, Result1),
+   mgu_binding_optimal0(Rest, Rel_x_power, Bt, Lin, ResultRest),
+   ord_union(Result1, ResultRest, Result).
+
+mgu_binding_optimal1(_O, [], _Mul, []).
+mgu_binding_optimal1(O, [Z|Rest], Mul, [Y|RestResult]) :-
+   length(Z, Size),
+   Size =< Mul, !,
+   vars(Z, Vz),
+   ord_union(O, Vz, Y),
+   mgu_binding_optimal1(O, Rest, Mul, RestResult).
+mgu_binding_optimal1(O, [_Z|Rest], Mul, Result) :-
+   mgu_binding_optimal1(O, Rest, Mul, Result).
+
 :- pred mgu_split(+Sh, +Lin, +Bt, -BagInf, -BagOne, -BagNat, -BagNLin)
    # "Split the shring groups in @var{Sh} on the last four arguments
       according to their maximum multiplicity w.r.t. the set of linear
       variables @var{Lin} and the term represented by the bag of variables @var{Bt}.".
 
 mgu_split([], _Lin, _Bt, [], [], [], []).
-mgu_split([O|Rest], Lin, Bt, BagInf, BagOne, BagNat, BagNLin) :-
-   mgu_split(Rest, Lin, Bt, BagInf0, BagOne0, BagNat0, BagNLin0),
+mgu_split([O|Rest], Lin, Bt, RelInf, RelOne, RelNat, RelNLin) :-
+   mgu_split(Rest, Lin, Bt, RelInf0, RelOne0, RelNat0, RelNLin0),
    chiMax(O, Lin, Bt, Mul),
    (
       Mul = inf ->
-         BagInf = [O|BagInf0],
-         BagOne = BagOne0,
-         BagNat = BagNat0,
-         BagNLin = [O|BagNLin0]
+         RelInf = [O|RelInf0],
+         RelOne = RelOne0,
+         RelNat = RelNat0,
+         RelNLin = [O|RelNLin0]
       ; Mul = 1 ->
-         BagInf = BagInf0,
-         BagOne = [O|BagOne0],
-         BagNat = [O|BagNat0],
-         BagNLin = BagNLin0
+         RelInf = RelInf0,
+         RelOne = [O|RelOne0],
+         RelNat = [O|RelNat0],
+         RelNLin = RelNLin0
       ;
-         BagInf = BagInf0,
-         BagOne = BagOne0,
-         BagNat = [O|BagNat0],
-         BagNLin = [O|BagNLin0]
+         RelInf = RelInf0,
+         RelOne = RelOne0,
+         RelNat = [O|RelNat0],
+         RelNLin = [O|RelNLin0]
    ).
 
 :- pred mgu_shlinearizable(+Sh, +Bt, -Result)
    # "@var{Result} is the set of sharing groups in @var{Sh} which are linear w.r.t.
       the term represented by the bag of variables @var{Bt} when all variables
-      are considered to be lienear,".
+      are considered to be linear,".
 
 mgu_shlinearizable([], _Bt, []).
 mgu_shlinearizable([O|Rest], Bt, [O|ResultRest]) :-
@@ -322,33 +344,6 @@ mgu_shlinearizable([O|Rest], Bt, [O|ResultRest]) :-
    mgu_shlinearizable(Rest, Bt, ResultRest).
 mgu_shlinearizable([_O|Rest], Bt, Result) :-
    mgu_shlinearizable(Rest, Bt, Result).
-
-:- pred star_union_real(+Sh, -Star)
-   # "@var{Star} is the result of the star union of the set of sharing groups @var{Sh},
-   with the addition of the empty sharing group.".
-star_union_real(Sh, [[]|Star]) :- star_union(Sh, Star).
-
-:- pred mgu_binding_additional(+Sh, +Powerset_rel_x, +Bt, +Lin, -Result)
-   # "This computes the most complex part of the mgu for Sharing * Linearity, which
-   depends on the choice of particular subsets of ReL_x.".
-
-mgu_binding_additional([], _, _, _, []).
-mgu_binding_additional([O|Rest], Rel_x_power, Bt, Lin, Result) :-
-   chiMax(O, Lin, Bt, Mul),
-   mgu_binding_additional0(O, Rel_x_power, Mul, Result0),
-   sort(Result0, Result1),
-   mgu_binding_additional(Rest, Rel_x_power, Bt, Lin, ResultRest),
-   ord_union(Result1, ResultRest, Result).
-
-mgu_binding_additional0(_O, [], _Mul, []).
-mgu_binding_additional0(O, [Z|Rest], Mul, [Y|RestResult]) :-
-   length(Z, Size),
-   Size =< Mul, !,
-   vars(Z, Vz),
-   ord_union(O, Vz, Y),
-   mgu_binding_additional0(O, Rest, Mul, RestResult).
-mgu_binding_additional0(O, [_Z|Rest], Mul, Result) :-
-   mgu_binding_additional0(O, Rest, Mul, Result).
 
 %--------------------- STANDARD MGU ---------------------------
 
@@ -547,9 +542,8 @@ nonlinground_vars((Sh, Lin), NGv, NLin) :-
 :- pred linearizable(+O, +Bag)
    : ordlist(var) * isbag
    + is_det
-   # "Determines if the sharing group @var{O} is linear w.r.t. the term
-   represented by the bag of variables @var{Bag}, assuming all variables are linear.".
-:- export(linearizable/2).
+   # "Determines if the sharing group @var{O} is linear w.r.t. the term represented by the
+   bag of variables @var{Bag}, assuming all variables are linear.".
 
 linearizable(O, Bag) :- linearizable0(O, Bag, 0).
 
@@ -559,9 +553,15 @@ linearizable0([X|RestO], [Y-N|RestBag], Status) :-
    compare(Rel, X, Y),
    (
       Rel = '=' ->
-         ( Status = 0, N = 1 ->  linearizable0(RestO, RestBag, 1) ; fail )
+         ( Status = 0, N = 1 -> linearizable0(RestO, RestBag, 1) ; fail )
       ; Rel = '<' ->
          linearizable0(RestO, [Y-N|RestBag], Status)
       ; Rel = '>' ->
          linearizable0([X|RestO], RestBag, Status)
    ).
+
+:- pred star_union_real(+Sh, -Star)
+   # "@var{Star} is the result of the star union of the set of sharing groups @var{Sh},
+   with the addition of the empty sharing group.".
+
+star_union_real(Sh, [[]|Star]) :- star_union(Sh, Star).

@@ -101,6 +101,7 @@ asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
 %-------------------------------------------------------------------------
 
 :- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
+:- redefining(nasub/1).
 
 nasub((Sh, Lin)) :-
    as_sharing:nasub(Sh),
@@ -110,6 +111,7 @@ nasub((Sh, Lin)) :-
    ord_subset(Lin, VSh).
 
 :- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
+:- redefining(nasub_u/1).
 
 nasub_u((Sh, Lin)) :-
    as_sharing:nasub_u(Sh),
@@ -128,6 +130,7 @@ nasub_u((Sh, Lin)) :-
 :- pred reorder(+ASub_u, -ASub)
    : nasub_u * ivar => nasub(ASub)
    + (not_fails, is_det).
+:- redefining(reorder/2).
 
 reorder((Sh_u, Lin_u), (Sh, Lin)) :-
    as_sharing:reorder(Sh_u, Sh),
@@ -142,6 +145,7 @@ reorder((Sh_u, Lin_u), (Sh, Lin)) :-
 :- pred top(+Vars, -Top)
    : ordlist(var) * ivar => nasub(Top)
    + (not_fails, is_det).
+:- redefining(top/2).
 
 top(Vars, (Sh, [])) :-
    as_sharing:top(Vars, Sh).
@@ -156,6 +160,7 @@ top(Vars, (Sh, [])) :-
 :- pred augment(+ASub, +Vars, -Aug)
    : (nasub * {ordlist(var), independent_from(ShLin)} * ivar) => nasub(Aug)
    + (not_fails, is_det).
+:- redefining(augment/3).
 
 augment((Sh, Lin), Vars, (Sh0, Lin0)) :-
    as_sharing:augment(Sh, Vars, Sh0),
@@ -170,6 +175,7 @@ augment((Sh, Lin), Vars, (Sh0, Lin0)) :-
 :- pred project(+ASub, +Vars, -Proj)
    : nasub * ordlist(var) * ivar => nasub(Proj)
    + (not_fails, is_det).
+:- redefining(project/3).
 
 project((Sh, Lin), Vars, (Proj_sh, Proj_lin)) :-
    as_sharing:project(Sh, Vars, Proj_sh),
@@ -184,6 +190,7 @@ project((Sh, Lin), Vars, (Proj_sh, Proj_lin)) :-
 :- pred join(+ASub1, +ASub2, -Join)
    : nasub * nasub * ivar => nasub(Join)
    + (not_fails, is_det).
+:- redefining(join/3).
 
 join((Sh1, Lin1), (Sh2, Lin2), (Join_sh, Join_lin)) :-
    as_sharing:join(Sh1, Sh2, Join_sh),
@@ -198,6 +205,7 @@ join((Sh1, Lin1), (Sh2, Lin2), (Join_sh, Join_lin)) :-
 :- pred meet(+ASub1, +ASub2, -Meet)
    : nasub * nasub * ivar => asub(Meet)
    + (not_fails, is_det).
+:- redefining(meet/3).
 
 meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
    as_sharing:meet(Sh1, Sh2, Meet_sh),
@@ -215,6 +223,7 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
 :- pred mgu(+ASub, +Fv, +Sub, -MGU)
    : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
    + (not_fails, is_det).
+:- redefining(mgu/4).
 
 mgu(ASub, Fv, Sub, MGU) :-
    (current_pp_flag(mgu_shlin2_optimize, optimal) ->
@@ -407,6 +416,7 @@ mgu_binding_lin(Lin, Sx, St, _, _, Res) :-
 :- pred match(+Prime, +Pv, +Call, -Match)
    : nasub * {ordlist(var), superset_vars_of(Prime)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
+:- redefining(match/4).
 
 match(Prime, Pv, Call, Match) :-
    current_pp_flag(match_shlin_optimize, optimal) ->

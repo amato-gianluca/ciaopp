@@ -356,21 +356,3 @@ glb(ASub0, ASub1, Glb):-
 :- export(meet/3).
 :- export(mgu/4).
 :- export(match/4).
-
-:- redefining(nasub/1).
-:- redefining(nasub_u/1).
-:- redefining(reorder/2).
-:- redefining(top/2).
-:- redefining(augment/3).
-:- redefining(project/3).
-:- redefining(join/3).
-:- redefining(meet/3).
-:- redefining(mgu/4).
-:- redefining(match/4).
-:- redefining(vars/2).
-:- redefining(linvars/2).
-:- redefining(groundvars/2).
-:- redefining(star_union/2).
-:- redefining(bin/3).
-:- redefining(bin_all/2).
-:- redefining(rel/4).

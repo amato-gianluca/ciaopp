@@ -17,7 +17,6 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 :- dom_def(as_shlin2, [default]).
 
 :- include(as_template).
-:- use_module(domain(as_sharing)).
 :- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
@@ -103,8 +102,8 @@ asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    sharing(ASub, Sh),
    lin(ASub, Lin),
+   ground(ASub, Qv, Gv),
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
-   as_sharing:gvars(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
    if_not_nil(Lin, linear(Lin), NativeStat1, NativeStat2),
    (
@@ -118,7 +117,7 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 % DOMAIN ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop shlin2group(ShLin) # "@var{ShLin} is a 2-sharing group".
+:- prop shlin2group(ShLin) # "@var{ShLin} is a 2-sharing group.".
 
 :- export(shlin2group/1).
 :- test shlin2group(ShLin) : (ShLin = ([X, Y], [X, Y])) => true + (not_fails, is_det).
@@ -131,7 +130,7 @@ shlin2group((Sh, Lin)) :-
    ordlist(var, Lin),
    ord_subset(Lin, Sh).
 
-:- regtype shlin2group_u(ShLin) # "@var{ShLin} is an unordered 2-sharing group".
+:- regtype shlin2group_u(ShLin) # "@var{ShLin} is an unordered 2-sharing group.".
 
 :- export(shlin2group_u/1).
 :- test shlin2group_u(ShLin) : (ShLin = ([X, Y], [X, Y])) => true + (not_fails, is_det).
@@ -143,7 +142,12 @@ shlin2group_u((Sh, Lin)) :-
    list(var, Sh),
    list(var, Lin).
 
-:- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
+:- prop asub_sh(ASub_sh) # "@var{ASub_sh} is a non empty element of the Sharing domain.".
+
+asub_sh(ASub_sh) :-
+   ordlist(ordlist(var), ASub_sh).
+
+:- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution.".
 
 :- export(nasub/1).
 :- test nasub(ASub): (ASub = []) + (not_fails, is_det).
@@ -172,10 +176,11 @@ no_redundants0(Sh, Lin, [(Sh1, Lin1)|Rest]) :-
    no_redundants0(Sh, Lin, Rest).
 no_redundants0(_Sh, _Lin, _Rest).
 
-:- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
+:- regtype nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution.".
 
 nasub_u(ASub) :-
    list(shlin2group_u, ASub).
+
 
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
@@ -218,8 +223,8 @@ reorder(ASub_u, ASub) :-
 :- test top(Vars, Top): (Vars = [X, Y]) => (Top = [([X], []), ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
 
 top(Vars, Top) :-
-   as_sharing:top(Vars, Sh),
-   from_sharing(Sh, Top).
+   powerset(Vars, Top_sh),
+   from_sharing(Top_sh, Top).
 
 %------------------------------------------------------------------------
 % augment(+ASub,+Vars,-Aug)
@@ -717,7 +722,8 @@ from_sharing([X|RestSh], [(X, [])|Rest]) :-
 
 :- export(from_shlin/3).
 :- test from_shlin(Sh, Lin, ASub): (Sh = [], Lin=[X, Y] ) => (ASub = []) + (not_fails, is_det).
-:- test from_shlin(Sh, Lin, ASub): (Sh = [[X], [X,Z]], Lin=[X, Y] ) => (ASub = [([X], [X]), ([X,Z], [X])]) + (not_fails, is_det).
+:- test from_shlin(Sh, Lin, ASub): (Sh = [[X], [X,Z]], Lin=[X, Y] )
+   => (ASub = [([X], [X]), ([X,Z], [X])]) + (not_fails, is_det).
 
 from_shlin([], _Lin, []).
 from_shlin([O|RestSh], Lin, [(O, OLin)|RestShLin2]) :-
@@ -732,9 +738,22 @@ from_shlin([O|RestSh], Lin, [(O, OLin)|RestShLin2]) :-
 :- test vars(ASub, Vars): (ASub = []) => (Vars = []) + (not_fails, is_det).
 :- test vars(ASub, Vars): (ASub = [([X], [X]), ([X,Z], [X])]) => (Vars = [X, Z]) + (not_fails, is_det).
 
-vars(ASub, Vars) :-
-   sharing(ASub, Sh),
-   as_sharing:vars(Sh, Vars).
+vars([], []).
+vars([(Sh, _Lin)|Rest], Vars) :-
+   vars(Rest, RestVars),
+   ord_union(RestVars, Sh, Vars).
+
+:- pred ground(ASub, Vars, Ground)
+   : nasub * {ordlist(var), superset_vars_of(ASub)} * ivar
+   => ( ordlist(var, Ground), independent_from(ASub, Ground), superset_vars_of(Ground, Vars) )
+   + (not_fails, is_det)
+   # "@{Ground} is the set of ground variables the abstract substitution @{ASub} w.r.t. the variables
+   of interest in @{Vars}".
+:- export(ground/3).
+
+ground(ASub, Vars, Ground) :-
+   vars(ASub, NGv),
+   ord_subtract(Vars, NGv, Ground).
 
 :- pred sharing(+ASub, -Sh)
    : nasub * ivar => asub_sh(Sh)
@@ -757,7 +776,8 @@ sharing([(Sh, _Lin)|Rest], Sharing) :-
 :- export(nlin/2).
 :- test nlin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
 :- test nlin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [Z]) + (not_fails, is_det).
-:- test nlin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])]) => (Lin = [Z]) + (not_fails, is_det).
+:- test nlin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])])
+   => (Lin = [Z]) + (not_fails, is_det).
 
 nlin([], []).
 nlin([(Sh, Lin)|Rest], NLin) :-
@@ -773,7 +793,8 @@ nlin([(Sh, Lin)|Rest], NLin) :-
 :- export(lin/2).
 :- test lin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
 :- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [X]) + (not_fails, is_det).
-:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])]) => (Lin = [X, Y]) + (not_fails, is_det).
+:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])])
+   => (Lin = [X, Y]) + (not_fails, is_det).
 
 lin(ASub, Lin) :-
    vars(ASub, Vars),
@@ -802,7 +823,8 @@ linearize0([(Sh, Lin0)|Rest0], Lin, [(Sh, Lin1)|Rest1]) :-
    # "@var{UPlus} is the union of the 2-sharing groups @var{ShLin1} and @var{ShLin2}.".
 
 :- export(uplus/3).
-:- test uplus(ShLin1, ShLin2, UPlus): (ShLin1 = ([X, Y], [X]), ShLin2 = ([X, Z], [X, Z])) => (UPlus = ([X, Y, Z], [Z])) + (not_fails, is_det).
+:- test uplus(ShLin1, ShLin2, UPlus): (ShLin1 = ([X, Y], [X]), ShLin2 = ([X, Z], [X, Z]))
+   => (UPlus = ([X, Y, Z], [Z])) + (not_fails, is_det).
 
 uplus((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
    ord_union(Sh1, Sh2, Sh),
@@ -816,7 +838,8 @@ uplus((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
    # "@var{UPlus} is the union of the 2-sharing groups in @var{List}.".
 
 :- export(upluslist/2).
-:- test upluslist(List, UPlus): (List = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])]) => (UPlus = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
+:- test upluslist(List, UPlus): (List = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])])
+   => (UPlus = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
 
 upluslist([], ([],[])).
 upluslist([ShLin], ShLin).
@@ -844,9 +867,12 @@ upluslist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], UPlus) :-
 :- export(bin/3).
 :- test bin(ASub1, ASub2, Bin): (ASub1 = [], ASub2 = [([X], [X])]) => (Bin = []) + (not_fails, is_det).
 :- test bin(ASub1, ASub2, Bin): (ASub2 = [], ASub1 = [([X], [X])]) => (Bin = [])+ (not_fails, is_det).
-:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X, Y], [X, Y])], ASub2 = [([X], [X]), ([Z], [Z])]) => (Bin = [([X, Y], [Y]), ([X, Y, Z], [X, Y, Z])]) + (not_fails, is_det).
-:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X], [X]), ([Y], [Y])], ASub2 = [([X], [X]), ([Y], [Y])]) => (Bin = [([X], []), ([X, Y], [X, Y]), ([Y], [])]) + (not_fails, is_det).
-:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X], [X]), ([Y], [Y])], ASub2 = [([X, Y], []), ([Y], [Y])]) => (Bin = [ ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
+:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X, Y], [X, Y])], ASub2 = [([X], [X]), ([Z], [Z])])
+   => (Bin = [([X, Y], [Y]), ([X, Y, Z], [X, Y, Z])]) + (not_fails, is_det).
+:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X], [X]), ([Y], [Y])], ASub2 = [([X], [X]), ([Y], [Y])])
+   => (Bin = [([X], []), ([X, Y], [X, Y]), ([Y], [])]) + (not_fails, is_det).
+:- test bin(ASub1, ASub2, Bin): (ASub1 = [([X], [X]), ([Y], [Y])], ASub2 = [([X, Y], []), ([Y], [Y])])
+   => (Bin = [ ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
 
 bin(Sh1, Sh2, Bin) :-
    bin0(Sh1, Sh2, Bin0),
@@ -875,12 +901,13 @@ bin1(ShLin1, [ShLin2|Rest], Bin) :-
 :- test star_union(ASub, Star): (ASub = []) => (Star = []) + (not_fails, is_det).
 :- test star_union(ASub, Star): (ASub = []) => (Star = []) + (not_fails, is_det).
 :- test star_union(ASub, Star): (ASub = [([X], [X])]) => (Star = [([X], [])]) + (not_fails, is_det).
-:- test star_union(ASub, Star): (ASub = [([X], [X]), ([Y],  [Y])]) => (Star = [([X], []), ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
+:- test star_union(ASub, Star): (ASub = [([X], [X]), ([Y],  [Y])])
+   => (Star = [([X], []), ([X, Y], []), ([Y], [])]) + (not_fails, is_det).
 
 star_union(ASub, Star):-
    sharing(ASub, Sh),
-   as_sharing:star_union(Sh, ShStar),
-   from_sharing(ShStar, Star).
+   closure_under_union(Sh, Star_sh),
+   from_sharing(Star_sh, Star).
 
 :- pred rel(+ASub, +Vars, -NRel, -Rel)
    : nasub * ordlist(var) * ivar * ivar => (nasub(NRel), nasub(Rel))

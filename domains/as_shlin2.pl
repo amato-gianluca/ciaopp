@@ -432,7 +432,7 @@ mgu_add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
          NRel = [(Sh,Lin)|NRel0],
          mgu_add_multiplicity(Rest, Bx, Bt, NRel0, RelMul)
       ;
-         chiMin(Sh, Bt, Mult_min),
+         (linearizable(Sh, Bt) -> Mult_min = lin ; Mult_min = nlin),
          RelMul = [(Sh, Lin)-(Mulx, Mult, Mult_min)|Rel0],
          mgu_add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
    ).
@@ -524,7 +524,7 @@ mgu_split_optimal([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
       MulX \= 0, MulT \= 0 ->
          Xxt = [ShLin|Xxt0],
          mgu_split_optimal(Rest, Xx, Xt, Xxt0, M, XT_L0),
-         ( MulT_min \= 1 -> XT_L = no ; XT_L = XT_L0)
+         ( MulT_min = nlin -> XT_L = no ; XT_L = XT_L0)
       ; MulX \= 0 ->
          Xx = [ShLin|Xx0],
          mgu_split_optimal(Rest, Xx0, Xt, Xxt, M, XT_L)

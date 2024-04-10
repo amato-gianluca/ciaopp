@@ -229,22 +229,6 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
          chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
    ).
 
-:- export(chiMin/3).
-chiMin([], _, 0) :- !.
-chiMin(_O, [], 0) :- !.
-chiMin([X|RestO], [Y-N|RestBt], Mul) :-
-   compare(Rel, X, Y),
-   (
-      Rel = '=' ->
-         chiMin(RestO, RestBt, Mul0),
-         Mul is Mul0 + N
-      ; Rel = '<' ->
-         chiMin(RestO, [Y-N|RestBt], Mul)
-      ; Rel = '>' ->
-         chiMin([X|RestO], RestBt, Mul)
-   ).
-
-
 :- pred linearizable(+O, +Bag)
    : ordlist(var) * isbag(var)
    + is_det

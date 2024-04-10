@@ -147,49 +147,6 @@ multiplicity(X) :-
 if_not_nil([], _, Xs, Xs) :- !.
 if_not_nil(_, X, [X|Xs], Xs).
 
-:- push_prolog_flag(read_hiord, on).
-
-:- pred all_couples(+List,+Pred)
-   : list *  cgoal
-   # "The predicate @var{Pred} is true for all couples of (distinct) elements
-   in @var{List}.".
-:- meta_predicate all_couples(?, pred(2)).
-:- export(all_couples/2).
-
-all_couples([], _).
-all_couples([X|Xs], Pred) :-
-   all_couples0(X, Xs, Pred),
-   all_couples(Xs, Pred).
-
-:- index all_couples0(?, +, ?).
-
-all_couples0(_, [], _).
-all_couples0(X, [Y|Ys], Pred) :-
-   Pred(X, Y),
-   all_couples0(X, Ys, Pred).
-
-:- pop_prolog_flag(read_hiord).
-
-:- pred duplicates(+List, -Dup)
-   : list * ivar => ordlist(Dup)
-   + (not_fails, is_det)
-   # "@var{Dup} contains the duplicate elements of @var{List}.".
-:- export(duplicates/2).
-
-% TODO: think whether we should use bags to implement this predicate
-
-duplicates(List, Dup) :-
-   duplicates0(List, Dup0),
-   sort(Dup0, Dup).
-
-duplicates0([], []).
-duplicates0([X|Tail], [X|Dup]) :-
-   memberchk(X, Tail),
-   !,
-   duplicates0(Tail, Dup).
-duplicates0([_|Tail], Dup) :-
-   duplicates0(Tail, Dup).
-
 :- pred unifiable_with_occurs_check(?T1, ?T2, -Unifier)
    : term * term * ivar => unifier(Unifier)
    + is_det
@@ -200,18 +157,41 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
    unifier_no_cyclic(Unifier).
 
-:- pred chiMax(+Sh, +Lin, +Bag, -Mul)
-   : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(Mul)
+:- pred powerset(S, N, P)
+   : ordlist * int * ivar => ordlist(P)
+   + (not_fails, is_det)
+   # "@var{P} is the set of non-empty subsets of S of cardinality N.".
+:- export(powerset/3).
+
+powerset(_S, 0, [[]]) :- !.
+powerset([], _N, []) :- !.
+powerset([X|Xs], N, P):-
+   N1 is N-1,
+   powerset(Xs, N1, P1),
+   add_to_all(P1, X, P2),
+   powerset(Xs, N, P3),
+   append(P2, P3, P).
+
+add_to_all([], _, []).
+add_to_all([X|Xs], Y, [[Y|X]|Ys]):-
+   add_to_all(Xs, Y, Ys).
+
+%------------------------------------------------------------------------
+% SHARING GROUPS AND BAGS
+%-------------------------------------------------------------------------
+
+:- pred chiMax(+Sh, +Lin, +Bt, -Mul)
+   : ordlist(var) * ordlist(var) * isbag(var) * ivar => multiplicity(Mul)
    + (not_fails, is_det)
    # "@var{Mul} is the maximum multiplicity of the sharing group @var{Sh} with linear
-   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bag}".
+   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bt}".
 :- export(chiMax/4).
 
-chiMax(O, Lin, T, V) :-
-   chiMax0(O, Lin, T, 0, V).
+chiMax(Sh, Lin, Bt, Mul) :-
+   chiMax0(Sh, Lin, Bt, 0, Mul).
 
 chiMax0([], _Lin, _Bt, M, M) :- !.
-chiMax0(_O, _Lin, [], M, M) :- !.
+chiMax0(_Sh, _Lin, [], M, M) :- !.
 chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
    compare(Rel, X, Y),
    (
@@ -250,18 +230,3 @@ linearizable0([X|RestO], [Y-N|RestBag], Status) :-
       ; Rel = '>' ->
          linearizable0([X|RestO], RestBag, Status)
    ).
-
-:- export(powerset/3).
-
-powerset(_S, 0, [[]]) :- !.
-powerset([], _N, []) :- !.
-powerset([X|Xs], N, P):-
-   N1 is N-1,
-   powerset(Xs, N1, P1),
-   add_to_all(P1, X, P2),
-   powerset(Xs, N, P3),
-   append(P2, P3, P).
-
-add_to_all([], _, []).
-add_to_all([X|Xs], Y, [[Y|X]|Ys]):-
-   add_to_all(Xs, Y, Ys).

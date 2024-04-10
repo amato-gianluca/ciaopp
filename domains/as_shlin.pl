@@ -92,7 +92,7 @@ input_user_interface((Sh, Lin), Qv, (ASub_sh, ASub_lin), Sg, MaybeCallASub):-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native((Sh, Lin), Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(Sh, sharing(Sh), NativeStat, NativeStat0),
-   gvars(Sh, Qv, Gv),
+   ground(Sh, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, NativeStat1),
    if_not_nil(Lin, linear(Lin), NativeStat1, []).
 
@@ -248,6 +248,7 @@ mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
              Rel_t_inf, Rel_t_one, Rel_t_nat, Rel_t_nlin,
              Rel_xt_one, Rel_xt_linearizable, Rel_xt_nlin, Rel_x, NRel),
    (Rel_t_nlin = [], Rel_xt_nlin=[] -> Lint = yes ; Lint = no),
+   % if X is ground we put Linx=no, but this does not change the result
    (ord_member(X, Lin) -> Linx = yes ; Linx = no),
    (
       Linx = yes ->
@@ -376,7 +377,8 @@ mgu_binding_standard(ShLin, X, T, (MGU_sh, MGU_lin)) :-
    rel(Sh, [X], Sh_x, NSh_x),
    rel(Sh, Vt, Sh_t, NSh_t),
    ord_intersection(NSh_x, NSh_t, NSh),
-   (lin(Sh, Lin, Bt) -> Lint = yes ; Lint = no),
+   (islin(Sh, Lin, Bt) -> Lint = yes ; Lint = no),
+   % if X is ground we put Linx=no, but this does not change the result
    (ord_member(X, Lin) -> Linx = yes ; Linx = no),
    (
       current_pp_flag(mgu_shlin_optimize, noindcheck) ->
@@ -417,18 +419,6 @@ mgu_binding_lin0(Lin, _Sx, St, _, yes, Res) :- !,
 mgu_binding_lin0(Lin, Sx, St, _, _, Res) :-
    ord_union(Sx, St, Sxt),
    ord_subtract(Lin, Sxt, Res).
-
-:- pred lin(+Sh, +Lin, +Bt)
-   : asub_sh * ordlist(var) * isbag(var)
-   + is_det
-   # "Determines whether the term represented by the bag @var{Bt} is definitively
-   linear with respect to the sharing and linearity information in @var{Sh} and
-   @var{Lin}.".
-
-lin([], _Lin, _Bt).
-lin([O|Rest], Lin, Bt) :-
-   chiMax(O, Lin, Bt, 1), !,
-   lin(Rest, Lin, Bt).
 
 %-------------------------------------------------------------------------
 % match(+Prime,+Pv,+Call,-Match)
@@ -501,25 +491,6 @@ match_optimal1(B, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
 match_optimal1(B, Lin1,  Pv, [_X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
    match_optimal1(B, Lin1, Pv, Rest, Lin2, Sbar, Match_sh, Match_lin).
 
-:- pred nl(+Sh, -Result)
-   : asub_sh * ivar => ordlist(var, Result)
-   + (not_fails, is_det)
-   # "@var{Result} is the set of variables occuring at least twice in @var{Sh}.".
-
-nl([], []).
-nl([X|Rest], NL) :-
-   nl(Rest, NL0),
-   nl0(X, Rest, NL1),
-   ord_union(NL0, NL1, NL).
-
-:- index nl0(?, +, ?).
-
-nl0(_X1, [], []).
-nl0(X1, [X2 | Rest], NL) :-
-   nl0(X1, Rest, NL0),
-   ord_intersection(X1, X2, X),
-   ord_union(X, NL0, NL).
-
 %--------------------- STANDARD MATCH ---------------------------
 
 match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
@@ -538,6 +509,18 @@ match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
+:- pred islin(+Sh, +Lin, +Bt)
+   : asub_sh * ordlist(var) * isbag(var)
+   + is_det
+   # "Determines whether the term represented by the bag @var{Bt} is definitively
+   linear with respect to the sharing and linearity information in @var{Sh} and
+   @var{Lin}.".
+
+islin([], _Lin, _Bt).
+islin([O|Rest], Lin, Bt) :-
+   chiMax(O, Lin, Bt, 1), !,
+   islin(Rest, Lin, Bt).
+
 :- pred nlin(+ShLin, -NLin)
    : asub * ivar  => ordlist(var, NLin)
    + (not_fails, is_det)
@@ -552,3 +535,22 @@ nlin((Sh, Lin), NLin) :-
    with the addition of the empty sharing group.".
 
 star_union_real(Sh, [[]|Star]) :- star_union(Sh, Star).
+
+:- pred nl(+Sh, -Result)
+   : asub_sh * ivar => ordlist(var, Result)
+   + (not_fails, is_det)
+   # "@var{Result} is the set of variables occuring at least twice in @var{Sh}.".
+
+nl([], []).
+nl([X|Rest], NL) :-
+   nl(Rest, NL0),
+   nl0(X, Rest, NL1),
+   ord_union(NL0, NL1, NL).
+
+:- index nl0(?, +, ?).
+
+nl0(_X1, [], []).
+nl0(X1, [X2 | Rest], NL) :-
+   nl0(X1, Rest, NL0),
+   ord_intersection(X1, X2, X),
+   ord_union(X, NL0, NL).

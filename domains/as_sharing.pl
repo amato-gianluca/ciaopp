@@ -13,6 +13,7 @@ This module is an independent reimplementation of the Sharing domain.
 :- dom_def(as_sharing, [default]).
 
 :- include(as_template).
+:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % I/O CIAOPP PREDICATES
@@ -79,7 +80,7 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 asub_to_native('$bottom', _Qv, _OutFlag, _NativeStat, _NativeComp) :- !, fail.
 asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
    if_not_nil(ASub, sharing(ASub), NativeStat, NativeStat0),
-   gvars(ASub, Qv, Gv),
+   ground(ASub, Qv, Gv),
    if_not_nil(Gv, ground(Gv), NativeStat0, []).
 
 %------------------------------------------------------------------------
@@ -211,8 +212,8 @@ meet(Sh1, Sh2, Meet):-
 % Variables in Fv are considered to be free.
 %-------------------------------------------------------------------------
 
-% TODO: Uptimize by replacing ASub with a specialized version where terms are
-% replaced by their variables
+% TODO: Optimize by replacing Sub with a specialized version where terms are
+% replaced by their bag of variables.
 
 :- pred mgu(+ASub, +Fv, +Sub, -MGU)
    : nasub * ordlist(var) * unifier_no_cyclic * ivar => nasub(MGU)
@@ -290,7 +291,8 @@ mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-% TODO: Optimize with clause match(Sh1, [], Sh2, []).
+% the first is just an optimization when Sv=[]
+match(_Sh1, [], _Sh2, []) :- !.
 match(Sh1, Sv1, Sh2, Match) :-
    rel(Sh2, Sv1, Intersect, Disjunct),
    star_union(Intersect, Star),
@@ -357,7 +359,7 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
 :- pred bin_all(+ShList, -Bin)
    : list(nasub) * ivar => nasub(Bin)
    + (not_fails, is_det)
-   # "@var{Bin} is the bin operator applies to all sharing sets in @var{ShList}.".
+   # "@var{Bin} is the bin operator applied to all sharing sets in @var{ShList}.".
 :- export(bin_all/2).
 
 bin_all([], []).
@@ -385,13 +387,29 @@ star_union(Sh, Star) :-
 vars(Sh, NGv) :-
    merge_list_of_lists(Sh, NGv).
 
-:- pred gvars(+Sh, +Vars, -Gv)
+:- pred ground(+Sh, +Vars, -Gv)
    : nasub * {ordlist(var), superset_vars_of(Sh)} * ivar
    => ( ordlist(var, Gv), independent_from(Sh, Gv), superset_vars_of(Gv, Vars) )
    + (not_fails, is_det)
    # "@var{Gv} is the set of variables in @var{Vars} which are ground w.r.t. @var{Sh}".
-:- export(gvars/3).
+:- export(ground/3).
 
-gvars(Sh, Vars, Gv) :-
+ground(Sh, Vars, Gv) :-
    vars(Sh, NGv),
    ord_subtract(Vars, NGv, Gv).
+
+:- pred unique_vars(?T, -Vars, -UVars)
+   : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
+   + (not_fails, is_det)
+   # "@var{Vars} is the list of variables in @var{T}, @var{UVars} is the list of
+   variables which only occur once in @var{T}.".
+:- export(unique_vars/3).
+
+unique_vars(T, Vars, UVars) :-
+   bag_vars(T, Bt),
+   unique_vars0(Bt, Vars, UVars).
+
+unique_vars0([], [], []).
+unique_vars0([X-N|Rest], [X|Vrest], UVrest) :-
+   (N=1 -> UVrest = [X|UVrest0] ; UVrest = UVrest0),
+   unique_vars0(Rest, Vrest, UVrest0).

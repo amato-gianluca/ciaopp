@@ -200,29 +200,6 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
    unifier_no_cyclic(Unifier).
 
-:- pred duplicate_vars(?T, -Vars, -DVars)
-   : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
-   + (not_fails, is_det)
-   # "@var{Vars} is the list of variables in @var{T}, @var{DVars} is the list of
-   duplicate variables in T.".
-:- export(duplicate_vars/3).
-
-duplicate_vars(T, Vars, DVars) :-
-   varsbag(T, Bag, []),
-   duplicates(Bag, DVars),
-   sort(Bag, Vars).
-
-:- pred unique_vars(?T, -Vars, -UVars)
-   : term * ivar * ivar => (ordlist(var, Vars),  ordlist(var, UVars))
-   + (not_fails, is_det)
-   # "@var{Vars} is the list of variables in  @var{T}, @var{UVars} is the list of
-   variables which only occur once in @var{T}.".
-:- export(unique_vars/3).
-
-unique_vars(T, Vars, UVars) :-
-   duplicate_vars(T, Vars, DVars),
-   ord_subtract(Vars, DVars, UVars).
-
 :- pred chiMax(+Sh, +Lin, +Bag, -Mul)
    : ordlist(var) * ordlist(var) * isbag * ivar => multiplicity(Mul)
    + (not_fails, is_det)
@@ -265,6 +242,29 @@ chiMin([X|RestO], [Y-N|RestBt], Mul) :-
          chiMin(RestO, [Y-N|RestBt], Mul)
       ; Rel = '>' ->
          chiMin([X|RestO], RestBt, Mul)
+   ).
+
+
+:- pred linearizable(+O, +Bag)
+   : ordlist(var) * isbag(var)
+   + is_det
+   # "Determines if the sharing group @var{O} is linear w.r.t. the term represented by the
+   bag of variables @var{Bag}, assuming all variables are linear.".
+:- export(linearizable/2).
+
+linearizable(O, Bag) :- linearizable0(O, Bag, 0).
+
+linearizable0([], _, _) :- !.
+linearizable0(_, [], _) :- !.
+linearizable0([X|RestO], [Y-N|RestBag], Status) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         ( Status = 0, N = 1 -> linearizable0(RestO, RestBag, 1) ; fail )
+      ; Rel = '<' ->
+         linearizable0(RestO, [Y-N|RestBag], Status)
+      ; Rel = '>' ->
+         linearizable0([X|RestO], RestBag, Status)
    ).
 
 :- export(powerset/3).

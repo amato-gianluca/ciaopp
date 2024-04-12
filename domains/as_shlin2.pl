@@ -660,7 +660,7 @@ mgu_split_standard([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
    => (Match=[([X,Y],[X]),([X,Z],[X])]) + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
-   rel(Call, Pv, NRel, Rel),
+   rel(Call, Pv, Rel, NRel),
    powerset(Rel, Rel_subs),
    match0(Prime, Pv, Rel_subs, Match0),
    remove_redundants(Match0, Match1),
@@ -695,6 +695,20 @@ relbar([(Sh, Lin)|Rest], Vars, [(Sh, Lin)|RestBar]) :-
    relbar(Rest, Vars, RestBar).
 relbar([_|Rest], Vars, RestBar) :-
    relbar(Rest, Vars, RestBar).
+
+%-------------------------------------------------------------------------
+% make_ground(+Call,+Gv,+Succ).
+%
+% Succ is the result of grounding the variable in Gv in the abstract
+% substitution Call.
+%-------------------------------------------------------------------------
+
+:- pred make_ground(+Call, +Gv, -Succ)
+   : nasub * ordlist(var) * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+make_ground(Call, Gv, Succ) :-
+   rel(Call, Gv, _, Succ).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
@@ -909,19 +923,19 @@ star_union(ASub, Star):-
    closure_under_union(Sh, Star_sh),
    from_sharing(Star_sh, Star).
 
-:- pred rel(+ASub, +Vars, -NRel, -Rel)
-   : nasub * ordlist(var) * ivar * ivar => (nasub(NRel), nasub(Rel))
+:- pred rel(+ASub, +Vars, -Rel, -NRel)
+   : nasub * ordlist(var) * ivar * ivar => (nasub(Rel), nasub(NRel))
    + (not_fails, is_det)
    # "@var{Rel} is the set of relevant sharing groups in @var{ASub} wrt the variables in @var{Vars}.".
 
 :- export(rel/4).
-:- test rel(ASub, Vars, NRel, Rel): (ASub = [], Vars = [X, Y]) => (Rel = []) + (not_fails, is_det).
-:- test rel(ASub, Vars, NRel, Rel):
+:- test rel(ASub, Vars, Rel, NRel): (ASub = [], Vars = [X, Y]) => (Rel = []) + (not_fails, is_det).
+:- test rel(ASub, Vars, Rel, NRel):
    (ASub = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z]), ([Z], [Z])], Vars = [X, Y])
    => (Rel = [([X, Y], [X, Y]), ([X, Y, Z], [X, Y, Z])]) + (not_fails, is_det).
 
 rel([], _Vars, [], []).
-rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
+rel([(Sh, Lin)|Rest], Vars, Rel, NRel) :-
    ( ord_disjoint(Sh, Vars) ->
       NRel = [(Sh, Lin)|NRel0],
       Rel = Rel0
@@ -929,7 +943,7 @@ rel([(Sh, Lin)|Rest], Vars, NRel, Rel) :-
       NRel = NRel0,
       Rel = [(Sh, Lin)|Rel0]
    ),
-   rel(Rest, Vars, NRel0, Rel0).
+   rel(Rest, Vars, Rel0, NRel0).
 
 :- pred sort_deep(L0, L1)
    : list(shlin2group_u) * ivar => list(shlin2group, L1).

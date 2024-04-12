@@ -506,6 +506,21 @@ match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    ord_intersection(Match_lin0, Match_noground, Match_lin).
 
 %-------------------------------------------------------------------------
+% make_ground(+Call,+Gv,+Succ).
+%
+% Succ is the result of grounding the variable in Gv in the abstract
+% substitution Call.
+%-------------------------------------------------------------------------
+
+:- pred make_ground(+Call, +Gv, -Succ)
+   : nasub * ordlist(var) * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+make_ground((Sh,Lin), Gv, (Succ_sh, Succ_lin)) :-
+   rel(Sh, Gv, _, Succ_sh),
+   ord_subtract(Lin, Gv, Succ_lin).
+
+%-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 

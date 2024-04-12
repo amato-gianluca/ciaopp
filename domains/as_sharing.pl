@@ -310,6 +310,20 @@ match0([X|Rest], Sh1, Sv1, Match0, Match) :-
    match0(Rest, Sh1, Sv1, Match1, Match).
 
 %-------------------------------------------------------------------------
+% make_ground(+Call,+Gv,+Succ).
+%
+% Succ is the result of grounding the variable in Gv in the abstract
+% substitution Call.
+%-------------------------------------------------------------------------
+
+:- pred make_ground(+Call, +Gv, -Succ)
+   : nasub * ordlist(var) * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+make_ground(Call, Gv, Succ) :-
+   rel(Call, Gv, _, Succ).
+
+%-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 

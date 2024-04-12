@@ -264,6 +264,8 @@ call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
 
 special_builtin('true/0', _, _, unchanged, _).
 special_builtin('=/2', Sg, _ , '=/2', Sg).
+special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv):-
+   varset([Y,Z],Gv).
 
 %-------------------------------------------------------------------------
 % success_builtin(+Type,+Sv,?Condvars,+HvFv_u,+Call,-Succ)
@@ -279,6 +281,8 @@ special_builtin('=/2', Sg, _ , '=/2', Sg).
    + (not_fails, is_det).
 
 success_builtin(unchanged, _ , _ , _, Call, Call).
+success_builtin(some, _, Gv, _, Call, Succ) :-
+   make_ground(Call, Gv, Succ).
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    unifiable_with_occurs_check(T1, T2,  Unifier),
    mgu(Call, [], Unifier, Result).

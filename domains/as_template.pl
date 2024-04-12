@@ -123,12 +123,12 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
 :- pred call_to_entry(+Sv, +Sg, +Hv, +Head, +ClauseKey, +Fv, +Proj, -Entry, -ExtraInfo)
    :  {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * cgoal * {ordlist(var), same_vars_of(Head)} * cgoal *
          term * {ordlist(var), independent_from(Hv)} * nasub * ivar * ivar
-   => (asub(Entry), unifier_no_cyclic(ExtraInfo))
+   => (asub(Entry))
    + (not_fails, is_det).
 
 % save unifier in the ExtraInfo parameter, so that we can use it in exit_to_prime
 
-call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
+call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0)) :-
    unifiable_with_occurs_check(Sg, Head, Unifier),
    augment(Proj, Hv, ASub),
    mgu(ASub, Hv, Unifier, Entry0),
@@ -146,16 +146,22 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, Unifier) :-
 
 :- dom_impl(_, exit_to_prime/7, [noq]).
 :- pred exit_to_prime(+Sg, +Hv, +Head, +Sv, +Exit, +ExtraInfo, -Prime)
-   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * unifier_no_cyclic * ivar
+   : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * term * ivar
    => (asub(Prime))
    + (not_fails, is_det).
 
 % take the unifier from the ExtraInfo parameter
 
-exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _Unifier, '$bottom') :- !.
-exit_to_prime(_Sg, _Hv, _Head, Sv, Exit, Unifier, Prime) :-
-   augment(Exit, Sv, ASub),
-   mgu(ASub, Sv, Unifier, Prime0),
+exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _ExtraInfo, '$bottom') :- !.
+exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
+   project(Exit, Hv, Exit0),
+   (
+      current_pp_flag(extend_implementation, mgu) ->
+         augment(Exit0, Sv, ASub),
+         mgu(ASub, Sv, Unifier, Prime0)
+      ;
+         match(Exit0, Hv, Entry0, Prime0)
+   ),
    project(Prime0, Sv, Prime).
 
 %-------------------------------------------------------------------------

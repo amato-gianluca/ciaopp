@@ -265,6 +265,7 @@ call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
    + is_det.
 
 special_builtin('true/0', _, _, unchanged, _).
+special_builtin('!/0',_,_,unchanged,_).
 %-------------------------------------------------------------------------
 special_builtin('atomic/1',_,_,ground,_).
 special_builtin('is/2',_,_,ground,_).

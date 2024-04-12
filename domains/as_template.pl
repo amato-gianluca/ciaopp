@@ -99,9 +99,11 @@ abs_sort(ASub_u, ASub) :-
 
 :- dom_impl(_, project/5, [noq]).
 :- pred project(+Sg, +Vars, +HvFv_u, +ASub, ?Proj)
-   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * nasub * ivar => asub(Proj)
+   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub * ivar => asub(Proj)
    + (not_fails, is_det).
 
+% The '$bottom' case seems to only occur when using the builtin 'fail/0'.
+project(_,_,_,'$bottom','$bottom') :- !.
 project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
    project(ASub, Vars, Proj).
 
@@ -263,9 +265,18 @@ call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
    + is_det.
 
 special_builtin('true/0', _, _, unchanged, _).
-special_builtin('=/2', Sg, _ , '=/2', Sg).
+%-------------------------------------------------------------------------
+special_builtin('atomic/1',_,_,ground,_).
+special_builtin('is/2',_,_,ground,_).
+%-------------------------------------------------------------------------
+special_builtin('fail/0',_,_,bottom,_).
+%-------------------------------------------------------------------------
 special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv):-
    varset([Y,Z],Gv).
+%-------------------------------------------------------------------------
+special_builtin('=/2', Sg, _ , '=/2', Sg).
+special_builtin('arg/3', Sg, _, 'arg/3', Sg).
+%-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
 % success_builtin(+Type,+Sv,?Condvars,+HvFv_u,+Call,-Succ)
@@ -281,11 +292,45 @@ special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv):-
    + (not_fails, is_det).
 
 success_builtin(unchanged, _ , _ , _, Call, Call).
+success_builtin(bottom, _ , _ , _, _, '$bottom').
 success_builtin(some, _, Gv, _, Call, Succ) :-
    make_ground(Call, Gv, Succ).
+success_builtin(ground, Sv, _, _, Call, Succ) :-
+   make_ground(Call, Sv, Succ).
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    unifiable_with_occurs_check(T1, T2,  Unifier),
    mgu(Call, [], Unifier, Result).
+success_builtin('arg/3', _, arg(X,Y,Z), HvFv_u, Call, Succ) :-
+   varset(X, Gv),
+   make_ground(Call, Gv, Call0),
+   (
+      var(Y) ->
+         mgu(Call0, [], [Y=f(Z, _)], Call1),
+         sort(HvFv_u, HvFv),
+         project(Call1, HvFv, Succ)
+      ;
+         functor(Y, _, N),
+         (
+            N = 0 ->
+               Succ = '$bottom'
+            ;
+               sh_any_arg_all_args(N, Y, Z, Call0, Succs),
+               compute_lub(Succs, Succ)
+         )
+   ).
+
+sh_any_arg_all_args(0, _, _, _, []) :- !.
+sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
+   arg(N, Y, NY),
+   (
+      unifiable_with_occurs_check(NY, Z, Unifier) ->
+         mgu(Call, [], Unifier, Succ)
+      ;
+         Succ = '$bottom'
+   ),
+   N1 is N-1,
+   sh_any_arg_all_args(N1, Y, Z, Call, Succs).
+
 
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)

@@ -9,6 +9,7 @@
 :- use_module(library(sets)).
 :- use_module(library(lsets)).
 :- use_module(library(terms_vars)).
+:- use_module(engine(io_basic)).
 
 :- use_module(domain(as_aux)).
 
@@ -302,7 +303,8 @@ success_builtin('=/2', _, T1=T2, _, Call, Result) :-
 
 unknown_call(Sg, Vars, Call, Succ) :-
    top(Vars, Top),
-   extend(Sg, Top, Vars, Call, Succ).
+   extend(Sg, Top, Vars, Call, Succ),
+   display('UNKNOWN CALL: '), display(Sg), nl.
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)

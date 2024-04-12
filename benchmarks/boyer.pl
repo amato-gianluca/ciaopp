@@ -9,6 +9,10 @@
 %
 %   prove arithmetic theorem
 
+:- module(_,[],[assertions,nativeprops]).
+
+:- entry top.
+
 top :-
     wff(Wff),
     rewrite(Wff,NewWff),

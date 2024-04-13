@@ -162,7 +162,7 @@ exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _ExtraInfo, '$bottom') :- !.
 exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
    project(Exit, Hv, Exit0),
    (
-      current_pp_flag(extend_implementation, mgu) ->
+      current_pp_flag(as_use_match, no) ->
          augment(Exit0, Sv, ASub),
          mgu(ASub, Sv, Unifier, Prime0)
       ;
@@ -215,7 +215,7 @@ compute_lub_el(ASub1, ASub2, Lub) :-
 
 extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
-   ( current_pp_flag(extend_implementation, mgu) ->
+   ( current_pp_flag(as_use_match, no) ->
       % TODO: replace varset with a more efficient implementation
       varset(Call, Vars),
       copy_term_nat((Sv, Prime), (Sv0, Prime0)),

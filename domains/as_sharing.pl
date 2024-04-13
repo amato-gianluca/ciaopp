@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(engine(io_basic)).
+%:- use_module(library(format)).
 
 :- doc(title, "sharing abstract domain").
 :- doc(module,"
@@ -13,7 +13,6 @@ This module is an independent reimplementation of the Sharing domain.
 :- dom_def(as_sharing, [default]).
 
 :- include(as_template).
-:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % I/O CIAOPP PREDICATES

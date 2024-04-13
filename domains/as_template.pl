@@ -12,6 +12,7 @@
 :- use_module(engine(io_basic)).
 
 :- use_module(domain(as_aux)).
+:- use_module(domain(as_bags)).
 
 :- use_module(domain(sharing), [input_interface/4, input_user_interface/5]).
 
@@ -60,7 +61,7 @@ augment_asub(ASub, Vars, ASub0) :-
 % Entry is the "topmost" abstraction for the variable in  Vars
 % appearing in the literal Sg.
 %
-% It is used when no call or entry assertion exists
+% It is used when no call or entry assertion exists.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_entry/3, [noq]).
@@ -75,8 +76,9 @@ unknown_entry(_Sg, Vars, Entry) :-
 % abs_sort(+ASub_u,-ASub)
 %
 % ASub is the result of sorting abstract substitution ASub_u. This
-% is probably needed when variables get renamed by internal PLAI
-% mechanisms.
+% is needed when variables get renamed by internal PLAI mechanisms.
+% Due to renaming, ordered structures might not be ordered anymore
+% and need to be sorted.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, abs_sort/2, [noq]).
@@ -126,7 +128,8 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
    => (asub(Entry))
    + (not_fails, is_det).
 
-% save unifier in the ExtraInfo parameter, so that we can use it in exit_to_prime
+% In the ExtraInfo parameter put both the Unifier (used when extend_implementation is mgu to increase performance)
+% and the entry substitution (used when extend_implementation is match to increase precision).
 
 call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0)) :-
    unifiable_with_occurs_check(Sg, Head, Unifier),
@@ -139,9 +142,12 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0))
 % exit_to_prime(Sg,Hv,Head,Sv,Exit,ExtraInfo,Prime)
 %
 % Computes the abstract substitution Prime which results from adding the
-% abstraction of the unification Sg = Head to abstract substitution Exit
-% (the exit substitution for a clause Head projected over its variables
-% Hv), projecting the resulting substitution onto Sv.
+% abstraction of the unification Sg = Head to the abstract substitution Exit
+% (the exit substitution over all variables of the clause), projecting the
+% resulting substitution onto Sv.
+%
+% ExtraInfo is the information saved during the call_to_entry step. Sv
+% and Hv are the variables of Sg and Head, respectively.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, exit_to_prime/7, [noq]).
@@ -150,7 +156,7 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0))
    => (asub(Prime))
    + (not_fails, is_det).
 
-% take the unifier from the ExtraInfo parameter
+% I ExtraInfo parameter
 
 exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _ExtraInfo, '$bottom') :- !.
 exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
@@ -167,7 +173,7 @@ exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
 %-------------------------------------------------------------------------
 % compute_lub(+ListASub,-LubASub)
 %
-% LubASub is the least upper bound of the abstract substitutions in
+% LubASub is the least upper bound of the abstract substitutions in the
 % non-empty list ListASub.
 %-------------------------------------------------------------------------
 
@@ -338,7 +344,6 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
 
-
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)
 %
@@ -360,6 +365,7 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
 unknown_call(Sg, Vars, Call, Succ) :-
    top(Vars, Top),
    extend(Sg, Top, Vars, Call, Succ),
+   % print the unknown call since it might be caused by unsupported builtins
    display('UNKNOWN CALL: '), display(Sg), nl.
 
 %------------------------------------------------------------------------%
@@ -368,8 +374,7 @@ unknown_call(Sg, Vars, Call, Succ) :-
 % AMGU is the abstract unification between ASub and the unifiers of Sg and
 % Head.
 %
-% TODO: Understand which are the options which enable the use of this
-% predicate.
+% TODO: Understand which options enable the use of this predicate.
 %------------------------------------------------------------------------%
 
 :- dom_impl(_, amgu/4, [noq]).

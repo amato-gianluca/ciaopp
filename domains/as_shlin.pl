@@ -16,7 +16,6 @@ between sharing and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 
 :- include(as_template).
 :- use_module(domain(as_sharing)).
-:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % I/O CIAOPP PREDICATES
@@ -242,6 +241,7 @@ mgu_optimal(ShLin, Fv, [X=T|Rest], MGU) :-
    mgu(MGU0, Fv, Rest, MGU).
 
 mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
+
    ShLin = (Sh, Lin),
    bag_vars(T, Bt),
    mgu_split(Sh, Lin, Bt, X, Sh_x, Sh_t,

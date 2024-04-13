@@ -17,7 +17,6 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 :- dom_def(as_shlin2, [default]).
 
 :- include(as_template).
-:- use_module(domain(as_bags)).
 
 %------------------------------------------------------------------------
 % I/O CIAOPP PREDICATES

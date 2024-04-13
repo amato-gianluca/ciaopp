@@ -2,7 +2,7 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(engine(io_basic)).
+%:- use_module(library(format)).
 
 :- doc(title, "Sharing * Lin abstract domain").
 :- doc(module,"
@@ -445,51 +445,107 @@ match(Prime, Pv, Call, Match) :-
 
 %--------------------- OPTIMAL MATCH ---------------------------
 
+:- export(match_optimal/4).
+:- test match_optimal(Prime, Pv, Call, Match)
+   : (Prime=([[X]],[X]), Pv=[X], Call=([[X, Y], [X,Z]],  [X]))
+   => (Match=([[X,Y], [X,Z]],[X])) + (not_fails, is_det).
+:- test match_optimal(Prime, Pv, Call, Match)
+   : (Prime=([[X], [X,Y]], [X,Y]), Pv=[X, Y], Call=([[X, Y, W], [X, Z]], [X, Z]))
+   => (Match=([[X,Y,W],[X,Z]], [X,Y,Z])) + (not_fails, is_det).
+
 match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
-   rel(Sh2, Pv, Sh2s, Sh2p),
-   powerset(Sh2s, Sh2s_power),
-   match_sbar(Sh2s, Lin1, Sbar),
-   match_optimal0(Sh1, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0),
-   ord_union(Sh2p, Match_sh0, Match_sh),
-   ( Sh2p = [] -> Match_lin1 = Match_lin0 ; insert(Match_lin0, Lin2, Match_lin1)),
-   ord_intersect_all(Match_lin1, Match_lin2),
-   ord_union(Lin1, Match_lin2, Match_lin3),
-   ord_intersection(Match_lin3, ~vars(Match_sh), Match_lin).
+   rel(Sh2, Pv, Rel2, NRel2),
+   match_optimal_sbar(Rel2, Lin1, Sbar, NoSbar),
+   match_optimal0(Sh1, Lin1, Pv, Sbar, NoSbar, Match_sh0, Match_nlin0),
+   ord_union(NRel2, Match_sh0, Match_sh),
+   ord_subtract(Lin2, Match_nlin0, Match_lin0),
+   ord_union(Lin1, Match_lin0, Match_lin1),
+   as_sharing:vars(Match_sh, Vars),
+   ord_intersection(Match_lin1, Vars , Match_lin).
 
-match_sbar([], _, []).
-match_sbar([B|Rest], Lin1, [B|Sbar]) :-
+match_optimal_sbar([], _, [], []).
+match_optimal_sbar([B|Rest], Lin1, [B|Sbar], NoSbar) :-
    ord_disjoint(B, Lin1), !,
-   match_sbar(Rest, Lin1, Sbar).
-match_sbar([_B|Rest], Lin1, Sbar) :-
-   match_sbar(Rest, Lin1, Sbar).
+   match_optimal_sbar(Rest, Lin1, Sbar, NoSbar).
+match_optimal_sbar([B|Rest], Lin1, Sbar, [B|NoSbar]) :-
+   match_optimal_sbar(Rest, Lin1, Sbar, NoSbar).
 
-match_optimal0([], _Lin1, _Pv, _Sh2s_power, _Lin2, _Sbar, [], []).
-match_optimal0([B|Rest], Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh, Match_lin) :-
-   match_optimal0(Rest, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh0, Match_lin0),
-   match_optimal1(B, Lin1, Pv, Sh2s_power, Lin2, Sbar, Match_sh1, Match_lin1),
+match_optimal0([], _Lin1, _Pv, _Sbar, _NoSbar, [], []).
+match_optimal0([B|Rest], Lin1, Pv, Sbar, NoSbar, Match_sh, Match_nlin) :-
+   match_optimal_filter(Sbar, B, Pv, Sbar_filtered),
+   match_optimal_filter(NoSbar, B, Pv, NoSbar_filtered),
+   star_union(Sbar_filtered, Sbar_star),
+   match_optimal_star_union(NoSbar_filtered, Lin1, Rel2_star),
+   match_optimal_reduce(Rel2_star, Rel2_reduced),
+   match_optimal_bin([([],[])|Rel2_reduced], [[]|Sbar_star], B, Pv, Match_sh0, Match_nlin0),
+   match_optimal0(Rest, Lin1, Pv, Sbar, NoSbar, Match_sh1, Match_nlin1),
    ord_union(Match_sh0, Match_sh1, Match_sh),
-   ord_union(Match_lin0, Match_lin1, Match_lin).
+   ord_union(Match_nlin0, Match_nlin1, Match_nlin).
 
-:- index match_optimal1(?, ?, ?, +, ?, ?, ?, ?).
+match_optimal_bin([], _, _, _, [],[]).
+match_optimal_bin([(X, X_nl)|Xs], NoSbar_star, B, Pv, Bin, NLin) :-
+   match_optimal_bin0(X, X_nl, NoSbar_star, B, Pv, Bin0, NLin0),
+   match_optimal_bin(Xs, NoSbar_star, B, Pv, Bin1, NLin1),
+   ord_union(Bin0, Bin1, Bin),
+   ord_union(NLin0, NLin1, NLin).
 
-match_optimal1(_B, _Lin1, _Pv, [], _Lin2, _Sbar, [], []) :- !.
-match_optimal1(B, Lin1,  Pv, [X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
-   nl(X, NLX),
-   ord_disjoint(NLX, Lin1),
-   merge_list_of_lists(X, UX),
-   ord_intersection(UX, Pv, UXPv),
-   UXPv == B,
-   !,
-   match_optimal1(B, Lin1, Pv, Rest, Lin2, Sbar, Match_sh_rest, Match_lin_rest),
-   ord_union(B, UX, Match_sh0),
-   ord_subtract(Lin2, NLX, Match_lin1),
-   ord_intersection(X, Sbar, Match_lin2),
-   merge_list_of_lists(Match_lin2, Match_lin3),
-   ord_subtract(Match_lin1, Match_lin3, Match_lin0),
-   insert(Match_sh_rest, Match_sh0, Match_sh),
-   insert(Match_lin_rest, Match_lin0, Match_lin).
-match_optimal1(B, Lin1,  Pv, [_X|Rest], Lin2, Sbar, Match_sh, Match_lin) :-
-   match_optimal1(B, Lin1, Pv, Rest, Lin2, Sbar, Match_sh, Match_lin).
+match_optimal_bin0(_X, _X_nl, [], _B, _Pv, [], []).
+match_optimal_bin0(X, X_nl, [S|Rest], B, Pv, Bin, NLin) :-
+   ord_union(X, S, XS),
+   ord_intersection(XS, Pv, XS_restricted),
+   B == XS_restricted, !,
+   ord_union(S, X, Y),
+   ord_union(X_nl, S, NLin1),
+   match_optimal_bin0(X, X_nl, Rest, B, Pv, Bin0, NLin0),
+   insert(Bin0, Y, Bin),
+   ord_union(NLin1, NLin0, NLin).
+match_optimal_bin0(X, X_nl, [_|Rest], B, Pv, Bin, NLin) :-
+   match_optimal_bin0(X, X_nl, Rest, B, Pv, Bin, NLin).
+
+
+match_optimal_filter([], _B, _Pv, []).
+match_optimal_filter([X|Xs], B, Pv, [X|Ys]) :-
+   ord_intersection(X, Pv, X_restr),
+   ord_subset(X_restr, B), !,
+   match_optimal_filter(Xs, B, Pv, Ys).
+match_optimal_filter([_|Xs], B,  Pv, Ys) :-
+   match_optimal_filter(Xs, B, Pv, Ys).
+
+match_optimal_reduce([],[]).
+match_optimal_reduce([X],[X]) :- !.
+match_optimal_reduce([(X, X_nl), (Y, Y_nl)|Rest],Bin) :-
+   X == Y, !,
+   ord_union(X_nl, Y_nl, Z_nl),
+   match_optimal_reduce([(X, Z_nl)|Rest], Bin).
+match_optimal_reduce([(X, X_nl)|Rest], [(X, X_nl)|BinRest]) :-
+   match_optimal_reduce(Rest, BinRest).
+
+star2([], _B, _Pv, []).
+star2([(X, X_nl)|Xs], B, Pv, [(X, X_nl)|Ys]) :-
+   ord_intersection(X, Pv, X_restr),
+   X_restr == B, !,
+   star2(Xs, B, Pv, Ys).
+star2([_|Xs], B, Pv, Ys) :-
+   star2(Xs, B, Pv, Ys).
+
+match_optimal_star_union(Rel2_filtered, Lin1, Rel2_star) :-
+   star1(Rel2_filtered, [], Lin1, Rel2_star).
+
+star1([], L, _Lin1, L).
+star1([X|Xs], Temp, Lin1, Star) :-
+   add_to_star(Temp, X, Lin1, Temp1),
+   sort(Temp1,Temp2),
+   star1(Xs, Temp2, Lin1, Star).
+
+add_to_star([], X_ann, _Lin1, [(X_ann, [])]).
+add_to_star([(Y, Y_nl)|Ys], X, Lin1, [(Y, Y_nl), (Z, Z_nl)|Arg_share_star]) :-
+   ord_intersection(X, Y, XY),
+   ord_disjoint(XY, Lin1), !,
+   ord_union(X, Y, Z),
+   ord_union(Y_nl, XY, Z_nl),
+   add_to_star(Ys, X, Lin1, Arg_share_star).
+add_to_star([(Y, Y_nl)|Ys], X, Lin1, [(Y, Y_nl) | Arg_share_star]) :-
+   add_to_star(Ys, X, Lin1, Arg_share_star).
 
 %--------------------- STANDARD MATCH ---------------------------
 

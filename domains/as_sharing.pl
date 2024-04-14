@@ -6,7 +6,12 @@
 
 :- doc(title, "sharing abstract domain").
 :- doc(module,"
-This module is an independent reimplementation of the Sharing domain.
+This module is an independent reimplementation of the Sharing domain presented in:
+
+Gianluca Amato and Francesca Scozzari, 
+Optimality in goal-dependent analysis of Sharing
+(2009) Theory and Practice of Logic Programming, 9 (5), pp. 617-689.
+https://dx.doi.org/10.1017/S1471068409990111
 ").
 
 :- include(ciaopp(plai/plai_domain)).

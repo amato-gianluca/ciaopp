@@ -9,7 +9,7 @@
 :- use_module(library(sets)).
 :- use_module(library(lsets)).
 :- use_module(library(terms_vars)).
-:- use_module(engine(io_basic)).
+:- use_module(library(format)).
 
 :- use_module(domain(as_aux)).
 :- use_module(domain(as_bags)).
@@ -215,17 +215,18 @@ compute_lub_el(ASub1, ASub2, Lub) :-
 
 extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
-   ( current_pp_flag(as_use_match, no) ->
-      % TODO: replace varset with a more efficient implementation
-      varset(Call, Vars),
-      copy_term_nat((Sv, Prime), (Sv0, Prime0)),
-      build_unifier(Sv, Sv0, MGU),
-      %abs_sort(Prime0, Prime1),
-      join(Prime0, Call, CallExtended),
-      mgu(CallExtended, [], MGU, Succ0),
-      project(Succ0, Vars, Succ)
-   ;
-      match(Prime, Sv, Call, Succ)
+   (
+      current_pp_flag(as_use_match, no) ->
+         % TODO: replace varset with a more efficient implementation
+         varset(Call, Vars),
+         copy_term_nat((Sv, Prime), (Sv0, Prime0)),
+         build_unifier(Sv, Sv0, MGU),
+         %abs_sort(Prime0, Prime1),
+         join(Prime0, Call, CallExtended),
+         mgu(CallExtended, [], MGU, Succ0),
+         project(Succ0, Vars, Succ)
+      ;
+         match(Prime, Sv, Call, Succ)
    ).
 
 build_unifier([], [], []).
@@ -366,7 +367,7 @@ unknown_call(Sg, Vars, Call, Succ) :-
    top(Vars, Top),
    extend(Sg, Top, Vars, Call, Succ),
    % print the unknown call since it might be caused by unsupported builtins
-   display('UNKNOWN CALL: '), display(Sg), nl.
+   format('UNKNOWN CALL: ~w~n', Sg).
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)

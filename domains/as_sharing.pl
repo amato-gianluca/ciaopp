@@ -295,8 +295,6 @@ mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    : nasub * {ordlist(var), superset_vars_of(ASub1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
-% the first is just an optimization when Sv=[]
-match(_Sh1, [], _Sh2, []) :- !.
 match(Sh1, Sv1, Sh2, Match) :-
    rel(Sh2, Sv1, Intersect, Disjunct),
    star_union(Intersect, Star),

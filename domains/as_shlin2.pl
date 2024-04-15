@@ -2,7 +2,6 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(library(format)).
 
 :- doc(title, "ShLin2 abstract domain").
 :- doc(module,"

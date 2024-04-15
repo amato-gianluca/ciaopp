@@ -2,7 +2,6 @@
 
 :- use_package(debug).
 :- use_package(rtchecks).
-%:- use_module(library(format)).
 
 :- doc(title, "sharing abstract domain").
 :- doc(module,"

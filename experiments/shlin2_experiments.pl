@@ -1,5 +1,8 @@
 :- module(_,[],[assertions,nativeprops]).
 
+:- prop shlin2(X) + native.
+:- impl_defined(shlin2/1).
+
 :- set_prolog_flag(single_var_warnings, off).
 
 % Example 6, King, "A Synergistic Analysis for Sharing and Groundness which traces Linearity"
@@ -7,7 +10,7 @@
 % Entry substitution cannot be expressed in ShLin, which cannot prove that X, Y and Z are linear
 % at the exit.
 
-:- entry example1(U, V, W, X, Y, Z): (nonvar([([U, X], [U,X]), ([V, X], [V, X]), ([W, X], [W]), ([Y], [Y]), ([Z], [Z])]),
+:- entry example1(U, V, W, X, Y, Z): (shlin2([([U, X], [U,X]), ([V, X], [V, X]), ([W, X], [W]), ([Y], [Y]), ([Z], [Z])]),
     mshare([[U, X], [V, X], [W, X], [Y], [Z]]), linear([U, V, W, Y, Z])).
 
 example1(U, V, W, X, Y, Z) :-
@@ -19,7 +22,7 @@ example1(U, V, W, X, Y, Z) :-
 % Entry substitution cannot be expressed in ShLin, which cannot prove that V is linear
 % at the exit.
 
-:- entry example2(U, V, X, Y): (nonvar([([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])]),
+:- entry example2(U, V, X, Y): (shlin2([([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])]),
     mshare([[X], [X,U], [X,Y], [Y, V]]), linear([U, Y, V])).
 
 example2(U, V, X, Y) :-

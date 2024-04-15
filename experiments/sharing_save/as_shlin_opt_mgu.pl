@@ -50,26 +50,26 @@ example4(X,Y,Z) :-
     example4bis(t(X),t(Y),t(Z)),
     true(mshare([[X,Y],[X,Y,Z],[Y,Z]])).
 
-%% %% :- trust pred example4bis(X,Y,Z)
-%% %%    : mshare([X,Y,Z],[[X],[Y],[Z]])
-%% %%    => mshare([X,Y,Z],[[X,Y],[Y,Z]]).
+%% %% :- trust pred example4bis(U,V,W)
+%% %%    : mshare([U,V,W],[[U],[V],[W]])
+%% %%    => mshare([U,V,W],[[U,V],[V,W]]).
 
-:- check calls example4bis(X,Y,Z)
-   : mshare([X,Y,Z],[[X],[Y],[Z]]).
+:- check calls example4bis(U,V,W)
+   : mshare([U,V,W],[[U],[V],[W]]).
 
-:- trust success example4bis(X,Y,Z)
-   : mshare([X,Y,Z],[[X],[Y],[Z]])
-   => mshare([X,Y,Z],[[X,Y],[Y,Z]]).
+:- trust success example4bis(U,V,W)
+   : mshare([U,V,W],[[U],[V],[W]])
+   => mshare([U,V,W],[[U,V],[V,W]]).
 
-:- true pred example4bis(X,Y,Z)
-   : ( (X=t(_A)), (Y=t(_B)), (Z=t(_C)),
+:- true pred example4bis(U,V,W)
+   : ( (U=t(_A)), (V=t(_B)), (W=t(_C)),
        mshare([[_A],[_B],[_C]]) )
    => mshare([[_A,_B],[_B,_C]]).
 
-example4bis(X,Y,Z) :-
-    true(mshare([[X],[Y],[Z]])),
-    Y=f(X,Z),
-    true(mshare([[X,Y],[X,Y,Z],[Y,Z]])).
+example4bis(U,V,W) :-
+    true(mshare([[U],[V],[W]])),
+    V=f(U,W),
+    true(mshare([[U,V],[U,V,W],[V,W]])).
 
 :- true pred nothing.
 

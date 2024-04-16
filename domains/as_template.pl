@@ -278,10 +278,17 @@ call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
    + is_det.
 
 special_builtin('true/0', _, _, unchanged, _).
+special_builtin('not_free/1', _, _, unchanged, _).
 special_builtin('!/0',_,_,unchanged,_).
 %-------------------------------------------------------------------------
 special_builtin('atomic/1',_,_,ground,_).
+special_builtin('atom/1',_,_,ground,_).
 special_builtin('is/2',_,_,ground,_).
+special_builtin('=:=/2',_,_,ground,_).
+special_builtin('>=/2',_,_,ground,_).
+special_builtin('>/2',_,_,ground,_).
+special_builtin('</2',_,_,ground,_).
+special_builtin('=</2',_,_,ground,_).
 %-------------------------------------------------------------------------
 special_builtin('fail/0',_,_,bottom,_).
 %-------------------------------------------------------------------------
@@ -290,6 +297,8 @@ special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv):-
 %-------------------------------------------------------------------------
 special_builtin('=/2', Sg, _ , '=/2', Sg).
 special_builtin('arg/3', Sg, _, 'arg/3', Sg).
+special_builtin('free/1', free(X) ,_,'free/1', p(X)).
+
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
@@ -301,7 +310,7 @@ special_builtin('arg/3', Sg, _, 'arg/3', Sg).
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, success_builtin/6, [noq]).
-:- pred success_builtin(+Type,+Sv,?Condvars,+HvFv_u,+Call,-Succ)
+:- pred success_builtin(+Type, +Sv, ?Condvars, +HvFv_u, +Call, -Succ)
    : term * ordlist(var) * term * list(var) * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
@@ -332,6 +341,10 @@ success_builtin('arg/3', _, arg(X,Y,Z), HvFv_u, Call, Succ) :-
                compute_lub(Succs, Succ)
          )
    ).
+success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
+   var(X),
+   restrict_var(Call, X, Succ).
+success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
@@ -344,6 +357,7 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    ),
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
+
 
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)

@@ -7,7 +7,7 @@
 :- doc(module,"
 This module is an independent reimplementation of the Sharing domain presented in:
 
-Gianluca Amato and Francesca Scozzari, 
+Gianluca Amato and Francesca Scozzari,
 Optimality in goal-dependent analysis of Sharing
 (2009) Theory and Practice of Logic Programming, 9 (5), pp. 617-689.
 https://dx.doi.org/10.1017/S1471068409990111
@@ -323,6 +323,21 @@ match0([X|Rest], Sh1, Sv1, Match0, Match) :-
 
 make_ground(Call, Gv, Succ) :-
    rel(Call, Gv, _, Succ).
+
+%-------------------------------------------------------------------------
+% restrict_var(+Call,+V,+Succ).
+%
+% Succ is the result of restringing the abstract substitution Call to the
+% case when V is a variable.
+%-------------------------------------------------------------------------
+
+:- pred restrict_var(+Call, +V, -Succ)
+   : nasub * var * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_var(Call, V, Call) :-
+   ord_member_list_of_lists(V, Call).
+restrict_var(_Call, _, '$bottom').
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

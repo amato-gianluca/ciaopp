@@ -716,6 +716,27 @@ make_ground(Call, Gv, Succ) :-
    rel(Call, Gv, _, Succ).
 
 %-------------------------------------------------------------------------
+% restrict_var(+Call,+V,+Succ).
+%
+% Succ is the result of restringing the abstract substitution Call to the
+% case when V is a variable.
+%-------------------------------------------------------------------------
+
+:- pred restrict_var(+Call, +V, -Succ)
+   : nasub * var * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_var(Call, V, Succ) :-
+   possible_nonground(V, Call), !,
+   make_linear(Call, V, Succ).
+restrict_var(_Call, _, '$bottom').
+
+make_linear([], _, []).
+make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
+   insert(Lin, V, Lin0),
+   make_linear(Rest, V, Rest0).
+
+%-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 
@@ -992,3 +1013,13 @@ remove_redundants0(Sh, Lin, [(Sh1, Lin1)|Rest], RestRemoved, SelfRedundant) :-
    ),
    remove_redundants0(Sh, Lin, Rest, RestRemoved0, SelfRedundant0).
 remove_redundants0(_Sh, _Lin, ASub, ASub, no) :- !.
+
+:- pred possible_nonground(+ASub, +V)
+   : nasub * var
+   + (is_det)
+   # "True if the variable @var{V} is a possible non-ground variable in the abstract substitution @var{ASub}".
+
+possible_nonground([(Sh, _Lin)|_Rest], V) :-
+   ord_member(V, Sh), !.
+possible_nonground([_|Rest], V) :-
+   possible_nonground(Rest, V).

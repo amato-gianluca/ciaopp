@@ -157,25 +157,6 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
    unifier_no_cyclic(Unifier).
 
-:- pred powerset(S, N, P)
-   : ordlist * int * ivar => ordlist(P)
-   + (not_fails, is_det)
-   # "@var{P} is the set of non-empty subsets of S of cardinality N.".
-:- export(powerset/3).
-
-powerset(_S, 0, [[]]) :- !.
-powerset([], _N, []) :- !.
-powerset([X|Xs], N, P):-
-   N1 is N-1,
-   powerset(Xs, N1, P1),
-   add_to_all(P1, X, P2),
-   powerset(Xs, N, P3),
-   append(P2, P3, P).
-
-add_to_all([], _, []).
-add_to_all([X|Xs], Y, [[Y|X]|Ys]):-
-   add_to_all(Xs, Y, Ys).
-
 %------------------------------------------------------------------------
 % SHARING GROUPS AND BAGS
 %-------------------------------------------------------------------------

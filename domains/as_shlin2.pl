@@ -156,8 +156,13 @@ asub_sh(ASub_sh) :-
 :- test nasub(ASub): (ASub = [([X, Y], [X]), ([X, Y], [X, Y])]) + (fails, is_det).
 
 nasub(ASub) :-
-   % the empty 2-sharing group is not allowed
    (ASub = [(Sh,_Lin)|_Rest ] -> Sh \= [] ; true),
+   nasub_extended(ASub).
+
+:- prop nasub_extended(ASub) # "@var{ASub} is a non empty abstract substitution with possibly the empty sharing group.".
+
+nasub_extended(ASub) :-
+   % the empty 2-sharing group is not allowed
    ordlist(shlin2group, ASub),
    no_redundants(ASub).
 
@@ -178,7 +183,6 @@ no_redundants0(_Sh, _Lin, _Rest).
 
 nasub_u(ASub) :-
    list(shlin2group_u, ASub).
-
 
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
@@ -401,136 +405,139 @@ mgu(ASub, Fv, Sub, MGU) :-
 mgu_optimal(ASub, _Fv, [], ASub).
 mgu_optimal(ASub, Fv, [X=T|Rest], MGU) :-
    mgu_binding_optimal(ASub, X, T, MGU0),
-   mgu_optimal(MGU0, Fv, Rest, MGU).
+   remove_redundants(MGU0, MGU1),
+   mgu_optimal(MGU1, Fv, Rest, MGU).
 
 mgu_binding_optimal(ASub, X, T, MGU) :-
    bag_vars(T, Bt),
-   mgu_add_multiplicity(ASub, [X-1], Bt, NRel, RelMul),
-   powerset(RelMul, RelSubs),
-   % TODO: try to optimize mgu_binding_optimal0 by directly generating valid combinations of
-   % Xx, Xt and Xxt instead of taking in input all RelSubs.
-   mgu_binding_optimal0(RelSubs, MGU0),
-   remove_redundants(MGU0, MGU1),
-   ord_union(NRel, MGU1, MGU).
+   mgu_split_optimal(ASub, [X-1], Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin, Rel_xt_linx,
+                                      Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin),
+   star_union(Rel_x_lin, Rel_x_lin_star),
+   star_union(Rel_x_nlin, Rel_x_nlin_star),
+   star_union(Rel_t_lin, Rel_t_lin_star),
+   star_union(Rel_t_nlin, Rel_t_nlin_star),
+   star_union(Rel_t_snlin, Rel_t_snlin_star),
+   star_union(Rel_xt_linx, Rel_xt_linx_star),
+   star_union(Rel_xt_lint, Rel_xt_lint_star),
+   star_union(Rel_xt_linxt, Rel_xt_linxt_star),
+   star_union(Rel_xt_nlin, Rel_xt_nlin_star),
+   % first case
+   bin_all([
+      [([],[])|Rel_x_lin_star], [([],[])|Rel_x_nlin_star], [([],[])|Rel_t_lin_star], [([],[])|Rel_t_nlin_star],
+      [([],[])|Rel_t_snlin_star], [([],[])|Rel_xt_linx_star], [([],[])|Rel_xt_lint_star], [([],[])|Rel_xt_linxt_star],
+      [([],[])|Rel_xt_nlin_star]
+   ], Rel_x_plus),
+   merge_list_of_lists([Rel_x_nlin, Rel_xt_nlin, Rel_xt_lint], Rel_x_nlin0),
+   merge_list_of_lists([Rel_t_nlin, Rel_t_nlin, Rel_t_snlin, Rel_xt_nlin, Rel_xt_linx], Rel_t_nlin0),
+   bin_all([Rel_x_nlin0,  Rel_x_plus, Rel_t_nlin0], Bin1),
+   % second case
+   bin_all([Rel_t_lin_star, [([],[])|Rel_xt_lint_star], [([],[])|Rel_xt_linxt_star], Rel_x_nlin], Bin2a),
+   bin_all([Rel_t_lin_star, Rel_xt_lint_star, [([],[])|Rel_xt_linxt_star]], Bin2b),
+   ord_union(Bin2a, Bin2b, Bin2),
+   % third case
+   bin_all([Rel_x_lin_star, [([],[])|Rel_xt_linx_star], [([],[])|Rel_xt_linxt_star], Rel_t_snlin], Bin3a),
+   bin_all([Rel_x_lin_star, Rel_xt_linx_star, [([],[])|Rel_xt_linxt_star]], Bin3b),
+   ord_union(Bin3a, Bin3b, Bin3),
+   % fourth case
+   ord_union(Rel_t_lin, Rel_t_nlin, Rel_t_nat),
+   mgu_binding_optimal0([([],[])|Rel_t_nat], Rel_x_lin, Bt, Bin4a),
+   ( Bin4a == [] -> Bin4 = Rel_xt_linxt_star ; bin([([],[])|Rel_xt_linxt_star], Bin4a, Bin4) ),
+   % fifth case
+   ord_union(Rel_xt_linx, Rel_xt_nlin, Rel_xt_nlin0),
+   mgu_filter_linearizable(Rel_xt_nlin0, Bt, Rel_xt_linearizable0),
+   ord_union(Rel_xt_linx, Rel_xt_linearizable0, Rel_xt_linearizable),
+   star_union(Rel_xt_linearizable, Rel_xt_linearizable_star),
+   % put all togethet
+   merge_list_of_lists([NRel, Bin1, Bin2, Bin3, Bin4, Rel_xt_linearizable_star], MGU).
 
-:- pred mgu_add_multiplicity(+ASub, +Bx, +Bt, -NRel, -RelMul)
-   : nasub * isbag * isbag * ivar * ivar => nasub(NRel)
-   + (not_fails, is_det)
-   # "Split the 2-sharing groups in @var{ASub} in those which are relevant (@var{RelMul}) for the binding X=T
-      and those which are not (@var{NRel}). @var{Bx} and @var{Bt} are the bags of variables for terms
-      X and T, respectively. Relevant 2-sharing groups in @var{RelMul} are also annotated with their
-      multiplicities in both X and T (the latter in maximum and minimum variant).".
+mgu_binding_optimal0([], _, _, []) :- !.
+mgu_binding_optimal0([ShLin|Rest], Rel_x_lin, Bt, MGU) :-
+   ShLin = (Sh, Lin),
+   chiMax(Sh, Lin, Bt, Mult),
+   % TODO: memoize these values ?
+   star_union_limited(Rel_x_lin, Mult, Rel_x_lin_star),
+   bin(Rel_x_lin_star, [ShLin], MGU0),
+   mgu_binding_optimal0(Rest, Rel_x_lin, Bt, MGU1),
+   ord_union(MGU0, MGU1, MGU).
 
-mgu_add_multiplicity([], _Bx, _Bt, [], []).
-mgu_add_multiplicity([(Sh,Lin)|Rest], Bx, Bt, NRel, RelMul) :-
+star_union_limited(S, N, Star) :-
+   star_union_limited0(S, N, empty, Star).
+
+star_union_limited0(_S, 0, _, [([],[])]) :- !.
+star_union_limited0(_S, N, _, []) :- N < 0, !.
+star_union_limited0([], _N, yes, [([],[])]) :- !.
+star_union_limited0([], _N, _, []) :- !.
+star_union_limited0([(Sh, Lin)|Xs], N, Full, S) :-
+   N1 is N-1,
+   star_union_limited0(Xs, N1, no, S1),
+   bin([(Sh, Lin)], S1, Res1),
+   N2 is N-2,
+   ( Full \= no -> Full0 = yes ; Full0 = no ),
+   star_union_limited0(Xs, N2, Full0, S2),
+   bin([(Sh, [])], S2, Res2),
+   star_union_limited0(Xs, N, Full, Res3),
+   merge_list_of_lists([Res1, Res2, Res3], S).
+
+mgu_split_optimal([], _, _, [], [], [], [], [], [], [], [], [], []).
+mgu_split_optimal([ShLin|Rest], Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin, Rel_xt_linx,
+                  Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin) :-
+   ShLin = (Sh, Lin),
    chiMax(Sh, Lin, Bx, Mulx),
    chiMax(Sh, Lin, Bt, Mult),
    (
-      Mulx = 0 , Mult = 0 ->
-         NRel = [(Sh,Lin)|NRel0],
-         mgu_add_multiplicity(Rest, Bx, Bt, NRel0, RelMul)
-      ;
-         (linearizable(Sh, Bt) -> Mult_min = lin ; Mult_min = nlin),
-         RelMul = [(Sh, Lin)-(Mulx, Mult, Mult_min)|Rel0],
-         mgu_add_multiplicity(Rest, Bx, Bt, NRel, Rel0)
+      Mulx = 0 -> (
+         Mult = 0 ->
+            NRel = [ShLin|NRel0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel0, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+         ; Mult = 1 ->
+            Rel_t_lin = [ShLin|Rel_t_lin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin0, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+         ; Mult = inf ->
+            Rel_t_snlin = [ShLin|Rel_t_snlin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin0,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+         ;
+            Rel_t_nlin = [ShLin|Rel_t_nlin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin0, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+      ) ; Mulx = 1 -> (
+         Mult = 0 ->
+            Rel_x_lin = [ShLin|Rel_x_lin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin0, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+         ; Mult = 1 ->
+            Rel_xt_linxt = [ShLin|Rel_xt_linxt0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt0, Rel_xt_nlin)
+         ;
+            Rel_xt_linx = [ShLin|Rel_xt_linx0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx0, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+      ) ; (
+         Mult = 0 ->
+            Rel_x_nlin = [ShLin|Rel_x_nlin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin0, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin)
+         ; Mult = 1 ->
+            Rel_xt_lint = [ShLin|Rel_xt_lint0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint0, Rel_xt_linxt, Rel_xt_nlin)
+         ;
+            Rel_xt_nlin = [ShLin|Rel_xt_nlin0],
+            mgu_split_optimal(Rest, Bx, Bt, NRel, Rel_x_lin, Rel_x_nlin, Rel_t_lin, Rel_t_nlin, Rel_t_snlin,
+                              Rel_xt_linx, Rel_xt_lint, Rel_xt_linxt, Rel_xt_nlin0)
+      )
    ).
 
-mgu_binding_optimal0([], []).
-mgu_binding_optimal0([XMul|Rest], MGU) :-
-   mgu_binding_optimal0(Rest, RestMGU),
-   mgu_linearity_type(XMul, LinTypeX, LinTypeT),
-   mgu_split_optimal(XMul, Xx, Xt, Xxt, XtMul, XT_Lin),
-   length(Xx, Xxlen),
-   length(Xt, Xtlen),
-   (
-      LinTypeX = non_linear, member(LinTypeT,[non_linear, strong_nl]) ->
-         upluslist2(Xxt, Xxtplus),
-         upluslist2(Xt, Xtplus),
-         upluslist2(Xx, Xxplus),
-         upluslist2([Xxplus, Xtplus, Xxtplus], MGU0),
-         insert(RestMGU, MGU0, MGU)
-      ; LinTypeX = non_linear, LinTypeT = linear, Xxlen =< 1, Xtlen >= 1 ->
-         upluslist2(Xxt, Xxtplus),
-         upluslist2(Xt, Xtplus),
-         upluslist(Xx, Xxplus),
-         upluslist([Xxplus, Xtplus, Xxtplus], MGU0),
-         insert(RestMGU, MGU0, MGU)
-      ; LinTypeX = linear, LinTypeT = strong_nl, Xxlen >= 1, Xtlen =< 1 ->
-         upluslist2(Xxt, Xxtplus),
-         upluslist(Xt, Xtplus),
-         upluslist2(Xx, Xxplus),
-         upluslist([Xxplus, Xtplus, Xxtplus], MGU0),
-         insert(RestMGU, MGU0, MGU)
-      ; LinTypeX = linear, LinTypeT \= strong_nl, Xtlen =< 1, Xxlen =< XtMul ->
-         upluslist2(Xxt, Xxtplus),
-         upluslist(Xt, Xtplus),
-         upluslist(Xx, Xxplus),
-         upluslist([Xxplus, Xtplus, Xxtplus], MGU0),
-         Zinc_len is XtMul - Xxlen,
-         % be careful to the case when Xxlen = 0 and Xtlen > 0, since it cannot
-         % generate any result. Actually, this check is redudant if we only
-         % generate maximal Zinc as we do here
-         % (Xxlen = 0, Xtlen > 0-> Zinc = [] ; powerset(Xx, Zinc_len, Zinc)),
-         powerset(Xx, Zinc_len, Zinc),
-         mgu_binding_optimal1(Zinc, MGU0, MGU1),
-         ord_union(RestMGU, MGU1, MGU)
-      ; Xxlen = 0, Xtlen = 0, XT_Lin = yes ->
-         upluslist2(Xxt, MGU0),
-         insert(RestMGU, MGU0, MGU)
-      ;
-         MGU = RestMGU
-   ).
-
-mgu_binding_optimal1([], _MGU0, []).
-mgu_binding_optimal1([Zinc|ZRest], MGU0, [MGU|MGURest]) :-
-   upluslist(Zinc, MGU1),
-   uplus(MGU0, MGU1, MGU),
-   mgu_binding_optimal1(ZRest, MGU0, MGURest).
-
-:- pred mgu_linearity_type(+XMul, -LinTypeX, -LinTypeT)
-   : term * ivar * ivar => term * atm * atm
-   + (not_fails, is_det)
-   # "Compute the linearity types of the annotated set of 2-sharing groups in @var{XMul}. @var{LinTypeX} is either
-   'linear' if all sharing groups in @var{XMul} are linear for X, or 'non_linear' otherwsoe. @var{LinTypeT} may
-   be either 'linear', 'non_linear' or 'strong_nl' (see paper).".
-
-mgu_linearity_type([], linear, linear).
-mgu_linearity_type([_ShLin-(MulX, MulT, _MulT_min)|XRest], LinTypeX, LinTypeT) :-
-   mgu_linearity_type(XRest, LinTypeX0, LinTypeT0),
-   ( \+ member(MulX, [0,1]) -> LinTypeX = non_linear ; LinTypeX = LinTypeX0 ),
-   (
-      MulT = inf ->
-         LinTypeT = strong_nl
-      ; MulT > 1, \+ member(MulX, [0,1])  ->
-         LinTypeT = strong_nl
-      ; MulT > 1 , LinTypeT0 \= strong_nl ->
-         LinTypeT = non_linear
-      ;
-         LinTypeT = LinTypeT0
-   ).
-
-:- pred mgu_split_optimal(+XMul, -Xx, -Xt, -Xxt, -M, -XT_L)
-   : term * ivar * ivar * ivar * ivar * ivar => term * nasub * nasub * nasub * multiplicity * atm
-   + (not_fails, is_det)
-   # "Split the annotated 2-sharing groups in @var{XMul} into the components @var{Xx}, @var{Xt}, @var{Xxt},
-   which are relative to 'X only', 'T only' and 'both X and T'. It also returns in @var{M} the total multiplicity
-   of @var{Xt}, and in @var{XT_L} whether @var{Xt} is linearizable or not.".
-
-mgu_split_optimal([], [], [], [], 0, yes).
-mgu_split_optimal([ShLin-(MulX, MulT, MulT_min)|Rest], Xx, Xt, Xxt, M, XT_L) :-
-   (
-      MulX \= 0, MulT \= 0 ->
-         Xxt = [ShLin|Xxt0],
-         mgu_split_optimal(Rest, Xx, Xt, Xxt0, M, XT_L0),
-         ( MulT_min = nlin -> XT_L = no ; XT_L = XT_L0)
-      ; MulX \= 0 ->
-         Xx = [ShLin|Xx0],
-         mgu_split_optimal(Rest, Xx0, Xt, Xxt, M, XT_L)
-      ; MulT \= 0 ->
-         Xt = [ShLin|Xt0],
-         mgu_split_optimal(Rest, Xx, Xt0, Xxt, M0, XT_L),
-         ( MulT \= inf, M0 \= inf -> M is M0 + MulT ; M = inf )
-   ).
+mgu_filter_linearizable([], _, []).
+mgu_filter_linearizable([ShLin|Rest], Bt, [ShLin|LinRest]) :-
+   ShLin = (Sh, _),
+   linearizable(Sh, Bt), !,
+   mgu_filter_linearizable(Rest, Bt, LinRest).
+mgu_filter_linearizable([_ShLin|Rest], Bt, LinRest) :-
+   mgu_filter_linearizable(Rest, Bt, LinRest).
 
 %--------------------- STANDARD MGU ---------------------------
 % This is the mgu in [A. King, A synergistic analysis for sharing and groundness which traces linearity]
@@ -849,7 +856,6 @@ uplus((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
    + (not_fails, is_det)
    # "@var{UPlus} is the union of the 2-sharing groups in @var{List}.".
 
-:- export(upluslist/2).
 :- test upluslist(List, UPlus): (List = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])])
    => (UPlus = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
 
@@ -859,20 +865,8 @@ upluslist([ShLin1, ShLin2|Rest], UPlus) :-
    uplus(ShLin1, ShLin2, ShLin),
    upluslist([ShLin|Rest], UPlus).
 
-:- pred upluslist2(+List, -UPlus)
-   : list(shlin2group, List) => shlin2group(UPlus)
-   + (not_fails, is_det)
-   # "@var{UPlus} is the union of the 2-sharing groups in @var{List} but ignoring
-   linearity information.".
-
-upluslist2([], ([],[])).
-upluslist2([(Sh, _Lin)], (Sh, [])).
-upluslist2([(Sh1, _Lin1), (Sh2, _Lin2)|Rest], UPlus) :-
-   ord_union(Sh1, Sh2, Sh),
-   upluslist2([(Sh, [])|Rest], UPlus).
-
 :- pred bin(+ASub1, +ASub2, -Bin)
-   : nasub * nasub * ivar => nasub(Bin)
+   : nasub_extended * nasub_extended * ivar => nasub_extended(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is the combination of two abstract substitutions @var{ASub1} and @var{ASub2}.".
 
@@ -890,6 +884,7 @@ bin(Sh1, Sh2, Bin) :-
    bin0(Sh1, Sh2, Bin0),
    remove_redundants(Bin0, Bin).
 
+% TODO: for some strange reason, without the cut the program becomes non-deterministic
 bin0([], _, []).
 bin0([X|Rest], Sh, Bin) :-
    bin0(Rest, Sh, RestBin),
@@ -903,6 +898,18 @@ bin1(ShLin1, [ShLin2|Rest], Bin) :-
    bin1(ShLin1, Rest, RestBin),
    uplus(ShLin1, ShLin2, ShLin),
    insert(RestBin, ShLin, Bin).
+
+:- pred bin_all(+ShLinList, -Bin)
+   : list(nasub_extended) * ivar => nasub_extended(Bin)
+   + (not_fails, is_det)
+   # "@var{Bin} is the bin operator applied to all sharing sets in @var{ShLinList}.".
+:- export(bin_all/2).
+
+bin_all([], []).
+bin_all([X], X).
+bin_all([X,Y|Rest], Bin) :-
+   bin(X, Y, Bin0),
+   bin_all([Bin0|Rest], Bin).
 
 :- pred star_union(+ASub, -Star)
    : nasub * ivar => nasub(Star)

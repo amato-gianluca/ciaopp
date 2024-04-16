@@ -576,6 +576,22 @@ make_ground((Sh,Lin), Gv, (Succ_sh, Succ_lin)) :-
    ord_subtract(Lin, Gv, Succ_lin).
 
 %-------------------------------------------------------------------------
+% restrict_var(+Call,+V,+Succ).
+%
+% Succ is the result of restringing the abstract substitution Call to the
+% case when V is a variable.
+%-------------------------------------------------------------------------
+
+:- pred restrict_var(+Call, +V, -Succ)
+   : nasub * var * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_var((Sh, Lin), V, (Sh, Lin0)) :-
+   ord_member_list_of_lists(V, Sh), !,
+   insert(Lin, V, Lin0).
+restrict_var(_Call, _, '$bottom').
+
+%-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 

@@ -12,21 +12,21 @@
 :- true pred p(A)
    : ( (A=[_A|_B]),
        mshare([[_A]]),
-       ground([_B]), linear(_A) )
+       ground([_B]), linear(_A), shlin2([([_A],[_A])]) )
    => ( mshare([[_A],[_B]]),
-        linear(_A), linear(_B) ).
+        linear(_A), linear(_B), shlin2([([_A],[_A]),([_B],[_B])]) ).
 
 :- true pred p(A)
    : ( (A=[_A|_B]),
        mshare([[_A],[_B]]),
-       linear(_A), linear(_B) )
+       linear(_A), linear(_B), shlin2([([_A],[_A]),([_B],[_B])]) )
    => ( mshare([[_A],[_B]]),
-        linear(_A), linear(_B) ).
+        linear(_A), linear(_B), shlin2([([_A],[_A]),([_B],[_B])]) ).
 
 p(A).
 p(A) :-
-    true((mshare([[A],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))),
+    true((mshare([[A],[_1]]),linear(A),linear(_1),shlin2([([A],[A]),([_1],[_1])]);mshare([[_1]]),ground([A]),linear(_1),shlin2([([_1],[_1])]))),
     p([_1|A]),
-    true((mshare([[A],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))).
+    true((mshare([[A],[_1]]),linear(A),linear(_1),shlin2([([A],[A]),([_1],[_1])]);mshare([[_1]]),ground([A]),linear(_1),shlin2([([_1],[_1])]))).
 
 

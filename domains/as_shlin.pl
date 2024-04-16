@@ -1,7 +1,7 @@
 :- module(as_shlin, [], [assertions, regtypes, basicmodes, nativeprops, indexer, fsyntax]).
 
 :- use_package(debug).
-:- use_package(rtchecks).
+% :- use_package(rtchecks).
 
 :- doc(title, "Sharing * Lin abstract domain").
 :- doc(module,"

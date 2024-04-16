@@ -24,26 +24,26 @@ p(t(U,U)).
 
 :- true pred example2(X)
    : mshare([[X]])
-   => ground([X]).
+   => mshare([[X]]).
 
 example2(X) :-
     true(mshare([[X]])),
     nothing,
-    true(ground([X])).
+    true(mshare([[X]])).
 
 :- entry example3(X,X1,X2,Y,Y1,Y2,Z)
    : ( mshare([X,X1,X2,Y,Y1,Y2,Z],[[X,X1],[X,X2],[X,Y,Z],[Y,Y1],[Y,Y2]]), linear([X,X1,X2,Y,Y1,Y2,Z]) ).
 
 :- true pred example3(X,X1,X2,Y,Y1,Y2,Z)
    : mshare([[X,X1],[X,X2],[X,Y,Z],[Y,Y1],[Y,Y2]])
-   => ground([X,X1,X2,Y,Y1,Y2,Z]).
+   => mshare([[X,X1,X2,Y,Y1],[X,X1,X2,Y,Y1,Y2],[X,X1,X2,Y,Y1,Y2,Z],[X,X1,X2,Y,Y1,Z],[X,X1,X2,Y,Y2],[X,X1,X2,Y,Y2,Z],[X,X1,X2,Y,Z],[X,X1,Y,Y1],[X,X1,Y,Y1,Y2],[X,X1,Y,Y1,Y2,Z],[X,X1,Y,Y1,Z],[X,X1,Y,Y2],[X,X1,Y,Y2,Z],[X,X1,Y,Z],[X,X2,Y,Y1],[X,X2,Y,Y1,Y2],[X,X2,Y,Y1,Y2,Z],[X,X2,Y,Y1,Z],[X,X2,Y,Y2],[X,X2,Y,Y2,Z],[X,X2,Y,Z],[X,Y,Y1,Y2,Z],[X,Y,Y1,Z],[X,Y,Y2,Z],[X,Y,Z]]).
 
 example3(X,X1,X2,Y,Y1,Y2,Z) :-
     true(mshare([[X,X1],[X,X2],[X,Y,Z],[Y,Y1],[Y,Y2]])),
     X=Y,
     true(mshare([[X,X1,X2,Y,Y1],[X,X1,X2,Y,Y1,Y2],[X,X1,X2,Y,Y1,Y2,Z],[X,X1,X2,Y,Y1,Z],[X,X1,X2,Y,Y2],[X,X1,X2,Y,Y2,Z],[X,X1,X2,Y,Z],[X,X1,Y,Y1],[X,X1,Y,Y1,Y2],[X,X1,Y,Y1,Y2,Z],[X,X1,Y,Y1,Z],[X,X1,Y,Y2],[X,X1,Y,Y2,Z],[X,X1,Y,Z],[X,X2,Y,Y1],[X,X2,Y,Y1,Y2],[X,X2,Y,Y1,Y2,Z],[X,X2,Y,Y1,Z],[X,X2,Y,Y2],[X,X2,Y,Y2,Z],[X,X2,Y,Z],[X,Y,Y1,Y2,Z],[X,Y,Y1,Z],[X,Y,Y2,Z],[X,Y,Z]])),
     nothing,
-    true(ground([X,X1,X2,Y,Y1,Y2,Z])).
+    true(mshare([[X,X1,X2,Y,Y1],[X,X1,X2,Y,Y1,Y2],[X,X1,X2,Y,Y1,Y2,Z],[X,X1,X2,Y,Y1,Z],[X,X1,X2,Y,Y2],[X,X1,X2,Y,Y2,Z],[X,X1,X2,Y,Z],[X,X1,Y,Y1],[X,X1,Y,Y1,Y2],[X,X1,Y,Y1,Y2,Z],[X,X1,Y,Y1,Z],[X,X1,Y,Y2],[X,X1,Y,Y2,Z],[X,X1,Y,Z],[X,X2,Y,Y1],[X,X2,Y,Y1,Y2],[X,X2,Y,Y1,Y2,Z],[X,X2,Y,Y1,Z],[X,X2,Y,Y2],[X,X2,Y,Y2,Z],[X,X2,Y,Z],[X,Y,Y1,Y2,Z],[X,Y,Y1,Z],[X,Y,Y2,Z],[X,Y,Z]])).
 
 :- entry example4(V,W,X,Y,Z)
    : ( mshare([V,W,X,Y,Z],[[X,V],[X,Y],[Z,W]]), linear([V,W,X,Y]) ).
@@ -62,22 +62,17 @@ example4(V,W,X,Y,Z) :-
 
 :- true pred example5(X,Y,Z)
    : mshare([[X,Y],[Y,Z]])
-   => ( mshare([[Y,Z]]),
-        ground([X]) ).
+   => mshare([[X,Y],[X,Y,Z],[Y,Z]]).
 
 example5(X,Y,Z) :-
     true(mshare([[X,Y],[Y,Z]])),
     mymember(X,[Y]),
-    true((
-        mshare([[Y,Z]]),
-        ground([X])
-    )).
+    true(mshare([[X,Y],[X,Y,Z],[Y,Z]])).
 
 :- true pred mymember(U,_A)
    : ( (_A=[_B]),
        mshare([[U,_B],[_B]]) )
-   => ( mshare([[_B]]),
-        ground([U]) ).
+   => mshare([[U,_B],[_B]]).
 
 :- true pred mymember(U,_A)
    : ( mshare([[U]]),
@@ -87,7 +82,7 @@ example5(X,Y,Z) :-
 mymember(U,[U|V]) :-
     true((mshare([[U]]),ground([V]);ground([U,V]))),
     nothing,
-    true(ground([U,V])).
+    true((mshare([[U]]),ground([V]);ground([U,V]))).
 mymember(U,[V|W]) :-
     true((mshare([[U]]),ground([V,W]);mshare([[U,V],[V]]),ground([W]))),
     mymember(U,W),

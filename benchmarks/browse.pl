@@ -7,6 +7,10 @@
 %
 %   (modified January 1987 by Herve' Touati)
 
+:- module(_,[],[assertions,nativeprops]).
+
+:- entry top.
+
 top :-
     init(100,10,4,
          [[a,a,a,b,b,b,b,a,a,a,a,a,b,b,a,a,a],

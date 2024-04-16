@@ -1,15 +1,19 @@
 :- module(_1,[],[assertions,nativeprops]).
 
+:- prop shlin2(X)+native.
+
+:- impl_defined(shlin2/1).
+
 :- set_prolog_flag(single_var_warnings,off).
 
 :- entry example1(U,V,W,X,Y,Z)
-   : ( nonvar([([U,X],[U,X]),([V,X],[V,X]),([W,X],[W]),([Y],[Y]),([Z],[Z])]), mshare([U,V,W,X,Y,Z],[[U,X],[V,X],[W,X],[Y],[Z]]), linear([U,V,W,Y,Z]) ).
+   : ( shlin2([([U,X],[U,X]),([V,X],[V,X]),([W,X],[W]),([Y],[Y]),([Z],[Z])]), mshare([U,V,W,X,Y,Z],[[U,X],[V,X],[W,X],[Y],[Z]]), linear([U,V,W,Y,Z]) ).
 
 :- true pred example1(U,V,W,X,Y,Z)
    : ( mshare([[U,X],[V,X],[W,X],[Y],[Z]]),
        linear(U), linear(V), linear(W), linear(Y), linear(Z) )
    => ( mshare([[U,X,Y],[U,X,Y,Z],[U,X,Z],[V,X,Y],[V,X,Y,Z],[V,X,Z]]),
-        ground([W]), linear(U), linear(V), linear(Y), linear(Z) ).
+        ground([W]), linear(U), linear(V) ).
 
 example1(U,V,W,X,Y,Z) :-
     true((
@@ -36,13 +40,12 @@ example1(U,V,W,X,Y,Z) :-
     )).
 
 :- entry example2(U,V,X,Y)
-   : ( nonvar([([X],[]),([X,U],[X,U]),([X,Y],[X,Y]),([Y,V],[Y,V])]), mshare([U,V,X,Y],[[X],[X,U],[X,Y],[Y,V]]), linear([U,Y,V]) ).
+   : ( shlin2([([X],[]),([X,U],[X,U]),([X,Y],[X,Y]),([Y,V],[Y,V])]), mshare([U,V,X,Y],[[X],[X,U],[X,Y],[Y,V]]), linear([U,Y,V]) ).
 
 :- true pred example2(U,V,X,Y)
    : ( mshare([[U,X],[V,Y],[X],[X,Y]]),
        linear(U), linear(V), linear(Y) )
-   => ( mshare([[U,V,X,Y],[U,X,Y],[V,X,Y],[X,Y]]),
-        linear(U), linear(V) ).
+   => mshare([[U,V,X,Y],[U,X,Y],[V,X,Y],[X,Y]]).
 
 example2(U,V,X,Y) :-
     true((
@@ -61,7 +64,7 @@ example2(U,V,X,Y) :-
    : ( mshare([[U,X],[V,X],[W,X],[Y]]),
        linear(U), linear(V), linear(W), linear(X), linear(Y) )
    => ( mshare([[U,V,X,Y],[U,W,X,Y],[U,X,Y],[V,W,X,Y],[V,X,Y],[W,X,Y]]),
-        linear(U), linear(V), linear(W), linear(Y) ).
+        linear(Y) ).
 
 example3(U,V,W,X,Y) :-
     true((
@@ -116,7 +119,6 @@ example5 :-
     difflist(L,H,T),
     true((
         mshare([[L,H],[H,T]]),
-        linear(L),
         linear(H),
         linear(T)
     )),
@@ -186,11 +188,9 @@ difflist(L,H,T) :-
     difflist(L1,H1,T),
     true((
         mshare([[L,H,X],[L,H,L1,H1],[H,T,H1]]),
-        linear(L),
         linear(H),
         linear(T),
         linear(X),
-        linear(L1),
         linear(H1)
     )).
 
@@ -211,23 +211,13 @@ example6 :-
     difflist1(L,D),
     true((
         mshare([[L,D],[D],[T],[X1],[X2],[H]]),
-        linear(L),
-        linear(D),
         linear(T),
         linear(X1),
         linear(X2),
         linear(H)
     )),
     D=[X1,X2|H]-T,
-    true((
-        mshare([[L,D,T],[L,D,X1],[L,D,X2],[L,D,H],[D,T],[D,X1],[D,X2],[D,H]]),
-        linear(L),
-        linear(D),
-        linear(T),
-        linear(X1),
-        linear(X2),
-        linear(H)
-    )).
+    true(mshare([[L,D,T],[L,D,T,X1],[L,D,T,X1,X2],[L,D,T,X1,X2,H],[L,D,T,X1,H],[L,D,T,X2],[L,D,T,X2,H],[L,D,T,H],[L,D,X1],[L,D,X1,X2],[L,D,X1,X2,H],[L,D,X1,H],[L,D,X2],[L,D,X2,H],[L,D,H],[D,T],[D,T,X1],[D,T,X1,X2],[D,T,X1,X2,H],[D,T,X1,H],[D,T,X2],[D,T,X2,H],[D,T,H],[D,X1],[D,X1,X2],[D,X1,X2,H],[D,X1,H],[D,X2],[D,X2,H],[D,H]])).
 
 :- entry difflist1(L,D)
    : ( mshare([L,D],[[L],[D]]), linear([L,D]) ).
@@ -235,8 +225,7 @@ example6 :-
 :- true pred difflist1(L,D)
    : ( mshare([[L],[D]]),
        linear(L), linear(D) )
-   => ( mshare([[L,D],[D]]),
-        linear(D) ).
+   => mshare([[L,D],[D]]).
 
 difflist1(L,D) :-
     true((
@@ -304,14 +293,16 @@ difflist1(L,D) :-
     )),
     difflist1(L1,D1),
     true((
-        mshare([[L,D,X],[L,D,L1,T,D1],[L,D,L1,H,D1],[D,T,D1],[D,H,D1]]),
-        linear(L),
-        linear(D),
-        linear(X),
-        linear(L1),
-        linear(T),
-        linear(H),
-        linear(D1)
+        mshare([[L,D,X],[L,D,L1,T,H,D1],[L,D,L1,T,D1],[L,D,L1,H,D1],[D,T,H,D1],[D,T,D1],[D,H,D1]]),
+        linear(X)
     )).
+
+:- prop shlin2(X)
+   + native.
+
+:- true pred shlin2(X)
+   : mshare([[X]])
+   => mshare([[X]]).
+
 
 

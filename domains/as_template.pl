@@ -277,27 +277,55 @@ call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
    => (term(Type), term(Condvars))
    + is_det.
 
-special_builtin('true/0', _, _, unchanged, _).
-special_builtin('not_free/1', _, _, unchanged, _).
+% special_builtin(SgKey, Sg, Subgoal, unchanged, Condvars) :-
+%    format('SPECIAL BUILTIN: ~w~n', special_builtin(SgKey, Sg, Subgoal, Type, Condvars)), !.
+
 special_builtin('!/0',_,_,unchanged,_).
+special_builtin('\\==/2',_,_,unchanged,_).
+special_builtin('assert/1',_,_,unchanged,_).
+special_builtin('asserta/1',_,_,unchanged,_).
+special_builtin('assertz/1',_,_,unchanged,_).
+special_builtin('not_free/1', _, _, unchanged, _).
+special_builtin('retractall/1', _, _, unchanged, _).
+special_builtin('statistics/0',_,_,unchanged,_).
+special_builtin('true/0', _, _, unchanged, _).
+special_builtin('write/1',_,_,unchanged,_).
 %-------------------------------------------------------------------------
-special_builtin('atomic/1',_,_,ground,_).
-special_builtin('atom/1',_,_,ground,_).
-special_builtin('is/2',_,_,ground,_).
 special_builtin('=:=/2',_,_,ground,_).
+special_builtin('=\\=/2',_,_,ground,_).
 special_builtin('>=/2',_,_,ground,_).
 special_builtin('>/2',_,_,ground,_).
 special_builtin('</2',_,_,ground,_).
 special_builtin('=</2',_,_,ground,_).
+special_builtin('atom/1',_,_,ground,_).
+special_builtin('atomic/1',_,_,ground,_).
+special_builtin('is/2',_,_,ground,_).
+special_builtin('integer/1',_,_,ground,_).
+special_builtin('number/1',_,_,ground,_).
+special_builtin('statistics/2',_,_,ground,_).
 %-------------------------------------------------------------------------
 special_builtin('fail/0',_,_,bottom,_).
 %-------------------------------------------------------------------------
-special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv):-
-   varset([Y,Z],Gv).
+special_builtin('assert/2', assert(_,Z), _, some, Gv) :-
+   varset(Z, Gv).
+special_builtin('asserta/2', asserta(_,Z), _, some, Gv) :-
+   varset(Z, Gv).
+special_builtin('assertz/2', assertz(_,Z), _, some, Gv) :-
+   varset(Z, Gv).
+special_builtin('compare/3',compare(X,_,_), _,some, Gv):-
+   varset(X, Gv).
+special_builtin('functor/3', functor(_X,Y,Z), _, some, Gv) :-
+   varset([Y,Z], Gv).
+special_builtin('write/2', write(X,_Y), _, some, Gv) :-
+   varset(X, Gv).
 %-------------------------------------------------------------------------
 special_builtin('=/2', Sg, _ , '=/2', Sg).
+special_builtin('==/2','=='(X,Y),_,'==/2',p(X,Y)).
 special_builtin('arg/3', Sg, _, 'arg/3', Sg).
+special_builtin('findall/3', findall(X,_,Z), _, 'findall/3', p(X,Z)).
 special_builtin('free/1', free(X) ,_,'free/1', p(X)).
+special_builtin('recorded/3', recorded(_,Y,Z), _, 'recorded/3',p(Y,Z)).
+special_builtin('retract/1', retract(X), _, 'recorded/3', p(X,b)).
 
 %-------------------------------------------------------------------------
 
@@ -345,6 +373,12 @@ success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
    var(X),
    restrict_var(Call, X, Succ).
 success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
+% TODO: fix builtin
+success_builtin('==/2', _Sv, p(_X,_Y), _, Call, Call).
+% TODO: fix builtin
+success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).
+% TODO: fix builtin
+success_builtin('findall/3', _, _, _, Call, Call).
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-

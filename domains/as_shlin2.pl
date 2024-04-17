@@ -727,7 +727,7 @@ make_ground(Call, Gv, Succ) :-
    + (not_fails, is_det).
 
 restrict_var(Call, V, Succ) :-
-   possible_nonground(V, Call), !,
+   possible_nonground(Call, V), !,
    make_linear(Call, V, Succ).
 restrict_var(_Call, _, '$bottom').
 

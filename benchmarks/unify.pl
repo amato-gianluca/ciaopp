@@ -8,6 +8,13 @@
 % Benchmark based on part of Aquarius Prolog compiler
 % Compiling unification into abstract machine code.
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top :- main(_X).
 %, write(X), nl.
 
@@ -152,7 +159,3 @@ termtag(T, tstr) :- structure(T).
 termtag(T, tlst) :- cons(T).
 termtag(T, tatm) :- atomic(T).
 termtag(T, tvar) :- var(T).
-
-
-
-

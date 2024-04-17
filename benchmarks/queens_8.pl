@@ -1,5 +1,5 @@
 % generated: 10 November 1989
-% option(s): 
+% option(s):
 %
 %   (queens) queens_8
 %
@@ -22,7 +22,7 @@
 %   the observation that any solution of the problem has exactly one queen
 %   in each column.
 %
-%   The program distinguishes symmetric solutions.  For example, 
+%   The program distinguishes symmetric solutions.  For example,
 %
 %   ?- queens(4, Qs).
 %
@@ -31,6 +31,13 @@
 %   Qs = [3,1,4,2] ;
 %
 %   Qs = [2,4,1,3]
+
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
 
 top:-queens(8,Qs),fail.
 top.
@@ -62,5 +69,3 @@ range(M,N,[M|Ns]) :-
 	M < N,
 	M1 is M+1,
 	range(M1,N,Ns).
-
-

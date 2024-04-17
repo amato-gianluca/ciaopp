@@ -8,6 +8,13 @@
 %
 %   "naive"-reverse a list of 30 integers
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-nreverse.
 
 nreverse :- nreverse([1,2,3,4,5,6,7,8,9,10,11,12,

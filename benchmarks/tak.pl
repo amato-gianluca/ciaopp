@@ -7,6 +7,13 @@
 %
 %   (almost) Takeuchi function (recursive arithmetic)
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-tak.
 
 tak :- tak(18,12,6,_).

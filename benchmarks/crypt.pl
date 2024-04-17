@@ -13,6 +13,13 @@
 % This program generalizes easily to any such problem.
 % Written by Peter Van Roy
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-
 	odd(A), even(B), even(C),
 	even(E),

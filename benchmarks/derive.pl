@@ -8,6 +8,13 @@
 %
 %   symbolic derivative of (x+1)*((^(x,2)+2)*(^(x,3)+3))
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-ops8,log10,divide10.
 
 ops8 :- d((x+1)*((^(x,2)+2)*(^(x,3)+3)),x,_).

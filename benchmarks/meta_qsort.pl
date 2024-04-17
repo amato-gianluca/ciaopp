@@ -1,5 +1,5 @@
 % generated: 8 March 1990
-% option(s): 
+% option(s):
 %
 %   meta_qsort
 %
@@ -8,17 +8,17 @@
 %   meta-interpret Warren benchmark qsort
 %
 % For any meta-variable ~X~, interpret(~X~) behaves as if
-%   
+%
 %  interpret(~X~) :- ~X~.
-%  
+%
 %  Thus, for example, interpret((foo(X), bar(X), !)) behaves as if
-%  
+%
 %  interpret((foo(X), bar(X), !)) :- foo(X), bar(X), !.
-%  
+%
 %  Note that though ~X~ may contain cuts, those cuts cannot escape from
 %  interpret(~X~) to effect the parent goal; interpret(!) is equivalent
 %  to true.
-%  
+%
 %  Cuts inside ~X~ are executed according to the rule that conjunction,
 %  disjunction, and if-then-else are transparent to cuts, and any other
 %  form is transparent to cuts if and only if it can be macro-expanded
@@ -27,6 +27,13 @@
 %  -> B) is equivalent to ( A -> B ; fail ), and \+ A is equivalent to
 %  ( A -> fail ; true ).
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-meta_qsort.
 
 meta_qsort :- interpret(qsort).
@@ -34,8 +41,8 @@ meta_qsort :- interpret(qsort).
 interpret(Goal) :-
 	interpret(Goal, Rest),
 	( nonvar(Rest), !,
-	  interpret(Rest) 
-	; true 
+	  interpret(Rest)
+	; true
 	).
 
 interpret(G, _) :-

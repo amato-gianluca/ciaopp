@@ -8,6 +8,13 @@
 %
 %   raise a polynomial (1+x+y+z) to the 10th power (symbolically)
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 :-op(700,xfx,less_than).
 
 top:-poly_10.

@@ -8,6 +8,13 @@
 %
 %   symbolic derivative of ((((((((x/x)/x)/x)/x)/x)/x)/x)/x)/x
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-divide10.
 
 

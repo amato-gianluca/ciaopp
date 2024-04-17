@@ -9,6 +9,13 @@
 %   itemize (pick a "serial number" for each
 %   unique integer in) a list of 25 integers
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top :-
     serialise.
 

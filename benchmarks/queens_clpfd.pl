@@ -2,7 +2,14 @@
 % Author: Markus Triska
 % Copyright: this code is in the public domain
 
-:- use_module(library(clpfd)).
+:- module(_,[],[default,clpfd,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
+%:- use_module(library(clpfd)).
 :- op(700, xfx, my_ins).
 
 top :- n_queens(16,_), !.

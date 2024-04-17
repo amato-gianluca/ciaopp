@@ -31,13 +31,22 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top :-
-    abolish_all_tables,
+    % AS: removed tabling
+    % abolish_all_tables,
     \+ \+ (path(a, e, T), ok_path(T)).
 
-:- table
-    path(_,_,lattice(or/3)),
-    edge(_,_,lattice(or/3)).
+% AS: removed tabling
+% :- table
+%     path(_,_,lattice(or/3)),
+%     edge(_,_,lattice(or/3)).
 
 path(X,X,one).
 path(X,Y,C):-

@@ -11,6 +11,13 @@
 % Analysis takes three passes (it prints three 'x' characters).
 % Builtins used: compare/3, arg/3, functor/3, sort/2, keysort/2, ==/2, \==/2.
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top :- main(_).
 % main :- main(Table), write(Table), nl.
 

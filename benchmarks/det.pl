@@ -32,6 +32,13 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 :- use_module(library(lists)).
 
 top :- numlist(1, 1000, List),

@@ -7,6 +7,13 @@
 % as facts of the form t_def(_func, _args, _expr).
 % Written by Peter Van Roy
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 % Uses write/1, compare/3, functor/3, arg/3.
 top :-
 	try(fac(3), _Ans1),

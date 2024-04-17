@@ -1,5 +1,5 @@
 % generated: 30 October 1989
-% option(s): 
+% option(s):
 %
 %   prover
 %
@@ -10,6 +10,13 @@
 %   from "Prolog Compared with Lisp?," SIGPLAN Notices, v. 18 #5, May 1983
 
 % op/3 directives
+
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
 
 top:-prover.
 

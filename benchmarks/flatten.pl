@@ -5,6 +5,13 @@
 % and a list of NewClauses corresponding to those dummy calls
 % Link is the uninstantiated last cdr of this list
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-
 	eliminate_disjunctions([(a(A,B,C):-(b(A);c(C)))],X,Y,[]),
     inst_vars((X,Y)).

@@ -1,5 +1,12 @@
 %Create perfect numbers
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top :-
 	findall(C, perfect(100, C), X),
 	ok(X).

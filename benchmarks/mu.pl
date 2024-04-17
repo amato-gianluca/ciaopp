@@ -7,6 +7,13 @@
 %
 %   prove "mu-math" theorem muiiu
 
+:- module(_,[],[default,assertions,nativeprops]).
+
+:- entry top.
+
+:- set_prolog_flag(single_var_warnings, off).
+:- set_prolog_flag(multi_arity_warnings, off).
+
 top:-mu.
 
 mu :- theorem([m,u,i,i,u], 5, _), !.

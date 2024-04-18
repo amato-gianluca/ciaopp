@@ -327,7 +327,7 @@ make_ground(Call, Gv, Succ) :-
 %-------------------------------------------------------------------------
 % restrict_var(+Call,+V,+Succ).
 %
-% Succ is the result of restringing the abstract substitution Call to the
+% Succ is the result of restricting the abstract substitution Call to the
 % case when V is a variable.
 %-------------------------------------------------------------------------
 
@@ -338,6 +338,32 @@ make_ground(Call, Gv, Succ) :-
 restrict_var(Call, V, Call) :-
    ord_member_list_of_lists(V, Call).
 restrict_var(_Call, _, '$bottom').
+
+%-------------------------------------------------------------------------
+% restrict_identical(Call,MGU,+Succ).
+%
+% Succ is the result of restricting the abstract substitution Call to the
+% sharing groups which make all the binding in MGU to be equalities.
+%-------------------------------------------------------------------------
+
+:- pred restrict_identical(+Call, +MGU, -Succ)
+   : nasub * unifier_no_cyclic * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_identical(Call, [], Call).
+restrict_identical(Call, [X=T|Rest], Succ) :-
+   varset(T, Vt),
+   restrict_identical0(Call, X, Vt, Call0),
+   restrict_identical(Call0, Rest, Succ).
+
+restrict_identical0([], _X, _Vt, []).
+restrict_identical0([S|Rest], X, Vt, [S|Rest1]) :-
+   ord_test_member(S, X, XinS),
+   (ord_intersect(S, Vt) -> VtinS=yes ; VtinS=no),
+   XinS == VtinS, !,
+   restrict_identical0(Rest, X, Vt, Rest1).
+restrict_identical0([_S|Rest], X, Vt, Rest1) :-
+   restrict_identical0(Rest, X, Vt, Rest1).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

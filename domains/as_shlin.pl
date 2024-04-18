@@ -578,7 +578,7 @@ make_ground((Sh,Lin), Gv, (Succ_sh, Succ_lin)) :-
 %-------------------------------------------------------------------------
 % restrict_var(+Call,+V,+Succ).
 %
-% Succ is the result of restringing the abstract substitution Call to the
+% Succ is the result of restricting the abstract substitution Call to the
 % case when V is a variable.
 %-------------------------------------------------------------------------
 
@@ -590,6 +590,48 @@ restrict_var((Sh, Lin), V, (Sh, Lin0)) :-
    ord_member_list_of_lists(V, Sh), !,
    insert(Lin, V, Lin0).
 restrict_var(_Call, _, '$bottom').
+
+%-------------------------------------------------------------------------
+% restrict_identical(Call,MGU,+Succ).
+%
+% Succ is the result of restricting the abstract substitution Call to the
+% sharing groups which make all the binding in MGU to be equalities.
+%-------------------------------------------------------------------------
+
+:- pred restrict_identical(+Call, +MGU, -Succ)
+   : nasub * unifier_no_cyclic * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_identical(Call, [], Call).
+restrict_identical((Sh, Lin), [X=T|Rest], Succ) :-
+   bag_vars(T, Bt),
+   bag_support(Bt, Vt),
+   chiMax(X, Lin, [X-1], Mulx),
+   (
+      % variables in Vt becomes ground, hence they disappear from Lin
+      Mulx = 0 -> ord_subtract(Lin, Vt, Lin0)
+      ;
+      % variables in Vt becomes linear
+      Mulx = 1 -> ord_union(Lin, Vt, Lin0)
+      ;
+      Lin0 = Lin
+   ),
+   restrict_identical0(Sh, Mulx, Bt, Sh0),
+   restrict_identical((Sh0, Lin0), Rest, Succ).
+
+restrict_identical0([], _, _, []).
+restrict_identical0([Sh|Rest], Mulx, Bt, Succ) :-
+   chiMin(Sh, Bt, Mult),
+   (
+      Mulx = 0 ->
+         ( Mult = 0 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+      ; Mulx = 1 ->
+         ( Mult = 1 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+      ;
+         ( Mult \= 0 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+   ),
+   restrict_identical0(Rest, Mulx, Bt, Succ_rest).
+
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

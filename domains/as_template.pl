@@ -351,6 +351,10 @@ success_builtin(ground, Sv, _, _, Call, Succ) :-
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    unifiable_with_occurs_check(T1, T2,  Unifier),
    mgu(Call, [], Unifier, Result).
+success_builtin('==/2', _Sv, p(X, Y), _, Call, Succ) :-
+   unifiable_with_occurs_check(X, Y, Unifier), !,
+   restrict_identical(Call, Unifier, Succ).
+success_builtin('==/2', _, _, _, _, '$bottom').
 success_builtin('arg/3', _, arg(X,Y,Z), HvFv_u, Call, Succ) :-
    varset(X, Gv),
    make_ground(Call, Gv, Call0),
@@ -373,12 +377,12 @@ success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
    var(X),
    restrict_var(Call, X, Succ).
 success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
+
+
 % TODO: fix builtin
-success_builtin('==/2', _Sv, p(_X,_Y), _, Call, Call).
+%success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).
 % TODO: fix builtin
-success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).
-% TODO: fix builtin
-success_builtin('findall/3', _, _, _, Call, Call).
+%success_builtin('findall/3', _, _, _, Call, Call).
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-

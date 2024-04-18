@@ -737,6 +737,19 @@ make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
    make_linear(Rest, V, Rest0).
 
 %-------------------------------------------------------------------------
+% restrict_identical(Call,MGU,+Succ).
+%
+% Succ is the result of restricting the abstract substitution Call to the
+% sharing groups which make all the binding in MGU to be equalities.
+%-------------------------------------------------------------------------
+
+:- pred restrict_identical(+Call, +MGU, -Succ)
+   : nasub * unifier_no_cyclic * ivar => nasub(Succ)
+   + (not_fails, is_det).
+
+restrict_identical(Call, [], Call).
+
+%-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
 %-------------------------------------------------------------------------
 

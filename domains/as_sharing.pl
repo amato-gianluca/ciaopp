@@ -311,7 +311,7 @@ match0([X|Rest], Sh1, Sv1, Match0, Match) :-
    match0(Rest, Sh1, Sv1, Match1, Match).
 
 %-------------------------------------------------------------------------
-% make_ground(+Call,+Gv,+Succ).
+% make_ground(+Call,+Gv,-Succ).
 %
 % Succ is the result of grounding the variable in Gv in the abstract
 % substitution Call.
@@ -325,7 +325,7 @@ make_ground(Call, Gv, Succ) :-
    rel(Call, Gv, _, Succ).
 
 %-------------------------------------------------------------------------
-% restrict_var(+Call,+V,+Succ).
+% restrict_var(+Call,+V,-Succ).
 %
 % Succ is the result of restricting the abstract substitution Call to the
 % case when V is a variable.
@@ -340,7 +340,7 @@ restrict_var(Call, V, Call) :-
 restrict_var(_Call, _, '$bottom').
 
 %-------------------------------------------------------------------------
-% restrict_identical(Call,MGU,+Succ).
+% restrict_identical(+Call,+MGU,-Succ).
 %
 % Succ is the result of restricting the abstract substitution Call to the
 % sharing groups which make all the binding in MGU to be equalities.
@@ -349,6 +349,12 @@ restrict_var(_Call, _, '$bottom').
 :- pred restrict_identical(+Call, +MGU, -Succ)
    : nasub * unifier_no_cyclic * ivar => nasub(Succ)
    + (not_fails, is_det).
+
+:- export(restrict_identical/3).
+:- test restrict_identical(Call, MGU, Succ): (Call = [[X],[X,Y],[X,Z],[Y],[Z]], MGU = [X = f(Y)])
+        => (Succ = [[X,Y],[Z]]) + (not_fails, is_det).
+
+:- index restrict_identical(?, +, ?).
 
 restrict_identical(Call, [], Call).
 restrict_identical(Call, [X=T|Rest], Succ) :-

@@ -191,15 +191,15 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
    ).
 
 
-:- pred chiMin(+Sh, +Lin, +Bt, -Mul)
-   : ordlist(var) * ordlist(var) * isbag(var) * ivar => multiplicity(Mul)
+:- pred chiMin(+Sh, +Bt, -Mul)
+   : ordlist(var) * isbag(var) * ivar => multiplicity(Mul)
    + (not_fails, is_det)
    # "@var{Mul} is the minimum multiplicity of the sharing group @var{Sh} w.r.t. the term
    represented by the bag of variables @var{Bt}, when all variables are assumed to be linear".
 :- export(chiMin/3).
 
 chiMin(Sh, Bt, Mul) :-
-   chiMin0(Sh, Bt, 0, Mul).+
+   chiMin0(Sh, Bt, 0, Mul).
 
 chiMin0([], _Bt, M, M) :- !.
 chiMin0(_Sh, [], M, M) :- !.

@@ -143,7 +143,6 @@ if_not_nil(_, X, [X|Xs], Xs).
 :- test unifier_no_cyclic(U): (U = [X=f(Y)]) + (not_fails, is_det).
 :- test unifier_no_cyclic(U): (U = [X=f(X)]) + (fails, is_det).
 
-
 unifier_no_cyclic([]).
 unifier_no_cyclic([X = T|Rest]) :-
    varset(T, Vt),

@@ -378,7 +378,6 @@ success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
    restrict_var(Call, X, Succ).
 success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
 
-
 % TODO: fix builtin
 %success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).
 % TODO: fix builtin

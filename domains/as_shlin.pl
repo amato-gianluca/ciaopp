@@ -561,7 +561,7 @@ match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    ord_intersection(Match_lin0, Match_noground, Match_lin).
 
 %-------------------------------------------------------------------------
-% make_ground(+Call,+Gv,+Succ).
+% make_ground(+Call,+Gv,-Succ).
 %
 % Succ is the result of grounding the variable in Gv in the abstract
 % substitution Call.
@@ -576,7 +576,7 @@ make_ground((Sh,Lin), Gv, (Succ_sh, Succ_lin)) :-
    ord_subtract(Lin, Gv, Succ_lin).
 
 %-------------------------------------------------------------------------
-% restrict_var(+Call,+V,+Succ).
+% restrict_var(+Call,+V,-Succ).
 %
 % Succ is the result of restricting the abstract substitution Call to the
 % case when V is a variable.
@@ -592,7 +592,7 @@ restrict_var((Sh, Lin), V, (Sh, Lin0)) :-
 restrict_var(_Call, _, '$bottom').
 
 %-------------------------------------------------------------------------
-% restrict_identical(Call,MGU,+Succ).
+% restrict_identical(Call,MGU,-Succ).
 %
 % Succ is the result of restricting the abstract substitution Call to the
 % sharing groups which make all the binding in MGU to be equalities.
@@ -602,36 +602,51 @@ restrict_var(_Call, _, '$bottom').
    : nasub * unifier_no_cyclic * ivar => nasub(Succ)
    + (not_fails, is_det).
 
+:- export(restrict_identical/3).
+:- test restrict_identical(Call, MGU, Succ): (Call = ([[X],[X,Y],[X,Z],[Y],[Z]],[]), MGU = [X = f(Y)])
+        => (Succ = ([[X,Y],[Z]], [])) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ): (Call = ([[X],[X,Y],[X,Z],[Y],[Z],[W]],[W]), MGU = [W = f(Y)])
+        => (Succ = ([[X],[X,Z],[Z]],[])) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ): (Call = ([[X,Y]], [X]), MGU = [X = f(Y)])
+        => (Succ = ([[X, Y]],[X, Y])) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ): (Call = ([[X,Y]], [X]), MGU = [X = f(Y, Y)])
+        => (Succ = ([], [])) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ): (Call = ([[X,Y], [X, Z]], [Y, Z]), MGU = [X = f(Y, Z)])
+        => (Succ = ([[X, Y], [X, Z]],[X, Y, Z])) + (not_fails, is_det).
+
+:- index restrict_identical(?, +, ?).
+
 restrict_identical(Call, [], Call).
 restrict_identical((Sh, Lin), [X=T|Rest], Succ) :-
    bag_vars(T, Bt),
-   bag_support(Bt, Vt),
-   chiMax(X, Lin, [X-1], Mulx),
-   (
-      % variables in Vt becomes ground, hence they disappear from Lin
-      Mulx = 0 -> ord_subtract(Lin, Vt, Lin0)
-      ;
-      % variables in Vt becomes linear
-      Mulx = 1 -> ord_union(Lin, Vt, Lin0)
-      ;
-      Lin0 = Lin
-   ),
-   restrict_identical0(Sh, Mulx, Bt, Sh0),
-   restrict_identical((Sh0, Lin0), Rest, Succ).
+   restrict_identical0_lin(Sh, Lin, X, Bt, Lin0),
+   restrict_identical0(Sh, Lin0, X, Bt, Sh0),
+   vars(Sh0, VSh0),
+   ord_intersection(Lin0, VSh0, Lin1),
+   restrict_identical((Sh0, Lin1), Rest, Succ).
 
-restrict_identical0([], _, _, []).
-restrict_identical0([Sh|Rest], Mulx, Bt, Succ) :-
-   chiMin(Sh, Bt, Mult),
+restrict_identical0([], _Lin, _X, _Bt, []).
+restrict_identical0([S|RestSh], Lin, X, Bt, Sh0) :-
+   chiMax(S, Lin, [X-1], Mulx),
+   chiMin(S, Bt, Mult),
    (
       Mulx = 0 ->
-         ( Mult = 0 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+         ( Mult = 0 -> Sh0 = [S|RestSh0] ; Sh0 = RestSh0 )
       ; Mulx = 1 ->
-         ( Mult = 1 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+         ( Mult = 1 -> Sh0 = [S|RestSh0] ; Sh0 = RestSh0 )
       ;
-         ( Mult \= 0 -> Succ = [Sh|Succ_rest] ; Succ = Succ_rest )
+         ( Mult \= 0 -> Sh0 = [S|RestSh0] ; Sh0 = RestSh0 )
    ),
-   restrict_identical0(Rest, Mulx, Bt, Succ_rest).
+   restrict_identical0(RestSh, Lin, X, Bt, RestSh0).
 
+restrict_identical0_lin(_Sh, Lin, X, Bt, Lin0) :-
+   ord_member(X, Lin), !,
+   bag_support(Bt, Vt),
+   ord_union(Lin, Vt, Lin0).
+restrict_identical0_lin(Sh, Lin, X, Bt, Lin0) :-
+   islin(Sh, Lin, Bt), !,
+   insert(Lin, X, Lin0).
+restrict_identical0_lin(_, Lin, _, _, Lin).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

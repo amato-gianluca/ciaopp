@@ -702,7 +702,7 @@ relbar([_|Rest], Vars, RestBar) :-
    relbar(Rest, Vars, RestBar).
 
 %-------------------------------------------------------------------------
-% make_ground(+Call,+Gv,+Succ).
+% make_ground(+Call,+Gv,-Succ).
 %
 % Succ is the result of grounding the variable in Gv in the abstract
 % substitution Call.
@@ -716,9 +716,9 @@ make_ground(Call, Gv, Succ) :-
    rel(Call, Gv, _, Succ).
 
 %-------------------------------------------------------------------------
-% restrict_var(+Call,+V,+Succ).
+% restrict_var(+Call,+V,-Succ).
 %
-% Succ is the result of restringing the abstract substitution Call to the
+% Succ is the result of restricting the abstract substitution Call to the
 % case when V is a variable.
 %-------------------------------------------------------------------------
 
@@ -737,7 +737,7 @@ make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
    make_linear(Rest, V, Rest0).
 
 %-------------------------------------------------------------------------
-% restrict_identical(Call,MGU,+Succ).
+% restrict_identical(Call,MGU,-Succ).
 %
 % Succ is the result of restricting the abstract substitution Call to the
 % sharing groups which make all the binding in MGU to be equalities.
@@ -747,7 +747,64 @@ make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
    : nasub * unifier_no_cyclic * ivar => nasub(Succ)
    + (not_fails, is_det).
 
+:- export(restrict_identical/3).
+:- test restrict_identical(Call, MGU, Succ)
+         : (Call = [([X],[]), ([X,Y],[]), ([X,Z],[]), ([Y],[]), ([Z],[])], MGU = [X = f(Y)])
+        => (Succ = [([X,Y],[]),([Z],[])]) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ)
+         : (Call = [([X],[]), ([X,Y],[X]), ([X,Z],[]), ([Y],[]), ([Z],[])], MGU = [X = f(Y)])
+        => (Succ = [([X,Y],[X,Y]),([Z],[])]) + (not_fails, is_det).
+:- test restrict_identical(Call, MGU, Succ)
+         : (Call = [([X],[]), ([X,Y],[Y]), ([X,Z],[]), ([Y],[]), ([Z],[])], MGU = [X = f(Y, Z)])
+        => (Succ = [([X,Y],[X,Y]),([X, Z],[])]) + (not_fails, is_det).
+
+:- index restrict_identical(?, +, ?).
+
 restrict_identical(Call, [], Call).
+restrict_identical(Call, [X=T|Rest], Succ) :-
+   bag_vars(T, Bt),
+   restrict_identical0(Call, X, Bt, Call0),
+   restrict_identical(Call0, Rest, Succ).
+
+restrict_identical0([], _X, _Bt, []).
+restrict_identical0([(S, L)|RestCall], X, Bt, Succ) :-
+   chiMax(S, L, [X-1], Mulx),
+   chiMin(S, Bt, Mult),
+   (
+      Mulx = 0 -> (
+         % if X is ground, then T must be ground
+         Mult = 0 ->
+            Succ = [(S, L)|RestSucc0]
+         ;
+            Succ = RestSucc0
+      ) ; Mulx = 1 -> (
+         % if X is linear, then it should be possible for T to be linear and
+         % all variables occurring in T and S should be linear
+         Mult = 1 ->
+            bag_support(Bt, Vt),
+            ord_intersection(S, Vt, Lnew),
+            ord_union(L, Lnew, L0),
+            Succ = [(S, L0)|RestSucc0]
+         ;
+            Succ = RestSucc0
+      ) ; (
+         % if X is possibly non linear, the T should not be ground. Moreover, if T is
+         % linear, then X should be linear too.
+         Mult = 0 ->
+            Succ = RestSucc0
+         ;
+            chiMax(S, L, Bt, Mult_max),
+            (
+               Mult_max = 1 ->
+                  insert(L, X, L0),
+                  Succ = [(S, L0)|RestSucc0]
+               ;
+                  Succ = [(S, L)|RestSucc0]
+            )
+      )
+   ),
+   restrict_identical0(RestCall, X, Bt, RestSucc0).
+
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES

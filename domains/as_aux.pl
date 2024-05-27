@@ -116,17 +116,6 @@ remove_module(Atom, Atom0) :-
    sub_atom(Atom, Pos1, _, 0, Atom0).
 remove_module(Atom, Atom).
 
-:- prop unifier_no_cyclic(+Unifier)
-   : unifier
-   # "@var{Unifier} is a unifier without cyclic bindings".
-:- export(unifier_no_cyclic/1).
-
-unifier_no_cyclic([]).
-unifier_no_cyclic([X = T|Rest]) :-
-   varset(T, Vt),
-   ord_test_member(Vt, X, no),
-   unifier_no_cyclic(Rest).
-
 :- prop multiplicity(X)
    # "@var{X} is a non negative integer or the atom 'inf'".
 :- export(multiplicity/1).
@@ -147,11 +136,27 @@ multiplicity(X) :-
 if_not_nil([], _, Xs, Xs) :- !.
 if_not_nil(_, X, [X|Xs], Xs).
 
+:- prop unifier_no_cyclic(+Unifier)
+   : unifier
+   # "@var{Unifier} is a unifier without cyclic bindings".
+:- export(unifier_no_cyclic/1).
+:- test unifier_no_cyclic(U): (U = [X=f(Y)]) + (not_fails, is_det).
+:- test unifier_no_cyclic(U): (U = [X=f(X)]) + (fails, is_det).
+
+
+unifier_no_cyclic([]).
+unifier_no_cyclic([X = T|Rest]) :-
+   varset(T, Vt),
+   ord_test_member(Vt, X, no),
+   unifier_no_cyclic(Rest).
+
 :- pred unifiable_with_occurs_check(?T1, ?T2, -Unifier)
    : term * term * ivar => unifier(Unifier)
    + is_det
    # "@var{Unifier} is the unifier of @var{T1} and @var{T2} with occurs check".
 :- export(unifiable_with_occurs_check/3).
+:- test unifiable_with_occurs_check(T1, T2, U): (T1 = f(X), T2 = f(Y)) => (U = [X=Y]) + (not_fails, is_det).
+:- test unifiable_with_occurs_check(T1, T2, U): (T1 = f(X), T2 = X) + (fails, is_det).
 
 unifiable_with_occurs_check(T1, T2, Unifier) :-
    unifiable(T1, T2, Unifier),
@@ -164,9 +169,14 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
 :- pred chiMax(+Sh, +Lin, +Bt, -Mul)
    : ordlist(var) * ordlist(var) * isbag(var) * ivar => multiplicity(Mul)
    + (not_fails, is_det)
-   # "@var{Mul} is the maximum multiplicity of the sharing group @var{Sh} with linear
-   variables @var{Lin} w.r.t. the term represented by the bag of variables @var{Bt}".
+   # "@var{Mul} is the multiplicity of the term represented by the bag of variables @var{Bt}
+   w.r.t. the sharing group @var{Sh} and linear variables in @var{Lin}.".
 :- export(chiMax/4).
+:- test chiMin(Sh, Bt, Mul): (Sh = [], Lin=[], Bt = [X-1,Y-2,Z-3]) => (Mul = 0) + (not_fails, is_det).
+:- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X], Lin=[X,Y], Bt = [X-1,Y-2,Z-3]) => (Mul = 1)+ (not_fails, is_det).
+:- test chiMin(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X,Y,Z], Bt = [X-1,Y-2,Z-1]) => (Mul = 4) + (not_fails, is_det).
+:- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X,Y], Bt = [X-1,Y-2,Z-1]) => (Mul = inf) + (not_fails, is_det).
+:- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X], Bt = [X-1,Y-2,Z-1]) => (Mul = inf) + (not_fails, is_det).
 
 chiMax(Sh, Lin, Bt, Mul) :-
    chiMax0(Sh, Lin, Bt, 0, Mul).
@@ -190,49 +200,75 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
          chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
    ).
 
-
 :- pred chiMin(+Sh, +Bt, -Mul)
    : ordlist(var) * isbag(var) * ivar => multiplicity(Mul)
    + (not_fails, is_det)
-   # "@var{Mul} is the minimum multiplicity of the sharing group @var{Sh} w.r.t. the term
-   represented by the bag of variables @var{Bt}, when all variables are assumed to be linear".
+   # "@var{Mul} is the multiplicity of the term represented by the bag of variables @var{Bt}
+   w.r.t. the sharing group @var{Sh}, when all variables are assumed to be linear".
 :- export(chiMin/3).
+:- test chiMin(Sh, Bt, Mul): (Sh = [], Bt = [X-1,Y-2,Z-3]) => (Mul = 0) + (not_fails, is_det).
+:- test chiMin(Sh, Bt, Mul): (Sh = [X], Bt = [X-1,Y-2,Z-3]) => (Mul = 1) + (not_fails, is_det).
+:- test chiMin(Sh, Bt, Mul): (Sh = [X,Y,Z], Bt = [X-1,Y-2,Z-1]) => (Mul = 4) + (not_fails, is_det).
 
 chiMin(Sh, Bt, Mul) :-
    chiMin0(Sh, Bt, 0, Mul).
 
 chiMin0([], _Bt, M, M) :- !.
 chiMin0(_Sh, [], M, M) :- !.
-chiMin0([X|RestO], [Y-N|RestBt], Mul0, Mul) :-
+chiMin0([X|RestSh], [Y-N|RestBt], Mul0, Mul) :-
    compare(Rel, X, Y),
    (
       Rel = '=' ->
          Mul1 is Mul0 + N,
-         chiMax0(RestO, Lin, RestBt, Mul1, Mul)
+         chiMin0(RestSh, RestBt, Mul1, Mul)
       ; Rel = '<' ->
-         chiMax0(RestO, Lin, [Y-N|RestBt], Mul0, Mul)
+         chiMin0(RestSh, [Y-N|RestBt], Mul0, Mul)
       ; Rel = '>' ->
-         chiMax0([X|RestO], Lin, RestBt, Mul0, Mul)
+         chiMin0([X|RestSh], RestBt, Mul0, Mul)
    ).
 
-:- pred linearizable(+O, +Bag)
+:- pred linearizable(+Sh, +Bt)
    : ordlist(var) * isbag(var)
    + is_det
-   # "Determines if the sharing group @var{O} is linear w.r.t. the term represented by the
-   bag of variables @var{Bag}, assuming all variables are linear.".
+   # "Determines if the concretization of the term represented by the bag of variables
+   @var{Bt} is linear w.r.t. the sharing group @var{Sh}, assuming all variables are linear.".
 :- export(linearizable/2).
+:- test linearizable(Sh, Bt): (Sh = [X], Bt = [X-1,Y-2,Z-3]) + (not_fails, is_det).
+:- test linearizable(Sh, Bt): (Sh = [X,Y,Z], Bt = [X-1,Y-1,Z-1]) + (fails, is_det).
+:- test linearizable(Sh, Bt): (Sh = [X,Y], Bt = [Z-2]) + (not_fails, is_det).
 
-linearizable(O, Bag) :- linearizable0(O, Bag, 0).
-
-linearizable0([], _, _) :- !.
-linearizable0(_, [], _) :- !.
-linearizable0([X|RestO], [Y-N|RestBag], Status) :-
+linearizable([], _) :- !.
+linearizable(_, []) :- !.
+linearizable([X|RestSh], [Y-N|RestBag]) :-
    compare(Rel, X, Y),
    (
       Rel = '=' ->
-         ( Status = 0, N = 1 -> linearizable0(RestO, RestBag, 1) ; fail )
+         ( N = 1 -> grounding(RestSh, RestBag) ; fail )
       ; Rel = '<' ->
-         linearizable0(RestO, [Y-N|RestBag], Status)
+         linearizable(RestSh, [Y-N|RestBag])
       ; Rel = '>' ->
-         linearizable0([X|RestO], RestBag, Status)
+         linearizable([X|RestSh], RestBag)
+   ).
+
+:- pred grounding(+Sh, +Bt)
+   : ordlist(var) * isbag(var)
+   + is_det
+   # "Determines if the concretization of the term represented by the bag of variables @var{Bt} is ground
+   w.r.t. the sharing group @var{Sh}.".
+:- export(grounding/2).
+:- test grounding(Sh, Bt): (Sh = [X, Y], Bt = [X-1,Y-2,Z-3]) + (fails, is_det).
+:- test grounding(Sh, Bt): (Sh = [X], Bt = [Y-1,Z-1]) + (not_fails, is_det).
+:- test grounding(Sh, Bt): (Sh=[Y,Z], Bt=[]) + (not_fails, is_det).
+
+grounding([], _) :- !.
+grounding(_, []) :- !.
+grounding([X|RestSh], [Y-N|RestBag]) :-
+   compare(Rel, X, Y),
+   (
+      Rel = '=' ->
+         fail
+      ; Rel = '<' ->
+         grounding(RestSh, [Y-N|RestBag])
+      ; Rel = '>' ->
+         grounding([X|RestSh], RestBag)
    ).

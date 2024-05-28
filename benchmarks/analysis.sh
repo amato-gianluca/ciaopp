@@ -3,7 +3,20 @@ OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on -fshlin2_full_output=o
 TIMEOUT=2m
 FILES="boyer.pl browse.pl chat_parser.pl crypt.pl derive.pl divide10.pl eval.pl fast_mu.pl fib.pl log10.pl meta_qsort.pl
        moded_path.pl mu.pl nand.pl nreverse.pl ops8.pl perfect.pl pingpong.pl poly_10.pl prover.pl qsort.pl
-       queens_8.pl query.pl reducer.pl sendmore.pl sieve.pl tak.pl times10.pl"
+       queens_8.pl query.pl reducer.pl sendmore.pl sieve.pl tak.pl times10.pl zebra.pl"
+
+# CURRENT ENABLED BENCHMARKS:
+# nand uses built-in retract
+# sieve uses built-in retract
+# perfect.pl uses built-in findall
+
+# OTHER BENCHMARKS:
+# det.pl has syntax errors
+# flatten.pl uses built-in term_basic:=..
+# queens_clpfd.pl uses CLP[FD] which is not supported
+# serialise uses built-in atomic_basic:atom_codes
+# simple_analyze crashes the analyzer in some domains
+# unify uses built-in term_basic:C
 
 analyze() {
     FILE=$1

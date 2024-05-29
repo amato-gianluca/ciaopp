@@ -8,7 +8,6 @@ FILES="boyer.pl browse.pl chat_parser.pl crypt.pl derive.pl divide10.pl eval.pl 
 # CURRENT ENABLED BENCHMARKS:
 # nand uses built-in retract
 # sieve uses built-in retract
-# perfect.pl uses built-in findall
 
 # OTHER BENCHMARKS:
 # det.pl has syntax errors

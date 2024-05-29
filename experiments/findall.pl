@@ -17,4 +17,4 @@ example1(Z) :-
 :- entry example2(Z): mshare([[Z]]).
 :- export(example2/1).
 example2(Z) :-
-    findall((X,L), relation(_, X), [(_,A), (_,B)]).
+    findall((X,L), relation(_, X), Z).

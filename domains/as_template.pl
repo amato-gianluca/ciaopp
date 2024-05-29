@@ -379,12 +379,13 @@ success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
    restrict_var(Call, X, Succ).
 success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
 success_builtin('findall/3', _, findall(X, _, Z), _, Call, Succ) :-
-   unknown_call(findall(_X, _Y, Z), [Z], Call, Succ).
-
-% TODO: fix builtin
-%success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).
-% TODO: fix builtin
-%success_builtin('findall/3', _, _, _, Call, Call).
+   varset(X, Vx),
+   check_ground(Call, Vx), !,
+   varset(Z, Vz),
+   make_ground(Call, Vz, Succ).
+% NOTE: This is correct only because before calling the built-in 'findall' the
+% PLAI analyzer calls the built-in '$meta'.
+success_builtin('findall/3', _, _, _, Call, Call).
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
@@ -397,7 +398,6 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    ),
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
-
 
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)
@@ -459,6 +459,24 @@ glb('$bottom', _ASub1, '$bottom') :- !.
 glb(_ASub0, '$bottom', '$bottom') :- !.
 glb(ASub0, ASub1, Glb):-
    meet(ASub0, ASub1, Glb).
+
+%------------------------------------------------------------------------%
+% AUXILIARY PREDICATES
+%------------------------------------------------------------------------%
+
+%-------------------------------------------------------------------------
+% check_ground(+ASub, -Vars)
+%
+% Succeed if all variables in Vars are ground w.r.t. ASub
+%-------------------------------------------------------------------------
+
+:- pred check_ground(+ASub, +Vars)
+   : nasub * ordlist(var)
+   + (is_det).
+
+check_ground(ASub, Vars) :-
+   vars(ASub, NGv),
+   ord_disjoint(NGv, Vars).
 
 %------------------------------------------------------------------------
 % FIXED DECLARATIONS

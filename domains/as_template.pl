@@ -322,7 +322,7 @@ special_builtin('write/2', write(X,_Y), _, some, Gv) :-
 special_builtin('=/2', Sg, _ , '=/2', Sg).
 special_builtin('==/2','=='(X,Y),_,'==/2',p(X,Y)).
 special_builtin('arg/3', Sg, _, 'arg/3', Sg).
-special_builtin('findall/3', findall(X,_,Z), _, 'findall/3', p(X,Z)).
+special_builtin('findall/3', findall(X,_,Z), _, 'findall/3', findall(X,_,Z)).
 special_builtin('free/1', free(X) ,_,'free/1', p(X)).
 special_builtin('recorded/3', recorded(_,Y,Z), _, 'recorded/3',p(Y,Z)).
 special_builtin('retract/1', retract(X), _, 'recorded/3', p(X,b)).
@@ -341,6 +341,7 @@ special_builtin('retract/1', retract(X), _, 'recorded/3', p(X,b)).
 :- pred success_builtin(+Type, +Sv, ?Condvars, +HvFv_u, +Call, -Succ)
    : term * ordlist(var) * term * list(var) * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
+:- export(success_builtin/6).
 
 success_builtin(unchanged, _ , _ , _, Call, Call).
 success_builtin(bottom, _ , _ , _, _, '$bottom').
@@ -377,6 +378,8 @@ success_builtin('free/1', _Sv, p(X), _, Call, Succ):-
    var(X),
    restrict_var(Call, X, Succ).
 success_builtin('free/1', _Sv, _Condvars, _ , _Call,'$bottom').
+success_builtin('findall/3', _, findall(X, _, Z), _, Call, Succ) :-
+   unknown_call(findall(_X, _Y, Z), [Z], Call, Succ).
 
 % TODO: fix builtin
 %success_builtin('recorded/3', _Sv_u, p(_Y,_Z), _, Call, Call).

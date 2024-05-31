@@ -386,6 +386,11 @@ success_builtin('findall/3', _, findall(X, _, Z), _, Call, Succ) :-
 % NOTE: This is correct only because before calling the built-in 'findall' the
 % PLAI analyzer calls the built-in '$meta'.
 success_builtin('findall/3', _, _, _, Call, Call).
+success_builtin('recorded/3', _, p(X, Y), _, Call, Succ) :-
+   varset(Y, Vy),
+   make_ground(Call, Vy, Call0),
+   varset(X, Vx),
+   unknown_call(not_provided, Vx, Call0, Succ).
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-

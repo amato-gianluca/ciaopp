@@ -309,6 +309,7 @@ special_builtin('is/2',_,_,ground,_).
 special_builtin('integer/1',_,_,ground,_).
 special_builtin('number/1',_,_,ground,_).
 special_builtin('statistics/2',_,_,ground,_).
+special_builtin('atom_codes/2',_,_,ground,_).
 %-------------------------------------------------------------------------
 special_builtin('fail/0',_,_,bottom,_).
 %-------------------------------------------------------------------------

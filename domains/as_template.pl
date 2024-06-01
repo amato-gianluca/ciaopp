@@ -97,11 +97,14 @@ abs_sort(ASub_u, ASub) :-
 % corresponding to goal Sg, resulting in the projected abstract
 % substitution Proj. HvFv_u contains the unordered list of variables of the
 % clause.
+%
+% The only cases when the variables is Sg are a proper superset of the
+% variables in Vars seem to be related to dynamic predicates.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, project/5, [noq]).
 :- pred project(+Sg, +Vars, +HvFv_u, +ASub, ?Proj)
-   : cgoal * {list(var), same_vars_of(Sg)} * list(var) * asub * ivar => asub(Proj)
+   : {cgoal, superset_vars_of(Vars)} * list(var) * list(var) * asub * ivar => asub(Proj)
    + (not_fails, is_det).
 
 % The '$bottom' case seems to only occur when using the builtin 'fail/0'.
@@ -206,11 +209,14 @@ compute_lub_el(ASub1, ASub2, Lub) :-
 % information in Prime and Call, except that they are defined over
 % different sets of variables, and that Prime is a successor
 % substitution to Call in the execution of the program.
+%
+% The only cases when the variables is Sg are a proper superset of the
+% variables in Sv seem to be related to dynamic predicates.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, extend/5, [noq]).
 :- pred extend(+Sg,+Prime,+Sv,+Call,-Succ)
-   : cgoal * asub * {ordlist(var), same_vars_of(Sg), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
+   : {cgoal,  superset_vars_of(Sv)} * asub * {ordlist(var), superset_vars_of(Prime)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
 extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.

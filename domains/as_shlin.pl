@@ -561,6 +561,19 @@ match_standard(Prime, Pv, (Call_sh, Call_lin), (Match_sh, Match_lin)) :-
    ord_intersection(Match_lin0, Match_noground, Match_lin).
 
 %-------------------------------------------------------------------------
+% ng_vars(+ASub, -Vars)
+%
+% Vars contains the set of non-ground variables in ASub.
+%-------------------------------------------------------------------------
+
+:- pred ng_vars(+ASub, -Vars)
+   : nasub * ivar => ordlist(var, Vars)
+   + (not_fails, is_det).
+
+ng_vars((ASub_sh, _), Vars) :-
+   vars(ASub_sh, Vars).
+
+%-------------------------------------------------------------------------
 % make_ground(+Call,+Gv,-Succ).
 %
 % Succ is the result of grounding the variable in Gv in the abstract

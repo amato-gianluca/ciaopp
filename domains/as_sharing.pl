@@ -311,6 +311,19 @@ match0([X|Rest], Sh1, Sv1, Match0, Match) :-
    match0(Rest, Sh1, Sv1, Match1, Match).
 
 %-------------------------------------------------------------------------
+% ng_vars(+ASub, -Vars)
+%
+% Vars contains the set of non-ground variables in ASub.
+%-------------------------------------------------------------------------
+
+:- pred ng_vars(+ASub, -Vars)
+   : nasub * ivar => ordlist(var, Vars)
+   + (not_fails, is_det).
+
+ng_vars(ASub, Vars) :-
+   vars(ASub, Vars).
+
+%-------------------------------------------------------------------------
 % make_ground(+Call,+Gv,-Succ).
 %
 % Succ is the result of grounding the variable in Gv in the abstract

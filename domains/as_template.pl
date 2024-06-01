@@ -480,7 +480,7 @@ glb(ASub0, ASub1, Glb):-
    + (is_det).
 
 check_ground(ASub, Vars) :-
-   vars(ASub, NGv),
+   ng_vars(ASub, NGv),
    ord_disjoint(NGv, Vars).
 
 %------------------------------------------------------------------------

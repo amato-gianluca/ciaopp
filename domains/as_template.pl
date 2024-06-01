@@ -296,6 +296,10 @@ special_builtin('retractall/1', _, _, unchanged, _).
 special_builtin('statistics/0',_,_,unchanged,_).
 special_builtin('true/0', _, _, unchanged, _).
 special_builtin('write/1',_,_,unchanged,_).
+special_builtin('@>=/2',_,_,unchanged,_).
+special_builtin('@=</2',_,_,unchanged,_).
+special_builtin('@>/2',_,_,unchanged,_).
+special_builtin('@</2',_,_,unchanged,_).
 %-------------------------------------------------------------------------
 special_builtin('=:=/2',_,_,ground,_).
 special_builtin('=\\=/2',_,_,ground,_).
@@ -310,6 +314,7 @@ special_builtin('integer/1',_,_,ground,_).
 special_builtin('number/1',_,_,ground,_).
 special_builtin('statistics/2',_,_,ground,_).
 special_builtin('atom_codes/2',_,_,ground,_).
+special_builtin('number_codes/2',_,_,ground,_).
 %-------------------------------------------------------------------------
 special_builtin('fail/0',_,_,bottom,_).
 %-------------------------------------------------------------------------
@@ -327,6 +332,9 @@ special_builtin('write/2', write(X,_Y), _, some, Gv) :-
    varset(X, Gv).
 %-------------------------------------------------------------------------
 special_builtin('=/2', Sg, _ , '=/2', Sg).
+special_builtin('sort/2', sort(X,Y), _ , '=/2', X=Y).
+special_builtin('C/3', 'C'(X,Y,Z), _ , '=/2', X=[Y,Z]).
+special_builtin('=../2', Sg, _ , '=../2', Sg).
 special_builtin('==/2','=='(X,Y),_,'==/2',p(X,Y)).
 special_builtin('arg/3', Sg, _, 'arg/3', Sg).
 special_builtin('findall/3', findall(X,_,Z), _, 'findall/3', findall(X,_,Z)).
@@ -359,6 +367,10 @@ success_builtin(ground, Sv, _, _, Call, Succ) :-
 success_builtin('=/2', _, T1=T2, _, Call, Result) :-
    unifiable_with_occurs_check(T1, T2,  Unifier),
    mgu(Call, [], Unifier, Result).
+success_builtin('=../2', _, T1=..T2, _, Call, Result) :-
+   '=.._unify'(T1, T2, Unifier), !,
+   mgu(Call, [], Unifier, Result).
+success_builtin('=../2', _, _, _, _, '$bottom').
 success_builtin('==/2', _Sv, p(X, Y), _, Call, Succ) :-
    unifiable_with_occurs_check(X, Y, Unifier), !,
    restrict_identical(Call, Unifier, Succ).
@@ -410,6 +422,15 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    ),
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
+
+'=.._unify'(T, L, [L=T]) :- var(L), !.
+'=.._unify'(T, [FL | RestL], [T=[FL | RestL]]) :-
+   var(T), !,
+   (var(FL); atomic(FL)).
+'=.._unify'(T, [FL | RestL], MGU) :-
+   (var(FL); atomic(FL)),
+   T =.. [FT | RestT],
+   unifiable_with_occurs_check([FT|RestT], [FL|RestL], MGU).
 
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)

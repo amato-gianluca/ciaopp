@@ -211,8 +211,25 @@ meet((Sh1, Lin1), (Sh2, Lin2), (Meet_sh, Meet_lin)):-
    vars(Meet_sh, Vars),
    ord_intersection(Lin, Vars, Meet_lin).
 
+%------------------------------------------------------------------------%
+% unknown(+ASub,+Vars,-Unk)
+%
+% Unk is obtained by ASub considering all possible instantiations of the
+% variables in Vars.
+%------------------------------------------------------------------------%
+
+:- pred unknown(+ASub, +Vars, -Unk)
+   : nasub * ordlist(var) * ivar => nasub(Unk)
+   + (not_fails, is_det).
+
+unknown((ASub_sh, ASub_lin), Vars, (Unk_sh, Unk_lin)) :-
+   rel(ASub_sh, Vars, Rel_sh, NRel_sh),
+   star_union(Rel_sh, Unk0),
+   ord_union(NRel_sh, Unk0, Unk_sh),
+   ord_subtract(ASub_lin, Vars, Unk_lin).
+
 %-------------------------------------------------------------------------
-% mgu(+ASub,Fv,+Sub,-MGU)
+% mgu(+ASub,+Fv,+Sub,-MGU)
 %
 % MGU is the result of the unification of ASub with the substitution Sub.
 % Variables in Fv are considered to be free.
@@ -240,7 +257,6 @@ mgu_optimal(ShLin, Fv, [X=T|Rest], MGU) :-
    mgu(MGU0, Fv, Rest, MGU).
 
 mgu_binding_optimal(ShLin, X, T, (MGU_sh, MGU_lin)) :-
-
    ShLin = (Sh, Lin),
    bag_vars(T, Bt),
    mgu_split(Sh, Lin, Bt, X, Sh_x, Sh_t,

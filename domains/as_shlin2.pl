@@ -352,8 +352,24 @@ meet1(Sh1, Lin1, [(Sh2, Lin2)|Rest], Meet) :-
          meet1(Sh1, Lin1, Rest, Meet)
    ).
 
+%------------------------------------------------------------------------%
+% unknown(+ASub,+Vars,-Unk)
+%
+% Unk is obtained by ASub considering all possible instantiations of the
+% variables in Vars.
+%------------------------------------------------------------------------%
+
+:- pred unknown(+ASub, +Vars, -Unk)
+   : nasub * ordlist(var) * ivar => nasub(Unk)
+   + (not_fails, is_det).
+
+unknown(ASub, Vars, Unk) :-
+   rel(ASub, Vars, Rel, NRel),
+   star_union(Rel, Unk0),
+   ord_union(NRel, Unk0, Unk).
+
 %-------------------------------------------------------------------------
-% mgu(+ASub,Fv,+Sub,MGU)
+% mgu(+ASub,+Fv,+Sub,MGU)
 %
 % MGU is the result of the unification of ASub with the substitution  Sub.
 % Variables in Fv are considered to be free.

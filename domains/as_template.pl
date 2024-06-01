@@ -396,7 +396,7 @@ success_builtin('recorded/3', _, p(X, Y), _, Call, Succ) :-
    varset(Y, Vy),
    make_ground(Call, Vy, Call0),
    varset(X, Vx),
-   unknown_call(not_provided, Vx, Call0, Succ).
+   unknown(Call0, Vx, Succ).
 
 sh_any_arg_all_args(0, _, _, _, []) :- !.
 sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
@@ -413,12 +413,8 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)
 %
-% Succ is the result of adding to Call the ``topmost'' abstraction of the
-% variables Vars involved in a literal Sg whose definition is not present
-% in the preprocessing unit.
-%
-% It is a particular type of match where the abstract substitution on
-% non-instantiable variables is the top of the domain.
+% Succ is the result of executing an unknown goal Sg, using variables in
+% Vars, starting from the abstract substitution Call.
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, unknown_call/4, [noq]).
@@ -426,13 +422,10 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    : cgoal * {ordlist(var), same_vars_of(Sg)} * nasub * ivar => asub(Succ)
    + (not_fails, is_det).
 
-% TODO: Optimize using a custom implementation
-
 unknown_call(Sg, Vars, Call, Succ) :-
-   top(Vars, Top),
-   extend(Sg, Top, Vars, Call, Succ),
    % print the unknown call since it might be caused by unsupported builtins
-   format('UNKNOWN CALL: ~w~n', Sg).
+   format('UNKNOWN CALL: ~w~n', Sg),
+   unknown(Call, Vars, Succ).
 
 %------------------------------------------------------------------------%
 % amgu(+Sg,+Head,+ASub,-AMGU)

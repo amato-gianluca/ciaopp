@@ -1,9 +1,10 @@
 #ciaopp -A prova.pl -fmodes=as_sharing -ftypes=none -foutput_lang=raw -ftrace_fixp=trace; cat prova_shlin_co.pl
 OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on -fshlin2_full_output=on"
 TIMEOUT=2m
-FILES="boyer.pl browse.pl chat_parser.pl crypt.pl derive.pl divide10.pl eval.pl fast_mu.pl fib.pl log10.pl
+FILES="boyer.pl browse.pl chat_parser.pl crypt.pl derive.pl divide10.pl eval.pl fast_mu.pl fib.plc flatten.pl log10.pl
        meta_qsort.pl moded_path.pl mu.pl nand.pl nreverse.pl ops8.pl perfect.pl pingpong.pl poly_10.pl prover.pl
-       qsort.pl queens_8.pl query.pl reducer.pl sendmore.pl serialise.pl sieve.pl tak.pl times10.pl"
+       qsort.pl queens_8.pl query.pl reducer.pl sendmore.pl serialise.pl sieve.pl simple_analyze tak.pl times10.pl
+       unify.pl zebra.pl"
 
 # OTHER BENCHMARKS:
 # det.pl has syntax errors
@@ -25,7 +26,7 @@ analyze() {
 for FILE in $FILES; do
     RESULTDIR="results/$(basename $FILE .pl)"
     mkdir -p "$RESULTDIR"
-    rm -f $FILE.log
+    rm -f "$RESULTDIR/log"
     #rm -f "$RESULTDIR"/*.pl
 
     analyze "$FILE" as_shlin2_opt.pl           -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal

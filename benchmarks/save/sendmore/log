@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 22.583 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.385 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.468 msec.}
+{analyzed by plai in 1.944 msec.}
+}
+{written file results/sendmore/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 24.76 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.358 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.959 msec.}
+{analyzed by plai in 2.403 msec.}
+}
+{written file results/sendmore/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 25.581 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.35 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.991 msec.}
+{analyzed by plai in 1.423 msec.}
+}
+{written file results/sendmore/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 23.258 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.349 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.121 msec.}
+{analyzed by plai in 1.547 msec.}
+}
+{written file results/sendmore/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 24.455 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.358 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.075 msec.}
+{analyzed by plai in 1.521 msec.}
+}
+{written file results/sendmore/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 22.423 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.355 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.045 msec.}
+{analyzed by plai in 1.482 msec.}
+}
+{written file results/sendmore/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 24.504 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.353 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.108 msec.}
+{analyzed by plai in 1.545 msec.}
+}
+{written file results/sendmore/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 21.554 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.348 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.073 msec.}
+{analyzed by plai in 1.503 msec.}
+}
+{written file results/sendmore/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 25.502 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.346 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.381 msec.}
+{analyzed by plai in 1.809 msec.}
+}
+{written file results/sendmore/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 23.618 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.377 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.416 msec.}
+{analyzed by plai in 1.882 msec.}
+}
+{written file results/sendmore/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 23.434 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.35 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.362 msec.}
+{analyzed by plai in 1.792 msec.}
+}
+{written file results/sendmore/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 24.536 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.355 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.85 msec.}
+{analyzed by plai in 1.292 msec.}
+}
+{written file results/sendmore/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 22.548 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.818 msec.}
+{analyzed by plai in 0.86 msec.}
+}
+{written file results/sendmore/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 19.491 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.353 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.971 msec.}
+{analyzed by plai in 1.408 msec.}
+}
+{written file results/sendmore/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 24.68 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.35 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.938 msec.}
+{analyzed by plai in 1.37 msec.}
+}
+{written file results/sendmore/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 21.507 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.36 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.879 msec.}
+{analyzed by plai in 1.319 msec.}
+}
+{written file results/sendmore/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/sendmore.pl
+{loaded in 21.578 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.358 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.35 msec.}
+{analyzed by plai in 1.787 msec.}
+}
+{written file results/sendmore/shfrlin.pl}

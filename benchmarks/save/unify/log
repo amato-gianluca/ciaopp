@@ -1,0 +1,294 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 27.827 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.059 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 4826.19 msec.}
+{analyzed by plai in 4828.365 msec.}
+}
+{written file results/unify/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 27.539 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.079 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 547.932 msec.}
+{analyzed by plai in 550.118 msec.}
+}
+{written file results/unify/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 28.371 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 2.064 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 4753.902 msec.}
+{analyzed by plai in 4756.08 msec.}
+}
+{written file results/unify/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 28.737 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.094 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 192.491 msec.}
+{analyzed by plai in 194.702 msec.}
+}
+{written file results/unify/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 26.677 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 2.072 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 107.364 msec.}
+{analyzed by plai in 109.545 msec.}
+}
+{written file results/unify/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 25.579 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.079 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 120.43 msec.}
+{analyzed by plai in 122.609 msec.}
+}
+{written file results/unify/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 29.494 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.069 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 121.356 msec.}
+{analyzed by plai in 123.533 msec.}
+}
+{written file results/unify/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 26.392 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.091 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 120.424 msec.}
+{analyzed by plai in 122.623 msec.}
+}
+{written file results/unify/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 29.466 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.083 msec.}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 29.639 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 2.072 msec.}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 26.641 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 2.06 msec.}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 27.774 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.074 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 726.742 msec.}
+{analyzed by plai in 728.925 msec.}
+}
+{written file results/unify/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 28.378 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.066 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 754.248 msec.}
+{analyzed by plai in 756.431 msec.}
+}
+{written file results/unify/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 26.688 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 2.065 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 42210.922 msec.}
+{analyzed by plai in 42213.092 msec.}
+}
+{written file results/unify/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 30.425 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 2.065 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 42407.524 msec.}
+{analyzed by plai in 42409.693 msec.}
+}
+{written file results/unify/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 28.4 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 2.228 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 1876.143 msec.}
+{analyzed by plai in 1878.475 msec.}
+}
+{written file results/unify/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/unify.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/unify.pl
+WARNING: (lns 19-21) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
+}
+{loaded in 27.432 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/unify.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 1.107 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 154.896 msec.}
+{analyzed by plai in 156.106 msec.}
+}
+{written file results/unify/shfrlin.pl}

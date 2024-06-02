@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 25.875 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.403 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 3.44 msec.}
+{analyzed by plai in 3.933 msec.}
+}
+{written file results/prover/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 24.855 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.396 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 5.054 msec.}
+{analyzed by plai in 5.537 msec.}
+}
+{written file results/prover/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 25.819 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.403 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.079 msec.}
+{analyzed by plai in 2.567 msec.}
+}
+{written file results/prover/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.923 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.391 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.568 msec.}
+{analyzed by plai in 3.048 msec.}
+}
+{written file results/prover/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.855 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.389 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.495 msec.}
+{analyzed by plai in 2.971 msec.}
+}
+{written file results/prover/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.042 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.392 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.5 msec.}
+{analyzed by plai in 2.98 msec.}
+}
+{written file results/prover/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.079 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.393 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.451 msec.}
+{analyzed by plai in 2.926 msec.}
+}
+{written file results/prover/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 21.81 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.403 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.533 msec.}
+{analyzed by plai in 3.024 msec.}
+}
+{written file results/prover/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.796 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.392 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 4.591 msec.}
+{analyzed by plai in 5.069 msec.}
+}
+{written file results/prover/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 24.058 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.39 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 4.552 msec.}
+{analyzed by plai in 5.031 msec.}
+}
+{written file results/prover/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 19.62 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.066 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 4.578 msec.}
+{analyzed by plai in 4.698 msec.}
+}
+{written file results/prover/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 19.92 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.396 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.933 msec.}
+{analyzed by plai in 2.414 msec.}
+}
+{written file results/prover/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 22.799 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.398 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.937 msec.}
+{analyzed by plai in 2.415 msec.}
+}
+{written file results/prover/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 24.723 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.397 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.42 msec.}
+{analyzed by plai in 2.904 msec.}
+}
+{written file results/prover/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 24.794 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.396 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.404 msec.}
+{analyzed by plai in 2.882 msec.}
+}
+{written file results/prover/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 23.357 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.393 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 2.286 msec.}
+{analyzed by plai in 2.766 msec.}
+}
+{written file results/prover/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/prover.pl
+{loaded in 23.783 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/prover.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.406 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 3.841 msec.}
+{analyzed by plai in 4.326 msec.}
+}
+{written file results/prover/shfrlin.pl}

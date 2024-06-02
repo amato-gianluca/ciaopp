@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 23.321 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.121 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.64 msec.}
+{analyzed by plai in 0.841 msec.}
+}
+{written file results/nreverse/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 20.643 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.798 msec.}
+{analyzed by plai in 1.001 msec.}
+}
+{written file results/nreverse/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 23.42 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.486 msec.}
+{analyzed by plai in 0.692 msec.}
+}
+{written file results/nreverse/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 22.375 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.139 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.0 msec.}
+{analyzed by plai in 0.177 msec.}
+}
+{written file results/nreverse/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 22.404 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.512 msec.}
+{analyzed by plai in 0.714 msec.}
+}
+{written file results/nreverse/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 23.47 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.12 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.552 msec.}
+{analyzed by plai in 0.757 msec.}
+}
+{written file results/nreverse/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 23.347 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.512 msec.}
+{analyzed by plai in 0.711 msec.}
+}
+{written file results/nreverse/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 21.274 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.131 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.557 msec.}
+{analyzed by plai in 0.774 msec.}
+}
+{written file results/nreverse/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 20.399 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.152 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.608 msec.}
+{analyzed by plai in 0.854 msec.}
+}
+{written file results/nreverse/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 20.213 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.578 msec.}
+{analyzed by plai in 0.781 msec.}
+}
+{written file results/nreverse/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 22.255 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.61 msec.}
+{analyzed by plai in 0.817 msec.}
+}
+{written file results/nreverse/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 24.476 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.117 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.466 msec.}
+{analyzed by plai in 0.663 msec.}
+}
+{written file results/nreverse/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 22.409 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.436 msec.}
+{analyzed by plai in 0.639 msec.}
+}
+{written file results/nreverse/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 23.182 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.122 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.474 msec.}
+{analyzed by plai in 0.671 msec.}
+}
+{written file results/nreverse/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 22.311 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.12 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.515 msec.}
+{analyzed by plai in 0.717 msec.}
+}
+{written file results/nreverse/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 24.528 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.124 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.489 msec.}
+{analyzed by plai in 0.666 msec.}
+}
+{written file results/nreverse/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/nreverse.pl
+{loaded in 21.4 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/nreverse.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.126 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.689 msec.}
+{analyzed by plai in 0.894 msec.}
+}
+{written file results/nreverse/shfrlin.pl}

@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.253 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.124 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.625 msec.}
+{analyzed by plai in 0.86 msec.}
+}
+{written file results/tak/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.432 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.843 msec.}
+{analyzed by plai in 1.049 msec.}
+}
+{written file results/tak/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.437 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.463 msec.}
+{analyzed by plai in 0.664 msec.}
+}
+{written file results/tak/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.089 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.57 msec.}
+{analyzed by plai in 0.784 msec.}
+}
+{written file results/tak/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 20.312 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.12 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.48 msec.}
+{analyzed by plai in 0.673 msec.}
+}
+{written file results/tak/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.361 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.12 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.513 msec.}
+{analyzed by plai in 0.711 msec.}
+}
+{written file results/tak/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.898 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.485 msec.}
+{analyzed by plai in 0.691 msec.}
+}
+{written file results/tak/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.884 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.48 msec.}
+{analyzed by plai in 0.682 msec.}
+}
+{written file results/tak/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 21.285 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.971 msec.}
+{analyzed by plai in 1.175 msec.}
+}
+{written file results/tak/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.545 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.033 msec.}
+{analyzed by plai in 1.247 msec.}
+}
+{written file results/tak/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.267 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.757 msec.}
+{analyzed by plai in 0.788 msec.}
+}
+{written file results/tak/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.372 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.388 msec.}
+{analyzed by plai in 0.591 msec.}
+}
+{written file results/tak/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.303 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.129 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.408 msec.}
+{analyzed by plai in 0.617 msec.}
+}
+{written file results/tak/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 23.363 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.12 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.471 msec.}
+{analyzed by plai in 0.673 msec.}
+}
+{written file results/tak/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 21.204 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.129 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.522 msec.}
+{analyzed by plai in 0.735 msec.}
+}
+{written file results/tak/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 22.597 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.408 msec.}
+{analyzed by plai in 0.612 msec.}
+}
+{written file results/tak/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/tak.pl
+{loaded in 21.215 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/tak.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.125 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.642 msec.}
+{analyzed by plai in 0.848 msec.}
+}
+{written file results/tak/shfrlin.pl}

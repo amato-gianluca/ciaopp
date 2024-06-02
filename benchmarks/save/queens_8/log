@@ -1,0 +1,272 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.063 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.211 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.291 msec.}
+{analyzed by plai in 1.601 msec.}
+}
+{written file results/queens_8/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.034 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.204 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.985 msec.}
+{analyzed by plai in 1.237 msec.}
+}
+{written file results/queens_8/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.024 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.199 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.835 msec.}
+{analyzed by plai in 1.11 msec.}
+}
+{written file results/queens_8/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.913 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.211 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.955 msec.}
+{analyzed by plai in 1.251 msec.}
+}
+{written file results/queens_8/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.992 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.21 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.92 msec.}
+{analyzed by plai in 1.206 msec.}
+}
+{written file results/queens_8/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.916 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.209 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.961 msec.}
+{analyzed by plai in 1.257 msec.}
+}
+{written file results/queens_8/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 23.953 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.204 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.968 msec.}
+{analyzed by plai in 1.252 msec.}
+}
+{written file results/queens_8/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.915 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.209 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.025 msec.}
+{analyzed by plai in 1.317 msec.}
+}
+{written file results/queens_8/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.836 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.206 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.111 msec.}
+{analyzed by plai in 0.391 msec.}
+}
+{written file results/queens_8/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.925 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.212 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.129 msec.}
+{analyzed by plai in 1.419 msec.}
+}
+{written file results/queens_8/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.781 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.21 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.142 msec.}
+{analyzed by plai in 1.436 msec.}
+}
+{written file results/queens_8/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 24.095 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.207 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.814 msec.}
+{analyzed by plai in 1.106 msec.}
+}
+{written file results/queens_8/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.836 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.208 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.809 msec.}
+{analyzed by plai in 1.096 msec.}
+}
+{written file results/queens_8/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.859 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.75 msec.}
+{analyzed by plai in 0.778 msec.}
+}
+{written file results/queens_8/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.814 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.209 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.89 msec.}
+{analyzed by plai in 1.177 msec.}
+}
+{written file results/queens_8/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.418 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.214 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.885 msec.}
+{analyzed by plai in 1.185 msec.}
+}
+{written file results/queens_8/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.23.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/git/ciaopp/benchmarks/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 25.007 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.207 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.403 msec.}
+{analyzed by plai in 0.676 msec.}
+}
+{written file results/queens_8/shfrlin.pl}

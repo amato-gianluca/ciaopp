@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 23.636 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.199 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.168 msec.}
+{analyzed by plai in 1.453 msec.}
+}
+{written file results/divide10/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 23.017 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.194 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.554 msec.}
+{analyzed by plai in 1.836 msec.}
+}
+{written file results/divide10/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.795 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.193 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.689 msec.}
+{analyzed by plai in 0.96 msec.}
+}
+{written file results/divide10/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.884 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.197 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.822 msec.}
+{analyzed by plai in 1.112 msec.}
+}
+{written file results/divide10/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.713 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.196 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.793 msec.}
+{analyzed by plai in 1.069 msec.}
+}
+{written file results/divide10/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.662 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.197 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.877 msec.}
+{analyzed by plai in 1.167 msec.}
+}
+{written file results/divide10/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 22.76 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.203 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.879 msec.}
+{analyzed by plai in 1.165 msec.}
+}
+{written file results/divide10/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 22.828 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.191 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.825 msec.}
+{analyzed by plai in 1.096 msec.}
+}
+{written file results/divide10/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 24.714 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 0.231 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.789 msec.}
+{analyzed by plai in 2.144 msec.}
+}
+{written file results/divide10/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.995 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.185 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.894 msec.}
+{analyzed by plai in 1.125 msec.}
+}
+{written file results/divide10/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 23.793 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.197 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.646 msec.}
+{analyzed by plai in 1.93 msec.}
+}
+{written file results/divide10/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 22.855 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.194 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.694 msec.}
+{analyzed by plai in 0.967 msec.}
+}
+{written file results/divide10/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 23.92 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.199 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.782 msec.}
+{analyzed by plai in 1.069 msec.}
+}
+{written file results/divide10/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 21.955 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.194 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.834 msec.}
+{analyzed by plai in 1.117 msec.}
+}
+{written file results/divide10/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 22.807 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.199 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.797 msec.}
+{analyzed by plai in 1.072 msec.}
+}
+{written file results/divide10/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 23.827 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.199 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.745 msec.}
+{analyzed by plai in 1.021 msec.}
+}
+{written file results/divide10/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/divide10.pl
+{loaded in 24.944 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/divide10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.201 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.16 msec.}
+{analyzed by plai in 1.442 msec.}
+}
+{written file results/divide10/shfrlin.pl}

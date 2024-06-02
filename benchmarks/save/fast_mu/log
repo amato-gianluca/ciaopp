@@ -1,0 +1,187 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 25.676 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.336 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 3.004 msec.}
+{analyzed by plai in 3.431 msec.}
+}
+{written file results/fast_mu/as_shlin2_opt.pl}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 20.819 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.345 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 5.319 msec.}
+{analyzed by plai in 5.755 msec.}
+}
+{written file results/fast_mu/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 23.829 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.338 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.221 msec.}
+{analyzed by plai in 2.64 msec.}
+}
+{written file results/fast_mu/as_shlin2_noopt.pl}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 20.827 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.336 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.613 msec.}
+{analyzed by plai in 3.038 msec.}
+}
+{written file results/fast_mu/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 21.587 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.338 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.544 msec.}
+{analyzed by plai in 2.966 msec.}
+}
+{written file results/fast_mu/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 22.093 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.336 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.566 msec.}
+{analyzed by plai in 2.99 msec.}
+}
+{written file results/fast_mu/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 24.985 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.337 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.608 msec.}
+{analyzed by plai in 3.04 msec.}
+}
+{written file results/fast_mu/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 21.621 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.344 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.545 msec.}
+{analyzed by plai in 2.972 msec.}
+}
+{written file results/fast_mu/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 24.796 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.342 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.87 msec.}
+{analyzed by plai in 2.3 msec.}
+}
+{written file results/fast_mu/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 23.752 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.346 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.385 msec.}
+{analyzed by plai in 2.812 msec.}
+}
+{written file results/fast_mu/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 24.639 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.54 msec.}
+{analyzed by plai in 2.605 msec.}
+}
+{written file results/fast_mu/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 22.788 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.34 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.857 msec.}
+{analyzed by plai in 2.282 msec.}
+}
+{written file results/fast_mu/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 24.696 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.333 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.033 msec.}
+{analyzed by plai in 2.447 msec.}
+}
+{written file results/fast_mu/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 22.716 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.341 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.105 msec.}
+{analyzed by plai in 2.536 msec.}
+}
+{written file results/fast_mu/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 21.885 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.345 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.107 msec.}
+{analyzed by plai in 2.532 msec.}
+}
+{written file results/fast_mu/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 22.757 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.34 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 2.346 msec.}
+{analyzed by plai in 2.768 msec.}
+}
+{written file results/fast_mu/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/fast_mu.pl
+{loaded in 24.702 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/fast_mu.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.346 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 4.138 msec.}
+{analyzed by plai in 4.575 msec.}
+}
+{written file results/fast_mu/shfrlin.pl}

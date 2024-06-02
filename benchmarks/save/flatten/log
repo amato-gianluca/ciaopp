@@ -1,0 +1,179 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 23.268 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 1.201 msec.}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 26.954 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 1.192 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 443.9 msec.}
+{analyzed by plai in 445.194 msec.}
+}
+{written file results/flatten/as_shlin2_opt_mgu.pl}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 27.115 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 1.359 msec.}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 27.689 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.196 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 174.116 msec.}
+{analyzed by plai in 175.421 msec.}
+}
+{written file results/flatten/as_shlin2_noopt_mgu.pl}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 28.07 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.201 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 76.605 msec.}
+{analyzed by plai in 77.922 msec.}
+}
+{written file results/flatten/as_shlin_opt_opt.pl}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 24.116 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.201 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 61.413 msec.}
+{analyzed by plai in 62.721 msec.}
+}
+{written file results/flatten/as_shlin_opt.pl}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 24.343 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 1.206 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 61.293 msec.}
+{analyzed by plai in 62.603 msec.}
+}
+{written file results/flatten/as_shlin_noindcheck.pl}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 25.094 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 1.27 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 60.353 msec.}
+{analyzed by plai in 61.729 msec.}
+}
+{written file results/flatten/as_shlin_noopt.pl}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 23.03 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.197 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5182.755 msec.}
+{analyzed by plai in 5184.068 msec.}
+}
+{written file results/flatten/as_shlin_opt_mgu.pl}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 26.156 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.189 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5196.325 msec.}
+{analyzed by plai in 5197.623 msec.}
+}
+{written file results/flatten/as_shlin_noindcheck_mgu.pl}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 27.115 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 1.182 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5186.45 msec.}
+{analyzed by plai in 5187.758 msec.}
+}
+{written file results/flatten/as_shlin_noopt_mgu.pl}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 25.153 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.182 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 174.074 msec.}
+{analyzed by plai in 175.365 msec.}
+}
+{written file results/flatten/as_sharing_opt.pl}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 25.295 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.204 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 183.297 msec.}
+{analyzed by plai in 184.608 msec.}
+}
+{written file results/flatten/as_sharing_noopt.pl}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 25.992 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.18 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1190.204 msec.}
+{analyzed by plai in 1191.487 msec.}
+}
+{written file results/flatten/as_sharing_opt_mgu.pl}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 26.244 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 1.182 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1214.941 msec.}
+{analyzed by plai in 1216.23 msec.}
+}
+{written file results/flatten/as_sharing_noopt_mgu.pl}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 22.843 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.225 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 340.907 msec.}
+{analyzed by plai in 342.241 msec.}
+}
+{written file results/flatten/share.pl}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/flatten.pl
+{loaded in 25.034 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/flatten.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 1.369 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 61.502 msec.}
+{analyzed by plai in 62.973 msec.}
+}
+{written file results/flatten/shfrlin.pl}

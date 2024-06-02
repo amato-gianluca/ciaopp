@@ -1,0 +1,119 @@
+Analyzing with aim: as_shlin2_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 24.25 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.257 msec.}
+Analyzing with aim: as_shlin2_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 36.1 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.263 msec.}
+Analyzing with aim: as_shlin2_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 22.227 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+Analyzing with aim: as_shlin2_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 24.637 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.254 msec.}
+Analyzing with aim: as_shlin_opt_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.236 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.249 msec.}
+Analyzing with aim: as_shlin_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 20.897 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.256 msec.}
+Analyzing with aim: as_shlin_noindcheck.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.973 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.257 msec.}
+Analyzing with aim: as_shlin_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.85 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.249 msec.}
+Analyzing with aim: as_shlin_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 22.064 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.254 msec.}
+Analyzing with aim: as_shlin_noindcheck_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.195 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.258 msec.}
+Analyzing with aim: as_shlin_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 22.334 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.257 msec.}
+Analyzing with aim: as_sharing_opt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 25.25 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.248 msec.}
+Analyzing with aim: as_sharing_noopt.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 25.188 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.25 msec.}
+Analyzing with aim: as_sharing_opt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.229 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.25 msec.}
+Analyzing with aim: as_sharing_noopt_mgu.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 23.411 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.255 msec.}
+Analyzing with aim: share.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 22.307 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}
+Analyzing with aim: shfrlin.pl
+{Loading current module from /home/amato/git/ciaopp/benchmarks/zebra.pl
+{loaded in 19.209 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}

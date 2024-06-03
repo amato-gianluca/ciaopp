@@ -7,7 +7,6 @@ import sys
 import argparse
 import os
 import re
-import csv
 
 def show_graph(df, domains):
     _, ax = plt.subplots(layout='constrained')
@@ -70,13 +69,7 @@ for program in os.listdir(maindir):
 df = pd.DataFrame(table, columns = ['program'] + domains)
 
 if args.table:
-    csvwriter = csv.writer(sys.stdout)
-    csvwriter.writerow(['program'] + domains)
-    for table_row in table:
-        line = [table_row['program']]
-        for domain in domains:
-            line.append(table_row.get(domain, ''))
-        csvwriter.writerow(line)
+    df.to_csv(sys.stdout, index=False)
 
 if args.boxplot:
     df_selection = df.dropna()

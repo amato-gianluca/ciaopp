@@ -60,7 +60,8 @@ def show_boxplot(df, domains, outliers):
     return fig
 
 def main():
-    PROGRAM_STRING = 'Analyzing with aim: '
+    PROGRAM_STRING = 'START ANALYSIS'
+    EXITCODE_STRING = 'END ANALYSIS'
     TIME_STRING = '{analyzed by plai in '
 
     parser = argparse.ArgumentParser(description="Process log files for benchmakrs and report about execution time")
@@ -81,26 +82,36 @@ def main():
             for line in f:
                 line = line.strip()
                 if line.startswith(PROGRAM_STRING):
-                    domain = line[line.index(':')+2:-3]
+                    domain = line[line.index(':')+2:]
                     if domain not in domains:
                         domains.append(domain)
                 elif line.startswith(TIME_STRING):
                     match = re.search('([0-9]*\\.[0-9]*)', line)
                     time = float(match.group(0))
                     table_row[domain] = time
+                elif line.startswith(EXITCODE_STRING):
+                    exitcode = line[line.index(':')+2:]
+                    if exitcode == "124":
+                        table_row[domain] = 'TIMEOUT'
+                    elif exitcode == "137":
+                        table_row[domain] = 'OOM'
+                    elif exitcode != "0":
+                        raise ValueError('Unexpected exit code: ' + exitcode)
+
         table.append(table_row)
 
-    df = pd.DataFrame(table, columns = ['program'] + domains)
+    df = pd.DataFrame(table, columns = ['program'] + domains).set_index('program').sort_index()
 
     if args.table:
-        df.to_csv(sys.stdout, index=False)
+        df.to_csv(sys.stdout)
 
     if args.boxplot:
-        df_selection = df.dropna()
-        #df_selection= df[df.apply(lambda row: all(float(column) <= 100 for column in row[1:]), axis=1)]
-        fig1 = show_boxplot(df_selection, ['share', 'as_sharing_noopt_mgu', 'as_sharing_noopt', 'as_sharing_opt'], False)
-        fig2 = show_boxplot(df_selection, ['shfrlin', 'as_shlin_noopt_mgu', 'as_shlin_noopt', 'as_shlin_opt_opt'], False)
-        fig3 = show_boxplot(df_selection, ['as_shlin2_noopt_mgu', 'as_shlin2_noopt', 'as_shlin2_opt'], False)
+        for col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+        df = df.dropna()
+        fig1 = show_boxplot(df, ['share', 'as_sharing_noopt_mgu', 'as_sharing_noopt', 'as_sharing_opt'], False)
+        fig2 = show_boxplot(df, ['shfrlin', 'as_shlin_noopt_mgu', 'as_shlin_noopt', 'as_shlin_opt_opt'], False)
+        fig3 = show_boxplot(df, ['as_shlin2_noopt_mgu', 'as_shlin2_noopt', 'as_shlin2_opt'], False)
         if args.output == '':
             plt.show()
         else:

@@ -333,6 +333,7 @@ special_builtin('write/2', write(X,_Y), _, some, Gv) :-
 %-------------------------------------------------------------------------
 special_builtin('=/2', Sg, _ , '=/2', Sg).
 special_builtin('sort/2', sort(X,Y), _ , '=/2', X=Y).
+special_builtin('keysort/2', keysort(X,Y), _ , '=/2', X=Y).
 special_builtin('C/3', 'C'(X,Y,Z), _ , '=/2', X=[Y,Z]).
 special_builtin('=../2', Sg, _ , '=../2', Sg).
 special_builtin('==/2','=='(X,Y),_,'==/2',p(X,Y)).

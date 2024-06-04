@@ -38,6 +38,10 @@ run :-
     analyze(linear),
     analyze(ground).
 
+% options
+% if avoid_counting_true_pred is defined, the analysis will not consider the properties inside ":-true pred"
+option(avoid_counting_true_pred).
+
 analyze(Property) :- 
     programs(Programs),
     analyses(Analyses),
@@ -135,6 +139,9 @@ extract_terms(true(X), Property, Terms) :- !,
 
 extract_terms((:- entry _Head), _, []) :- !.
 
+extract_terms((:- true pred _Head : _Pre => _Post), _Property, []) :- 
+    option(avoid_counting_true_pred), !.
+
 extract_terms((:- true pred _Head : Pre => Post), Property, Terms) :- !,
     extract_property(Pre, Property, PreTerms),
     extract_property(Post, Property, PostTerms),
@@ -153,6 +160,11 @@ extract_terms((A,B),Property, Terms) :- !,
 extract_terms(_, linear, []) :- !.
 extract_terms(_, ground, []) :- !.
 extract_terms(_, _, [[]]).
+
+extract_property((A;B), mshare, Terms) :- !,
+    extract_property(A, Property, TermsA),
+    extract_property(B, Property, TermsB),
+    ord_intersection(TermsA, TermsB, Terms).
 
 extract_property((A;B), Property, Terms) :- !,
     extract_property(A, Property, TermsA),

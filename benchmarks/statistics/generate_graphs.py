@@ -103,18 +103,18 @@ def main():
     fig2 = show_boxplot(df, ['shfrlin', 'as_shlin_noopt_mgu', 'as_shlin_noopt', 'as_shlin_opt_opt'], args.property)
     fig3 = show_boxplot(df, ['as_shlin2_noopt_mgu', 'as_shlin2_noopt', 'as_shlin2_opt'], args.property)
     if args.property == 'time':
-        fig4 = show_boxplot(df, ['as_shlin2_noopt', 'as_shlin_opt_opt','as_sharing_opt' ], args.property)
+        fig4 = show_boxplot(df, ['as_sharing_opt', 'as_shlin_opt_opt', 'as_shlin2_opt'], args.property)
     else:
-        fig4 = show_boxplot(df, ['as_shlin2_opt', 'as_shlin_opt_opt','as_sharing_opt' ], args.property)
+        fig4 = show_boxplot(df, ['as_sharing_opt', 'as_shlin_opt_opt', 'as_shlin2_opt'], args.property)
 
     if args.output == '':
             plt.show()
     else:
         filename = args.output
-        fig1.savefig(filename + '1.pdf')
-        fig2.savefig(filename + '2.pdf')
-        fig3.savefig(filename + '3.pdf')
-        fig4.savefig(filename + '4.pdf')
+        fig1.savefig(filename + '1.pdf', bbox_inches='tight', pad_inches=0)
+        fig2.savefig(filename + '2.pdf', bbox_inches='tight', pad_inches=0)
+        fig3.savefig(filename + '3.pdf', bbox_inches='tight', pad_inches=0)
+        fig4.savefig(filename + '4.pdf', bbox_inches='tight', pad_inches=0)
 
     #show_graph(df, ['share', 'as_sharing_noopt_mgu', 'as_sharing_opt'])
     #show_graph(df, ['shfrlin', 'as_shlin_noopt_mgu', 'as_shlin_opt_opt'])

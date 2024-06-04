@@ -16,7 +16,7 @@
 % :- analyze(linear).
 % :- analyze(groound).
 
-% Copyright 2024 Francesca Scozzari <francesca.scozzari@unich.i> e 
+% Copyright 2024 Francesca Scozzari <francesca.scozzari@unich.i> e
 %                Gianluca Amato <gianluca.amato@unich.it>
 % ").
 
@@ -34,64 +34,73 @@
 :- op(500,fx,-).
 
 run :-
-    analyze(mshare),
-    analyze(linear),
-    analyze(ground).
+    analyze1(mshare, true),
+    analyze1(linear, false),
+    analyze1(ground, false).
 
 % options
 % if avoid_counting_true_pred is defined, the analysis will not consider the properties inside ":-true pred"
 option(avoid_counting_true_pred).
 
-% the following predicates should be always present 
+% the following predicates should be always present
 % (otherwise there is an error of missing predicate definition)
 option(_) :- fail.
 
-analyze(Property) :- 
+analyze(Property) :- analyze1(Property, true).
+
+analyze1(Property, Header) :-
     programs(Programs),
     analyses(Analyses),
-    format('\nproperty, program, ', []),
-    print_first_row(Analyses),
-    format('\n', []),
-%    analyze_files(Property,'/home/scozzari/git/github.com/ciaopp/benchmarks/save/', Programs).
+    ( Header == true ->
+        format('property,program', []),
+        print_first_row(Analyses),
+        format('~n', [])
+    ;
+        true
+    ),
     analyze_files(Property,'benchmarks/save/', Programs).
 
-programs(['boyer', 'browse', 'chat_parser', 'crypt', 'derive', 'divide10', 'eval', 'fast_mu', 'fib', 'log10', 'meta_qsort',
-       'moded_path', 'mu', 'nand', 'nreverse', 'ops8', 'perfect', 'pingpong', 'poly_10', 'prover', 'qsort',
-       'queens_8', 'query', 'sendmore', 'sieve', 'tak', 'times10']).
+% problem arises with program reducer
+programs([
+    boyer, browse, chat_parser, crypt, derive, divide10, eval, fast_mu, fib, flatten, log10, meta_qsort,
+    moded_path, mu, nand, nreverse, ops8, perfect, pingpong, poly_10, prover, qsort, queens_8, query,
+    sendmore, serialise, sieve, simple_analyzer, tak, times10, unify, zebra
+]).
 
 analyses([
-    'as_shlin2_opt.pl','as_shlin2_opt_mgu.pl','as_shlin2_noopt.pl','as_shlin2_noopt_mgu.pl', 
-    'as_shlin_opt_opt.pl', 'as_shlin_opt.pl', 'as_shlin_noindcheck.pl', 'as_shlin_noopt.pl', 'as_shlin_opt_mgu.pl',
-    'as_shlin_noindcheck_mgu.pl', 'as_shlin_noopt_mgu.pl', 
-    'as_sharing_opt.pl', 'as_sharing_noopt.pl', 'as_sharing_opt_mgu.pl', 'as_sharing_noopt_mgu.pl',
-    'share.pl', 'shfrlin.pl']).
+    as_shlin2_opt,as_shlin2_opt_mgu,as_shlin2_noopt,as_shlin2_noopt_mgu,
+    as_shlin_opt_opt, as_shlin_opt, as_shlin_noindcheck, as_shlin_noopt, as_shlin_opt_mgu,
+    as_shlin_noindcheck_mgu, as_shlin_noopt_mgu,
+    as_sharing_opt, as_sharing_noopt, as_sharing_opt_mgu, as_sharing_noopt_mgu,
+    share, shfrlin
+]).
 
 print_first_row([]).
-print_first_row([A|Rest]) :- 
-    format('~q, ', [A]),
+print_first_row([A|Rest]) :-
+    format(',~q', A),
     print_first_row(Rest).
 
 analyze_files(_,_, []).
 analyze_files(Property, Directory, [Program|Rest]) :-
     atom_concat(Directory, Program, FilePath),
     analyses(Analyses),
-    format('~q, ~q, ', [Property,Program]),
+    format('~q,~q', [Property,Program]),
     analyze_options(Property, Analyses, Program, FilePath),
-    format('\n', []),
+    format('~n', []),
     analyze_files(Property, Directory, Rest).
 
 analyze_options(_,[],_,_).
 analyze_options(Property, [Analysis|Rest], Program, FilePath) :-
-    atom_concat(FilePath,'/',FilePathSlash),
-    atom_concat(FilePathSlash,Analysis,File),
+    atom_concat(FilePath,/,FilePathSlash),
+    atom_concat(FilePathSlash,Analysis,FilePathAnalysis),
+    atom_concat(FilePathAnalysis,'.pl',File),
     (   file_exists(File)
     ->  count_properties_in_file(File, Property, TotalCount),
-        format('~q, ', [TotalCount])
-        
-    ;   format('---, ', [])     % File does not exist
+        format(',~q', TotalCount)
+    ;   format(',', [])     % File does not exist
     ),
     analyze_options(Property, Rest, Program, FilePath).
-    
+
 % Entry point to count mshare arguments in a file
 count_properties_in_file(File, Property, TotalCount) :-
     Property=mshare,!,
@@ -127,7 +136,7 @@ count_properties_in_file(File, Property, TotalCount) :-
 read_file(File, Clauses) :-
     open(File, read, Stream),
     read_clauses(Stream, Clauses),
-    close(Stream).    
+    close(Stream).
 
 read_clauses(Stream, [Clause|Clauses]) :-
     read(Stream, Clause),
@@ -138,12 +147,12 @@ read_clauses(end_of_file, []) :- !.
 read_clauses(_, []) :- !.
 
 % Extract all terms from a clause
-extract_terms(true(X), Property, Terms) :- !, 
+extract_terms(true(X), Property, Terms) :- !,
     extract_property(X, Property, Terms).
 
 extract_terms((:- entry _Head), _, []) :- !.
 
-extract_terms((:- true pred _Head : _Pre => _Post), _Property, []) :- 
+extract_terms((:- true pred _Head : _Pre => _Post), _Property, []) :-
     option(avoid_counting_true_pred), !.
 
 extract_terms((:- true pred _Head : Pre => Post), Property, Terms) :- !,
@@ -166,8 +175,8 @@ extract_terms(_, ground, []) :- !.
 extract_terms(_, _, [[]]).
 
 extract_property((A;B), mshare, Terms) :- !,
-    extract_property(A, Property, TermsA),
-    extract_property(B, Property, TermsB),
+    extract_property(A, mshare, TermsA),
+    extract_property(B, mshare, TermsB),
     ord_intersection(TermsA, TermsB, Terms).
 
 extract_property((A;B), Property, Terms) :- !,
@@ -186,17 +195,17 @@ extract_property(_, linear, []) :- !.
 extract_property(ground(L), ground, L) :- !.
 extract_property(_, ground, []) :- !.
 
-extract_property(X, Property, Terms) :-  
+extract_property(X, Property, Terms) :-
     X=..[Property,Terms],
-    !.    
+    !.
 extract_property(_, _, []) :- !.
 
-count_mshare_args([[]|T], C) :- !, count_mshare_args(T,C).  
-count_mshare_args([_|T], C1) :- !, count_mshare_args(T,C), C1 is C + 1.  
-count_mshare_args(_, 0) . 
+count_mshare_args([[]|T], C) :- !, count_mshare_args(T,C).
+count_mshare_args([_|T], C1) :- !, count_mshare_args(T,C), C1 is C + 1.
+count_mshare_args(_, 0) .
 
 count_linear_args([], 0) :- !.
-count_linear_args([_|T], L) :- !, 
+count_linear_args([_|T], L) :- !,
     count_linear_args(T,L1),
     L is L1 + 1.
 

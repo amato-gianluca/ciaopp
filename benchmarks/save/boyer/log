@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 28.045 msec.}
+{loaded in 29.858 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 1.432 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 35.548 msec.}
-{analyzed by plai in 37.096 msec.}
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 1.466 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 36.211 msec.}
+{analyzed by plai in 37.786 msec.}
 }
 {written file results/boyer/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 26.83 msec.}
+{loaded in 28.0 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.0 msec.}
-{preprocessed for the plai fixpoint in 1.316 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 55.357 msec.}
-{analyzed by plai in 56.742 msec.}
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.439 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 55.522 msec.}
+{analyzed by plai in 57.077 msec.}
 }
 {written file results/boyer/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 29.84 msec.}
+{loaded in 29.519 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 1.434 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 23.123 msec.}
-{analyzed by plai in 24.673 msec.}
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 1.352 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 23.116 msec.}
+{analyzed by plai in 24.548 msec.}
 }
 {written file results/boyer/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 27.766 msec.}
+{loaded in 26.805 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.428 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 19.957 msec.}
-{analyzed by plai in 21.504 msec.}
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 1.275 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 19.733 msec.}
+{analyzed by plai in 21.081 msec.}
 }
 {written file results/boyer/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 27.658 msec.}
+{loaded in 27.072 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 1.418 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 51.191 msec.}
-{analyzed by plai in 52.723 msec.}
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 1.446 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 52.129 msec.}
+{analyzed by plai in 53.696 msec.}
 }
 {written file results/boyer/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 26.449 msec.}
+{loaded in 24.881 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.615 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 38.755 msec.}
-{analyzed by plai in 39.459 msec.}
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 1.444 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 39.811 msec.}
+{analyzed by plai in 41.365 msec.}
 }
 {written file results/boyer/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 28.689 msec.}
+{loaded in 26.901 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.427 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 39.845 msec.}
-{analyzed by plai in 41.385 msec.}
+{preprocessed for the plai fixpoint in 1.447 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 39.347 msec.}
+{analyzed by plai in 40.91 msec.}
 }
 {written file results/boyer/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 28.766 msec.}
+{loaded in 25.531 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 1.425 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 39.526 msec.}
-{analyzed by plai in 41.063 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 1.441 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 39.816 msec.}
+{analyzed by plai in 41.368 msec.}
 }
 {written file results/boyer/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 27.909 msec.}
+{loaded in 27.829 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.445 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 617.008 msec.}
-{analyzed by plai in 618.57 msec.}
+{preprocessed for the plai fixpoint in 1.442 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 618.952 msec.}
+{analyzed by plai in 620.503 msec.}
 }
 {written file results/boyer/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 26.903 msec.}
+{loaded in 25.863 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.0 msec.}
-{preprocessed for the plai fixpoint in 1.283 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 624.285 msec.}
-{analyzed by plai in 625.638 msec.}
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 1.431 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 621.923 msec.}
+{analyzed by plai in 623.463 msec.}
 }
 {written file results/boyer/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 25.883 msec.}
+{loaded in 27.833 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.42 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 625.65 msec.}
-{analyzed by plai in 627.194 msec.}
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.449 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 621.618 msec.}
+{analyzed by plai in 623.182 msec.}
 }
 {written file results/boyer/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 28.694 msec.}
+{loaded in 26.706 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 1.427 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 27.312 msec.}
-{analyzed by plai in 28.861 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 1.435 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 27.228 msec.}
+{analyzed by plai in 28.776 msec.}
 }
 {written file results/boyer/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 28.802 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.764 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 30.657 msec.}
-{analyzed by plai in 31.533 msec.}
-}
-{written file results/boyer/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 25.676 msec.}
+{loaded in 25.903 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
 {init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 1.427 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 198.755 msec.}
-{analyzed by plai in 200.303 msec.}
+{preprocessed for the plai fixpoint in 1.415 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 30.71 msec.}
+{analyzed by plai in 32.25 msec.}
 }
-{written file results/boyer/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
+{written file results/boyer/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 27.794 msec.}
+{loaded in 27.682 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.437 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 205.924 msec.}
-{analyzed by plai in 207.482 msec.}
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 1.514 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 198.404 msec.}
+{analyzed by plai in 200.047 msec.}
+}
+{written file results/boyer/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
+{loaded in 26.649 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 1.447 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 205.765 msec.}
+{analyzed by plai in 207.325 msec.}
 }
 {written file results/boyer/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 25.944 msec.}
+{loaded in 26.814 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 1.431 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 23.509 msec.}
-{analyzed by plai in 25.06 msec.}
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 0.778 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 23.571 msec.}
+{analyzed by plai in 24.487 msec.}
 }
 {written file results/boyer/share.pl}
-Analyzing with aim: shfrlin.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/boyer.pl
-{loaded in 27.573 msec.}
+{loaded in 26.704 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/boyer.pl]
-{init for the plai fixpoint in 0.0 msec.}
-{preprocessed for the plai fixpoint in 1.276 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 27.418 msec.}
-{analyzed by plai in 28.763 msec.}
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.448 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 27.488 msec.}
+{analyzed by plai in 29.052 msec.}
 }
 {written file results/boyer/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.639 msec.}
+{loaded in 24.324 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 0.134 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.397 msec.}
-{analyzed by plai in 0.622 msec.}
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.136 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.377 msec.}
+{analyzed by plai in 0.591 msec.}
 }
 {written file results/pingpong/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 21.415 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.132 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.41 msec.}
-{analyzed by plai in 0.637 msec.}
-}
-{written file results/pingpong/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.425 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.139 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.3 msec.}
-{analyzed by plai in 0.519 msec.}
-}
-{written file results/pingpong/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.461 msec.}
+{loaded in 22.358 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.137 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.333 msec.}
-{analyzed by plai in 0.552 msec.}
+{preprocessed for the plai fixpoint in 0.141 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.415 msec.}
+{analyzed by plai in 0.641 msec.}
+}
+{written file results/pingpong/as_shlin2_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 23.322 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.136 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.304 msec.}
+{analyzed by plai in 0.515 msec.}
+}
+{written file results/pingpong/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 19.452 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.133 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.319 msec.}
+{analyzed by plai in 0.531 msec.}
 }
 {written file results/pingpong/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.328 msec.}
+{loaded in 22.399 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.131 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.32 msec.}
-{analyzed by plai in 0.528 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.133 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.312 msec.}
+{analyzed by plai in 0.524 msec.}
 }
 {written file results/pingpong/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.329 msec.}
+{loaded in 21.349 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.0 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.0 msec.}
-{analyzed by plai in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.127 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.322 msec.}
+{analyzed by plai in 0.524 msec.}
 }
 {written file results/pingpong/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.579 msec.}
+{loaded in 22.231 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.133 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.316 msec.}
-{analyzed by plai in 0.525 msec.}
+{preprocessed for the plai fixpoint in 0.134 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.31 msec.}
+{analyzed by plai in 0.52 msec.}
 }
 {written file results/pingpong/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 21.513 msec.}
+{loaded in 22.337 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.114 msec.}
+{analyzed by plai in 0.144 msec.}
+}
+{written file results/pingpong/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 21.298 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.019 msec.}
 {preprocessed for the plai fixpoint in 0.139 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.346 msec.}
-{analyzed by plai in 0.573 msec.}
-}
-{written file results/pingpong/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.551 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.126 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.35 msec.}
-{analyzed by plai in 0.553 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.317 msec.}
+{analyzed by plai in 0.502 msec.}
 }
 {written file results/pingpong/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.579 msec.}
+{loaded in 20.369 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.132 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.326 msec.}
-{analyzed by plai in 0.536 msec.}
+{preprocessed for the plai fixpoint in 0.131 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.329 msec.}
+{analyzed by plai in 0.538 msec.}
 }
 {written file results/pingpong/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.193 msec.}
+{loaded in 22.286 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.134 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.138 msec.}
 {fixpoint reached by plai using as_shlin with local-control off in 0.338 msec.}
-{analyzed by plai in 0.548 msec.}
+{analyzed by plai in 0.552 msec.}
 }
 {written file results/pingpong/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 21.018 msec.}
+{loaded in 23.358 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.106 msec.}
+{analyzed by plai in 0.137 msec.}
+}
+{written file results/pingpong/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 21.363 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.134 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.286 msec.}
-{analyzed by plai in 0.502 msec.}
+{preprocessed for the plai fixpoint in 0.141 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.29 msec.}
+{analyzed by plai in 0.508 msec.}
 }
-{written file results/pingpong/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
+{written file results/pingpong/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.451 msec.}
+{loaded in 23.346 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.14 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.308 msec.}
+{analyzed by plai in 0.529 msec.}
+}
+{written file results/pingpong/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 21.33 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
 {init for the plai fixpoint in 0.021 msec.}
 {preprocessed for the plai fixpoint in 0.132 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.288 msec.}
-{analyzed by plai in 0.502 msec.}
-}
-{written file results/pingpong/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.532 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.137 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.293 msec.}
-{analyzed by plai in 0.514 msec.}
-}
-{written file results/pingpong/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 23.459 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.129 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.298 msec.}
-{analyzed by plai in 0.502 msec.}
-}
-{written file results/pingpong/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 21.5 msec.}
-}
-{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.127 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 0.299 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.295 msec.}
 {analyzed by plai in 0.503 msec.}
 }
-{written file results/pingpong/share.pl}
-Analyzing with aim: shfrlin.pl
+{written file results/pingpong/as_sharing_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
-{loaded in 22.514 msec.}
+{loaded in 22.334 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.137 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.298 msec.}
+{analyzed by plai in 0.482 msec.}
+}
+{written file results/pingpong/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/git/ciaopp/benchmarks/pingpong.pl
+{loaded in 20.284 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/pingpong.pl]
-{init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.131 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.348 msec.}
-{analyzed by plai in 0.557 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.138 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.336 msec.}
+{analyzed by plai in 0.548 msec.}
 }
 {written file results/pingpong/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

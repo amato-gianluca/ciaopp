@@ -1,135 +1,152 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 45.629 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 15.098 msec.}
-Analyzing with aim: as_shlin2_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.735 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.033 msec.}
-{preprocessed for the plai fixpoint in 14.875 msec.}
-Analyzing with aim: as_shlin2_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 46.413 msec.}
+{loaded in 45.475 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
 {init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 15.025 msec.}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
+{preprocessed for the plai fixpoint in 14.879 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.132 msec.}
+{loaded in 44.97 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.031 msec.}
-{preprocessed for the plai fixpoint in 14.918 msec.}
-Analyzing with aim: as_shlin_opt_opt.pl
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 15.022 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 46.287 msec.}
+{loaded in 44.133 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.975 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 44.968 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 15.012 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 45.317 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.03 msec.}
-{preprocessed for the plai fixpoint in 14.851 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 63039.983 msec.}
-{analyzed by plai in 63054.957 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.913 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 62901.431 msec.}
+{analyzed by plai in 62916.467 msec.}
 }
 {written file results/chat_parser/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 45.187 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 14.912 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 25027.973 msec.}
-{analyzed by plai in 25043.006 msec.}
-}
-{written file results/chat_parser/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 43.291 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.033 msec.}
-{preprocessed for the plai fixpoint in 15.042 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 25075.899 msec.}
-{analyzed by plai in 25091.072 msec.}
-}
-{written file results/chat_parser/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 41.274 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.033 msec.}
-{preprocessed for the plai fixpoint in 14.805 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 25024.108 msec.}
-{analyzed by plai in 25039.043 msec.}
-}
-{written file results/chat_parser/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.929 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.043 msec.}
-{preprocessed for the plai fixpoint in 15.385 msec.}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 45.585 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 14.879 msec.}
-Analyzing with aim: as_shlin_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.158 msec.}
+{loaded in 44.191 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.859 msec.}
-Analyzing with aim: as_sharing_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 43.178 msec.}
+{preprocessed for the plai fixpoint in 14.84 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 24974.52 msec.}
+{analyzed by plai in 24989.485 msec.}
 }
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{written file results/chat_parser/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 45.392 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 15.567 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 24979.469 msec.}
+{analyzed by plai in 24995.171 msec.}
+}
+{written file results/chat_parser/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 43.089 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
 {init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 14.87 msec.}
-Analyzing with aim: as_sharing_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.353 msec.}
+{preprocessed for the plai fixpoint in 14.898 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 25041.969 msec.}
+{analyzed by plai in 25056.988 msec.}
 }
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.033 msec.}
-{preprocessed for the plai fixpoint in 14.872 msec.}
-Analyzing with aim: as_sharing_opt_mgu.pl
+{written file results/chat_parser/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 41.367 msec.}
+{loaded in 44.508 msec.}
 }
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.936 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 42.293 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
 {init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 15.021 msec.}
-Analyzing with aim: as_sharing_noopt_mgu.pl
+{preprocessed for the plai fixpoint in 14.889 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.42 msec.}
+{loaded in 43.472 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 14.92 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 43.558 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 14.935 msec.}
-Analyzing with aim: share.pl
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 14.904 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 44.108 msec.}
+{loaded in 43.61 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 14.923 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 42.488 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 14.936 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 45.509 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.966 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
+{loaded in 42.757 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.029 msec.}
-{preprocessed for the plai fixpoint in 14.921 msec.}
-Analyzing with aim: shfrlin.pl
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 14.912 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/chat_parser.pl
-{loaded in 42.079 msec.}
+{loaded in 44.217 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/chat_parser.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 14.887 msec.}
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 14.875 msec.}
+END ANALYSIS -- EXIT CODE: 124

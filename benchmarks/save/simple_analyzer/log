@@ -1,0 +1,136 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 30.763 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 3.905 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 30.996 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 3.939 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 31.685 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 3.899 msec.}
+END ANALYSIS -- EXIT CODE: 137
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 31.656 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 3.848 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 32.602 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 3.867 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 32.121 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 3.964 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 32.649 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 3.877 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 31.388 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 3.908 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 30.141 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 3.928 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 33.403 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 3.93 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 34.793 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.032 msec.}
+{preprocessed for the plai fixpoint in 3.873 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 33.435 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 3.89 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 29.636 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 3.959 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 32.198 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 3.855 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 31.31 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 3.862 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 34.537 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 3.926 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/git/ciaopp/benchmarks/simple_analyzer.pl
+{loaded in 34.853 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/simple_analyzer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 3.943 msec.}
+END ANALYSIS -- EXIT CODE: 124

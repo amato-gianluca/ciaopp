@@ -42,6 +42,10 @@ run :-
 % if avoid_counting_true_pred is defined, the analysis will not consider the properties inside ":-true pred"
 option(avoid_counting_true_pred).
 
+% the following predicates should be always present 
+% (otherwise there is an error of missing predicate definition)
+option(_) :- fail.
+
 analyze(Property) :- 
     programs(Programs),
     analyses(Analyses),

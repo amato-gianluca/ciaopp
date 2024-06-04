@@ -22,11 +22,11 @@ def domain_option(domain):
     if domain == 'share' or domain == 'shfrlin':
         return 'builtin'
     elif domain.endswith('_noopt_mgu'):
-        return 'no optimal\nno match'
+        return 'base'
     elif domain.endswith('_noopt'):
-        return 'no optimal\nmatch'
+        return 'match'
     elif domain.endswith('_opt'):
-        return 'optimal\nmatch'
+        return 'optimal'
     else:
         raise ValueError('Analysis not supported')
 

@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 22.686 msec.}
+{loaded in 20.28 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.368 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 3.527 msec.}
-{analyzed by plai in 3.99 msec.}
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.367 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 3.487 msec.}
+{analyzed by plai in 3.939 msec.}
 }
 {written file results/crypt/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 25.741 msec.}
+{loaded in 24.861 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.366 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 5.02 msec.}
-{analyzed by plai in 5.476 msec.}
+{preprocessed for the plai fixpoint in 0.365 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 4.878 msec.}
+{analyzed by plai in 5.326 msec.}
 }
 {written file results/crypt/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 21.691 msec.}
+{loaded in 20.836 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.363 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 2.266 msec.}
-{analyzed by plai in 2.713 msec.}
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.379 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.371 msec.}
+{analyzed by plai in 2.843 msec.}
 }
 {written file results/crypt/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 23.452 msec.}
+{loaded in 23.727 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
 {init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.362 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 2.627 msec.}
-{analyzed by plai in 3.079 msec.}
+{preprocessed for the plai fixpoint in 0.377 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.691 msec.}
+{analyzed by plai in 3.162 msec.}
 }
 {written file results/crypt/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 24.678 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.02 msec.}
-{preprocessed for the plai fixpoint in 0.358 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 2.499 msec.}
-{analyzed by plai in 2.956 msec.}
-}
-{written file results/crypt/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 21.537 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.387 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 2.59 msec.}
-{analyzed by plai in 3.065 msec.}
-}
-{written file results/crypt/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 23.514 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.363 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 2.593 msec.}
-{analyzed by plai in 3.039 msec.}
-}
-{written file results/crypt/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 22.485 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.362 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 2.605 msec.}
-{analyzed by plai in 3.055 msec.}
-}
-{written file results/crypt/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 25.449 msec.}
+{loaded in 20.691 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
 {init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.367 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.1 msec.}
-{analyzed by plai in 3.564 msec.}
+{preprocessed for the plai fixpoint in 0.361 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.47 msec.}
+{analyzed by plai in 2.919 msec.}
+}
+{written file results/crypt/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
+{loaded in 24.663 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.358 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.605 msec.}
+{analyzed by plai in 3.049 msec.}
+}
+{written file results/crypt/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
+{loaded in 22.739 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.37 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.645 msec.}
+{analyzed by plai in 3.108 msec.}
+}
+{written file results/crypt/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
+{loaded in 23.787 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 0.379 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.706 msec.}
+{analyzed by plai in 3.191 msec.}
+}
+{written file results/crypt/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
+{loaded in 22.514 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.374 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.187 msec.}
+{analyzed by plai in 3.654 msec.}
 }
 {written file results/crypt/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 24.237 msec.}
+{loaded in 23.792 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 0.49 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.253 msec.}
-{analyzed by plai in 3.845 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.079 msec.}
+{analyzed by plai in 3.521 msec.}
 }
 {written file results/crypt/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 23.602 msec.}
+{loaded in 23.627 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.361 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.208 msec.}
-{analyzed by plai in 3.653 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.364 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.125 msec.}
+{analyzed by plai in 2.557 msec.}
 }
 {written file results/crypt/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 23.578 msec.}
+{loaded in 23.665 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 0.371 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.514 msec.}
-{analyzed by plai in 2.987 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.898 msec.}
+{analyzed by plai in 2.341 msec.}
 }
 {written file results/crypt/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 24.516 msec.}
+{loaded in 23.692 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.372 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.55 msec.}
-{analyzed by plai in 3.019 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.5 msec.}
+{analyzed by plai in 2.949 msec.}
 }
 {written file results/crypt/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 23.476 msec.}
+{loaded in 22.671 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
 {init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.362 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.188 msec.}
-{analyzed by plai in 2.63 msec.}
+{preprocessed for the plai fixpoint in 0.365 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.245 msec.}
+{analyzed by plai in 2.691 msec.}
 }
 {written file results/crypt/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 22.694 msec.}
+{loaded in 22.771 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.366 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.399 msec.}
-{analyzed by plai in 2.845 msec.}
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.361 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.333 msec.}
+{analyzed by plai in 1.782 msec.}
 }
 {written file results/crypt/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
-{loaded in 25.358 msec.}
+{loaded in 21.865 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 0.488 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 2.141 msec.}
-{analyzed by plai in 2.738 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 2.076 msec.}
+{analyzed by plai in 2.521 msec.}
 }
 {written file results/crypt/share.pl}
-Analyzing with aim: shfrlin.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/crypt.pl
 {loaded in 24.579 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/crypt.pl]
-{init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.38 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 3.992 msec.}
-{analyzed by plai in 4.459 msec.}
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.381 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 4.04 msec.}
+{analyzed by plai in 4.518 msec.}
 }
 {written file results/crypt/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

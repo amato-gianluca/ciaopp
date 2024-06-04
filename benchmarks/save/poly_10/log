@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 22.03 msec.}
+{loaded in 22.957 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.432 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 4.644 msec.}
-{analyzed by plai in 5.165 msec.}
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.434 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 4.66 msec.}
+{analyzed by plai in 5.184 msec.}
 }
 {written file results/poly_10/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 23.217 msec.}
+{loaded in 23.849 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.443 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 6.653 msec.}
-{analyzed by plai in 7.186 msec.}
+{preprocessed for the plai fixpoint in 0.447 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 6.603 msec.}
+{analyzed by plai in 7.1 msec.}
 }
 {written file results/poly_10/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 23.204 msec.}
+{loaded in 23.942 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 0.446 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 2.798 msec.}
-{analyzed by plai in 3.343 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.43 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.742 msec.}
+{analyzed by plai in 3.252 msec.}
 }
 {written file results/poly_10/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 23.122 msec.}
+{loaded in 23.904 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.438 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 3.314 msec.}
-{analyzed by plai in 3.839 msec.}
+{preprocessed for the plai fixpoint in 0.441 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.348 msec.}
+{analyzed by plai in 2.876 msec.}
 }
 {written file results/poly_10/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 22.896 msec.}
+{loaded in 23.807 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.0 msec.}
-{preprocessed for the plai fixpoint in 0.19 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.22 msec.}
-{analyzed by plai in 3.464 msec.}
-}
-{written file results/poly_10/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 21.938 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.432 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.302 msec.}
-{analyzed by plai in 3.815 msec.}
-}
-{written file results/poly_10/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 21.972 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.446 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.427 msec.}
-{analyzed by plai in 3.973 msec.}
-}
-{written file results/poly_10/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 23.013 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.443 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.355 msec.}
-{analyzed by plai in 3.885 msec.}
-}
-{written file results/poly_10/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 23.949 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.451 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 5.733 msec.}
-{analyzed by plai in 6.276 msec.}
-}
-{written file results/poly_10/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 24.035 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.432 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 5.771 msec.}
-{analyzed by plai in 6.288 msec.}
-}
-{written file results/poly_10/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 24.162 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.436 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 5.795 msec.}
-{analyzed by plai in 6.334 msec.}
-}
-{written file results/poly_10/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 24.243 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.435 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.616 msec.}
-{analyzed by plai in 3.143 msec.}
-}
-{written file results/poly_10/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 21.964 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.437 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 2.664 msec.}
-{analyzed by plai in 3.187 msec.}
-}
-{written file results/poly_10/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 25.103 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.437 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 3.154 msec.}
-{analyzed by plai in 3.682 msec.}
-}
-{written file results/poly_10/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 24.006 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
 {init for the plai fixpoint in 0.021 msec.}
 {preprocessed for the plai fixpoint in 0.439 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 3.153 msec.}
-{analyzed by plai in 3.677 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.172 msec.}
+{analyzed by plai in 3.689 msec.}
+}
+{written file results/poly_10/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 23.875 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.444 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.37 msec.}
+{analyzed by plai in 3.901 msec.}
+}
+{written file results/poly_10/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 21.915 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.429 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.364 msec.}
+{analyzed by plai in 3.879 msec.}
+}
+{written file results/poly_10/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 24.936 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.435 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.293 msec.}
+{analyzed by plai in 3.807 msec.}
+}
+{written file results/poly_10/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 23.81 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.433 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5.781 msec.}
+{analyzed by plai in 6.312 msec.}
+}
+{written file results/poly_10/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 23.857 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.439 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5.692 msec.}
+{analyzed by plai in 6.221 msec.}
+}
+{written file results/poly_10/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 21.947 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.439 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 5.807 msec.}
+{analyzed by plai in 6.331 msec.}
+}
+{written file results/poly_10/as_shlin_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 23.021 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.437 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.682 msec.}
+{analyzed by plai in 3.207 msec.}
+}
+{written file results/poly_10/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 22.938 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.44 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.654 msec.}
+{analyzed by plai in 3.188 msec.}
+}
+{written file results/poly_10/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 25.156 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 0.479 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 3.259 msec.}
+{analyzed by plai in 3.865 msec.}
+}
+{written file results/poly_10/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
+{loaded in 22.856 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.439 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 3.072 msec.}
+{analyzed by plai in 3.591 msec.}
 }
 {written file results/poly_10/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 25.165 msec.}
+{loaded in 23.848 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.438 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 2.937 msec.}
-{analyzed by plai in 3.465 msec.}
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.444 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 2.985 msec.}
+{analyzed by plai in 3.522 msec.}
 }
 {written file results/poly_10/share.pl}
-Analyzing with aim: shfrlin.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/poly_10.pl
-{loaded in 24.071 msec.}
+{loaded in 22.88 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/poly_10.pl]
-{init for the plai fixpoint in 0.02 msec.}
-{preprocessed for the plai fixpoint in 0.442 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 5.003 msec.}
-{analyzed by plai in 5.536 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.437 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 4.94 msec.}
+{analyzed by plai in 5.461 msec.}
 }
 {written file results/poly_10/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

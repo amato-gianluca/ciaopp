@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 18.418 msec.}
+{loaded in 22.613 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.144 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 1.006 msec.}
-{analyzed by plai in 1.238 msec.}
+{preprocessed for the plai fixpoint in 0.149 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.043 msec.}
+{analyzed by plai in 1.279 msec.}
 }
 {written file results/qsort/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 21.605 msec.}
+{loaded in 22.552 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.021 msec.}
 {preprocessed for the plai fixpoint in 0.147 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 1.384 msec.}
-{analyzed by plai in 1.61 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.425 msec.}
+{analyzed by plai in 1.651 msec.}
 }
 {written file results/qsort/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 20.53 msec.}
+{loaded in 20.394 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.165 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.703 msec.}
-{analyzed by plai in 0.959 msec.}
+{preprocessed for the plai fixpoint in 0.144 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.733 msec.}
+{analyzed by plai in 0.975 msec.}
 }
 {written file results/qsort/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 21.473 msec.}
+{loaded in 23.353 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.02 msec.}
-{preprocessed for the plai fixpoint in 0.135 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 0.846 msec.}
-{analyzed by plai in 1.067 msec.}
+{preprocessed for the plai fixpoint in 0.141 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.792 msec.}
+{analyzed by plai in 1.009 msec.}
 }
 {written file results/qsort/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 22.384 msec.}
+{loaded in 23.28 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.147 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.776 msec.}
+{analyzed by plai in 1.011 msec.}
+}
+{written file results/qsort/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
+{loaded in 23.341 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.02 msec.}
 {preprocessed for the plai fixpoint in 0.144 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.766 msec.}
-{analyzed by plai in 0.989 msec.}
-}
-{written file results/qsort/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 21.452 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.146 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.802 msec.}
-{analyzed by plai in 1.038 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.781 msec.}
+{analyzed by plai in 1.004 msec.}
 }
 {written file results/qsort/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 22.384 msec.}
+{loaded in 21.325 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.148 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.764 msec.}
-{analyzed by plai in 0.991 msec.}
+{preprocessed for the plai fixpoint in 0.144 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.765 msec.}
+{analyzed by plai in 0.99 msec.}
 }
 {written file results/qsort/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 24.562 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.14 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.764 msec.}
-{analyzed by plai in 0.985 msec.}
-}
-{written file results/qsort/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 20.505 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.149 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.996 msec.}
-{analyzed by plai in 1.237 msec.}
-}
-{written file results/qsort/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 21.51 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.139 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.923 msec.}
-{analyzed by plai in 1.141 msec.}
-}
-{written file results/qsort/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 23.314 msec.}
+{loaded in 23.394 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.151 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 0.993 msec.}
-{analyzed by plai in 1.233 msec.}
+{preprocessed for the plai fixpoint in 0.145 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.831 msec.}
+{analyzed by plai in 1.069 msec.}
+}
+{written file results/qsort/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
+{loaded in 21.558 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.156 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.996 msec.}
+{analyzed by plai in 1.252 msec.}
+}
+{written file results/qsort/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
+{loaded in 22.367 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.144 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.93 msec.}
+{analyzed by plai in 1.153 msec.}
+}
+{written file results/qsort/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
+{loaded in 23.355 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.132 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.911 msec.}
+{analyzed by plai in 1.115 msec.}
 }
 {written file results/qsort/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 23.578 msec.}
+{loaded in 20.807 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.146 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.632 msec.}
-{analyzed by plai in 0.86 msec.}
+{preprocessed for the plai fixpoint in 0.144 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.636 msec.}
+{analyzed by plai in 0.856 msec.}
 }
 {written file results/qsort/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 19.438 msec.}
+{loaded in 20.427 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.149 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.649 msec.}
+{analyzed by plai in 0.873 msec.}
+}
+{written file results/qsort/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
+{loaded in 21.497 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
 {init for the plai fixpoint in 0.019 msec.}
 {preprocessed for the plai fixpoint in 0.144 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.646 msec.}
-{analyzed by plai in 0.872 msec.}
-}
-{written file results/qsort/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 24.58 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.149 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.0 msec.}
-{analyzed by plai in 0.197 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.744 msec.}
+{analyzed by plai in 0.972 msec.}
 }
 {written file results/qsort/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 21.254 msec.}
+{loaded in 21.311 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.144 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 0.764 msec.}
-{analyzed by plai in 0.986 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.15 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.773 msec.}
+{analyzed by plai in 1.007 msec.}
 }
 {written file results/qsort/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 24.369 msec.}
+{loaded in 22.418 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.02 msec.}
-{preprocessed for the plai fixpoint in 0.0 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 0.0 msec.}
-{analyzed by plai in 0.021 msec.}
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.143 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.714 msec.}
+{analyzed by plai in 0.941 msec.}
 }
 {written file results/qsort/share.pl}
-Analyzing with aim: shfrlin.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/qsort.pl
-{loaded in 23.496 msec.}
+{loaded in 22.435 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/qsort.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.147 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.088 msec.}
-{analyzed by plai in 1.329 msec.}
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.142 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 0.156 msec.}
+{analyzed by plai in 0.364 msec.}
 }
 {written file results/qsort/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

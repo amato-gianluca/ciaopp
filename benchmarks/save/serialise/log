@@ -1,187 +1,204 @@
-Analyzing with aim: as_shlin2_opt.pl
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 23.387 msec.}
+{loaded in 30.328 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.245 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 3.543 msec.}
-{analyzed by plai in 3.873 msec.}
+{init for the plai fixpoint in 0.032 msec.}
+{preprocessed for the plai fixpoint in 0.281 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 3.704 msec.}
+{analyzed by plai in 4.113 msec.}
 }
 {written file results/serialise/as_shlin2_opt.pl}
-Analyzing with aim: as_shlin2_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 23.049 msec.}
+{loaded in 24.949 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.24 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 5.417 msec.}
-{analyzed by plai in 5.756 msec.}
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.245 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 5.093 msec.}
+{analyzed by plai in 5.423 msec.}
 }
 {written file results/serialise/as_shlin2_opt_mgu.pl}
-Analyzing with aim: as_shlin2_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 22.978 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.246 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 2.653 msec.}
-{analyzed by plai in 2.982 msec.}
-}
-{written file results/serialise/as_shlin2_noopt.pl}
-Analyzing with aim: as_shlin2_noopt_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 19.897 msec.}
+{loaded in 22.833 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.241 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 2.192 msec.}
-{analyzed by plai in 2.513 msec.}
+{preprocessed for the plai fixpoint in 0.242 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.637 msec.}
+{analyzed by plai in 2.961 msec.}
+}
+{written file results/serialise/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
+{loaded in 21.952 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.235 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.24 msec.}
+{analyzed by plai in 2.562 msec.}
 }
 {written file results/serialise/as_shlin2_noopt_mgu.pl}
-Analyzing with aim: as_shlin_opt_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 23.806 msec.}
+{loaded in 22.821 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.242 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.41 msec.}
+{analyzed by plai in 3.742 msec.}
+}
+{written file results/serialise/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
+{loaded in 21.724 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
 {init for the plai fixpoint in 0.02 msec.}
-{preprocessed for the plai fixpoint in 0.245 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.415 msec.}
-{analyzed by plai in 3.745 msec.}
-}
-{written file results/serialise/as_shlin_opt_opt.pl}
-Analyzing with aim: as_shlin_opt.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 24.819 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.023 msec.}
-{preprocessed for the plai fixpoint in 0.242 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 3.997 msec.}
-{analyzed by plai in 4.326 msec.}
+{preprocessed for the plai fixpoint in 0.238 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.971 msec.}
+{analyzed by plai in 4.292 msec.}
 }
 {written file results/serialise/as_shlin_opt.pl}
-Analyzing with aim: as_shlin_noindcheck.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 21.113 msec.}
+{loaded in 22.879 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.245 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 4.028 msec.}
-{analyzed by plai in 4.365 msec.}
+{preprocessed for the plai fixpoint in 0.238 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.95 msec.}
+{analyzed by plai in 4.269 msec.}
 }
 {written file results/serialise/as_shlin_noindcheck.pl}
-Analyzing with aim: as_shlin_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 22.913 msec.}
+{loaded in 23.858 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.239 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 4.052 msec.}
-{analyzed by plai in 4.386 msec.}
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.247 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.947 msec.}
+{analyzed by plai in 4.271 msec.}
 }
 {written file results/serialise/as_shlin_noopt.pl}
-Analyzing with aim: as_shlin_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 21.965 msec.}
+{loaded in 23.995 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.227 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 103.456 msec.}
+{analyzed by plai in 103.781 msec.}
+}
+{written file results/serialise/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
+{loaded in 22.895 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
 {init for the plai fixpoint in 0.021 msec.}
-{preprocessed for the plai fixpoint in 0.242 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 103.069 msec.}
-{analyzed by plai in 103.422 msec.}
-}
-{written file results/serialise/as_shlin_opt_mgu.pl}
-Analyzing with aim: as_shlin_noindcheck_mgu.pl
-{Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 24.117 msec.}
-}
-{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.023 msec.}
 {preprocessed for the plai fixpoint in 0.244 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 103.305 msec.}
-{analyzed by plai in 103.659 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 103.339 msec.}
+{analyzed by plai in 103.682 msec.}
 }
 {written file results/serialise/as_shlin_noindcheck_mgu.pl}
-Analyzing with aim: as_shlin_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 24.089 msec.}
+{loaded in 20.904 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 0.247 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 103.817 msec.}
-{analyzed by plai in 104.163 msec.}
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.245 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 103.055 msec.}
+{analyzed by plai in 103.387 msec.}
 }
 {written file results/serialise/as_shlin_noopt_mgu.pl}
-Analyzing with aim: as_sharing_opt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 22.881 msec.}
+{loaded in 23.145 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.024 msec.}
+{init for the plai fixpoint in 0.021 msec.}
 {preprocessed for the plai fixpoint in 0.242 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 12.699 msec.}
-{analyzed by plai in 13.036 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 13.371 msec.}
+{analyzed by plai in 13.709 msec.}
 }
 {written file results/serialise/as_sharing_opt.pl}
-Analyzing with aim: as_sharing_noopt.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 21.083 msec.}
+{loaded in 22.738 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.247 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 13.548 msec.}
-{analyzed by plai in 13.888 msec.}
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.242 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 12.564 msec.}
+{analyzed by plai in 12.897 msec.}
 }
 {written file results/serialise/as_sharing_noopt.pl}
-Analyzing with aim: as_sharing_opt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 25.344 msec.}
+{loaded in 23.823 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.026 msec.}
+{init for the plai fixpoint in 0.021 msec.}
 {preprocessed for the plai fixpoint in 0.247 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 36.156 msec.}
-{analyzed by plai in 36.511 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 36.163 msec.}
+{analyzed by plai in 36.509 msec.}
 }
 {written file results/serialise/as_sharing_opt_mgu.pl}
-Analyzing with aim: as_sharing_noopt_mgu.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 24.009 msec.}
+{loaded in 22.601 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.242 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 38.105 msec.}
-{analyzed by plai in 38.458 msec.}
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.243 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 38.785 msec.}
+{analyzed by plai in 39.117 msec.}
 }
 {written file results/serialise/as_sharing_noopt_mgu.pl}
-Analyzing with aim: share.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 22.055 msec.}
+{loaded in 24.903 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 0.241 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 14.211 msec.}
-{analyzed by plai in 14.555 msec.}
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.246 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 14.195 msec.}
+{analyzed by plai in 14.53 msec.}
 }
 {written file results/serialise/share.pl}
-Analyzing with aim: shfrlin.pl
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/git/ciaopp/benchmarks/serialise.pl
-{loaded in 22.943 msec.}
+{loaded in 19.768 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/serialise.pl]
-{init for the plai fixpoint in 0.019 msec.}
-{preprocessed for the plai fixpoint in 0.25 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 3.947 msec.}
-{analyzed by plai in 4.276 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.247 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 3.938 msec.}
+{analyzed by plai in 4.285 msec.}
 }
 {written file results/serialise/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

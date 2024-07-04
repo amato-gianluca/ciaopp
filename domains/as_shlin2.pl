@@ -37,7 +37,6 @@ and linearity. http://dx.doi.org/10.1017/S1471068409990160].
 :- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
    :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
 
- % TODO: we abuse not_free for 2-sharing groups.
 input_interface(shlin2(X), perfect, (Sh, Lin, ShLin2_0), (Sh, Lin, ShLin2)) :-
    list(shlin2group_u, X), !,
    sort_deep(X, ASub_u),

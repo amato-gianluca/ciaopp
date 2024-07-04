@@ -27,7 +27,7 @@ https://dx.doi.org/10.1017/S1471068409990111
 %
 % Prop is a native property that is relevant to domain (i.e., the domain
 % knows how to fully (Kind=perfect) or approximately (Kind=approx)
-% abstract it) and Struct1 is a (domain defined) structure resulting of
+% abstract it and Struct1 is a (domain defined) structure resulting of
 % adding the (domain dependent) information conveyed by Prop to structure
 % Struct0. This way, the properties relevant to a domain are being
 % accumulated. Later, the resulting structure will be handled by
@@ -36,7 +36,8 @@ https://dx.doi.org/10.1017/S1471068409990111
 
 :- dom_impl(_, input_interface/4, [noq]).
 :- pred input_interface(+Prop, ?Kind, ?Struc0, -Struc1)
-   :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1)).
+   :: atm(Kind) : term * term * term * ivar => (atm(Kind), term(Struc0), term(Struc1))
+   + (not_fails, is_det).
 
 input_interface(Prop, Kind, Struc0, Struc1) :-
    sharing:input_interface(Prop, Kind, Struc0, Struc1).
@@ -66,8 +67,8 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 %
 % NativeStat and NativeComp are the list of native (state and
 % computational, resp.) properties that are the concretization of abstract
-% of abstract substitution ASub on variables Qv. These are later
-% translated to the properties which are visible in the preprocessing unit.
+% substitution ASub on variables Qv. These are later translated to the
+% properties which are visible in the preprocessing unit.
 %
 % OutFlag seems to be either yes (when called from asub_to_out) or no
 % (when called from asub_to_info).
@@ -90,37 +91,64 @@ asub_to_native(ASub, Qv, _OutFlag, NativeStat, []) :-
 % DOMAIN ASSERTIONS
 %-------------------------------------------------------------------------
 
-:- prop nasub(ASub) # "@var{ASub} is a non empty abstract substitution".
+:- prop sharing_group(S) # "@var{S} is a sharing group.".
+:- export(sharing_group/1).
 
-nasub(Sh) :-
-   ordlist(ordlist(var), Sh).
+sharing_group(S) :-
+   ordlist_nonempty(var, S).
 
-:- prop nasub_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
-
-nasub_u(Sh) :-
-   % note that list(ordlist(var)) does not work
-   list(list(var), Sh).
-
-:- prop asub_sh(ASub) # "@var{ASub} is a non empty abstract substitution".
+:- prop asub_sh(Sh) # "@var{Sh} is a (non bottom) abstract substitution".
 :- export(asub_sh/1).
 
 asub_sh(Sh) :-
-   nasub(Sh).
+   ordlist(sharing_group, Sh).
 
-:- prop asub_sh_u(ASub) # "@var{ASub} is a non empty unordered abstract substitution".
+% An unordered abstract substitution is the result of renaming the variables in an
+% abstract substitution, possibly breaking any ordering that was present in the
+% original stucture.
+
+:- prop sharing_group_u(S) # "@var{S} is an unordered sharing group.".
+:- export(sharing_group_u/1).
+
+sharing_group_u(S) :-
+   list_nonempty(var, S).
+
+:- prop asub_sh_u(Sh) # "@var{Sh} is a (non bottom) unordered abstract substitution".
 :- export(asub_sh_u/1).
 
 asub_sh_u(Sh) :-
-   nasub_u(Sh).
+   list(sharing_group_u, Sh).
 
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
+% nasub(+ASub)
+%
+% ASub is a (non-bottom) abstract substitution.
+%-------------------------------------------------------------------------
+
+:- prop nasub(ASub).
+
+nasub(Sh) :-
+   asub_sh(Sh).
+
+%-------------------------------------------------------------------------
+% nasub_u(+ASub)
+%
+% ASub_u is a (non-bottom) unordered abstract substitution.
+%-------------------------------------------------------------------------
+
+:- prop nasub_u(ASub).
+
+nasub_u(Sh) :-
+   asub_sh_u(Sh).
+
+%-------------------------------------------------------------------------
 % reorder(+ASub_u,-ASub)
 %
-% ASub is the result of sorting abstract substitution ASub_u.
+% ASub is the result of sorting the unordered abstract substitution ASub_u.
 %-------------------------------------------------------------------------
 
 :- pred reorder(+ASub_u, -ASub)
@@ -177,10 +205,10 @@ project(Sh, Vars, Proj) :-
    + (not_fails, is_det).
 
 project0([], _Vars, Proj, Proj).
-project0([S|Rest], Vars, Proj0, Proj) :-
+project0([S|Ss], Vars, Proj0, Proj) :-
    ord_intersection(S, Vars, S_proj),
    ( S_proj = [] -> Proj1 = Proj0 ; insert(Proj0, S_proj, Proj1) ),
-   project0(Rest, Vars, Proj1, Proj).
+   project0(Ss, Vars, Proj1, Proj).
 
 %-------------------------------------------------------------------------
 % join(+ASub1,+ASub2,Join)
@@ -245,6 +273,7 @@ mgu(Sh, _Fv, Sub, MGU) :-
    mgu0(Sh, [], Sub, MGU).
 
 :- index mgu0(?, ?, +, ?).
+
 mgu0(Sh, _Fv, [], Sh).
 mgu0(Sh, Fv, [X=T|Rest], MGU) :-
    mgu_binding(Sh, X, T, Fv, MGU0, Fv0),
@@ -265,12 +294,12 @@ mgu0(Sh, Fv, [X=T|Rest], MGU) :-
 mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    ord_member(X, Fv), !,
    varset(T, Vt),
-   rel(Sh, [X], Rel_X, NRel_X),
-   rel(Sh, Vt, Rel_T, NRel_T),
-   ord_intersection(NRel_X, NRel_T, NRel),
+   rel3(Sh, [X], Vt, Rel_X, Rel_T, NRel),
    bin(Rel_X, Rel_T, MGU0),
    ord_union(NRel, MGU0, MGU_sh),
    ord_delete(Fv, X, MGU_fr).
+
+% TODO: optimize
 
 mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    unique_vars(T, Vars_t, UVars_t),
@@ -311,71 +340,73 @@ mgu_binding(Sh, X, T, Fv, MGU_sh, MGU_fr) :-
    + (not_fails, is_det).
 
 match(Sh1, Sv1, Sh2, Match) :-
-   rel(Sh2, Sv1, Intersect, Disjunct),
-   star_union(Intersect, Star),
+   rel(Sh2, Sv1, Rel, NRel),
+   star_union(Rel, Star),
    match0(Star, Sh1, Sv1, [], StarMatch),
-   ord_union(Disjunct, StarMatch, Match).
+   ord_union(NRel, StarMatch, Match).
 
 :- pred match0(+Star, +Sh1, +Sv1, +Match0, -Match)
    : nasub * nasub * {ordlist(var), superset_vars_of(Sh1)} * nasub * ivar => nasub(Match)
    + (not_fails, is_det).
 
 match0([],_Sh1,_Sv1, Match, Match).
-match0([X|Rest], Sh1, Sv1, Match0, Match) :-
+match0([X|Xs], Sh1, Sv1, Match0, Match) :-
    ord_intersection(X, Sv1, X_proj),
    ( ord_member(X_proj,Sh1) -> insert(Match0, X, Match1) ;  Match1 = Match0 ),
-   match0(Rest, Sh1, Sv1, Match1, Match).
+   match0(Xs, Sh1, Sv1, Match1, Match).
 
 %-------------------------------------------------------------------------
-% ng_vars(+ASub, -Vars)
+% ng_vars(+ASub,-NGv)
 %
-% Vars contains the set of non-ground variables in ASub.
+% NGv contains the set of non-ground variables in ASub.
 %-------------------------------------------------------------------------
 
-:- pred ng_vars(+ASub, -Vars)
-   : nasub * ivar => ordlist(var, Vars)
+:- pred ng_vars(+ASub, -NGv)
+   : nasub * ivar => ordlist(var, NGv)
    + (not_fails, is_det).
 
-ng_vars(ASub, Vars) :-
-   vars(ASub, Vars).
+ng_vars(Sh, NGv) :-
+   vars(Sh, NGv).
 
 %-------------------------------------------------------------------------
-% make_ground(+Call,+Gv,-Succ).
+% make_ground(+ASub,+Gv,-Succ).
 %
-% Succ is the result of grounding the variable in Gv in the abstract
-% substitution Call.
+% Succ is the result of restricting the abstract substitution ASub to
+% case when variables in Gv are ground.
 %-------------------------------------------------------------------------
 
-:- pred make_ground(+Call, +Gv, -Succ)
+% TODO: change name to restrict_ground
+
+:- pred make_ground(+ASub, +Gv, -Succ)
    : nasub * ordlist(var) * ivar => nasub(Succ)
    + (not_fails, is_det).
 
-make_ground(Call, Gv, Succ) :-
-   rel(Call, Gv, _, Succ).
+make_ground(Sh, Gv, Sh_g) :-
+   rel(Sh, Gv, _, Sh_g).
 
 %-------------------------------------------------------------------------
-% restrict_var(+Call,+V,-Succ).
+% restrict_var(+ASub,+V,-Succ).
 %
-% Succ is the result of restricting the abstract substitution Call to the
+% Succ is the result of restricting the abstract substitution ASub to the
 % case when V is a variable.
 %-------------------------------------------------------------------------
 
-:- pred restrict_var(+Call, +V, -Succ)
+:- pred restrict_var(+ASub, +V, -Succ)
    : nasub * var * ivar => nasub(Succ)
    + (not_fails, is_det).
 
-restrict_var(Call, V, Call) :-
-   ord_member_list_of_lists(V, Call).
-restrict_var(_Call, _, '$bottom').
+restrict_var(Sh, V, Sh) :-
+   ord_member_list_of_lists(V, Sh), !.
+restrict_var(_Sh, _, '$bottom').
 
 %-------------------------------------------------------------------------
-% restrict_identical(+Call,+MGU,-Succ).
+% restrict_identical(+ASub,+MGU,-Succ).
 %
-% Succ is the result of restricting the abstract substitution Call to the
+% Succ is the result of restricting the abstract substitution ASub to the
 % sharing groups which make all the binding in MGU to be equalities.
 %-------------------------------------------------------------------------
 
-:- pred restrict_identical(+Call, +MGU, -Succ)
+:- pred restrict_identical(+ASub, +MGU, -Succ)
    : nasub * unifier_no_cyclic * ivar => nasub(Succ)
    + (not_fails, is_det).
 
@@ -385,20 +416,20 @@ restrict_var(_Call, _, '$bottom').
 
 :- index restrict_identical(?, +, ?).
 
-restrict_identical(Call, [], Call).
-restrict_identical(Call, [X=T|Rest], Succ) :-
+restrict_identical(Sh, [], Sh).
+restrict_identical(Sh, [X=T|Rest], Succ) :-
    varset(T, Vt),
-   restrict_identical0(Call, X, Vt, Call0),
-   restrict_identical(Call0, Rest, Succ).
+   restrict_identical0(Sh, X, Vt, Sh0),
+   restrict_identical(Sh0, Rest, Succ).
 
 restrict_identical0([], _X, _Vt, []).
-restrict_identical0([S|Rest], X, Vt, [S|Rest1]) :-
+restrict_identical0([S|Ss], X, Vt, [S|Ss1]) :-
    ord_test_member(S, X, XinS),
    (ord_intersect(S, Vt) -> VtinS=yes ; VtinS=no),
    XinS == VtinS, !,
-   restrict_identical0(Rest, X, Vt, Rest1).
-restrict_identical0([_S|Rest], X, Vt, Rest1) :-
-   restrict_identical0(Rest, X, Vt, Rest1).
+   restrict_identical0(Ss, X, Vt, Ss1).
+restrict_identical0([_S|Ss], X, Vt, Ss1) :-
+   restrict_identical0(Ss, X, Vt, Ss1).
 
 %-------------------------------------------------------------------------
 % AUXILIARY PREDICATES
@@ -420,6 +451,20 @@ rel(Sh, Vars, Rel, NRel) :-
    % alternative:
    % split_lists_from_list(Vars, Sh, Rel, NRel).
 
+:- pred rel3(+Sh, +Vs1, +Vs2, -Rel1, -Rel2, -NRel)
+   : nasub * ordlist(var) * ordlist(var) * ivar * ivar * ivar => (asub_sh(Rel), asub_sh(NRel), asub_sh(NRel))
+   + (not_fails, is_det)
+   # "Partition sharing groups in @var{Sh} in those which contains variables in @var{Vs1},
+   variables in @var{Vs2} and those which are disjoint from both.".
+:- export(rel3/6).
+
+% TODO: optimize
+
+rel3(Sh, Vs1, Vs2, Rel1, Rel2, NRel) :-
+   rel(Sh, Vs1, Rel1, NRel1),
+   rel(Sh, Vs2, Rel2, NRel2),
+   ord_intersection(NRel1, NRel2, NRel).
+
 :- pred bin(+Sh1, +Sh2, -Bin)
    : nasub * nasub * ivar => nasub(Bin)
    + (not_fails, is_det)
@@ -433,19 +478,18 @@ bin(Sh1, Sh2, Bin) :-
    % setproduct_lists(Sh1, Sh2, Bin0, []),
    % sort(Bin0, Bin).
 
-bin0([], _, Bin, Bin).
-bin0([X|Rest], Sh, Bin0, Bin) :-
-   bin1(X, Sh, [], BinX),
-   ord_union(Bin0, BinX, Bin1),
-   bin0(Rest, Sh, Bin1, Bin).
+bin0([], _Sh2, Bin, Bin).
+bin0([S|Ss], Sh2, Bin0, Bin) :-
+   bin1(S, Sh2, Bin0, Bin1),
+   bin0(Ss, Sh2, Bin1, Bin).
 
 :- index bin1(?, +, ?, ?).
 
 bin1(_, [], Bin, Bin).
-bin1(X, [Y|Rest], Bin0, Bin) :-
-   ord_union(X, Y, XY),
-   insert(Bin0, XY, Bin1),
-   bin1(X, Rest, Bin1, Bin).
+bin1(S, [R|Rs], Bin0, Bin) :-
+   ord_union(S, R, SR),
+   insert(Bin0, SR, Bin1),
+   bin1(S, Rs, Bin1, Bin).
 
 :- pred bin_all(+ShList, -Bin)
    : list(nasub) * ivar => nasub(Bin)
@@ -454,10 +498,10 @@ bin1(X, [Y|Rest], Bin0, Bin) :-
 :- export(bin_all/2).
 
 bin_all([], []).
-bin_all([X], X).
-bin_all([X,Y|Rest], Bin) :-
-   bin(X, Y, Bin0),
-   bin_all([Bin0|Rest], Bin).
+bin_all([Sh], Sh).
+bin_all([Sh1,Sh2|Shs], Bin) :-
+   bin(Sh1, Sh2, Bin0),
+   bin_all([Bin0|Shs], Bin).
 
 :- pred star_union(+Sh, -Star)
    : nasub * ivar => nasub(Star)
@@ -466,6 +510,7 @@ bin_all([X,Y|Rest], Bin) :-
 :- export(star_union/2).
 
 star_union(Sh, Star) :-
+   % note that closure_under_union does not generate the empty set
    closure_under_union(Sh, Star).
 
 :- pred vars(+Sh, -NGv)

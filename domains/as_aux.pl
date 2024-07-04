@@ -25,6 +25,20 @@ This module is in common among all domains in the as_* collection.
 % ASSERTIONS
 %-------------------------------------------------------------------------
 
+:- prop list_nonempty(T,L) # "@var{L} is a non-empty list of elements of type T".
+:- export(list_nonempty/2).
+
+list_nonempty(T, L) :-
+   list(T, L),
+   L \== [].
+
+:- prop ordlist_nonempty(T,L) # "@var{L} is a non-empty ordered list of elements of type T".
+:- export(ordlist_nonempty/2).
+
+ordlist_nonempty(T, L) :-
+   ordlist(T, L),
+   L \== [].
+
 :- prop memberof(L, T)
    # "@var{T} is a member of list @var{L}".
 :- export(memberof/2).

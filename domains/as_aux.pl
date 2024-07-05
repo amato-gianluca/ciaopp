@@ -142,6 +142,15 @@ multiplicity(X) :-
 % AUXILIARY OPERATIONS
 %-------------------------------------------------------------------------
 
+:- pred ord_test_intersect(+Set1, +Set2, -Result)
+   : ordlist * ordlist * term => memberof([yes,no], Result)
+   + (not_fails, is_det)
+   # "If Set1 and Set2 have at least an element in common, then Result=yes. Otherwise Result=no.".
+:- export(ord_test_intersect/3).
+
+ord_test_intersect(Set1, Set2, Result) :-
+   ord_intersect(Set1, Set2) -> Result = yes ; Result = no.
+
 :- pred if_not_nil(+List, +Token, -List1, ?List2)
    :: list(List2) : list * term * ivar * term  => (term(List1), term(List2))
    + (not_fails, is_det).

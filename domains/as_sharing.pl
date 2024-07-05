@@ -51,6 +51,10 @@ input_interface(Prop, Kind, Struc0, Struc1) :-
 %
 % Struct may be free if a pred assertion is specified without call conditions.
 %
+% MaybeCallASub seems to be either 'no' or 'yes(Appr)' where Appr is an
+% abstract substitution. However, the second form is only used in the file
+% plai/apply_assertions_old.pl.
+%
 % TODO: Understand the role of MaybeCallASub.
 %-------------------------------------------------------------------------
 
@@ -71,7 +75,8 @@ input_user_interface(Struct, Qv, ASub, Sg, MaybeCallASub) :-
 % properties which are visible in the preprocessing unit.
 %
 % OutFlag seems to be either yes (when called from asub_to_out) or no
-% (when called from asub_to_info).
+% (when called from asub_to_info). However, plai does not seem to use
+% asub_to_info.
 %
 % TODO: Understand with more precision the role of OutFlag.
 %-------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 :- module(as_bags, [], [assertions, basicmodes, nativeprops, indexer]).
 
-:- use_package(debug).
+% :- use_package(debug).
 % :- use_package(rtchecks).
 
 :- use_module(library(sets)).

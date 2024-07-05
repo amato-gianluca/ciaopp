@@ -1,6 +1,6 @@
 :- module(as_shlin2, [], [assertions, regtypes, basicmodes, nativeprops, indexer]).
 
-:- use_package(debug).
+% :- use_package(debug).
 % :- use_package(rtchecks).
 
 :- doc(title, "ShLin2 abstract domain").

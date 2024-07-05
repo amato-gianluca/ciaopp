@@ -1,6 +1,6 @@
 :- module(as_aux, [], [assertions, basicmodes, nativeprops, indexer]).
 
-:- use_package(debug).
+% :- use_package(debug).
 % :- use_package(rtchecks).
 
 :- doc(title, "Common module for Amato and Scozzari domains").

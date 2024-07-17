@@ -1,0 +1,14 @@
+* For implementing profiling, load the package profilercc in the modulo you want to profile and
+  annotate predicates with the directive ":- cost_center pred/arity". In the Ciao top leve, load
+  module "library(profilercc/profiler_utils)", then use the goal "profile_reset, prodile(Goal), profile_sump."
+
+* Analyze file by hand
+  use_module(library(profilercc/profiler_utils)).
+  set_pp_flag(mgu_sh_optimize,optimal).
+  set_pp_flag(modes,as_sharing).
+  set_pp_flag(types,none).
+  set_pp_flag(collapse_ai_vers,off).
+  set_pp_flag(pp_info, on).
+  module('experiments/sharing_experiments.pl').
+  profile(analyze(as_sharing)).
+  profile_dump.

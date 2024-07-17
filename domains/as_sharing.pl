@@ -1,5 +1,8 @@
 :- module(as_sharing, [], [assertions, basicmodes, nativeprops, indexer]).
 
+:- use_package(profilercc).
+:- cost_center mgu/4.
+
 % :- use_package(debug).
 % :- use_package(rtchecks).
 
@@ -447,14 +450,15 @@ restrict_identical0([_S|Ss], X, Vt, Ss1) :-
       from @var{Vars} (@var{NRel}) and those which are not (@var{Rel}).".
 :- export(rel/4).
 
-rel(Sh, [X], Rel, NRel) :-
-   % optimization for single variable
-   !,
-   ord_split_lists(Sh, X, Rel, NRel).
+
+% rel(Sh, [X], Rel, NRel) :-
+%    % optimization for single variable
+%    !,
+%    ord_split_lists(Sh, X, Rel, NRel).
 rel(Sh, Vars, Rel, NRel) :-
-   ord_split_lists_from_list(Vars, Sh, Rel, NRel).
+   %ord_split_lists_from_list(Vars, Sh, Rel, NRel).
    % alternative:
-   % split_lists_from_list(Vars, Sh, Rel, NRel).
+   split_lists_from_list(Vars, Sh, Rel, NRel).
 
 :- pred rel3(+Sh, +Vs1, +Vs2, -Rel1, -Rel2, -NRel)
    : nasub * ordlist(var) * ordlist(var) * ivar * ivar * ivar => (asub_sh(Rel), asub_sh(NRel), asub_sh(NRel))
@@ -465,10 +469,19 @@ rel(Sh, Vars, Rel, NRel) :-
 
 % TODO: optimize
 
-rel3(Sh, Vs1, Vs2, Rel1, Rel2, NRel) :-
-   rel(Sh, Vs1, Rel1, NRel1),
-   rel(Sh, Vs2, Rel2, NRel2),
-   ord_intersection(NRel1, NRel2, NRel).
+% rel3(Sh, Vs1, Vs2, Rel1, Rel2, NRel) :-
+%    rel(Sh, Vs1, Rel1, NRel1),
+%    rel(Sh, Vs2, Rel2, NRel2),
+%    ord_intersection(NRel1, NRel2, NRel).
+
+rel3([], _Vs1, _Vs2, [], [], []).
+rel3([S|Ss], Vs1, Vs2, Rel1, Rel2, NRel) :-
+   ord_test_intersect(S, Vs1, Flag1),
+   ord_test_intersect(S, Vs2, Flag2),
+   ( Flag1='yes' -> Rel1 = [S|Rel1_0] ; Rel1 = Rel1_0 ),
+   ( Flag2='yes' -> Rel2 = [S|Rel2_0] ; Rel2 = Rel2_0 ),
+   ( Flag1='no', Flag2='no' -> NRel = [S|NRel_0] ; NRel = NRel_0 ),
+   rel3(Ss, Vs1, Vs2, Rel1_0, Rel2_0, NRel_0).
 
 :- pred bin(+Sh1, +Sh2, -Bin)
    : nasub * nasub * ivar => nasub(Bin)

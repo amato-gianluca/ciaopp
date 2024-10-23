@@ -18,16 +18,17 @@ analyze() {
 
     echo "START ANALYSIS -- CONFIGURATION: $CONFIGURATION" | tee -a "$RESULTDIR/log"
     shift 2
-    timeout $TIMEOUT ciaopp -o "$RESULTDIR/$CONFIGURATION.pl" -A $FILE $@ 2>&1 | tee -a "$RESULTDIR/log"
+    timeout $TIMEOUT ciaopp -o "$RESULTDIR/$CONFIGURATION.pl" -A "$SOURCEDIR/$FILE" $@ 2>&1 | tee -a "$RESULTDIR/log"
     RES=${PIPESTATUS[0]}
     echo "END ANALYSIS -- EXIT CODE: $RES" | tee -a "$RESULTDIR/log"
 }
 
 for FILE in $FILES; do
     RESULTDIR="results/$(basename $FILE .pl)"
+    SOURCEDIR="src"
     mkdir -p "$RESULTDIR"
     rm -f "$RESULTDIR/log"
-    #rm -f "$RESULTDIR"/*.pl
+    rm -f "$RESULTDIR"/*.pl
 
     analyze "$FILE" as_shlin2_opt           -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal
     analyze "$FILE" as_shlin2_opt_mgu       -fmodes=as_shlin2 $OPTIONS -fmgu_shlin2_optimize=optimal -fas_use_match=no

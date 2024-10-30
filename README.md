@@ -1,3 +1,11 @@
+---
+This is an experimental branch of the CiaoPP Program Processor which integrates new domains for the analysis of aliasing and sharing properties.
+
+This work is partially supported by PNRR Mission 4, line 1.3, funded by the European Union – NEXTGENERATIONEU, “Future Artificial Intelligence – FAIR” project - PE0000013,
+Spoke 9, CUP D23C24000220006.
+
+---
+
 # The CiaoPP Program Processor
 
 CiaoPP is a program processor framework for

@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.8.0] - 2024-10-13
+
+### Fixed
+
+ - Using ISO `arg/3` and `functor/3`.
+ - Fixes in polyhedra domain.
+ - Fixes and precision improvements in depth-k domain.
+
+### Added
+
+ - `basicdom` tutorial.
+
+### Improved
+
+ - Better documentation in domains.pl, debugging CiaoPP, and usage.
+ - Better documentation for debugging CiaoPP.
+ - Types/modes in CiaoPP tutorial.
+
 ## [1.7.0] - 2023-7-13
 
 ### Added

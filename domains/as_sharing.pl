@@ -1,7 +1,7 @@
 :- module(as_sharing, [], [assertions, basicmodes, nativeprops, indexer]).
 
-:- use_package(profilercc).
-:- cost_center mgu/4.
+%:- use_package(profilercc).
+%:- cost_center mgu/4.
 
 % :- use_package(debug).
 % :- use_package(rtchecks).

@@ -18,9 +18,10 @@ the as_* collection. A multiset is an *ordered* list of terms of the form
 
 :- push_prolog_flag(read_hiord, on).
 
-:- prop isbag(+T, -B)
+:- prop isbag(+T, +B)
    + is_det
    # "@var{B} is a bag of elements of type @var{T}.".
+:- meta_predicate isbag(pred(1), +).
 :- export(isbag/2).
 :- index isbag(?, +).
 
@@ -43,7 +44,7 @@ isbag(T, [X1-V1,X2-V2|Rest]) :-
    T(X1),
    isbag([X2-V2|Rest]).
 
-:- prop isbag(?B)
+:- prop isbag(+B)
    + is_det
    # "@var{B} is a bag".
 :- export(isbag/1).
@@ -55,7 +56,7 @@ isbag(B) :- isbag(term, B).
 
 :- pop_prolog_flag(read_hiord).
 
-:- prop bag_empty(?B)
+:- pred bag_empty(?B)
    => isbag(B)
    + is_det
    # "@var{B} is an empty bag".
@@ -66,7 +67,7 @@ isbag(B) :- isbag(term, B).
 
 bag_empty([]).
 
-:- prop bag_support(+B, -S)
+:- pred bag_support(+B, -S)
    : isbag * ivar => ordlist(S).
    + (not_fails, is_det)
    # "@var{S} is the support of @var{B}.".
@@ -78,7 +79,7 @@ bag_support([], []).
 bag_support([X-_|RestB], [X|RestS]) :-
    bag_support(RestB, RestS).
 
-:- prop bag_from_set(+S, -B)
+:- pred bag_from_set(+S, -B)
    : ordlist * ivar => isbag(B)
    + (not_fails, is_det)
    # "@var{B} is the bag corresponding to the set @var{S} where all
@@ -91,7 +92,7 @@ bag_from_set([], []).
 bag_from_set([X|RestS], [X-1|RestB]) :-
    bag_from_set(RestS, RestB).
 
-:- prop bag_from_list(+S, -B)
+:- pred bag_from_list(+S, -B)
    : list * ivar => isbag(B)
    + (not_fails, is_det)
    # "@var{B} is the bag corresponding to the list @var{S} where the

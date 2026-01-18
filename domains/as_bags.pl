@@ -13,8 +13,7 @@ the as_* collection. A multiset is an *ordered* list of terms of the form
 `T-N`, where `T` is a term and `N` is a natural number representing its multiplicity.
 ").
 
-:- use_module(library(sets)).
-:- use_module(library(terms_vars)).
+:- use_module(library(terms_vars), [varsbag/3]).
 :- use_module(domain(as_aux)).
 
 :- push_prolog_flag(read_hiord, on).

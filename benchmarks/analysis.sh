@@ -3,6 +3,7 @@
 #ciaopp -A prova.pl -fmodes=as_sharing -ftypes=none -foutput_lang=raw -ftrace_fixp=trace; cat prova_shlin_co.pl
 OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on -fshlin2_full_output=on"
 TIMEOUT=2m
+MEMORY=24
 FILES="boyer.pl browse.pl chat_parser.pl crypt.pl derive.pl divide10.pl eval.pl fast_mu.pl fib.pl flatten.pl log10.pl
        meta_qsort.pl moded_path.pl mu.pl nand.pl nreverse.pl ops8.pl perfect.pl pingpong.pl poly_10.pl prover.pl
        qsort.pl queens_8.pl query.pl reducer.pl sendmore.pl serialise.pl sieve.pl simple_analyzer.pl tak.pl times10.pl
@@ -18,7 +19,7 @@ analyze() {
 
     echo "START ANALYSIS -- CONFIGURATION: $CONFIGURATION" | tee -a "$RESULTDIR/log"
     shift 2
-    timeout $TIMEOUT ciaopp -o "$RESULTDIR/$CONFIGURATION.pl" -A "$SOURCEDIR/$FILE" $@ 2>&1 | tee -a "$RESULTDIR/log"
+    prlimit --as=$(($MEMORY*1024*1024*1024)) timeout $TIMEOUT ciaopp -o "$RESULTDIR/$CONFIGURATION.pl" -A "$SOURCEDIR/$FILE" $@ 2>&1 | tee -a "$RESULTDIR/log"
     RES=${PIPESTATUS[0]}
     echo "END ANALYSIS -- EXIT CODE: $RES" | tee -a "$RESULTDIR/log"
 }

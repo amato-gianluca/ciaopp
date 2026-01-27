@@ -1,0 +1,171 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 28.87 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.032 msec.}
+{preprocessed for the plai fixpoint in 2.389 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 26.643 msec.}
+{analyzed by plai in 29.153 msec.}
+}
+{written file results/reducer/as_shlin2_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 28.064 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.348 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 26.82 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 2.406 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 14.509 msec.}
+{analyzed by plai in 17.025 msec.}
+}
+{written file results/reducer/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 27.87 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.378 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 29.037 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.39 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 107538.076 msec.}
+{analyzed by plai in 107540.584 msec.}
+}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 27.929 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.39 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 29603.243 msec.}
+{analyzed by plai in 29605.752 msec.}
+}
+{written file results/reducer/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 29.167 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 2.382 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 29635.94 msec.}
+{analyzed by plai in 29638.438 msec.}
+}
+{written file results/reducer/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 26.333 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 2.383 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 29576.509 msec.}
+{analyzed by plai in 29579.012 msec.}
+}
+{written file results/reducer/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 28.115 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.396 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 24.602 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 2.359 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 27.215 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.379 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 29.231 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 2.397 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 70476.579 msec.}
+{analyzed by plai in 70479.102 msec.}
+}
+{written file results/reducer/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 25.901 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.389 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 71764.637 msec.}
+{analyzed by plai in 71767.16 msec.}
+}
+{written file results/reducer/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 26.189 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 2.421 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 26.519 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 2.396 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 27.796 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 2.451 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/git/ciaopp/benchmarks/src/reducer.pl
+{loaded in 27.007 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/git/ciaopp/benchmarks/src/reducer.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.428 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 44403.343 msec.}
+{analyzed by plai in 44405.892 msec.}
+}
+{written file results/reducer/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

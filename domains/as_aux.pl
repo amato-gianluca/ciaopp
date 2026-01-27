@@ -151,17 +151,18 @@ remove_module(Atom, Atom0) :-
    sub_atom(Atom, Pos1, _, 0, Atom0).
 remove_module(Atom, Atom).
 
-:- prop multiplicity(+X)
+:- prop multiplicity(?X)
    # "@var{X} is a non negative integer or the atom 'inf'".
 :- export(multiplicity/1).
 :- test multiplicity(3) + (not_fails, is_det).
 :- test multiplicity(inf) + (not_fails, is_det).
 :- test multiplicity(-3) + (fails, is_det).
+:- test multiplicity(X) + (fails, is_det).
 
-multiplicity(inf) :- !.
-multiplicity(X) :-
-   int(X),
-   X >= 0.
+% TODO: is this allowed to be defined as a regtype ?
+
+multiplicity(X) :- X == inf, !.
+multiplicity(X) :- nnegint(X).
 
 %------------------------------------------------------------------------
 % AUXILIARY OPERATIONS
@@ -222,11 +223,18 @@ unifiable_with_occurs_check(T1, T2, Unifier) :-
    + (not_fails, is_det)
    # "@var{Mul} is the multiplicity of the term represented by the bag of variables @var{Bt}
    w.r.t. the sharing group @var{Sh} and linear variables in @var{Lin}.".
+:- pred chiMax(+Sh, +Lin, +Bt, +Mul)
+   : ordlist(var) * ordlist(var) * isbag(var) * multiplicity => multiplicity(Mul)
+   + (is_det)
+   # "Determines whether @var{Mul} is the multiplicity of the term represented by the bag of
+   variables @var{Bt} w.r.t. the sharing group @var{Sh} and linear variables in @var{Lin}.".
 :- export(chiMax/4).
 :- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X], Lin=[X,Y], Bt = [X-1,Y-2,Z-3]) => (Mul = 1)+ (not_fails, is_det).
 :- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X,Y], Bt = [X-1,Y-2,Z-1]) => (Mul = inf) + (not_fails, is_det).
 :- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X,Y], Bt = [X-1,Y-2]) => (Mul = 3) + (not_fails, is_det).
 :- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X], Bt = [X-1,Y-2,Z-1]) => (Mul = inf) + (not_fails, is_det).
+:- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X], Bt = [X-1,Y-2,Z-1], Mul = inf) + (not_fails, is_det).
+:- test chiMax(Sh, Lin, Bt, Mul): (Sh = [X,Y,Z], Lin=[X], Bt = [X-1,Y-2,Z-1], Mul = 3) + (fails, is_det).
 
 chiMax(Sh, Lin, Bt, Mul) :-
    chiMax0(Sh, Lin, Bt, 0, Mul).
@@ -255,10 +263,18 @@ chiMax0([X|RestO], Lin, [Y-N|RestBt], Mul0, Mul) :-
    + (not_fails, is_det)
    # "@var{Mul} is the multiplicity of the term represented by the bag of variables @var{Bt}
    w.r.t. the sharing group @var{Sh}, when all variables are assumed to be linear".
+:- pred chiMin(+Sh, +Bt, +Mul)
+   : ordlist(var) * isbag(var) * multiplicity
+   + (is_det)
+   # "Determines whether @var{Mul} is the multiplicity of the term represented by the bag
+   of variables @var{Bt} w.r.t. the sharing group @var{Sh}, when all variables are assumed to be linear".
+
 :- export(chiMin/3).
 :- test chiMin(Sh, Bt, Mul): (Sh = [], Bt = [X-1,Y-2,Z-3]) => (Mul = 0) + (not_fails, is_det).
 :- test chiMin(Sh, Bt, Mul): (Sh = [X], Bt = [X-1,Y-2,Z-3]) => (Mul = 1) + (not_fails, is_det).
 :- test chiMin(Sh, Bt, Mul): (Sh = [X,Y,Z], Bt = [X-1,Y-2,Z-1]) => (Mul = 4) + (not_fails, is_det).
+:- test chiMin(Sh, Bt, Mul): (Sh = [X,Y,Z], Bt = [X-1,Y-2,Z-1], Mul = 4) + (not_fails, is_det).
+:- test chiMin(Sh, Bt, Mul): (Sh = [X,Y,Z], Bt = [X-1,Y-2,Z-1], Mul = inf) + (fails, is_det).
 
 % NOTE: we could redefine chiMin in term of chiMax with a slight decrease in performance
 
@@ -310,7 +326,7 @@ linearizable([X|RestSh], [Y-N|RestBag]) :-
 :- export(grounding/2).
 :- test grounding(Sh, Bt): (Sh = [X, Y], Bt = [X-1,Y-2,Z-3]) + (fails, is_det).
 :- test grounding(Sh, Bt): (Sh = [X], Bt = [Y-1,Z-1]) + (not_fails, is_det).
-:- test grounding(Sh, Bt): (Sh = [Y,Z], Bt=[]) + (not_fails, is_det).
+:- test grounding(Sh, Bt): (Sh = [Y,Z], Bt = []) + (not_fails, is_det).
 
 % NOTE: we could redefine grounding using bag_support and ord_intersect, with a slight decrease in performance.
 

@@ -126,30 +126,14 @@ same_vars_of(Term1, Term2) :-
    : cgoal * ivar => atm(Pred)
    # "@var{Pred} is the predicate of @var{Goal}".
 :- export(predicate_of/2).
-:- test predicate_of('m:example'(a, X), 'example/2') + (not_fails, is_det).
+:- test predicate_of('m:example'(a, X), 'm:example/2') + (not_fails, is_det).
 :- test predicate_of(example(a, X), 'example/2') + (not_fails, is_det).
 
-% TODO: It is not clear this is the correct way this predicate should work. Normally,
-% a module specifier is a binary predicate :(Module, Goal) and probably it should be
-% treated accordingly.
-
 predicate_of(Goal, Pred) :-
-   remove_module(Pred, Pred0),
    functor(Goal, Name, Arity),
-   remove_module(Name, RealName),
-   atom_concat(RealName, '/', Pred1),
+   atom_concat(Name, '/', Pred1),
    atom_number(N, Arity),
-   atom_concat(Pred1, N, Pred0).
-
-:- prop remove_module(+Atom, -Atom0)
-   : atm * ivar => atm(Atom0)
-   # "@var{Atom0} is the result of removing the module name from @var{Atom}".
-
-remove_module(Atom, Atom0) :-
-   sub_atom(Atom, Pos, _, _, ':'), !,
-   Pos1 is Pos+1,
-   sub_atom(Atom, Pos1, _, 0, Atom0).
-remove_module(Atom, Atom).
+   atom_concat(Pred1, N, Pred).
 
 :- prop multiplicity(?X)
    # "@var{X} is a non negative integer or the atom 'inf'".

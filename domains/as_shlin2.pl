@@ -761,7 +761,7 @@ restrict_var(_Call, _, '$bottom').
 
 make_linear([], _, []).
 make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
-   insert(Lin, V, Lin0),
+   (ord_member(V, Lin)  ->  insert(Lin, V, Lin0); Lin0 = Lin),
    make_linear(Rest, V, Rest0).
 
 %-------------------------------------------------------------------------

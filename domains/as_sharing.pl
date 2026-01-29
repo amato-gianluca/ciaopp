@@ -121,11 +121,24 @@ asub_sh(Sh) :-
 sharing_group_u(S) :-
    list_nonempty(var, S).
 
-:- prop asub_sh_u(Sh) # "@var{Sh} is a (non bottom) unordered abstract substitution".
+:- prop asub_sh_u(Sh) # "@var{Sh} is a (non bottom) unordered abstract substitution.".
 :- export(asub_sh_u/1).
 
 asub_sh_u(Sh) :-
    list(sharing_group_u, Sh).
+
+:- prop sharing_group_pe(S) # "@var{S} is a possibly-empty sharing group.".
+:- export(sharing_group_pe/1).
+
+sharing_group_pe([]) :- !.
+sharing_group_pe(S) :- sharing_group(S).
+
+:- prop asub_sh_pe(Sh)
+   # "@var{Sh} is a (non bottom) abstract substitution which may contain empty sharing groups".
+:- export(asub_sh_pe/1).
+
+asub_sh_pe(Sh) :-
+   ordlist(sharing_group_pe, Sh).
 
 %-------------------------------------------------------------------------
 % DOMAIN PREDICATES
@@ -393,14 +406,14 @@ make_ground(Sh, Gv, Sh_g) :-
    rel(Sh, Gv, _, Sh_g).
 
 %-------------------------------------------------------------------------
-% restrict_var(+ASub,+V,-Succ).
+% restrict_var(+ASub,-V,-Succ).
 %
 % Succ is the result of restricting the abstract substitution ASub to the
 % case when V is a variable.
 %-------------------------------------------------------------------------
 
-:- pred restrict_var(+ASub, +V, -Succ)
-   : nasub * var * ivar => nasub(Succ)
+:- pred restrict_var(+ASub, -V, -Succ)
+   : nasub * var * ivar => asub(Succ)
    + (not_fails, is_det).
 
 restrict_var(Sh, V, Sh) :-
@@ -450,7 +463,6 @@ restrict_identical0([_S|Ss], X, Vt, Ss1) :-
       from @var{Vars} (@var{NRel}) and those which are not (@var{Rel}).".
 :- export(rel/4).
 
-
 % rel(Sh, [X], Rel, NRel) :-
 %    % optimization for single variable
 %    !,
@@ -484,7 +496,7 @@ rel3([S|Ss], Vs1, Vs2, Rel1, Rel2, NRel) :-
    rel3(Ss, Vs1, Vs2, Rel1_0, Rel2_0, NRel_0).
 
 :- pred bin(+Sh1, +Sh2, -Bin)
-   : nasub * nasub * ivar => nasub(Bin)
+   : asub_sh_pe * asub_sh_pe * ivar => asub_sh_pe(Bin)
    + (not_fails, is_det)
    # "@var{Bin} is binary union extended elementwise to sharing sets @var{Sh1}
       and @var{Sh2}.".
@@ -510,9 +522,9 @@ bin1(S, [R|Rs], Bin0, Bin) :-
    bin1(S, Rs, Bin1, Bin).
 
 :- pred bin_all(+ShList, -Bin)
-   : list(nasub) * ivar => nasub(Bin)
+   : list(asub_sh_pe) * ivar => asub_sh_pe(Bin)
    + (not_fails, is_det)
-   # "@var{Bin} is the bin operator applied to all sharing sets in @var{ShList}.".
+   # "@var{Bin} is the bin operator applied to all sharing sets in @var{ShList}. ".
 :- export(bin_all/2).
 
 bin_all([], []).

@@ -1,4 +1,4 @@
-:- module(as_aux, [], [assertions, basicmodes, nativeprops, indexer]).
+:- module(as_aux, [], [assertions, basicmodes, nativeprops]).
 
 % :- use_package(debug).
 % :- use_package(rtchecks).
@@ -65,7 +65,6 @@ ordlist_nonempty(T, [X1,X2|Xs]) :-
    # "@var{S} is an ordered list of elements of type T".
 :- meta_predicate ordlist(pred(1),+).
 :- export(ordlist/2).
-:- index ordlist(?, +).
 :- test ordlist(int, [1, 2, 3]) + (not_fails, is_det).
 :- test ordlist(int, [3, 2, 1]) + (fails, is_det).
 :- test ordlist(int, []) + (not_fails, is_det).

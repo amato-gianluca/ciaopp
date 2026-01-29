@@ -1,4 +1,4 @@
-:- module(as_bags, [], [assertions, basicmodes, nativeprops, indexer]).
+:- module(as_bags, [], [assertions, basicmodes, nativeprops]).
 
 % :- use_package(debug).
 % :- use_package(rtchecks).
@@ -23,7 +23,6 @@ the as_* collection. A multiset is an *ordered* list of terms of the form
    # "@var{B} is a bag of elements of type @var{T}.".
 :- meta_predicate isbag(pred(1), +).
 :- export(isbag/2).
-:- index isbag(?, +).
 
 :- test isbag(var, []) + (not_fails, is_det).
 :- test isbag(var, [X-2, Y-1]) + (not_fails, is_det).

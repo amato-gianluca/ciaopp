@@ -239,10 +239,12 @@ top(Vars, Top) :-
    + (not_fails, is_det).
 
 :- export(augment/3).
-:- test augment(Asub, Vars, Aug): (Asub = [], Vars = [X, Y])
+:- test augment(Asub, Vars, Aug)
+   : (Asub = [], Vars = [X, Y])
    => (Aug = [ ([X], [X]), ([Y], [Y]) ]) + (not_fails, is_det).
-:- test augment(Asub, Vars, Aug): (_ = [X], Asub = [([U, V], [U])], Vars = [X, Y])
-   => (Aug = [ ([X], [X]), ([U,V], [U]), ([Y], [Y]) ]) + (not_fails, is_det).
+:- test augment(Asub, Vars, Aug)
+   : (Asub = [([U, V], [U])], Vars = [X, Y])
+   => (Aug = [([U,V], [U]), ([X], [X]), ([Y], [Y]) ]) + (not_fails, is_det).
 
 augment(ASub, Vars, Aug) :-
    augment0(Vars, ASub0),
@@ -293,7 +295,7 @@ project0([(Sh, Lin)|Rest], Vars, [(Proj_sh, Proj_lin)|Proj_rest]) :-
 :- export(join/3).
 :- test join(ASub1, ASub2, Join): (ASub1 = [], ASub2 = [([X], [X])]) => (Join = ASub2) + (not_fails, is_det).
 :- test join(ASub1, ASub2, Join): (ASub2 = [], ASub1 = [([X], [X])]) => (Join = ASub1) + (not_fails, is_det).
-:- test join(ASub1, ASub2, Join): (ASub1 = [([X, Y], [X]), ([U], [])], ASub2 = [([X, Y], [X, Y]), ([V], [V])])
+:- test join([([X, Y], [X]), ([U], [])], [([X, Y], [X, Y]), ([V], [V])], Join)
    => (Join = [([X, Y], [X]), ([U], []), ([V], [V])]) + (not_fails, is_det).
 
 join(ASub1, [], ASub1) :- !.
@@ -400,18 +402,15 @@ mgu(ASub, Fv, Sub, MGU) :-
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V), Z=V])
    => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
-:- test mgu_optimal(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
+:- test mgu_optimal([([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], [], [X=f(Y, Z)], MGU)
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),
       ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
-:- test mgu_optimal(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
+:- test mgu_optimal([([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], [], [X=f(Y, Z),W=a], MGU)
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
-:- test mgu_optimal(ASub, Fv, Sub, MGU)
-   : (ASub=[([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])], Fv=[], Sub=[X=r(Y, Y)])
+:- test mgu_optimal([([X], []), ([X,U],[X,U]), ([X,Y],[X,Y]), ([Y,V],[Y, V])], [], [X=r(Y, Y)], MGU)
    => (MGU=[([X,U,Y],[]),([X,U,Y,V],[]),([X,Y],[]),([X,Y,V],[])]) + (not_fails, is_det).
-:- test mgu_optimal(ASub, Fv, Sub, MGU)
-   : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
+:- test mgu_optimal([([X, U], [X, U])], [], [X=U], MGU)
+   => (MGU = [([X, U], [])]) + (not_fails, is_det).
 :- test mgu_optimal(ASub, Fv, Sub, MGU)
    : (ASub=[([X, Y], [X])], Fv=[], Sub=[X=Y]) => (MGU = [([X,Y], [])]) + (not_fails, is_det).
 
@@ -566,18 +565,15 @@ mgu_filter_linearizable([_ShLin|Rest], Bt, LinRest) :-
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V)])
    => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y],[V, Y]), ([Z],[Z]) ]) + (not_fails, is_det).
-:- test mgu_standard(ASub, Fv, Sub, MGU)
-   : (ASub=[([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=U, Y=f(U, V), Z=V])
+:- test mgu_standard([([U],[U]), ([V],[V]), ([X],[X]), ([Y],[Y]), ([Z],[Z])], [], [X=U, Y=f(U, V), Z=V], MGU)
    => (MGU=[([U, X, Y], [U, X, Y]), ([V, Y, Z],[V, Y, Z])]) + (not_fails, is_det).
-:- test mgu_standard(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z)])
+:- test mgu_standard([([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], [], [X=f(Y, Z)], MGU)
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z]), ([X,W,Y],[W]),
       ([X,W,Y,Z],[W]), ([X,W,Z],[W])]) + (not_fails, is_det).
-:- test mgu_standard(ASub, Fv, Sub, MGU)
-   : (ASub=[([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], Fv=[], Sub=[X=f(Y, Z),W=a])
+:- test mgu_standard([([X,U],[X,U]), ([X,V],[X,V]), ([X,W],[W]), ([Y],[Y]), ([Z],[Z])], [], [X=f(Y, Z),W=a], MGU)
    => (MGU=[([X,U,Y], [X,U,Y]), ([X,U,Z],[X,U,Z]), ([X,V,Y],[X,V,Y]), ([X,V,Z],[X,V,Z])]) + (not_fails, is_det).
-:- test mgu_standard(ASub, Fv, Sub, MGU)
-   : (ASub=[([X, U], [X, U])], Fv=[], Sub=[X=U]) => (MGU = [([X, U], [])]) + (not_fails, is_det).
+:- test mgu_standard([([X, U], [X, U])], [], [X=U], MGU)
+   => (MGU = [([X, U], [])]) + (not_fails, is_det).
 :- test mgu_standard(ASub, Fv, Sub, MGU)
    : (ASub=[([X, Y], [X])], Fv=[], Sub=[X=Y]) => (MGU = [([X,Y], [])]) + (not_fails, is_det).
 :- test mgu_standard(ASub, Fv, Sub, MGU)
@@ -669,14 +665,11 @@ mgu_split_standard([(Sh, Lin)|Rest], Bt, NRel, Rel_lin, Rel_nlin) :-
    + (not_fails, is_det).
 
 :- export(match/4).
-:- test match(Prime, Pv, Call, Match)
-   : (Prime=[([X, Y],[])], Pv=[X, Y, Z], Call=[([X, Y], [X]), ([Y, U], [U]), ([Z, U], []), ([U],[U])])
+:- test match([([X, Y],[])], [X, Y, Z], [([X, Y], [X]), ([Y, U], [U]), ([Z, U], []), ([U],[U])], Match)
    => (Match=[([X, Y],[]), ([X, Y, U],[]), ([U],[U])]) + (not_fails, is_det).
-:- test match(Prime, Pv, Call, Match)
-   : (Prime=[([X],[])], Pv=[X, Y, Z], Call=[([X], [X]),  ([X, U], [X, U]), ([X, V], [V]), ([U, V],[U, V])])
+:- test match([([X],[])], [X, Y, Z], [([X], [X]),  ([X, U], [X, U]), ([X, V], [V]), ([U, V],[U, V])], Match)
    => (Match=[([X],[]), ([X, U], []), ([X, U, V],[]), ([X, V],[]), ([U,V], [U,V])]) + (not_fails, is_det).
-:- test match(Prime, Pv, Call, Match)
-   : (Prime=[([X],[X])], Pv=[X], Call=[([X, Y], [X]), ([X, Z], [X])])
+:- test match([([X],[X])], [X], [([X, Y], [X]), ([X, Z], [X])], Match)
    => (Match=[([X,Y],[X]),([X,Z],[X])]) + (not_fails, is_det).
 
 match(Prime, Pv, Call, Match) :-
@@ -913,8 +906,8 @@ sharing([(Sh, _Lin)|Rest], Sharing) :-
    substitution @var{ASub}.".
 :- export(nlin/2).
 :- test nlin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
-:- test nlin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [Z]) + (not_fails, is_det).
-:- test nlin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])])
+:- test nlin([([X], [X]), ([X,Z], [X])], Lin) => (Lin = [Z]) + (not_fails, is_det).
+:- test nlin([([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])], Lin)
    => (Lin = [Z]) + (not_fails, is_det).
 
 nlin([], []).
@@ -931,7 +924,7 @@ nlin([(Sh, Lin)|Rest], NLin) :-
 :- export(lin/2).
 :- test lin(ASub, Lin): (ASub = []) => (Lin = []) + (not_fails, is_det).
 :- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X])]) => (Lin = [X]) + (not_fails, is_det).
-:- test lin(ASub, Lin): (ASub = [([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])])
+:- test lin([([X], [X]), ([X,Z], [X]), ([X, Z, Y], [X, Z, Y])], Lin)
    => (Lin = [X, Y]) + (not_fails, is_det).
 
 lin(ASub, Lin) :-
@@ -975,7 +968,8 @@ uplus((Sh1, Lin1), (Sh2, Lin2), (Sh, Lin)) :-
    + (not_fails, is_det)
    # "@var{UPlus} is the union of the 2-sharing groups in @var{List}.".
 
-:- test upluslist(List, UPlus): (List = [([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])])
+:- export(upluslist/2).
+:- test upluslist([([X, Y], [X]), ([X, Z], [X, Z]), ([Y, U], [Y, U])], UPlus)
    => (UPlus = ([X, Y, Z, U], [Z, U])) + (not_fails, is_det).
 
 upluslist([], ([],[])).

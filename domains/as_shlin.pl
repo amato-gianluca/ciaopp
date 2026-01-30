@@ -464,9 +464,8 @@ match(Prime, Pv, Call, Match) :-
 :- test match_optimal(Prime, Pv, Call, Match)
    : (Prime=([[X]],[X]), Pv=[X], Call=([[X, Y], [X,Z]],  [X]))
    => (Match=([[X,Y], [X,Z]],[X])) + (not_fails, is_det).
-:- test match_optimal(Prime, Pv, Call, Match)
-   : (Prime=([[X], [X,Y]], [X,Y]), Pv=[X, Y], Call=([[W, X, Y], [X, Z]], [X, Z]))
-   => (Match=([[W,X,Y],[X,Z]], [X,Y,Z])) + (not_fails, is_det).
+:- test match_optimal(([[X], [X,Y]], [X,Y]), [X, Y], ([[X, Y, W], [X, Z]], [X, Z]), Match)
+   => (Match=([[X,Y,W],[X,Z]], [X,Y,Z])) + (not_fails, is_det).
 
 match_optimal((Sh1, Lin1), Pv, (Sh2, Lin2), (Match_sh, Match_lin)) :-
    rel(Sh2, Pv, Rel2, NRel2),
@@ -634,8 +633,8 @@ restrict_var(_Call, _, '$bottom').
 :- export(restrict_identical/3).
 :- test restrict_identical(Call, MGU, Succ): (Call = ([[X],[X,Y],[X,Z],[Y],[Z]],[]), MGU = [X = f(Y)])
         => (Succ = ([[X,Y],[Z]], [])) + (not_fails, is_det).
-:- test restrict_identical(Call, MGU, Succ): (Call = ([[X],[X,Z],[X,Y],[Z],[Y],[W]],[W]), MGU = [W = f(Y)])
-        => (Succ = ([[X],[X,Z],[Z]],[]) ) + (not_fails, is_det).
+:- test restrict_identical(([[X],[X,Y],[X,Z],[Y],[Z],[W]],[W]), [W = f(Y)], Succ)
+         => (Succ = ([[X],[X,Z],[Z]],[])) + (not_fails, is_det).
 :- test restrict_identical(Call, MGU, Succ): (Call = ([[X,Y]], [X]), MGU = [X = f(Y)])
         => (Succ = ([[X, Y]],[X, Y])) + (not_fails, is_det).
 :- test restrict_identical(Call, MGU, Succ): (Call = ([[X,Y]], [X]), MGU = [X = f(Y, Y)])

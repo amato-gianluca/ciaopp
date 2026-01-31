@@ -424,14 +424,22 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
 
+% This operation econdes the effect of T=..L into a substitution, which is then
+% given as an input to the abstract unification operator. This only works  if
+% the abstract domains does not keep any information relative to the atoms
+% occuring in terms, which is true for all the domains in the as_* collection.
+
 '=.._unify'(T, L, [L=T]) :- var(L), !.
-'=.._unify'(T, [FL | RestL], [T=[FL | RestL]]) :-
-   var(T), !,
-   (var(FL); atomic(FL)).
 '=.._unify'(T, [FL | RestL], MGU) :-
-   (var(FL); atomic(FL)),
-   T =.. [FT | RestT],
-   unifiable_with_occurs_check([FT|RestT], [FL|RestL], MGU).
+   var(T) ->
+      (
+         var(FL) -> MGU=[FL=a, T=RestL] ;
+         atomic(FL) -> MGU=[T=RestL] ;
+         fail
+      )
+   ;
+      T =.. [FT | RestT],
+      unifiable_with_occurs_check([FT|RestT], [FL|RestL], MGU).
 
 %-------------------------------------------------------------------------
 % unknown_call(+Sg,+Vars,+Call,-Succ)

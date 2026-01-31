@@ -1,0 +1,141 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 24.531 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 0.265 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 21.143 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.257 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 20.413 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.268 msec.}
+{ERROR: Memory allocation failed [in Realloc()]}
+END ANALYSIS -- EXIT CODE: 1
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 21.373 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 22.899 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.253 msec.}
+{ERROR: Memory allocation failed [in Realloc()]}
+END ANALYSIS -- EXIT CODE: 1
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 22.312 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}
+{ERROR: Memory allocation failed [in Realloc()]}
+END ANALYSIS -- EXIT CODE: 1
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 20.504 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.263 msec.}
+{ERROR: Memory allocation failed [in Realloc()]}
+END ANALYSIS -- EXIT CODE: 1
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 23.681 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.26 msec.}
+{ERROR: Memory allocation failed [in Realloc()]}
+END ANALYSIS -- EXIT CODE: 1
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 21.354 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.262 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 20.408 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 20.135 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.263 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 21.197 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.254 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 22.159 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.257 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 19.264 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.259 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 20.09 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.265 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 19.349 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.265 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl
+{loaded in 22.41 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/zebra.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.258 msec.}
+END ANALYSIS -- EXIT CODE: 124

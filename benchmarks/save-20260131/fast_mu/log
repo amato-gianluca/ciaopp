@@ -1,0 +1,204 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.575 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.353 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 3.758 msec.}
+{analyzed by plai in 4.199 msec.}
+}
+{written file results/fast_mu/as_shlin2_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.312 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.346 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 5.29 msec.}
+{analyzed by plai in 5.724 msec.}
+}
+{written file results/fast_mu/as_shlin2_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.532 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.348 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.216 msec.}
+{analyzed by plai in 2.651 msec.}
+}
+{written file results/fast_mu/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 21.458 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.343 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 2.538 msec.}
+{analyzed by plai in 2.971 msec.}
+}
+{written file results/fast_mu/as_shlin2_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.691 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.34 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.284 msec.}
+{analyzed by plai in 2.716 msec.}
+}
+{written file results/fast_mu/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 23.753 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.348 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.494 msec.}
+{analyzed by plai in 2.926 msec.}
+}
+{written file results/fast_mu/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 18.95 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.338 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.486 msec.}
+{analyzed by plai in 2.921 msec.}
+}
+{written file results/fast_mu/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 20.506 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.348 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 2.469 msec.}
+{analyzed by plai in 2.902 msec.}
+}
+{written file results/fast_mu/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.671 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.349 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.137 msec.}
+{analyzed by plai in 3.573 msec.}
+}
+{written file results/fast_mu/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 23.721 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.354 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.244 msec.}
+{analyzed by plai in 3.698 msec.}
+}
+{written file results/fast_mu/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 22.62 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.354 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 3.201 msec.}
+{analyzed by plai in 3.661 msec.}
+}
+{written file results/fast_mu/as_shlin_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 20.634 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.347 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 1.914 msec.}
+{analyzed by plai in 2.349 msec.}
+}
+{written file results/fast_mu/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 20.528 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.35 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.031 msec.}
+{analyzed by plai in 2.469 msec.}
+}
+{written file results/fast_mu/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 23.337 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.346 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.158 msec.}
+{analyzed by plai in 2.59 msec.}
+}
+{written file results/fast_mu/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 24.091 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.35 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 2.23 msec.}
+{analyzed by plai in 2.667 msec.}
+}
+{written file results/fast_mu/as_sharing_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 21.432 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.361 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 2.359 msec.}
+{analyzed by plai in 2.808 msec.}
+}
+{written file results/fast_mu/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl
+{loaded in 21.71 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/fast_mu.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.355 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 3.15 msec.}
+{analyzed by plai in 3.578 msec.}
+}
+{written file results/fast_mu/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

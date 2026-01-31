@@ -1,0 +1,204 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 24.164 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 1.432 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 37.822 msec.}
+{analyzed by plai in 39.366 msec.}
+}
+{written file results/boyer/as_shlin2_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 21.569 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.466 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 54.316 msec.}
+{analyzed by plai in 55.897 msec.}
+}
+{written file results/boyer/as_shlin2_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.781 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 1.445 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 21.902 msec.}
+{analyzed by plai in 23.466 msec.}
+}
+{written file results/boyer/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 23.795 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 1.413 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 19.705 msec.}
+{analyzed by plai in 21.236 msec.}
+}
+{written file results/boyer/as_shlin2_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 26.113 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.034 msec.}
+{preprocessed for the plai fixpoint in 1.445 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 50.317 msec.}
+{analyzed by plai in 51.887 msec.}
+}
+{written file results/boyer/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 26.563 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 1.455 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 39.313 msec.}
+{analyzed by plai in 40.887 msec.}
+}
+{written file results/boyer/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.051 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.444 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 40.423 msec.}
+{analyzed by plai in 41.999 msec.}
+}
+{written file results/boyer/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.602 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 1.42 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 39.407 msec.}
+{analyzed by plai in 40.938 msec.}
+}
+{written file results/boyer/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 22.875 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.029 msec.}
+{preprocessed for the plai fixpoint in 1.438 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1237.324 msec.}
+{analyzed by plai in 1238.891 msec.}
+}
+{written file results/boyer/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 26.295 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 1.434 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1237.399 msec.}
+{analyzed by plai in 1238.95 msec.}
+}
+{written file results/boyer/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.437 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 1.444 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1236.586 msec.}
+{analyzed by plai in 1238.144 msec.}
+}
+{written file results/boyer/as_shlin_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 23.389 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 1.415 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 27.656 msec.}
+{analyzed by plai in 29.18 msec.}
+}
+{written file results/boyer/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 23.337 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 1.59 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 30.322 msec.}
+{analyzed by plai in 32.019 msec.}
+}
+{written file results/boyer/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.996 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 1.448 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 241.479 msec.}
+{analyzed by plai in 243.054 msec.}
+}
+{written file results/boyer/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.533 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.034 msec.}
+{preprocessed for the plai fixpoint in 1.456 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 247.483 msec.}
+{analyzed by plai in 249.076 msec.}
+}
+{written file results/boyer/as_sharing_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.215 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.034 msec.}
+{preprocessed for the plai fixpoint in 1.438 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 23.54 msec.}
+{analyzed by plai in 25.099 msec.}
+}
+{written file results/boyer/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl
+{loaded in 25.978 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/boyer.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 1.479 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 27.603 msec.}
+{analyzed by plai in 29.188 msec.}
+}
+{written file results/boyer/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

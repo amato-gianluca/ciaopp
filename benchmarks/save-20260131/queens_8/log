@@ -1,0 +1,289 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 22.395 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.201 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.231 msec.}
+{analyzed by plai in 1.528 msec.}
+}
+{written file results/queens_8/as_shlin2_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 19.622 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.218 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.669 msec.}
+{analyzed by plai in 1.974 msec.}
+}
+{written file results/queens_8/as_shlin2_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 15.926 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.216 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.881 msec.}
+{analyzed by plai in 1.195 msec.}
+}
+{written file results/queens_8/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.822 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.211 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.015 msec.}
+{analyzed by plai in 0.32 msec.}
+}
+{written file results/queens_8/as_shlin2_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 18.816 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.215 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.932 msec.}
+{analyzed by plai in 1.235 msec.}
+}
+{written file results/queens_8/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.679 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.197 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.935 msec.}
+{analyzed by plai in 1.217 msec.}
+}
+{written file results/queens_8/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 18.827 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.215 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.954 msec.}
+{analyzed by plai in 1.262 msec.}
+}
+{written file results/queens_8/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.569 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.214 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.0 msec.}
+{analyzed by plai in 0.266 msec.}
+}
+{written file results/queens_8/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 19.722 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.216 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.099 msec.}
+{analyzed by plai in 1.4 msec.}
+}
+{written file results/queens_8/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.622 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.215 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.118 msec.}
+{analyzed by plai in 1.418 msec.}
+}
+{written file results/queens_8/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 21.051 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.221 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.104 msec.}
+{analyzed by plai in 1.413 msec.}
+}
+{written file results/queens_8/as_shlin_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 19.891 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.213 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.795 msec.}
+{analyzed by plai in 1.094 msec.}
+}
+{written file results/queens_8/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 18.04 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.217 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.806 msec.}
+{analyzed by plai in 1.112 msec.}
+}
+{written file results/queens_8/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 19.671 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.188 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.911 msec.}
+{analyzed by plai in 1.181 msec.}
+}
+{written file results/queens_8/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.522 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.212 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.906 msec.}
+{analyzed by plai in 1.2 msec.}
+}
+{written file results/queens_8/as_sharing_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 20.89 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.221 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.898 msec.}
+{analyzed by plai in 1.205 msec.}
+}
+{written file results/queens_8/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+{Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
+{In /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl
+WARNING: (lns 50-53) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+WARNING: (lns 65-65) Unqualified predicate call to select/3 assumed to local version, calls to predicate imported from classic_predicates must be qualified
+}
+{loaded in 19.789 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/queens_8.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.224 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.385 msec.}
+{analyzed by plai in 1.703 msec.}
+}
+{written file results/queens_8/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

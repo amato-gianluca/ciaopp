@@ -747,6 +747,10 @@ make_ground(Call, Gv, Succ) :-
    : nasub * var * ivar => asub(Succ)
    + (not_fails, is_det).
 
+:- export(restrict_var/3).
+:- test restrict_var([([Y, X], [X]), ([X],[])], Y, S) => (S = [([Y, X], [Y, X]), ([X], [])]) + (not_fails, is_det).
+:- test restrict_var([([X],[])], Y, S) => (S = '$bottom') + (not_fails, is_det).
+
 restrict_var(Call, V, Succ) :-
    possible_nonground(Call, V), !,
    make_linear(Call, V, Succ).
@@ -754,7 +758,7 @@ restrict_var(_Call, _, '$bottom').
 
 make_linear([], _, []).
 make_linear([(Sh, Lin)|Rest], V, [(Sh, Lin0)|Rest0]) :-
-   (ord_member(V, Lin)  ->  insert(Lin, V, Lin0); Lin0 = Lin),
+   (ord_member(V, Sh)  ->  insert(Lin, V, Lin0); Lin0 = Lin),
    make_linear(Rest, V, Rest0).
 
 %-------------------------------------------------------------------------

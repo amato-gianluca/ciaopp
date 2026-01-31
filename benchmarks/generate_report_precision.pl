@@ -1,24 +1,24 @@
-:- module(benchmark_statistics, [run/0, analyze/1]).
+:- module(generate_report_precision, [run/0, analyze/1]).
 
-%:- doc(title, "Sharing * Lin abstract domain").
-%:- doc(module,"
-% "This module compares the results of the benchmarks on several abstract domains
-% with different options. It produces 3 csv files for the properties:
-% - mshare: set sharing groups
-% - linear: variable linearity
-% - ground: variable groundness.
+:- doc(title, "Sharing * Lin abstract domain ").
+:- doc(module,"
+This module compares the results of the benchmarks on several abstract domains
+with different options. It produces a files for the properties:
+- mshare: set sharing groups
+- linear: variable linearity
+- ground: variable groundness.
 
-% For the whole analysis, execute:
-% :- run.
-%
-% For the analysis of a specific property, execute:
-% :- analyze(mshare).
-% :- analyze(linear).
-% :- analyze(groound).
+For the whole analysis, execute:
+:- run.
 
-% Copyright 2024 Francesca Scozzari <francesca.scozzari@unich.i> e
-%                Gianluca Amato <gianluca.amato@unich.it>
-% ").
+For the analysis of a specific property, execute:
+:- analyze(mshare).
+:- analyze(linear).
+:- analyze(groound).
+
+Copyright 2024-2026 Francesca Scozzari <francesca.scozzari@unich.i> and
+                    Gianluca Amato <gianluca.amato@unich.it>
+").
 
 :- use_module(library(lists)).
 :- use_module(engine(stream_basic)).
@@ -58,7 +58,7 @@ analyze1(Property, Header) :-
     ;
         true
     ),
-    analyze_files(Property,'benchmarks/save/', Programs).
+    analyze_files(Property,'results/', Programs).
 
 % problem arises with program reducer
 programs([

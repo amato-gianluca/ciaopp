@@ -46,7 +46,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process log and generate a report on execution time")
     parser.add_argument('-d', '--dir', help='directory where benchmark results are stored')
     args = parser.parse_args()
-    dir = args.dir if args.dir else "save"
+    dir = args.dir if args.dir else "results"
     generate_table(dir)
 
 if __name__ == "__main__":

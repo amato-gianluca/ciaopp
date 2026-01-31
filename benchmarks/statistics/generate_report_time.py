@@ -15,6 +15,8 @@ def generate_table(maindir: str):
     domains = []
 
     for program in os.listdir(maindir):
+        path = os.path.join(maindir, program)
+        if not os.path.isdir(path): continue
         logfile = os.path.join(maindir, program, 'log')
         with open(logfile, "r") as f:
             table_row = { 'program': program }
@@ -32,7 +34,7 @@ def generate_table(maindir: str):
                     exitcode = line[line.index(':')+2:]
                     if exitcode == "124":
                         table_row[domain] = 'TIMEOUT'
-                    elif exitcode == "137":
+                    elif exitcode == "1":
                         table_row[domain] = 'OOM'
                     elif exitcode != "0":
                         raise ValueError('Unexpected exit code: ' + exitcode)

@@ -1,6 +1,6 @@
 # Useful options: -foutput_lang=raw -ftrace_fixp=trace
 
-FILES="boyer.pl findall.pl sharing_experiments.pl shlin_experiments.pl shlin2_experiments.pl"
+FILES="various.pl sharing_experiments.pl shlin_experiments.pl shlin2_experiments.pl"
 OPTIONS="-ftypes=none -fcollapse_ai_vers=off -fpp_info=on -fshlin2_full_output=on"
 
 for FILE in $FILES; do

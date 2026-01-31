@@ -41,7 +41,9 @@ example1(Z) :-
     findall(X,relation(_1,X),Z),
     true((
         mshare([[X],[_1]]),
-        ground([Z])
+        ground([Z]),
+        linear(X),
+        linear(_1)
     )).
 
 :- entry example1bis(Z)
@@ -60,7 +62,11 @@ example1bis(Z) :-
         linear(_1)
     )),
     findall(X,relation2(_1,X),Z),
-    true(mshare([[Z],[X],[_1]])).
+    true((
+        mshare([[Z],[X],[_1]]),
+        linear(X),
+        linear(_1)
+    )).
 
 :- entry example2(Z)
    : ( mshare([Z],[[Z]]), linear([Z]) ).
@@ -79,7 +85,12 @@ example2(Z) :-
         linear(_1)
     )),
     findall((X,L),relation(_1,X),Z),
-    true(mshare([[Z],[X],[L],[_1]])).
+    true((
+        mshare([[Z],[X],[L],[_1]]),
+        linear(X),
+        linear(L),
+        linear(_1)
+    )).
 
 :- entry example3.
 
@@ -96,5 +107,51 @@ example3 :-
     true(fails(_)),
     findall(X,relation(a,X),R),
     true(fails(_)).
+
+:- entry example4(Var,Vars,Link)
+   : mshare([Var,Vars,Link],[[Var],[Vars],[Link]]).
+
+:- true pred example4(Var,Vars,Link)
+   : mshare([[Var],[Vars],[Link]])
+   => mshare([[Var],[Vars],[Link]]).
+
+example4(Term,Vars,Link) :-
+    true((
+        mshare([[Term],[Vars],[Link],[F],[Args]]),
+        linear(F),
+        linear(Args)
+    )),
+    Term=..[F|Args],
+    true((
+        mshare([[Term,Args],[Vars],[Link]]),
+        ground([F])
+    )).
+
+:- entry example5(A)
+   : ground(A).
+
+:- true pred example5(A)
+   : ground([A])
+   => ground([A]).
+
+:- true pred example5(A)
+   : ( (A=[_A|_B]),
+       mshare([[_A]]),
+       ground([_B]), linear(_A) )
+   => ( mshare([[_A]]),
+        ground([_B]), linear(_A) ).
+
+:- true pred example5(A)
+   : ( (A=[_A|_B]),
+       mshare([[_A],[_B]]),
+       linear(_A), linear(_B) )
+   => ( mshare([[_A],[_B]]),
+        linear(_A), linear(_B) ).
+
+example5(A).
+example5(A) :-
+    true((mshare([[A],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))),
+    example5([_1|A]),
+    true((mshare([[A],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))).
 
 

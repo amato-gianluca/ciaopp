@@ -6,6 +6,7 @@
 
 :- export(relation/2).
 :- export(relation2/2).
+
 relation(a,b).
 relation(c,d).
 
@@ -34,3 +35,14 @@ example3 :-
     % just check that findall behaves correctly with the $bottom abstract substitution
     fail,
     findall(X, relation(a, X), R).
+
+:- entry example4(Var,Vars,Link): mshare([[Var],[Vars],[Link]]).
+
+example4(Term,Vars,Link)
+    % we should be able to prove that F is ground and does not share with Args at the end of the predicate.
+    :- Term =.. [F|Args].
+
+:- entry example5(A): ground(A).
+
+example5(A).
+example5(A) :- example5([_|A]).

@@ -108,4 +108,50 @@ example3 :-
     findall(X,relation(a,X),R),
     true(fails(_)).
 
+:- entry example4(Var,Vars,Link)
+   : mshare([Var,Vars,Link],[[Var],[Vars],[Link]]).
+
+:- true pred example4(Var,Vars,Link)
+   : mshare([[Var],[Vars],[Link]])
+   => mshare([[Var],[Vars],[Link]]).
+
+example4(Term,Vars,Link) :-
+    true((
+        mshare([[Term],[Vars],[Link],[F],[Args]]),
+        linear(F),
+        linear(Args)
+    )),
+    Term=..[F|Args],
+    true((
+        mshare([[Term,Args],[Vars],[Link]]),
+        ground([F])
+    )).
+
+:- entry example5(A)
+   : ground(A).
+
+:- true pred example5(A)
+   : ground([A])
+   => ground([A]).
+
+:- true pred example5(A)
+   : ( (A=[_A|_B]),
+       mshare([[_A]]),
+       ground([_B]), linear(_A) )
+   => ( mshare([[_A]]),
+        ground([_B]), linear(_A) ).
+
+:- true pred example5(A)
+   : ( (A=[_A|_B]),
+       mshare([[_A],[_B]]),
+       linear(_A), linear(_B) )
+   => ( mshare([[_A],[_A,_B],[_B]]),
+        linear(_A), linear(_B) ).
+
+example5(A).
+example5(A) :-
+    true((mshare([[A],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))),
+    example5([_1|A]),
+    true((mshare([[A],[A,_1],[_1]]),linear(A),linear(_1);mshare([[_1]]),ground([A]),linear(_1))).
+
 

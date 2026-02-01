@@ -39,6 +39,7 @@ memberof(L, T)
    + is_det
    # "@var{L} is a non-empty list of elements of type T".
 
+:- meta_predicate list_nonempty(pred(1),+).
 :- export(list_nonempty/2).
 :- test list_nonempty(int, [1,2,3]) + (not_fails, is_det).
 :- test list_nonempty(int, [3,2,1]) + (not_fails, is_det).

@@ -8,8 +8,8 @@
 :- use_module(library(lists)).
 :- use_module(library(sets)).
 :- use_module(library(lsets)).
-:- use_module(library(terms_vars)).
-:- use_module(library(format)).
+:- use_module(library(terms_vars), [varset/2]).
+:- use_module(library(format), [format/2]).
 
 :- use_module(domain(as_aux)).
 :- use_module(domain(as_bags)).
@@ -30,7 +30,8 @@ asub('$bottom') :- !.
 asub(ASub) :-
    nasub(ASub).
 
-:- prop asub_u(ASub) # "@var{ASub} is an unordered abstract substitution".
+:- prop asub_u(ASub)
+   # "@var{ASub} is an unordered abstract substitution".
 
 asub_u('$bottom') :- !.
 asub_u(ASub) :-
@@ -58,7 +59,7 @@ augment_asub(ASub, Vars, ASub0) :-
 %-------------------------------------------------------------------------
 % unknown_entry(+Sg,+Vars,-Entry)
 %
-% Entry is the "topmost" abstraction for the variable in  Vars
+% Entry is the "topmost" abstraction for the variables in Vars
 % appearing in the literal Sg.
 %
 % It is used when no call or entry assertion exists.
@@ -126,13 +127,14 @@ project(_Sg, Vars, _HvFv_u, ASub, Proj) :-
 
 :- dom_impl(_, call_to_entry/9, [noq]).
 :- pred call_to_entry(+Sv, +Sg, +Hv, +Head, +ClauseKey, +Fv, +Proj, -Entry, -ExtraInfo)
-   :  {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * cgoal * {ordlist(var), same_vars_of(Head)} * cgoal *
-         term * {ordlist(var), independent_from(Hv)} * nasub * ivar * ivar
-   => (asub(Entry))
+   : {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * cgoal * {ordlist(var), same_vars_of(Head)} *
+      cgoal * term * {ordlist(var), independent_from(Hv)} * nasub * ivar * ivar
+   => asub(Entry)
    + (not_fails, is_det).
 
-% In the ExtraInfo parameter put both the Unifier (used when extend_implementation is mgu to increase performance)
-% and the entry substitution (used when extend_implementation is match to increase precision).
+% Put in ExtraInfo both the unifier (used when extend_implementation is mgu
+% in order to increase performance) and the entry substitution (used when
+% extend_implementation is match in order to increase precision).
 
 call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0)) :-
    unifiable_with_occurs_check(Sg, Head, Unifier),
@@ -156,10 +158,8 @@ call_to_entry(_Sv, Sg, Hv, Head, _ClauseKey, Fv, Proj, Entry, (Unifier, Entry0))
 :- dom_impl(_, exit_to_prime/7, [noq]).
 :- pred exit_to_prime(+Sg, +Hv, +Head, +Sv, +Exit, +ExtraInfo, -Prime)
    : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * {ordlist(var), same_vars_of(Sg)} * asub * term * ivar
-   => (asub(Prime))
+   => asub(Prime)
    + (not_fails, is_det).
-
-% I ExtraInfo parameter
 
 exit_to_prime(_Sg, _Hv, _Head, _Sv, '$bottom', _ExtraInfo, '$bottom') :- !.
 exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
@@ -182,7 +182,7 @@ exit_to_prime(_Sg, Hv, _Head, Sv, Exit, (Unifier, Entry0), Prime) :-
 
 :- dom_impl(_, compute_lub/2, [noq]).
 :- pred compute_lub(+ListASub, -LubASub)
-   : list(asub) * ivar => asub(LubASub)
+   : list_nonempty(asub) * ivar => asub(LubASub)
    + (not_fails, is_det).
 
 compute_lub([ASub], ASub).
@@ -190,7 +190,10 @@ compute_lub([ASub1,ASub2|ASubs], LubASub) :-
    compute_lub_el(ASub1, ASub2, ASub3),
    compute_lub([ASub3|ASubs], LubASub).
 
-:- pred compute_lub(+ASub1, +ASub2, -Lub)
+% We use this name for the lub of a pair of abstract subtitutions since it
+% seems to be used by PLAI in the past.
+
+:- pred compute_lub_el(+ASub1, +ASub2, -Lub)
    : asub * asub * ivar => asub(Lub)
    + (not_fails, is_det).
 
@@ -207,8 +210,8 @@ compute_lub_el(ASub1, ASub2, Lub) :-
 % of the clause in which the goal occurs (those over which abstract
 % substitution Call is defined on). I.e., it is like a conjunction of the
 % information in Prime and Call, except that they are defined over
-% different sets of variables, and that Prime is a successor
-% substitution to Call in the execution of the program.
+% different sets of variables, and that Prime is a success substitution
+% to Call in the execution of the program.
 %
 % The only cases when the variables is Sg are a proper superset of the
 % variables in Sv seem to be related to dynamic predicates.
@@ -223,11 +226,9 @@ extend(_Sg, '$bottom', _Sv, _Call, '$bottom') :- !.
 extend(_Sg, Prime, Sv, Call, Succ) :-
    (
       current_pp_flag(as_use_match, no) ->
-         % TODO: replace varset with a more efficient implementation
          varset(Call, Vars),
          copy_term_nat((Sv, Prime), (Sv0, Prime0)),
          build_unifier(Sv, Sv0, MGU),
-         %abs_sort(Prime0, Prime1),
          join(Prime0, Call, CallExtended),
          mgu(CallExtended, [], MGU, Succ0),
          project(Succ0, Vars, Succ)
@@ -244,13 +245,15 @@ build_unifier([V|Rest], [V0|Rest0], [V=V0|RestMGU]) :-
 %
 % Specialized version of call_to_entry + entry_to_exit + exit_to_prime
 % + extend for a fact Head.
+%
+% TODO: What is K ?
 %-------------------------------------------------------------------------
 
 :- dom_impl(_, call_to_success_fact/9, [noq]).
 :- pred call_to_success_fact(+Sg, +Hv, +Head, +K, +Sv, +Call, +Proj, -Prime, -Succ)
    : cgoal * {ordlist(var), same_vars_of(Head)} * cgoal * term *
       {ordlist(var), same_vars_of(Sg), superset_vars_of(Proj)} * nasub * nasub * ivar * ivar
-   => ( nasub(Prime), nasub(Succ), superset_vars_of(Prime, Sv) )
+   => (nasub(Prime), nasub(Succ), superset_vars_of(Prime, Sv))
    + (not_fails, is_det).
 
 call_to_success_fact(Sg, Hv, Head, _K, Sv, Call, _Proj, Prime, Succ) :-
@@ -342,7 +345,6 @@ special_builtin('findall/3', findall(X,_,Z), _, 'findall/3', findall(X,_,Z)).
 special_builtin('free/1', free(X) ,_,'free/1', p(X)).
 special_builtin('recorded/3', recorded(_,Y,Z), _, 'recorded/3',p(Y,Z)).
 special_builtin('retract/1', retract(X), _, 'recorded/3', p(X,b)).
-
 %-------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
@@ -424,9 +426,9 @@ sh_any_arg_all_args(N, Y, Z, Call, [Succ|Succs]):-
    N1 is N-1,
    sh_any_arg_all_args(N1, Y, Z, Call, Succs).
 
-% This operation econdes the effect of T=..L into a substitution, which is then
+% This operation econdes the effect of T=..L into a substitution, which is later
 % given as an input to the abstract unification operator. This only works  if
-% the abstract domains does not keep any information relative to the atoms
+% the abstract domain does not keep any information relative to the atoms
 % occuring in terms, which is true for all the domains in the as_* collection.
 
 '=.._unify'(T, L, [L=T]) :- var(L), !.
@@ -481,7 +483,7 @@ amgu(Sg, Head, ASub, AMGU):-
 %
 % GlbASub is the glb between ASub0 and ASub1.
 %
-% It is used to combine assertions provided by the user with trust
+% It is used to combine the assertions provided by the user using trust
 % predicates with the result of the analysis.
 %------------------------------------------------------------------------%
 
@@ -507,7 +509,7 @@ glb(ASub0, ASub1, Glb):-
 
 :- pred check_ground(+ASub, +Vars)
    : nasub * ordlist(var)
-   + (is_det).
+   + is_det.
 
 check_ground(ASub, Vars) :-
    ng_vars(ASub, NGv),

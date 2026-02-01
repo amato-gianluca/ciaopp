@@ -241,7 +241,7 @@ unknown((ASub_sh, ASub_lin), Vars, (Unk_sh, Unk_lin)) :-
 :- redefining(mgu/4).
 
 mgu(ASub, Fv, Sub, MGU) :-
-   (current_pp_flag(mgu_shlin2_optimize, optimal) ->
+   (current_pp_flag(mgu_shlin_optimize, optimal) ->
       mgu_optimal(ASub, Fv, Sub, MGU)
    ;
       mgu_standard(ASub, Fv, Sub, MGU)

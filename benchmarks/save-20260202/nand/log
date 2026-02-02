@@ -1,0 +1,219 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 32.365 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 4.33 msec.}
+UNKNOWN CALL: nand:state_(_234645,_234646{fixpoint reached by plai using as_shlin2 with local-control off in 54.029 msec.}
+{analyzed by plai in 58.464 msec.}
+}
+{written file results/nand/as_shlin2_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 32.472 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.383 msec.}
+UNKNOWN CALL: nand:state_(_59464,_59465{fixpoint reached by plai using as_shlin2 with local-control off in 63.882 msec.}
+{analyzed by plai in 68.381 msec.}
+}
+{written file results/nand/as_shlin2_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 32.492 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 4.394 msec.}
+UNKNOWN CALL: nand:state_(_74537,_74538{fixpoint reached by plai using as_shlin2 with local-control off in 17.808 msec.}
+{analyzed by plai in 22.331 msec.}
+}
+{written file results/nand/as_shlin2_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 32.84 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 4.377 msec.}
+UNKNOWN CALL: nand:state_(_84177,_84178{fixpoint reached by plai using as_shlin2 with local-control off in 21.47 msec.}
+{analyzed by plai in 25.946 msec.}
+}
+{written file results/nand/as_shlin2_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 29.841 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.367 msec.}
+UNKNOWN CALL: nand:state_(_115974,_115975{fixpoint reached by plai using as_shlin with local-control off in 26.797 msec.}
+{analyzed by plai in 31.262 msec.}
+}
+{written file results/nand/as_shlin_opt_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.687 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 4.354 msec.}
+UNKNOWN CALL: nand:state_(_34446,_34447{fixpoint reached by plai using as_shlin with local-control off in 27.965 msec.}
+{analyzed by plai in 32.417 msec.}
+}
+{written file results/nand/as_shlin_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.507 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 4.371 msec.}
+UNKNOWN CALL: nand:state_(_21321,_21322{fixpoint reached by plai using as_shlin with local-control off in 89.263 msec.}
+{analyzed by plai in 93.743 msec.}
+}
+{written file results/nand/as_shlin_noindcheck.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.899 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 4.332 msec.}
+UNKNOWN CALL: nand:state_(_19046,_19047{fixpoint reached by plai using as_shlin with local-control off in 89.407 msec.}
+{analyzed by plai in 93.841 msec.}
+}
+{written file results/nand/as_shlin_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.438 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.033 msec.}
+{preprocessed for the plai fixpoint in 4.375 msec.}
+UNKNOWN CALL: nand:state_(_384370,_384371{fixpoint reached by plai using as_shlin with local-control off in 83.867 msec.}
+{analyzed by plai in 88.356 msec.}
+}
+{written file results/nand/as_shlin_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 34.117 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 4.388 msec.}
+UNKNOWN CALL: nand:state_(_458529,_458530{fixpoint reached by plai using as_shlin with local-control off in 71.886 msec.}
+{analyzed by plai in 76.39 msec.}
+}
+{written file results/nand/as_shlin_noindcheck_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 29.393 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 4.347 msec.}
+UNKNOWN CALL: nand:state_(_457723,_457724{fixpoint reached by plai using as_shlin with local-control off in 78.059 msec.}
+{analyzed by plai in 82.523 msec.}
+}
+{written file results/nand/as_shlin_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 33.537 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.383 msec.}
+UNKNOWN CALL: nand:state_(_101124,_101125{fixpoint reached by plai using as_sharing with local-control off in 81.494 msec.}
+{analyzed by plai in 85.971 msec.}
+}
+{written file results/nand/as_sharing_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 33.619 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.387 msec.}
+UNKNOWN CALL: nand:state_(_61493,_61494{fixpoint reached by plai using as_sharing with local-control off in 82.171 msec.}
+{analyzed by plai in 86.652 msec.}
+}
+{written file results/nand/as_sharing_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 30.604 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.367 msec.}
+UNKNOWN CALL: nand:state_(_230718,_230719{fixpoint reached by plai using as_sharing with local-control off in 43.997 msec.}
+{analyzed by plai in 48.461 msec.}
+}
+{written file results/nand/as_sharing_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.519 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.032 msec.}
+{preprocessed for the plai fixpoint in 4.364 msec.}
+UNKNOWN CALL: nand:state_(_197951,_197952{fixpoint reached by plai using as_sharing with local-control off in 44.4 msec.}
+{analyzed by plai in 48.871 msec.}
+}
+{written file results/nand/as_sharing_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 32.37 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 4.414 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 39.206 msec.}
+{analyzed by plai in 43.73 msec.}
+}
+{written file results/nand/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl
+{loaded in 31.655 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/nand.pl]
+{init for the plai fixpoint in 0.033 msec.}
+{preprocessed for the plai fixpoint in 4.42 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 34.698 msec.}
+{analyzed by plai in 39.258 msec.}
+}
+{written file results/nand/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

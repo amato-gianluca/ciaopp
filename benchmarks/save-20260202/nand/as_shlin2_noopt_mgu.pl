@@ -1,0 +1,2994 @@
+:- module(_1,[],[default,assertions,nativeprops,dcg]).
+
+:- set_prolog_flag(single_var_warnings,off).
+
+:- set_prolog_flag(multi_arity_warnings,off).
+
+:- dynamic state_/2.
+
+'\006\call_in_module'(nand,_1) :-
+    !,
+    call(_1).
+
+:- entry top.
+
+:- true pred top.
+
+top :-
+    true(true),
+    main(0),
+    true(true).
+
+:- true pred main(N)
+   : (N=0).
+
+main(N) :-
+    true((
+        mshare([[NumVars],[NumGs],[Gs],[NumGs2],[Gs2]]),
+        ground([N]),
+        linear(NumVars),
+        linear(NumGs),
+        linear(Gs),
+        linear(NumGs2),
+        linear(Gs2),
+        shlin2([([NumVars],[NumVars]),([NumGs],[NumGs]),([Gs],[Gs]),([NumGs2],[NumGs2]),([Gs2],[Gs2])])
+    )),
+    init_state(N,NumVars,NumGs,Gs),
+    true((
+        mshare([[NumGs2],[Gs2]]),
+        ground([N,NumVars,NumGs,Gs]),
+        linear(NumGs2),
+        linear(Gs2),
+        shlin2([([NumGs2],[NumGs2]),([Gs2],[Gs2])])
+    )),
+    add_necessary_functions(NumVars,NumGs,Gs,NumGs2,Gs2),
+    true(ground([N,NumVars,NumGs,Gs,NumGs2,Gs2])),
+    test_bounds(NumVars,NumGs2,Gs2),
+    true(ground([N,NumVars,NumGs,Gs,NumGs2,Gs2])),
+    search(NumVars,NumGs2,Gs2),
+    true(fails(_)).
+main(_1).
+
+:- true pred init_state(_A,_B,_C,_D)
+   : ( mshare([[_B],[_C],[_D]]),
+       ground([_A]), linear(_B), linear(_C), linear(_D), shlin2([([_B],[_B]),([_C],[_C]),([_D],[_D])]) )
+   => ground([_A,_B,_C,_D]).
+
+init_state(0,2,3,[function(2,[1,2],[0,3],[],[],[],[],[]),function(1,[2,3],[0,1],[],[],[],[],[]),function(0,[1,3],[0,2],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,100,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+init_state(1,3,4,[function(3,[3,5,6,7],[0,1,2,4],[],[],[],[],[]),function(2,[4,5,6,7],[0,1,2,3],[],[],[],[],[]),function(1,[2,3,6,7],[0,1,4,5],[],[],[],[],[]),function(0,[1,3,5,7],[0,2,4,6],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,100,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+init_state(2,3,4,[function(3,[1,2,4,6,7],[0,3,5],[],[],[],[],[]),function(2,[4,5,6,7],[0,1,2,3],[],[],[],[],[]),function(1,[2,3,6,7],[0,1,4,5],[],[],[],[],[]),function(0,[1,3,5,7],[0,2,4,6],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,100,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+init_state(3,3,4,[function(3,[1,2,4,7],[0,3,5,6],[],[],[],[],[]),function(2,[4,5,6,7],[0,1,2,3],[],[],[],[],[]),function(1,[2,3,6,7],[0,1,4,5],[],[],[],[],[]),function(0,[1,3,5,7],[0,2,4,6],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,100,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+init_state(4,3,5,[function(4,[3,5,6,7],[0,1,2,4],[],[],[],[],[]),function(3,[1,2,4,7],[0,3,5,6],[],[],[],[],[]),function(2,[4,5,6,7],[0,1,2,3],[],[],[],[],[]),function(1,[2,3,6,7],[0,1,4,5],[],[],[],[],[]),function(0,[1,3,5,7],[0,2,4,6],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,100,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+init_state(5,5,8,[function(7,[1,3,4,6,9,11,12,14,16,18,21,23,24,26,29,31],[0,2,5,7,8,10,13,15,17,19,20,22,25,27,28,30],[],[],[],[],[]),function(6,[2,3,5,6,8,9,12,15,17,18,20,21,24,27,30,31],[0,1,4,7,10,11,13,14,16,19,22,23,25,26,28,29],[],[],[],[],[]),function(5,[7,10,11,13,14,15,19,22,23,25,26,27,28,29,30,31],[0,1,2,3,4,5,6,8,9,12,16,17,18,20,21,24],[],[],[],[],[]),function(4,[16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[],[],[],[],[]),function(3,[8,9,10,11,12,13,14,15,24,25,26,27,28,29,30,31],[0,1,2,3,4,5,6,7,16,17,18,19,20,21,22,23],[],[],[],[],[]),function(2,[4,5,6,7,12,13,14,15,20,21,22,23,28,29,30,31],[0,1,2,3,8,9,10,11,16,17,18,19,24,25,26,27],[],[],[],[],[]),function(1,[2,3,6,7,10,11,14,15,18,19,22,23,26,27,30,31],[0,1,4,5,8,9,12,13,16,17,20,21,24,25,28,29],[],[],[],[],[]),function(0,[1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31],[0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30],[],[],[],[],[])]) :-
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )),
+    update_bounds(_1,21,_2),
+    true((
+        mshare([[_1],[_2]]),
+        linear(_1),
+        linear(_2),
+        shlin2([([_1],[_1]),([_2],[_2])])
+    )).
+
+:- true pred search(NumVars,NumGsIn,GsIn)
+   : ground([NumVars,NumGsIn,GsIn])
+   + fails.
+
+search(NumVars,NumGsIn,GsIn) :-
+    true((
+        mshare([[Gj],[Vector],[NumGs],[Gs],[NumGsOut],[GsOut]]),
+        ground([NumVars,NumGsIn,GsIn]),
+        linear(Gj),
+        linear(Vector),
+        linear(NumGs),
+        linear(Gs),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([Gj],[Gj]),([Vector],[Vector]),([NumGs],[NumGs]),([Gs],[Gs]),([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    select_vector(NumVars,NumGsIn,GsIn,Gj,Vector),
+    !,
+    true((
+        mshare([[NumGs],[Gs],[NumGsOut],[GsOut]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector]),
+        linear(NumGs),
+        linear(Gs),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGs],[NumGs]),([Gs],[Gs]),([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    cover_vector(NumVars,NumGsIn,GsIn,Gj,Vector,NumGs,Gs),
+    true((
+        mshare([[NumGsOut],[GsOut]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector,NumGs,Gs]),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    add_necessary_functions(NumVars,NumGs,Gs,NumGsOut,GsOut),
+    true(ground([NumVars,NumGsIn,GsIn,Gj,Vector,NumGs,Gs,NumGsOut,GsOut])),
+    test_bounds(NumVars,NumGsOut,GsOut),
+    true(ground([NumVars,NumGsIn,GsIn,Gj,Vector,NumGs,Gs,NumGsOut,GsOut])),
+    search(NumVars,NumGsOut,GsOut),
+    true(fails(_)).
+search(NumVars,NumGs,Gs) :-
+    true(ground([NumVars,NumGs,Gs])),
+    update_bounds(NumVars,NumGs,Gs),
+    true(ground([NumVars,NumGs,Gs])),
+    fail,
+    true(fails(_)).
+
+:- true pred select_vector(NumVars,NumGs,Gs,Gj,Vector)
+   : ( mshare([[Gj],[Vector]]),
+       ground([NumVars,NumGs,Gs]), linear(Gj), linear(Vector), shlin2([([Gj],[Gj]),([Vector],[Vector])]) )
+   => ground([NumVars,NumGs,Gs,Gj,Vector]).
+
+select_vector(NumVars,NumGs,Gs,Gj,Vector) :-
+    true((
+        mshare([[Gj],[Vector],[Type],[_1]]),
+        ground([NumVars,NumGs,Gs]),
+        linear(Gj),
+        linear(Vector),
+        linear(Type),
+        linear(_1),
+        shlin2([([Gj],[Gj]),([Vector],[Vector]),([Type],[Type]),([_1],[_1])])
+    )),
+    select_vector(Gs,NumVars,NumGs,Gs,dummy,0,nf,999,Gj,Vector,Type,_1),
+    !,
+    true(ground([NumVars,NumGs,Gs,Gj,Vector,Type,_1])),
+    'select_vector/5/1/$disj/1'(Type),
+    true(ground([NumVars,NumGs,Gs,Gj,Vector,Type,_1])),
+    'select_vector/5/1/$disj/2'(Type),
+    true(ground([NumVars,NumGs,Gs,Gj,Vector,Type,_1])).
+
+:- true pred 'select_vector/5/1/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'select_vector/5/1/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=cov,
+    !,
+    true(ground([Type])),
+    fail,
+    true(fails(_)).
+'select_vector/5/1/$disj/1'(Type).
+
+:- true pred 'select_vector/5/1/$disj/2'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'select_vector/5/1/$disj/2'(Type) :-
+    true(ground([Type])),
+    Type=nf,
+    !,
+    true(ground([Type])),
+    fail,
+    true(fails(_)).
+'select_vector/5/1/$disj/2'(Type).
+
+:- true pred select_vector(_A,NumVars,_1,_2,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout)
+   : ( (_A=_2), (Gj=dummy), (V=0), (Type=nf), (N=999),
+       mshare([[GjOut],[Vout],[TypeOut],[Nout]]),
+       ground([_A,NumVars,_1]), linear(GjOut), linear(Vout), linear(TypeOut), linear(Nout), shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,NumVars,_1,GjOut,Vout,TypeOut,Nout]).
+
+:- true pred select_vector(_A,NumVars,_1,_2,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout)
+   : ( mshare([[GjOut],[Vout],[TypeOut],[Nout]]),
+       ground([_A,NumVars,_1,_2,Gj,V,Type,N]), linear(GjOut), linear(Vout), linear(TypeOut), linear(Nout), shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,NumVars,_1,_2,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout]).
+
+select_vector([Gk|_3],NumVars,_1,_2,Gj,V,Type,N,Gj,V,Type,N) :-
+    true((
+        mshare([[K]]),
+        ground([NumVars,_1,_2,Gj,V,Type,N,Gk,_3]),
+        linear(K),
+        shlin2([([K],[K])])
+    )),
+    function_number(Gk,K),
+    true(ground([NumVars,_1,_2,Gj,V,Type,N,Gk,_3,K])),
+    K<NumVars,
+    true(ground([NumVars,_1,_2,Gj,V,Type,N,Gk,_3,K])).
+select_vector([Gk|Gks],NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,GjOut,Vout,TypeOut,Nout) :-
+    true((
+        mshare([[GjOut],[Vout],[TypeOut],[Nout],[K],[Tk],[Gj],[V],[Type],[N]]),
+        ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gk,Gks]),
+        linear(GjOut),
+        linear(Vout),
+        linear(TypeOut),
+        linear(Nout),
+        linear(K),
+        linear(Tk),
+        linear(Gj),
+        linear(V),
+        linear(Type),
+        linear(N),
+        shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([K],[K]),([Tk],[Tk]),([Gj],[Gj]),([V],[V]),([Type],[Type]),([N],[N])])
+    )),
+    function_number(Gk,K),
+    true((
+        mshare([[GjOut],[Vout],[TypeOut],[Nout],[Tk],[Gj],[V],[Type],[N]]),
+        ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gk,Gks,K]),
+        linear(GjOut),
+        linear(Vout),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Tk),
+        linear(Gj),
+        linear(V),
+        linear(Type),
+        linear(N),
+        shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([Tk],[Tk]),([Gj],[Gj]),([V],[V]),([Type],[Type]),([N],[N])])
+    )),
+    K>=NumVars,
+    true((
+        mshare([[GjOut],[Vout],[TypeOut],[Nout],[Tk],[Gj],[V],[Type],[N]]),
+        ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gk,Gks,K]),
+        linear(GjOut),
+        linear(Vout),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Tk),
+        linear(Gj),
+        linear(V),
+        linear(Type),
+        linear(N),
+        shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([Tk],[Tk]),([Gj],[Gj]),([V],[V]),([Type],[Type]),([N],[N])])
+    )),
+    true_set(Gk,Tk),
+    true((
+        mshare([[GjOut],[Vout],[TypeOut],[Nout],[Gj],[V],[Type],[N]]),
+        ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gk,Gks,K,Tk]),
+        linear(GjOut),
+        linear(Vout),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gj),
+        linear(V),
+        linear(Type),
+        linear(N),
+        shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([Gj],[Gj]),([V],[V]),([Type],[Type]),([N],[N])])
+    )),
+    select_vector(Tk,Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gj,V,Type,N),
+    true((
+        mshare([[GjOut],[Vout],[TypeOut],[Nout]]),
+        ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,Gk,Gks,K,Tk,Gj,V,Type,N]),
+        linear(GjOut),
+        linear(Vout),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    select_vector(Gks,NumVars,NumGs,Gs,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout),
+    true(ground([NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,GjOut,Vout,TypeOut,Nout,Gk,Gks,K,Tk,Gj,V,Type,N])).
+
+:- true pred select_vector(_A,_1,_2,_3,_4,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout)
+   : ( mshare([[GjOut],[Vout],[TypeOut],[Nout]]),
+       ground([_A,_1,_2,_3,_4,Gj,V,Type,N]), linear(GjOut), linear(Vout), linear(TypeOut), linear(Nout), shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,_3,_4,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout]).
+
+:- true pred select_vector(_A,_1,_2,_3,_4,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout)
+   : ( (Gj=dummy), (V=0), (Type=nf), (N=999),
+       mshare([[GjOut],[Vout],[Nout]]),
+       ground([_A,_1,_2,_3,_4,TypeOut]), linear(GjOut), linear(Vout), linear(Nout), shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,_3,_4,GjOut,Vout,TypeOut,Nout]).
+
+:- true pred select_vector(_A,_1,_2,_3,_4,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout)
+   : ( mshare([[GjOut],[Vout],[Nout]]),
+       ground([_A,_1,_2,_3,_4,Gj,V,Type,N,TypeOut]), linear(GjOut), linear(Vout), linear(Nout), shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,_3,_4,Gj,V,Type,N,GjOut,Vout,TypeOut,Nout]).
+
+select_vector([],_1,_2,_3,_4,Gj,V,Type,N,Gj,V,Type,N).
+select_vector([V|Vs],Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,GjOut,Vout,TypeOut,Nout) :-
+    true((mshare([[GjOut],[Vout],[TypeOut],[Nout],[Type],[N],[Gj2],[V2],[Type2],[N2]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,V,Vs]),linear(GjOut),linear(Vout),linear(TypeOut),linear(Nout),linear(Type),linear(N),linear(Gj2),linear(V2),linear(Type2),linear(N2),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([Type],[Type]),([N],[N]),([Gj2],[Gj2]),([V2],[V2]),([Type2],[Type2]),([N2],[N2])]);mshare([[GjOut],[Vout],[Nout],[Type],[N],[Gj2],[V2],[Type2],[N2]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,TypeOut,V,Vs]),linear(GjOut),linear(Vout),linear(Nout),linear(Type),linear(N),linear(Gj2),linear(V2),linear(Type2),linear(N2),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([Nout],[Nout]),([Type],[Type]),([N],[N]),([Gj2],[Gj2]),([V2],[V2]),([Type2],[Type2]),([N2],[N2])]))),
+    vector_cover_type(NumVars,Gs,Gk,V,Type,N),
+    true((mshare([[GjOut],[Vout],[TypeOut],[Nout],[Gj2],[V2],[Type2],[N2]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,V,Vs,Type,N]),linear(GjOut),linear(Vout),linear(TypeOut),linear(Nout),linear(Gj2),linear(V2),linear(Type2),linear(N2),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout]),([Gj2],[Gj2]),([V2],[V2]),([Type2],[Type2]),([N2],[N2])]);mshare([[GjOut],[Vout],[Nout],[Gj2],[V2],[Type2],[N2]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,TypeOut,V,Vs,Type,N]),linear(GjOut),linear(Vout),linear(Nout),linear(Gj2),linear(V2),linear(Type2),linear(N2),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([Nout],[Nout]),([Gj2],[Gj2]),([V2],[V2]),([Type2],[Type2]),([N2],[N2])]))),
+    best_vector(GjIn,Vin,TypeIn,Nin,Gk,V,Type,N,Gj2,V2,Type2,N2),
+    true((mshare([[GjOut],[Vout],[TypeOut],[Nout]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,V,Vs,Type,N,Gj2,V2,Type2,N2]),linear(GjOut),linear(Vout),linear(TypeOut),linear(Nout),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([TypeOut],[TypeOut]),([Nout],[Nout])]);mshare([[GjOut],[Vout],[Nout]]),ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,TypeOut,V,Vs,Type,N,Gj2,V2,Type2,N2]),linear(GjOut),linear(Vout),linear(Nout),shlin2([([GjOut],[GjOut]),([Vout],[Vout]),([Nout],[Nout])]))),
+    select_vector(Vs,Gk,NumVars,NumGs,Gs,Gj2,V2,Type2,N2,GjOut,Vout,TypeOut,Nout),
+    true(ground([Gk,NumVars,NumGs,Gs,GjIn,Vin,TypeIn,Nin,GjOut,Vout,TypeOut,Nout,V,Vs,Type,N,Gj2,V2,Type2,N2])).
+
+:- true pred vector_cover_type(NumVars,Gs,Gj,Vector,Type,NumCovers)
+   : ( mshare([[Type],[NumCovers]]),
+       ground([NumVars,Gs,Gj,Vector]), linear(Type), linear(NumCovers), shlin2([([Type],[Type]),([NumCovers],[NumCovers])]) )
+   => ground([NumVars,Gs,Gj,Vector,Type,NumCovers]).
+
+vector_cover_type(NumVars,Gs,Gj,Vector,Type,NumCovers) :-
+    true((
+        mshare([[Type],[NumCovers],[IPs],[CIs],[Fj],[T],[N]]),
+        ground([NumVars,Gs,Gj,Vector]),
+        linear(Type),
+        linear(NumCovers),
+        linear(IPs),
+        linear(CIs),
+        linear(Fj),
+        linear(T),
+        linear(N),
+        shlin2([([Type],[Type]),([NumCovers],[NumCovers]),([IPs],[IPs]),([CIs],[CIs]),([Fj],[Fj]),([T],[T]),([N],[N])])
+    )),
+    immediate_predecessors(Gj,IPs),
+    true((
+        mshare([[Type],[NumCovers],[CIs],[Fj],[T],[N]]),
+        ground([NumVars,Gs,Gj,Vector,IPs]),
+        linear(Type),
+        linear(NumCovers),
+        linear(CIs),
+        linear(Fj),
+        linear(T),
+        linear(N),
+        shlin2([([Type],[Type]),([NumCovers],[NumCovers]),([CIs],[CIs]),([Fj],[Fj]),([T],[T]),([N],[N])])
+    )),
+    conceivable_inputs(Gj,CIs),
+    true((
+        mshare([[Type],[NumCovers],[Fj],[T],[N]]),
+        ground([NumVars,Gs,Gj,Vector,IPs,CIs]),
+        linear(Type),
+        linear(NumCovers),
+        linear(Fj),
+        linear(T),
+        linear(N),
+        shlin2([([Type],[Type]),([NumCovers],[NumCovers]),([Fj],[Fj]),([T],[T]),([N],[N])])
+    )),
+    false_set(Gj,Fj),
+    true((
+        mshare([[Type],[NumCovers],[T],[N]]),
+        ground([NumVars,Gs,Gj,Vector,IPs,CIs,Fj]),
+        linear(Type),
+        linear(NumCovers),
+        linear(T),
+        linear(N),
+        shlin2([([Type],[Type]),([NumCovers],[NumCovers]),([T],[T]),([N],[N])])
+    )),
+    cover_type1(IPs,Gs,Vector,nf,0,T,N),
+    true((
+        mshare([[Type],[NumCovers]]),
+        ground([NumVars,Gs,Gj,Vector,IPs,CIs,Fj,T,N]),
+        linear(Type),
+        linear(NumCovers),
+        shlin2([([Type],[Type]),([NumCovers],[NumCovers])])
+    )),
+    cover_type2(CIs,Gs,NumVars,Fj,Vector,T,N,Type,NumCovers),
+    true(ground([NumVars,Gs,Gj,Vector,Type,NumCovers,IPs,CIs,Fj,T,N])).
+
+:- true pred cover_type1(_A,_1,_2,T,N,TypeOut,Nout)
+   : ( (T=nf), (N=0),
+       mshare([[TypeOut],[Nout]]),
+       ground([_A,_1,_2]), linear(TypeOut), linear(Nout), shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,TypeOut,Nout]).
+
+:- true pred cover_type1(_A,_1,_2,T,N,TypeOut,Nout)
+   : ( mshare([[TypeOut],[Nout]]),
+       ground([_A,_1,_2,T,N]), linear(TypeOut), linear(Nout), shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,T,N,TypeOut,Nout]).
+
+cover_type1([],_1,_2,T,N,T,N).
+cover_type1([I|IPs],Gs,V,TypeIn,Nin,TypeOut,Nout) :-
+    true((
+        mshare([[TypeOut],[Nout],[Gi],[Ti],[Fi],[Type],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gi),
+        linear(Ti),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Gi],[Gi]),([Ti],[Ti]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    function(I,Gs,Gi),
+    true((
+        mshare([[TypeOut],[Nout],[Ti],[Fi],[Type],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Ti),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Ti],[Ti]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    true_set(Gi,Ti),
+    true((
+        mshare([[TypeOut],[Nout],[Fi],[Type],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi,Ti]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    'cover_type1/7/2/$disj/1'(V,Ti),
+    !,
+    true((
+        mshare([[TypeOut],[Nout],[Fi],[Type],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi,Ti]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    false_set(Gi,Fi),
+    true((
+        mshare([[TypeOut],[Nout],[Type],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi,Ti,Fi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Type],[Type]),([N],[N])])
+    )),
+    'cover_type1/7/2/$disj/2'(V,TypeIn,Fi,Type),
+    true((
+        mshare([[TypeOut],[Nout],[N]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi,Ti,Fi,Type]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([N],[N])])
+    )),
+    N is Nin+1,
+    true((
+        mshare([[TypeOut],[Nout]]),
+        ground([Gs,V,TypeIn,Nin,I,IPs,Gi,Ti,Fi,Type,N]),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    cover_type1(IPs,Gs,V,Type,N,TypeOut,Nout),
+    true(ground([Gs,V,TypeIn,Nin,TypeOut,Nout,I,IPs,Gi,Ti,Fi,Type,N])).
+cover_type1([_1|IPs],Gs,V,TypeIn,Nin,TypeOut,Nout) :-
+    true((
+        mshare([[TypeOut],[Nout]]),
+        ground([Gs,V,TypeIn,Nin,_1,IPs]),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    cover_type1(IPs,Gs,V,TypeIn,Nin,TypeOut,Nout),
+    true(ground([Gs,V,TypeIn,Nin,TypeOut,Nout,_1,IPs])).
+
+:- true pred 'cover_type1/7/2/$disj/1'(V,Ti)
+   : ground([V,Ti])
+   => ground([V,Ti]).
+
+'cover_type1/7/2/$disj/1'(V,Ti) :-
+    true(ground([V,Ti])),
+    set_member(V,Ti),
+    !,
+    true(ground([V,Ti])),
+    fail,
+    true(fails(_)).
+'cover_type1/7/2/$disj/1'(V,Ti).
+
+:- true pred 'cover_type1/7/2/$disj/2'(V,TypeIn,Fi,Type)
+   : ( mshare([[Type]]),
+       ground([V,TypeIn,Fi]), linear(Type), shlin2([([Type],[Type])]) )
+   => ground([V,TypeIn,Fi,Type]).
+
+'cover_type1/7/2/$disj/2'(V,TypeIn,Fi,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([V,TypeIn,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    set_member(V,Fi),
+    !,
+    true((
+        mshare([[Type]]),
+        ground([V,TypeIn,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,cov,Type),
+    true(ground([V,TypeIn,Fi,Type])).
+'cover_type1/7/2/$disj/2'(V,TypeIn,Fi,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([V,TypeIn,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,exp,Type),
+    true(ground([V,TypeIn,Fi,Type])).
+
+:- true pred cover_type2(_A,_1,_2,_3,_4,T,N,TypeOut,Nout)
+   : ( mshare([[TypeOut],[Nout]]),
+       ground([_A,_1,_2,_3,_4,T,N]), linear(TypeOut), linear(Nout), shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])]) )
+   => ground([_A,_1,_2,_3,_4,T,N,TypeOut,Nout]).
+
+cover_type2([],_1,_2,_3,_4,T,N,T,N).
+cover_type2([I|CIs],Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout) :-
+    true((
+        mshare([[TypeOut],[Nout],[Gi],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gi),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Gi],[Gi]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    I<NumVars,
+    true((
+        mshare([[TypeOut],[Nout],[Gi],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gi),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Gi],[Gi]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    function(I,Gs,Gi),
+    true((
+        mshare([[TypeOut],[Nout],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    false_set(Gi,Fi),
+    true((
+        mshare([[TypeOut],[Nout],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Fi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Type],[Type]),([N],[N])])
+    )),
+    set_member(V,Fi),
+    !,
+    true((
+        mshare([[TypeOut],[Nout],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Fi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Type],[Type]),([N],[N])])
+    )),
+    max_type(TypeIn,var,Type),
+    true((
+        mshare([[TypeOut],[Nout],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Fi,Type]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([N],[N])])
+    )),
+    N is Nin+1,
+    true((
+        mshare([[TypeOut],[Nout]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Fi,Type,N]),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    cover_type2(CIs,Gs,NumVars,Fj,V,Type,N,TypeOut,Nout),
+    true(ground([Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout,I,CIs,Gi,Fi,Type,N])).
+cover_type2([I|CIs],Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout) :-
+    true((
+        mshare([[TypeOut],[Nout],[Gi],[Ti],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gi),
+        linear(Ti),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Gi],[Gi]),([Ti],[Ti]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    I>=NumVars,
+    true((
+        mshare([[TypeOut],[Nout],[Gi],[Ti],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Gi),
+        linear(Ti),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Gi],[Gi]),([Ti],[Ti]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    function(I,Gs,Gi),
+    true((
+        mshare([[TypeOut],[Nout],[Ti],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Ti),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Ti],[Ti]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    true_set(Gi,Ti),
+    true((
+        mshare([[TypeOut],[Nout],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Ti]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    'cover_type2/9/3/$disj/1'(V,Ti),
+    !,
+    true((
+        mshare([[TypeOut],[Nout],[Fi],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Ti]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Fi),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Fi],[Fi]),([Type],[Type]),([N],[N])])
+    )),
+    false_set(Gi,Fi),
+    true((
+        mshare([[TypeOut],[Nout],[Type],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Ti,Fi]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(Type),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([Type],[Type]),([N],[N])])
+    )),
+    'cover_type2/9/3/$disj/2'(Fj,V,TypeIn,Ti,Fi,Type),
+    true((
+        mshare([[TypeOut],[Nout],[N]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Ti,Fi,Type]),
+        linear(TypeOut),
+        linear(Nout),
+        linear(N),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout]),([N],[N])])
+    )),
+    N is Nin+1,
+    true((
+        mshare([[TypeOut],[Nout]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,I,CIs,Gi,Ti,Fi,Type,N]),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    cover_type2(CIs,Gs,NumVars,Fj,V,Type,N,TypeOut,Nout),
+    true(ground([Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout,I,CIs,Gi,Ti,Fi,Type,N])).
+cover_type2([_1|CIs],Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout) :-
+    true((
+        mshare([[TypeOut],[Nout]]),
+        ground([Gs,NumVars,Fj,V,TypeIn,Nin,_1,CIs]),
+        linear(TypeOut),
+        linear(Nout),
+        shlin2([([TypeOut],[TypeOut]),([Nout],[Nout])])
+    )),
+    cover_type2(CIs,Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout),
+    true(ground([Gs,NumVars,Fj,V,TypeIn,Nin,TypeOut,Nout,_1,CIs])).
+
+:- true pred 'cover_type2/9/3/$disj/1'(V,Ti)
+   : ground([V,Ti])
+   => ground([V,Ti]).
+
+'cover_type2/9/3/$disj/1'(V,Ti) :-
+    true(ground([V,Ti])),
+    set_member(V,Ti),
+    !,
+    true(ground([V,Ti])),
+    fail,
+    true(fails(_)).
+'cover_type2/9/3/$disj/1'(V,Ti).
+
+:- true pred 'cover_type2/9/3/$disj/2'(Fj,V,TypeIn,Ti,Fi,Type)
+   : ( mshare([[Type]]),
+       ground([Fj,V,TypeIn,Ti,Fi]), linear(Type), shlin2([([Type],[Type])]) )
+   => ground([Fj,V,TypeIn,Ti,Fi,Type]).
+
+'cover_type2/9/3/$disj/2'(Fj,V,TypeIn,Ti,Fi,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([Fj,V,TypeIn,Ti,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    set_member(V,Fi),
+    !,
+    true((
+        mshare([[Type]]),
+        ground([Fj,V,TypeIn,Ti,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    'cover_type2/9/3/$disj/2/6/1/$disj/1'(Fj,TypeIn,Ti,Type),
+    true(ground([Fj,V,TypeIn,Ti,Fi,Type])).
+'cover_type2/9/3/$disj/2'(Fj,V,TypeIn,Ti,Fi,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([Fj,V,TypeIn,Ti,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    set_subset(Fj,Ti),
+    !,
+    true((
+        mshare([[Type]]),
+        ground([Fj,V,TypeIn,Ti,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,exf,Type),
+    true(ground([Fj,V,TypeIn,Ti,Fi,Type])).
+'cover_type2/9/3/$disj/2'(Fj,V,TypeIn,Ti,Fi,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([Fj,V,TypeIn,Ti,Fi]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,exmcf,Type),
+    true(ground([Fj,V,TypeIn,Ti,Fi,Type])).
+
+:- true pred 'cover_type2/9/3/$disj/2/6/1/$disj/1'(Fj,TypeIn,Ti,Type)
+   : ( mshare([[Type]]),
+       ground([Fj,TypeIn,Ti]), linear(Type), shlin2([([Type],[Type])]) )
+   => ground([Fj,TypeIn,Ti,Type]).
+
+'cover_type2/9/3/$disj/2/6/1/$disj/1'(Fj,TypeIn,Ti,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([Fj,TypeIn,Ti]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    set_subset(Fj,Ti),
+    !,
+    true((
+        mshare([[Type]]),
+        ground([Fj,TypeIn,Ti]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,fcn,Type),
+    true(ground([Fj,TypeIn,Ti,Type])).
+'cover_type2/9/3/$disj/2/6/1/$disj/1'(Fj,TypeIn,Ti,Type) :-
+    true((
+        mshare([[Type]]),
+        ground([Fj,TypeIn,Ti]),
+        linear(Type),
+        shlin2([([Type],[Type])])
+    )),
+    max_type(TypeIn,mcf,Type),
+    true(ground([Fj,TypeIn,Ti,Type])).
+
+:- true pred best_vector(Gj1,_1,_2,_3,Gj2,V2,Type2,N2,_A,V1,Type1,N1)
+   : ( mshare([[_A],[V1],[Type1],[N1]]),
+       ground([Gj1,_1,_2,_3,Gj2,V2,Type2,N2]), linear(_A), linear(V1), linear(Type1), linear(N1), shlin2([([_A],[_A]),([V1],[V1]),([Type1],[Type1]),([N1],[N1])]) )
+   => ground([Gj1,_1,_2,_3,Gj2,V2,Type2,N2,_A,V1,Type1,N1]).
+
+best_vector(dummy,_1,_2,_3,Gj2,V2,Type2,N2,Gj2,V2,Type2,N2) :-
+    !,
+    true(ground([_1,_2,_3,Gj2,V2,Type2,N2])).
+best_vector(Gj1,V1,Type1,N1,dummy,_1,_2,_3,Gj1,V1,Type1,N1) :-
+    !,
+    true(ground([Gj1,V1,Type1,N1,_1,_2,_3])).
+best_vector(Gj1,V1,Type,N1,Gj2,_1,Type,N2,Gj1,V1,Type,N1) :-
+    true((
+        mshare([[J]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,N2]),
+        linear(J),
+        shlin2([([J],[J])])
+    )),
+    function_number(Gj1,J),
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,N2,J])),
+    function_number(Gj2,J),
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,N2,J])),
+    N1<N2,
+    !,
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,N2,J])).
+best_vector(Gj1,_1,Type,N1,Gj2,V2,Type,N2,Gj2,V2,Type,N2) :-
+    true((
+        mshare([[J]]),
+        ground([Gj1,_1,Type,N1,Gj2,V2,N2]),
+        linear(J),
+        shlin2([([J],[J])])
+    )),
+    function_number(Gj1,J),
+    true(ground([Gj1,_1,Type,N1,Gj2,V2,N2,J])),
+    function_number(Gj2,J),
+    true(ground([Gj1,_1,Type,N1,Gj2,V2,N2,J])),
+    N1>=N2,
+    !,
+    true(ground([Gj1,_1,Type,N1,Gj2,V2,N2,J])).
+best_vector(Gj1,V1,Type,N1,Gj2,_1,Type,_2,Gj1,V1,Type,N1) :-
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    'best_vector/12/5/$disj/1'(Type),
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    function_number(Gj1,J1),
+    true((
+        mshare([[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1]),
+        linear(J2),
+        shlin2([([J2],[J2])])
+    )),
+    function_number(Gj2,J2),
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1,J2])),
+    J1>J2,
+    !,
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1,J2])).
+best_vector(Gj1,_1,Type,_2,Gj2,V2,Type,N2,Gj2,V2,Type,N2) :-
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    'best_vector/12/6/$disj/1'(Type),
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    function_number(Gj1,J1),
+    true((
+        mshare([[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1]),
+        linear(J2),
+        shlin2([([J2],[J2])])
+    )),
+    function_number(Gj2,J2),
+    true(ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1,J2])),
+    J1<J2,
+    !,
+    true(ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1,J2])).
+best_vector(Gj1,V1,Type,N1,Gj2,_1,Type,_2,Gj1,V1,Type,N1) :-
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    'best_vector/12/7/$disj/1'(Type),
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    function_number(Gj1,J1),
+    true((
+        mshare([[J2]]),
+        ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1]),
+        linear(J2),
+        shlin2([([J2],[J2])])
+    )),
+    function_number(Gj2,J2),
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1,J2])),
+    J1<J2,
+    !,
+    true(ground([Gj1,V1,Type,N1,Gj2,_1,_2,J1,J2])).
+best_vector(Gj1,_1,Type,_2,Gj2,V2,Type,N2,Gj2,V2,Type,N2) :-
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    'best_vector/12/8/$disj/1'(Type),
+    true((
+        mshare([[J1],[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2]),
+        linear(J1),
+        linear(J2),
+        shlin2([([J1],[J1]),([J2],[J2])])
+    )),
+    function_number(Gj1,J1),
+    true((
+        mshare([[J2]]),
+        ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1]),
+        linear(J2),
+        shlin2([([J2],[J2])])
+    )),
+    function_number(Gj2,J2),
+    true(ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1,J2])),
+    J1>J2,
+    !,
+    true(ground([Gj1,_1,Type,_2,Gj2,V2,N2,J1,J2])).
+best_vector(Gj1,V1,Type1,N1,_1,_2,Type2,_3,Gj1,V1,Type1,N1) :-
+    true(ground([Gj1,V1,Type1,N1,_1,_2,Type2,_3])),
+    type_order(Type2,Type1),
+    !,
+    true(ground([Gj1,V1,Type1,N1,_1,_2,Type2,_3])).
+best_vector(_1,_2,Type1,_3,Gj2,V2,Type2,N2,Gj2,V2,Type2,N2) :-
+    true(ground([_1,_2,Type1,_3,Gj2,V2,Type2,N2])),
+    type_order(Type1,Type2),
+    !,
+    true(ground([_1,_2,Type1,_3,Gj2,V2,Type2,N2])).
+
+:- true pred 'best_vector/12/5/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/5/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=exp,
+    true(ground([Type])).
+'best_vector/12/5/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=var,
+    true(ground([Type])).
+
+:- true pred 'best_vector/12/6/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/6/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=exp,
+    true(ground([Type])).
+'best_vector/12/6/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=var,
+    true(ground([Type])).
+
+:- true pred 'best_vector/12/7/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/7/$disj/1'(Type) :-
+    true(ground([Type])),
+    'best_vector/12/7/$disj/1/1/1/$disj/1'(Type),
+    !,
+    true(ground([Type])),
+    fail,
+    true(fails(_)).
+'best_vector/12/7/$disj/1'(Type).
+
+:- true pred 'best_vector/12/7/$disj/1/1/1/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/7/$disj/1/1/1/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=exp,
+    true(ground([Type])).
+'best_vector/12/7/$disj/1/1/1/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=var,
+    true(ground([Type])).
+
+:- true pred 'best_vector/12/8/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/8/$disj/1'(Type) :-
+    true(ground([Type])),
+    'best_vector/12/8/$disj/1/1/1/$disj/1'(Type),
+    !,
+    true(ground([Type])),
+    fail,
+    true(fails(_)).
+'best_vector/12/8/$disj/1'(Type).
+
+:- true pred 'best_vector/12/8/$disj/1/1/1/$disj/1'(Type)
+   : ground([Type])
+   => ground([Type]).
+
+'best_vector/12/8/$disj/1/1/1/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=exp,
+    true(ground([Type])).
+'best_vector/12/8/$disj/1/1/1/$disj/1'(Type) :-
+    true(ground([Type])),
+    Type=var,
+    true(ground([Type])).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=exmcf),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=exf),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=mcf),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=fcn),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=var),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=exp),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+:- true pred max_type(T1,T2,_A)
+   : ( (T2=cov),
+       mshare([[_A]]),
+       ground([T1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([T1,_A]).
+
+max_type(T1,T2,T1) :-
+    true(ground([T1,T2])),
+    type_order(T1,T2),
+    !,
+    true(ground([T1,T2])).
+max_type(T1,T2,T2) :-
+    true(ground([T1,T2])),
+    'max_type/3/2/$disj/1'(T1,T2),
+    !,
+    true(ground([T1,T2])).
+
+:- true pred 'max_type/3/2/$disj/1'(T1,T2)
+   : ground([T1,T2])
+   => ground([T1,T2]).
+
+'max_type/3/2/$disj/1'(T1,T2) :-
+    true(ground([T1,T2])),
+    type_order(T1,T2),
+    !,
+    true(ground([T1,T2])),
+    fail,
+    true(fails(_)).
+'max_type/3/2/$disj/1'(T1,T2).
+
+:- true pred type_order(_A,_B)
+   : ground([_A,_B])
+   => ground([_A,_B]).
+
+type_order(cov,exp).
+type_order(cov,var).
+type_order(cov,fcn).
+type_order(cov,mcf).
+type_order(cov,exf).
+type_order(cov,exmcf).
+type_order(cov,nf).
+type_order(exp,var).
+type_order(exp,fcn).
+type_order(exp,mcf).
+type_order(exp,exf).
+type_order(exp,exmcf).
+type_order(exp,nf).
+type_order(var,fcn).
+type_order(var,mcf).
+type_order(var,exf).
+type_order(var,exmcf).
+type_order(var,nf).
+type_order(fcn,mcf).
+type_order(fcn,exf).
+type_order(fcn,exmcf).
+type_order(fcn,nf).
+type_order(mcf,exf).
+type_order(mcf,exmcf).
+type_order(mcf,nf).
+type_order(exf,exmcf).
+type_order(exf,nf).
+type_order(exmcf,nf).
+
+:- true pred cover_vector(NumVars,NumGsIn,GsIn,Gj,Vector,NumGsOut,GsOut)
+   : ( mshare([[NumGsOut],[GsOut]]),
+       ground([NumVars,NumGsIn,GsIn,Gj,Vector]), linear(NumGsOut), linear(GsOut), shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])]) )
+   => ground([NumVars,NumGsIn,GsIn,Gj,Vector,NumGsOut,GsOut]).
+
+cover_vector(NumVars,NumGsIn,GsIn,Gj,Vector,NumGsOut,GsOut) :-
+    true((
+        mshare([[NumGsOut],[GsOut],[IPs],[CIs],[Type]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(IPs),
+        linear(CIs),
+        linear(Type),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([IPs],[IPs]),([CIs],[CIs]),([Type],[Type])])
+    )),
+    immediate_predecessors(Gj,IPs),
+    true((
+        mshare([[NumGsOut],[GsOut],[CIs],[Type]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector,IPs]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(CIs),
+        linear(Type),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([CIs],[CIs]),([Type],[Type])])
+    )),
+    conceivable_inputs(Gj,CIs),
+    true((
+        mshare([[NumGsOut],[GsOut],[Type]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector,IPs,CIs]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Type),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Type],[Type])])
+    )),
+    vector_types(Type),
+    true((
+        mshare([[NumGsOut],[GsOut]]),
+        ground([NumVars,NumGsIn,GsIn,Gj,Vector,IPs,CIs,Type]),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    cover_vector(Type,IPs,CIs,Gj,Vector,NumVars,NumGsIn,GsIn,NumGsOut,GsOut),
+    true(ground([NumVars,NumGsIn,GsIn,Gj,Vector,NumGsOut,GsOut,IPs,CIs,Type])).
+
+:- true pred vector_types(_A)
+   : ( mshare([[_A]]),
+       linear(_A), shlin2([([_A],[_A])]) )
+   => ground([_A]).
+
+vector_types(var).
+vector_types(exp).
+vector_types(fcn).
+vector_types(mcf).
+vector_types(exf).
+vector_types(exmcf).
+vector_types(nf).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( mshare([[NumGsOut],[GsOut]]),
+       ground([_A,_B,_1,Gj,V,_2,NumGs,GsIn]), linear(NumGsOut), linear(GsOut), shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])]) )
+   => ground([_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut]).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=exmcf), (NumGs=NumGsOut),
+       mshare([[_B],[GsOut]]),
+       ground([_1,Gj,V,_2,NumGs,GsIn]), linear(_B), linear(GsOut), shlin2([([_B],[_B]),([GsOut],[GsOut])]) )
+   => ( mshare([[_B]]),
+        ground([_1,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_B), shlin2([([_B],[_B])]) ).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=exf), (NumGs=NumGsOut),
+       mshare([[_B],[GsOut]]),
+       ground([_1,Gj,V,_2,NumGs,GsIn]), linear(_B), linear(GsOut), shlin2([([_B],[_B]),([GsOut],[GsOut])]) )
+   => ( mshare([[_B]]),
+        ground([_1,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_B), shlin2([([_B],[_B])]) ).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=mcf), (NumGs=NumGsOut),
+       mshare([[_B],[GsOut]]),
+       ground([_1,Gj,V,_2,NumGs,GsIn]), linear(_B), linear(GsOut), shlin2([([_B],[_B]),([GsOut],[GsOut])]) )
+   => ( mshare([[_B]]),
+        ground([_1,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_B), shlin2([([_B],[_B])]) ).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=fcn), (NumGs=NumGsOut),
+       mshare([[_B],[GsOut]]),
+       ground([_1,Gj,V,_2,NumGs,GsIn]), linear(_B), linear(GsOut), shlin2([([_B],[_B]),([GsOut],[GsOut])]) )
+   => ( mshare([[_B]]),
+        ground([_1,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_B), shlin2([([_B],[_B])]) ).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=var), (NumGs=NumGsOut),
+       mshare([[_B],[GsOut]]),
+       ground([_1,Gj,V,_2,NumGs,GsIn]), linear(_B), linear(GsOut), shlin2([([_B],[_B]),([GsOut],[GsOut])]) )
+   => ( mshare([[_B]]),
+        ground([_1,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_B), shlin2([([_B],[_B])]) ).
+
+:- true pred cover_vector(_A,_B,_1,Gj,V,_2,NumGs,GsIn,NumGsOut,GsOut)
+   : ( (_A=exp), (NumGs=NumGsOut),
+       mshare([[_1],[GsOut]]),
+       ground([_B,Gj,V,_2,NumGs,GsIn]), linear(_1), linear(GsOut), shlin2([([_1],[_1]),([GsOut],[GsOut])]) )
+   => ( mshare([[_1]]),
+        ground([_B,Gj,V,_2,NumGs,GsIn,GsOut]), linear(_1), shlin2([([_1],[_1])]) ).
+
+cover_vector(exp,[I|_3],_1,Gj,V,_2,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Ti]]),ground([Gj,V,_2,NumGs,GsIn,I,_3]),linear(_1),linear(GsOut),linear(Gi),linear(Ti),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Ti],[Ti])]);mshare([[GsOut],[Gi],[Ti]]),ground([_1,Gj,V,_2,NumGs,GsIn,I,_3]),linear(GsOut),linear(Gi),linear(Ti),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Ti],[Ti])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Ti]]),ground([Gj,V,_2,NumGs,GsIn,I,_3,Gi]),linear(_1),linear(GsOut),linear(Ti),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti])]);mshare([[GsOut],[Ti]]),ground([_1,Gj,V,_2,NumGs,GsIn,I,_3,Gi]),linear(GsOut),linear(Ti),shlin2([([GsOut],[GsOut]),([Ti],[Ti])]))),
+    true_set(Gi,Ti),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,_2,NumGs,GsIn,I,_3,Gi,Ti]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,_2,NumGs,GsIn,I,_3,Gi,Ti]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    'cover_vector/10/1/$disj/1'(V,Ti),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,_2,NumGs,GsIn,I,_3,Gi,Ti]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,_2,NumGs,GsIn,I,_3,Gi,Ti]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,_2,NumGs,GsIn,GsOut,I,_3,Gi,Ti]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,_2,NumGs,GsIn,GsOut,I,_3,Gi,Ti]))).
+cover_vector(exp,[_2|IPs],_1,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,IPs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,IPs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(exp,IPs,_3,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,IPs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,IPs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(var,_1,[I|_2],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Fi]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi])]);mshare([[GsOut],[Gi],[Fi]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi])]))),
+    I<NumVars,
+    true((mshare([[_1],[GsOut],[Gi],[Fi]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi])]);mshare([[GsOut],[Gi],[Fi]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Fi]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(_1),linear(GsOut),linear(Fi),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fi],[Fi])]);mshare([[GsOut],[Fi]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(GsOut),linear(Fi),shlin2([([GsOut],[GsOut]),([Fi],[Fi])]))),
+    false_set(Gi,Fi),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    set_member(V,Fi),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi]))).
+cover_vector(var,_1,[_2|CIs],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(var,_3,CIs,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(fcn,_1,[I|_2],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    I>=NumVars,
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(_1),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    false_set(Gi,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    set_member(V,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    true_set(Gi,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    false_set(Gj,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    set_subset(Fj,Ti),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]))).
+cover_vector(fcn,_1,[_2|CIs],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(fcn,_3,CIs,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(mcf,_1,[I|_2],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    I>=NumVars,
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(_1),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    false_set(Gi,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    set_member(V,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    true_set(Gi,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    false_set(Gj,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    'cover_vector/10/7/$disj/1'(Ti,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]))).
+cover_vector(mcf,_1,[_2|CIs],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(mcf,_3,CIs,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(exf,_1,[I|_2],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    I>=NumVars,
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(_1),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    false_set(Gi,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    'cover_vector/10/9/$disj/1'(V,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    true_set(Gi,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    'cover_vector/10/9/$disj/2'(V,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    false_set(Gj,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    set_subset(Fj,Ti),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]))).
+cover_vector(exf,_1,[_2|CIs],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(exf,_3,CIs,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(exmcf,_1,[I|_2],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    I>=NumVars,
+    true((mshare([[_1],[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(_1),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Gi],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2]),linear(GsOut),linear(Gi),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Gi],[Gi]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    function(I,GsIn,Gi),
+    true((mshare([[_1],[GsOut],[Fi],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(_1),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Fi],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi]),linear(GsOut),linear(Fi),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Fi],[Fi]),([Ti],[Ti]),([Fj],[Fj])]))),
+    false_set(Gi,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    'cover_vector/10/11/$disj/1'(V,Fi),
+    true((mshare([[_1],[GsOut],[Ti],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(_1),linear(GsOut),linear(Ti),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]);mshare([[GsOut],[Ti],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi]),linear(GsOut),linear(Ti),linear(Fj),shlin2([([GsOut],[GsOut]),([Ti],[Ti]),([Fj],[Fj])]))),
+    true_set(Gi,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    'cover_vector/10/11/$disj/2'(V,Ti),
+    true((mshare([[_1],[GsOut],[Fj]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(_1),linear(GsOut),linear(Fj),shlin2([([_1],[_1]),([GsOut],[GsOut]),([Fj],[Fj])]);mshare([[GsOut],[Fj]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti]),linear(GsOut),linear(Fj),shlin2([([GsOut],[GsOut]),([Fj],[Fj])]))),
+    false_set(Gj,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    'cover_vector/10/11/$disj/3'(Ti,Fj),
+    true((mshare([[_1],[GsOut]]),ground([Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(_1),linear(GsOut),shlin2([([_1],[_1]),([GsOut],[GsOut])]);mshare([[GsOut]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,I,_2,Gi,Fi,Ti,Fj]),linear(GsOut),shlin2([([GsOut],[GsOut])]))),
+    update_circuit(GsIn,Gi,Gj,V,GsIn,GsOut),
+    true((mshare([[_1]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]),linear(_1),shlin2([([_1],[_1])]);ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,I,_2,Gi,Fi,Ti,Fj]))).
+cover_vector(exmcf,_1,[_2|CIs],Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut) :-
+    true((mshare([[_1],[GsOut],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(_1),linear(GsOut),linear(_3),shlin2([([_1],[_1]),([GsOut],[GsOut]),([_3],[_3])]);mshare([[GsOut],[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,_2,CIs]),linear(GsOut),linear(_3),shlin2([([GsOut],[GsOut]),([_3],[_3])]))),
+    cover_vector(exmcf,_3,CIs,Gj,V,NumVars,NumGs,GsIn,NumGs,GsOut),
+    true((mshare([[_1],[_3]]),ground([Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_1),linear(_3),shlin2([([_1],[_1]),([_3],[_3])]);mshare([[_3]]),ground([_1,Gj,V,NumVars,NumGs,GsIn,GsOut,_2,CIs]),linear(_3),shlin2([([_3],[_3])]))).
+cover_vector(nf,_1,_2,Gj,V,NumVars,NumGsIn,GsIn,NumGsOut,GsOut) :-
+    true((
+        mshare([[NumGsOut],[GsOut],[Fj],[Gs],[Gi]]),
+        ground([_1,_2,Gj,V,NumVars,NumGsIn,GsIn]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Fj),
+        linear(Gs),
+        linear(Gi),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Fj],[Fj]),([Gs],[Gs]),([Gi],[Gi])])
+    )),
+    NumGsOut is NumGsIn+1,
+    true((
+        mshare([[GsOut],[Fj],[Gs],[Gi]]),
+        ground([_1,_2,Gj,V,NumVars,NumGsIn,GsIn,NumGsOut]),
+        linear(GsOut),
+        linear(Fj),
+        linear(Gs),
+        linear(Gi),
+        shlin2([([GsOut],[GsOut]),([Fj],[Fj]),([Gs],[Gs]),([Gi],[Gi])])
+    )),
+    false_set(Gj,Fj),
+    true((
+        mshare([[GsOut],[Gs],[Gi]]),
+        ground([_1,_2,Gj,V,NumVars,NumGsIn,GsIn,NumGsOut,Fj]),
+        linear(GsOut),
+        linear(Gs),
+        linear(Gi),
+        shlin2([([GsOut],[GsOut]),([Gs],[Gs]),([Gi],[Gi])])
+    )),
+    new_function_CIs(GsIn,function(NumGsIn,Fj,[V],[],[],[],[],[]),NumVars,Gs,Gi),
+    true((
+        mshare([[GsOut]]),
+        ground([_1,_2,Gj,V,NumVars,NumGsIn,GsIn,NumGsOut,Fj,Gs,Gi]),
+        linear(GsOut),
+        shlin2([([GsOut],[GsOut])])
+    )),
+    update_circuit(Gs,Gi,Gj,V,Gs,GsOut),
+    true(ground([_1,_2,Gj,V,NumVars,NumGsIn,GsIn,NumGsOut,GsOut,Fj,Gs,Gi])).
+
+:- true pred 'cover_vector/10/1/$disj/1'(V,Ti)
+   : ground([V,Ti])
+   => ground([V,Ti]).
+
+'cover_vector/10/1/$disj/1'(V,Ti) :-
+    true(ground([V,Ti])),
+    set_member(V,Ti),
+    !,
+    true(ground([V,Ti])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/1/$disj/1'(V,Ti).
+
+:- true pred 'cover_vector/10/7/$disj/1'(Ti,Fj)
+   : ground([Ti,Fj])
+   => ground([Ti,Fj]).
+
+'cover_vector/10/7/$disj/1'(Ti,Fj) :-
+    true(ground([Ti,Fj])),
+    set_subset(Fj,Ti),
+    !,
+    true(ground([Ti,Fj])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/7/$disj/1'(Ti,Fj).
+
+:- true pred 'cover_vector/10/9/$disj/1'(V,Fi)
+   : ground([V,Fi])
+   => ground([V,Fi]).
+
+'cover_vector/10/9/$disj/1'(V,Fi) :-
+    true(ground([V,Fi])),
+    set_member(V,Fi),
+    !,
+    true(ground([V,Fi])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/9/$disj/1'(V,Fi).
+
+:- true pred 'cover_vector/10/9/$disj/2'(V,Ti)
+   : ground([V,Ti])
+   => ground([V,Ti]).
+
+'cover_vector/10/9/$disj/2'(V,Ti) :-
+    true(ground([V,Ti])),
+    set_member(V,Ti),
+    !,
+    true(ground([V,Ti])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/9/$disj/2'(V,Ti).
+
+:- true pred 'cover_vector/10/11/$disj/1'(V,Fi)
+   : ground([V,Fi])
+   => ground([V,Fi]).
+
+'cover_vector/10/11/$disj/1'(V,Fi) :-
+    true(ground([V,Fi])),
+    set_member(V,Fi),
+    !,
+    true(ground([V,Fi])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/11/$disj/1'(V,Fi).
+
+:- true pred 'cover_vector/10/11/$disj/2'(V,Ti)
+   : ground([V,Ti])
+   => ground([V,Ti]).
+
+'cover_vector/10/11/$disj/2'(V,Ti) :-
+    true(ground([V,Ti])),
+    set_member(V,Ti),
+    !,
+    true(ground([V,Ti])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/11/$disj/2'(V,Ti).
+
+:- true pred 'cover_vector/10/11/$disj/3'(Ti,Fj)
+   : ground([Ti,Fj])
+   => ground([Ti,Fj]).
+
+'cover_vector/10/11/$disj/3'(Ti,Fj) :-
+    true(ground([Ti,Fj])),
+    set_subset(Fj,Ti),
+    !,
+    true(ground([Ti,Fj])),
+    fail,
+    true(fails(_)).
+'cover_vector/10/11/$disj/3'(Ti,Fj).
+
+:- true pred update_circuit(_A,_1,_2,_3,_4,_B)
+   : ( (_A=_4),
+       mshare([[_B]]),
+       ground([_A,_1,_2,_3]), linear(_B), shlin2([([_B],[_B])]) )
+   => ground([_A,_1,_2,_3,_B]).
+
+:- true pred update_circuit(_A,_1,_2,_3,_4,_B)
+   : ( mshare([[_B]]),
+       ground([_A,_1,_2,_3,_4]), linear(_B), shlin2([([_B],[_B])]) )
+   => ground([_A,_1,_2,_3,_4,_B]).
+
+update_circuit([],_1,_2,_3,_4,[]).
+update_circuit([function(K,Tk,Fk,CIk,IPk,ISk,Pk,Sk)|GsIn],Gi,Gj,V,Gs,[function(K,Tko,Fko,CIko,IPko,ISko,Pko,Sko)|GsOut]) :-
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[I],[_1],[Fi],[_2],[IPi],[ISi],[Pi],[_3],[J],[_4],[Fj],[_5],[_6],[_7],[_8],[Sj],[PiI],[SjJ],[Tk2],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(I),
+        linear(_1),
+        linear(Fi),
+        linear(_2),
+        linear(IPi),
+        linear(ISi),
+        linear(Pi),
+        linear(_3),
+        linear(J),
+        linear(_4),
+        linear(Fj),
+        linear(_5),
+        linear(_6),
+        linear(_7),
+        linear(_8),
+        linear(Sj),
+        linear(PiI),
+        linear(SjJ),
+        linear(Tk2),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([I],[I]),([_1],[_1]),([Fi],[Fi]),([_2],[_2]),([IPi],[IPi]),([ISi],[ISi]),([Pi],[Pi]),([_3],[_3]),([J],[J]),([_4],[_4]),([Fj],[Fj]),([_5],[_5]),([_6],[_6]),([_7],[_7]),([_8],[_8]),([Sj],[Sj]),([PiI],[PiI]),([SjJ],[SjJ]),([Tk2],[Tk2]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    Gi=function(I,_1,Fi,_2,IPi,ISi,Pi,_3),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[J],[_4],[Fj],[_5],[_6],[_7],[_8],[Sj],[PiI],[SjJ],[Tk2],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(J),
+        linear(_4),
+        linear(Fj),
+        linear(_5),
+        linear(_6),
+        linear(_7),
+        linear(_8),
+        linear(Sj),
+        linear(PiI),
+        linear(SjJ),
+        linear(Tk2),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([J],[J]),([_4],[_4]),([Fj],[Fj]),([_5],[_5]),([_6],[_6]),([_7],[_7]),([_8],[_8]),([Sj],[Sj]),([PiI],[PiI]),([SjJ],[SjJ]),([Tk2],[Tk2]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    Gj=function(J,_4,Fj,_5,_6,_7,_8,Sj),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[PiI],[SjJ],[Tk2],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(PiI),
+        linear(SjJ),
+        linear(Tk2),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([PiI],[PiI]),([SjJ],[SjJ]),([Tk2],[Tk2]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    set_union([I],Pi,PiI),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[SjJ],[Tk2],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(SjJ),
+        linear(Tk2),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([SjJ],[SjJ]),([Tk2],[Tk2]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    set_union([J],Sj,SjJ),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[Tk2],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(Tk2),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([Tk2],[Tk2]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/1'(K,Tk,Fi,J,Tk2),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[Tk3],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(Tk3),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([Tk3],[Tk3]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/2'(K,I,Fj,Tk2,Tk3),
+    true((
+        mshare([[GsOut],[Tko],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3]),
+        linear(GsOut),
+        linear(Tko),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Tko],[Tko]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/3'(V,K,Tko,IPi,ISi,Tk3),
+    true((
+        mshare([[GsOut],[Fko],[CIko],[IPko],[ISko],[Pko],[Sko],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3]),
+        linear(GsOut),
+        linear(Fko),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([Fko],[Fko]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/4'(V,K,Fk,Fko,I),
+    true((
+        mshare([[GsOut],[CIko],[IPko],[ISko],[Pko],[Sko],[CIk2],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3]),
+        linear(GsOut),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(CIk2),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([CIk2],[CIk2]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/5'(K,CIk,I,Pi,SjJ,CIk2),
+    true((
+        mshare([[GsOut],[CIko],[IPko],[ISko],[Pko],[Sko],[CIk3],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2]),
+        linear(GsOut),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(CIk3),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([CIk3],[CIk3]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/6'(V,Fk,CIk,I,CIk2,CIk3),
+    true((
+        mshare([[GsOut],[CIko],[IPko],[ISko],[Pko],[Sko],[CIk4]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3]),
+        linear(GsOut),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        linear(CIk4),
+        shlin2([([GsOut],[GsOut]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko]),([CIk4],[CIk4])])
+    )),
+    'update_circuit/6/2/$disj/7'(V,Gs,K,I,CIk3,CIk4),
+    true((
+        mshare([[GsOut],[CIko],[IPko],[ISko],[Pko],[Sko]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        linear(CIko),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        shlin2([([GsOut],[GsOut]),([CIko],[CIko]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko])])
+    )),
+    'update_circuit/6/2/$disj/8'(K,CIko,I,J,CIk4),
+    true((
+        mshare([[GsOut],[IPko],[ISko],[Pko],[Sko]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,CIko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        linear(IPko),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        shlin2([([GsOut],[GsOut]),([IPko],[IPko]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko])])
+    )),
+    'update_circuit/6/2/$disj/9'(K,IPk,IPko,I,J),
+    true((
+        mshare([[GsOut],[ISko],[Pko],[Sko]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,CIko,IPko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        linear(ISko),
+        linear(Pko),
+        linear(Sko),
+        shlin2([([GsOut],[GsOut]),([ISko],[ISko]),([Pko],[Pko]),([Sko],[Sko])])
+    )),
+    'update_circuit/6/2/$disj/10'(K,ISk,ISko,I,J),
+    true((
+        mshare([[GsOut],[Pko],[Sko]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,CIko,IPko,ISko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        linear(Pko),
+        linear(Sko),
+        shlin2([([GsOut],[GsOut]),([Pko],[Pko]),([Sko],[Sko])])
+    )),
+    'update_circuit/6/2/$disj/11'(K,Pk,Pko,PiI,SjJ),
+    true((
+        mshare([[GsOut],[Sko]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,CIko,IPko,ISko,Pko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        linear(Sko),
+        shlin2([([GsOut],[GsOut]),([Sko],[Sko])])
+    )),
+    'update_circuit/6/2/$disj/12'(K,Sk,Sko,PiI,SjJ),
+    true((
+        mshare([[GsOut]]),
+        ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,Tko,Fko,CIko,IPko,ISko,Pko,Sko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4]),
+        linear(GsOut),
+        shlin2([([GsOut],[GsOut])])
+    )),
+    update_circuit(GsIn,Gi,Gj,V,Gs,GsOut),
+    true(ground([Gi,Gj,V,Gs,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,GsOut,Tko,Fko,CIko,IPko,ISko,Pko,Sko,I,_1,Fi,_2,IPi,ISi,Pi,_3,J,_4,Fj,_5,_6,_7,_8,Sj,PiI,SjJ,Tk2,Tk3,CIk2,CIk3,CIk4])).
+
+:- true pred 'update_circuit/6/2/$disj/1'(K,Tk,Fi,J,Tk2)
+   : ( mshare([[Tk2]]),
+       ground([K,Tk,Fi,J]), linear(Tk2), shlin2([([Tk2],[Tk2])]) )
+   => ground([K,Tk,Fi,J,Tk2]).
+
+'update_circuit/6/2/$disj/1'(K,Tk,Fi,J,Tk2) :-
+    true((
+        mshare([[Tk2]]),
+        ground([K,Tk,Fi,J]),
+        linear(Tk2),
+        shlin2([([Tk2],[Tk2])])
+    )),
+    K=J,
+    !,
+    true((
+        mshare([[Tk2]]),
+        ground([K,Tk,Fi,J]),
+        linear(Tk2),
+        shlin2([([Tk2],[Tk2])])
+    )),
+    set_union(Tk,Fi,Tk2),
+    true(ground([K,Tk,Fi,J,Tk2])).
+'update_circuit/6/2/$disj/1'(K,Tk,Fi,J,Tk2) :-
+    true((
+        mshare([[Tk2]]),
+        ground([K,Tk,Fi,J]),
+        linear(Tk2),
+        shlin2([([Tk2],[Tk2])])
+    )),
+    Tk2=Tk,
+    true(ground([K,Tk,Fi,J,Tk2])).
+
+:- true pred 'update_circuit/6/2/$disj/2'(K,I,Fj,Tk2,Tk3)
+   : ( mshare([[Tk3]]),
+       ground([K,I,Fj,Tk2]), linear(Tk3), shlin2([([Tk3],[Tk3])]) )
+   => ground([K,I,Fj,Tk2,Tk3]).
+
+'update_circuit/6/2/$disj/2'(K,I,Fj,Tk2,Tk3) :-
+    true((
+        mshare([[Tk3]]),
+        ground([K,I,Fj,Tk2]),
+        linear(Tk3),
+        shlin2([([Tk3],[Tk3])])
+    )),
+    K=I,
+    !,
+    true((
+        mshare([[Tk3]]),
+        ground([K,I,Fj,Tk2]),
+        linear(Tk3),
+        shlin2([([Tk3],[Tk3])])
+    )),
+    set_union(Tk2,Fj,Tk3),
+    true(ground([K,I,Fj,Tk2,Tk3])).
+'update_circuit/6/2/$disj/2'(K,I,Fj,Tk2,Tk3) :-
+    true((
+        mshare([[Tk3]]),
+        ground([K,I,Fj,Tk2]),
+        linear(Tk3),
+        shlin2([([Tk3],[Tk3])])
+    )),
+    Tk3=Tk2,
+    true(ground([K,I,Fj,Tk2,Tk3])).
+
+:- true pred 'update_circuit/6/2/$disj/3'(V,K,Tko,IPi,ISi,Tk3)
+   : ( mshare([[Tko]]),
+       ground([V,K,IPi,ISi,Tk3]), linear(Tko), shlin2([([Tko],[Tko])]) )
+   => ground([V,K,Tko,IPi,ISi,Tk3]).
+
+'update_circuit/6/2/$disj/3'(V,K,Tko,IPi,ISi,Tk3) :-
+    true((
+        mshare([[Tko]]),
+        ground([V,K,IPi,ISi,Tk3]),
+        linear(Tko),
+        shlin2([([Tko],[Tko])])
+    )),
+    'update_circuit/6/2/$disj/3/6/1/$disj/1'(K,IPi,ISi),
+    !,
+    true((
+        mshare([[Tko]]),
+        ground([V,K,IPi,ISi,Tk3]),
+        linear(Tko),
+        shlin2([([Tko],[Tko])])
+    )),
+    set_union(Tk3,[V],Tko),
+    true(ground([V,K,Tko,IPi,ISi,Tk3])).
+'update_circuit/6/2/$disj/3'(V,K,Tko,IPi,ISi,Tk3) :-
+    true((
+        mshare([[Tko]]),
+        ground([V,K,IPi,ISi,Tk3]),
+        linear(Tko),
+        shlin2([([Tko],[Tko])])
+    )),
+    Tko=Tk3,
+    true(ground([V,K,Tko,IPi,ISi,Tk3])).
+
+:- true pred 'update_circuit/6/2/$disj/3/6/1/$disj/1'(K,IPi,ISi)
+   : ground([K,IPi,ISi])
+   => ground([K,IPi,ISi]).
+
+'update_circuit/6/2/$disj/3/6/1/$disj/1'(K,IPi,ISi) :-
+    true(ground([K,IPi,ISi])),
+    set_member(K,IPi),
+    true(ground([K,IPi,ISi])).
+'update_circuit/6/2/$disj/3/6/1/$disj/1'(K,IPi,ISi) :-
+    true(ground([K,IPi,ISi])),
+    set_member(K,ISi),
+    true(ground([K,IPi,ISi])).
+
+:- true pred 'update_circuit/6/2/$disj/4'(V,K,Fk,Fko,I)
+   : ( mshare([[Fko]]),
+       ground([V,K,Fk,I]), linear(Fko), shlin2([([Fko],[Fko])]) )
+   => ground([V,K,Fk,Fko,I]).
+
+'update_circuit/6/2/$disj/4'(V,K,Fk,Fko,I) :-
+    true((
+        mshare([[Fko]]),
+        ground([V,K,Fk,I]),
+        linear(Fko),
+        shlin2([([Fko],[Fko])])
+    )),
+    K=I,
+    !,
+    true((
+        mshare([[Fko]]),
+        ground([V,K,Fk,I]),
+        linear(Fko),
+        shlin2([([Fko],[Fko])])
+    )),
+    set_union(Fk,[V],Fko),
+    true(ground([V,K,Fk,Fko,I])).
+'update_circuit/6/2/$disj/4'(V,K,Fk,Fko,I) :-
+    true((
+        mshare([[Fko]]),
+        ground([V,K,Fk,I]),
+        linear(Fko),
+        shlin2([([Fko],[Fko])])
+    )),
+    Fko=Fk,
+    true(ground([V,K,Fk,Fko,I])).
+
+:- true pred 'update_circuit/6/2/$disj/5'(K,CIk,I,Pi,SjJ,CIk2)
+   : ( mshare([[CIk2]]),
+       ground([K,CIk,I,Pi,SjJ]), linear(CIk2), shlin2([([CIk2],[CIk2])]) )
+   => ground([K,CIk,I,Pi,SjJ,CIk2]).
+
+'update_circuit/6/2/$disj/5'(K,CIk,I,Pi,SjJ,CIk2) :-
+    true((
+        mshare([[CIk2]]),
+        ground([K,CIk,I,Pi,SjJ]),
+        linear(CIk2),
+        shlin2([([CIk2],[CIk2])])
+    )),
+    'update_circuit/6/2/$disj/5/6/1/$disj/1'(K,I,Pi),
+    !,
+    true((
+        mshare([[CIk2]]),
+        ground([K,CIk,I,Pi,SjJ]),
+        linear(CIk2),
+        shlin2([([CIk2],[CIk2])])
+    )),
+    set_difference(CIk,SjJ,CIk2),
+    true(ground([K,CIk,I,Pi,SjJ,CIk2])).
+'update_circuit/6/2/$disj/5'(K,CIk,I,Pi,SjJ,CIk2) :-
+    true((
+        mshare([[CIk2]]),
+        ground([K,CIk,I,Pi,SjJ]),
+        linear(CIk2),
+        shlin2([([CIk2],[CIk2])])
+    )),
+    CIk2=CIk,
+    true(ground([K,CIk,I,Pi,SjJ,CIk2])).
+
+:- true pred 'update_circuit/6/2/$disj/5/6/1/$disj/1'(K,I,Pi)
+   : ground([K,I,Pi])
+   => ground([K,I,Pi]).
+
+'update_circuit/6/2/$disj/5/6/1/$disj/1'(K,I,Pi) :-
+    true(ground([K,I,Pi])),
+    set_member(K,Pi),
+    true(ground([K,I,Pi])).
+'update_circuit/6/2/$disj/5/6/1/$disj/1'(K,I,Pi) :-
+    true(ground([K,I,Pi])),
+    K=I,
+    true(ground([K,I,Pi])).
+
+:- true pred 'update_circuit/6/2/$disj/6'(V,Fk,CIk,I,CIk2,CIk3)
+   : ( mshare([[CIk3]]),
+       ground([V,Fk,CIk,I,CIk2]), linear(CIk3), shlin2([([CIk3],[CIk3])]) )
+   => ground([V,Fk,CIk,I,CIk2,CIk3]).
+
+'update_circuit/6/2/$disj/6'(V,Fk,CIk,I,CIk2,CIk3) :-
+    true((
+        mshare([[CIk3]]),
+        ground([V,Fk,CIk,I,CIk2]),
+        linear(CIk3),
+        shlin2([([CIk3],[CIk3])])
+    )),
+    set_member(I,CIk),
+    true((
+        mshare([[CIk3]]),
+        ground([V,Fk,CIk,I,CIk2]),
+        linear(CIk3),
+        shlin2([([CIk3],[CIk3])])
+    )),
+    set_member(V,Fk),
+    !,
+    true((
+        mshare([[CIk3]]),
+        ground([V,Fk,CIk,I,CIk2]),
+        linear(CIk3),
+        shlin2([([CIk3],[CIk3])])
+    )),
+    set_difference(CIk2,[I],CIk3),
+    true(ground([V,Fk,CIk,I,CIk2,CIk3])).
+'update_circuit/6/2/$disj/6'(V,Fk,CIk,I,CIk2,CIk3) :-
+    true((
+        mshare([[CIk3]]),
+        ground([V,Fk,CIk,I,CIk2]),
+        linear(CIk3),
+        shlin2([([CIk3],[CIk3])])
+    )),
+    CIk3=CIk2,
+    true(ground([V,Fk,CIk,I,CIk2,CIk3])).
+
+:- true pred 'update_circuit/6/2/$disj/7'(V,Gs,K,I,CIk3,CIk4)
+   : ( mshare([[CIk4]]),
+       ground([V,Gs,K,I,CIk3]), linear(CIk4), shlin2([([CIk4],[CIk4])]) )
+   => ground([V,Gs,K,I,CIk3,CIk4]).
+
+'update_circuit/6/2/$disj/7'(V,Gs,K,I,CIk3,CIk4) :-
+    true((
+        mshare([[CIk4]]),
+        ground([V,Gs,K,I,CIk3]),
+        linear(CIk4),
+        shlin2([([CIk4],[CIk4])])
+    )),
+    K=I,
+    !,
+    true((
+        mshare([[CIk4]]),
+        ground([V,Gs,K,I,CIk3]),
+        linear(CIk4),
+        shlin2([([CIk4],[CIk4])])
+    )),
+    exclude_if_vector_in_false_set(CIk3,Gs,V,CIk4),
+    true(ground([V,Gs,K,I,CIk3,CIk4])).
+'update_circuit/6/2/$disj/7'(V,Gs,K,I,CIk3,CIk4) :-
+    true((
+        mshare([[CIk4]]),
+        ground([V,Gs,K,I,CIk3]),
+        linear(CIk4),
+        shlin2([([CIk4],[CIk4])])
+    )),
+    CIk4=CIk3,
+    true(ground([V,Gs,K,I,CIk3,CIk4])).
+
+:- true pred 'update_circuit/6/2/$disj/8'(K,CIko,I,J,CIk4)
+   : ( mshare([[CIko]]),
+       ground([K,I,J,CIk4]), linear(CIko), shlin2([([CIko],[CIko])]) )
+   => ground([K,CIko,I,J,CIk4]).
+
+'update_circuit/6/2/$disj/8'(K,CIko,I,J,CIk4) :-
+    true((
+        mshare([[CIko]]),
+        ground([K,I,J,CIk4]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    K=J,
+    !,
+    true((
+        mshare([[CIko]]),
+        ground([K,I,J,CIk4]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    set_difference(CIk4,[I],CIko),
+    true(ground([K,CIko,I,J,CIk4])).
+'update_circuit/6/2/$disj/8'(K,CIko,I,J,CIk4) :-
+    true((
+        mshare([[CIko]]),
+        ground([K,I,J,CIk4]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    CIko=CIk4,
+    true(ground([K,CIko,I,J,CIk4])).
+
+:- true pred 'update_circuit/6/2/$disj/9'(K,IPk,IPko,I,J)
+   : ( mshare([[IPko]]),
+       ground([K,IPk,I,J]), linear(IPko), shlin2([([IPko],[IPko])]) )
+   => ground([K,IPk,IPko,I,J]).
+
+'update_circuit/6/2/$disj/9'(K,IPk,IPko,I,J) :-
+    true((
+        mshare([[IPko]]),
+        ground([K,IPk,I,J]),
+        linear(IPko),
+        shlin2([([IPko],[IPko])])
+    )),
+    K=J,
+    !,
+    true((
+        mshare([[IPko]]),
+        ground([K,IPk,I,J]),
+        linear(IPko),
+        shlin2([([IPko],[IPko])])
+    )),
+    set_union(IPk,[I],IPko),
+    true(ground([K,IPk,IPko,I,J])).
+'update_circuit/6/2/$disj/9'(K,IPk,IPko,I,J) :-
+    true((
+        mshare([[IPko]]),
+        ground([K,IPk,I,J]),
+        linear(IPko),
+        shlin2([([IPko],[IPko])])
+    )),
+    IPko=IPk,
+    true(ground([K,IPk,IPko,I,J])).
+
+:- true pred 'update_circuit/6/2/$disj/10'(K,ISk,ISko,I,J)
+   : ( mshare([[ISko]]),
+       ground([K,ISk,I,J]), linear(ISko), shlin2([([ISko],[ISko])]) )
+   => ground([K,ISk,ISko,I,J]).
+
+'update_circuit/6/2/$disj/10'(K,ISk,ISko,I,J) :-
+    true((
+        mshare([[ISko]]),
+        ground([K,ISk,I,J]),
+        linear(ISko),
+        shlin2([([ISko],[ISko])])
+    )),
+    K=I,
+    !,
+    true((
+        mshare([[ISko]]),
+        ground([K,ISk,I,J]),
+        linear(ISko),
+        shlin2([([ISko],[ISko])])
+    )),
+    set_union(ISk,[J],ISko),
+    true(ground([K,ISk,ISko,I,J])).
+'update_circuit/6/2/$disj/10'(K,ISk,ISko,I,J) :-
+    true((
+        mshare([[ISko]]),
+        ground([K,ISk,I,J]),
+        linear(ISko),
+        shlin2([([ISko],[ISko])])
+    )),
+    ISko=ISk,
+    true(ground([K,ISk,ISko,I,J])).
+
+:- true pred 'update_circuit/6/2/$disj/11'(K,Pk,Pko,PiI,SjJ)
+   : ( mshare([[Pko]]),
+       ground([K,Pk,PiI,SjJ]), linear(Pko), shlin2([([Pko],[Pko])]) )
+   => ground([K,Pk,Pko,PiI,SjJ]).
+
+'update_circuit/6/2/$disj/11'(K,Pk,Pko,PiI,SjJ) :-
+    true((
+        mshare([[Pko]]),
+        ground([K,Pk,PiI,SjJ]),
+        linear(Pko),
+        shlin2([([Pko],[Pko])])
+    )),
+    set_member(K,SjJ),
+    !,
+    true((
+        mshare([[Pko]]),
+        ground([K,Pk,PiI,SjJ]),
+        linear(Pko),
+        shlin2([([Pko],[Pko])])
+    )),
+    set_union(Pk,PiI,Pko),
+    true(ground([K,Pk,Pko,PiI,SjJ])).
+'update_circuit/6/2/$disj/11'(K,Pk,Pko,PiI,SjJ) :-
+    true((
+        mshare([[Pko]]),
+        ground([K,Pk,PiI,SjJ]),
+        linear(Pko),
+        shlin2([([Pko],[Pko])])
+    )),
+    Pko=Pk,
+    true(ground([K,Pk,Pko,PiI,SjJ])).
+
+:- true pred 'update_circuit/6/2/$disj/12'(K,Sk,Sko,PiI,SjJ)
+   : ( mshare([[Sko]]),
+       ground([K,Sk,PiI,SjJ]), linear(Sko), shlin2([([Sko],[Sko])]) )
+   => ground([K,Sk,Sko,PiI,SjJ]).
+
+'update_circuit/6/2/$disj/12'(K,Sk,Sko,PiI,SjJ) :-
+    true((
+        mshare([[Sko]]),
+        ground([K,Sk,PiI,SjJ]),
+        linear(Sko),
+        shlin2([([Sko],[Sko])])
+    )),
+    set_member(K,PiI),
+    !,
+    true((
+        mshare([[Sko]]),
+        ground([K,Sk,PiI,SjJ]),
+        linear(Sko),
+        shlin2([([Sko],[Sko])])
+    )),
+    set_union(Sk,SjJ,Sko),
+    true(ground([K,Sk,Sko,PiI,SjJ])).
+'update_circuit/6/2/$disj/12'(K,Sk,Sko,PiI,SjJ) :-
+    true((
+        mshare([[Sko]]),
+        ground([K,Sk,PiI,SjJ]),
+        linear(Sko),
+        shlin2([([Sko],[Sko])])
+    )),
+    Sko=Sk,
+    true(ground([K,Sk,Sko,PiI,SjJ])).
+
+:- true pred exclude_if_vector_in_false_set(_A,_1,_2,CIsOut)
+   : ( mshare([[CIsOut]]),
+       ground([_A,_1,_2]), linear(CIsOut), shlin2([([CIsOut],[CIsOut])]) )
+   => ground([_A,_1,_2,CIsOut]).
+
+exclude_if_vector_in_false_set([],_1,_2,[]).
+exclude_if_vector_in_false_set([K|CIsIn],Gs,V,CIsOut) :-
+    true((
+        mshare([[CIsOut],[Gk],[Fk]]),
+        ground([Gs,V,K,CIsIn]),
+        linear(CIsOut),
+        linear(Gk),
+        linear(Fk),
+        shlin2([([CIsOut],[CIsOut]),([Gk],[Gk]),([Fk],[Fk])])
+    )),
+    function(K,Gs,Gk),
+    true((
+        mshare([[CIsOut],[Fk]]),
+        ground([Gs,V,K,CIsIn,Gk]),
+        linear(CIsOut),
+        linear(Fk),
+        shlin2([([CIsOut],[CIsOut]),([Fk],[Fk])])
+    )),
+    false_set(Gk,Fk),
+    true((
+        mshare([[CIsOut]]),
+        ground([Gs,V,K,CIsIn,Gk,Fk]),
+        linear(CIsOut),
+        shlin2([([CIsOut],[CIsOut])])
+    )),
+    set_member(V,Fk),
+    !,
+    true((
+        mshare([[CIsOut]]),
+        ground([Gs,V,K,CIsIn,Gk,Fk]),
+        linear(CIsOut),
+        shlin2([([CIsOut],[CIsOut])])
+    )),
+    exclude_if_vector_in_false_set(CIsIn,Gs,V,CIsOut),
+    true(ground([Gs,V,CIsOut,K,CIsIn,Gk,Fk])).
+exclude_if_vector_in_false_set([K|CIsIn],Gs,V,[K|CIsOut]) :-
+    true((
+        mshare([[CIsOut]]),
+        ground([Gs,V,K,CIsIn]),
+        linear(CIsOut),
+        shlin2([([CIsOut],[CIsOut])])
+    )),
+    exclude_if_vector_in_false_set(CIsIn,Gs,V,CIsOut),
+    true(ground([Gs,V,K,CIsIn,CIsOut])).
+
+:- true pred add_necessary_functions(NumVars,NumGsIn,GsIn,NumGsOut,GsOut)
+   : ( mshare([[NumGsOut],[GsOut]]),
+       ground([NumVars,NumGsIn,GsIn]), linear(NumGsOut), linear(GsOut), shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])]) )
+   => ground([NumVars,NumGsIn,GsIn,NumGsOut,GsOut]).
+
+add_necessary_functions(NumVars,NumGsIn,GsIn,NumGsOut,GsOut) :-
+    true((
+        mshare([[NumGsOut],[GsOut]]),
+        ground([NumVars,NumGsIn,GsIn]),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    add_necessary_functions(NumVars,NumVars,NumGsIn,GsIn,NumGsOut,GsOut),
+    true(ground([NumVars,NumGsIn,GsIn,NumGsOut,GsOut])).
+
+:- true pred add_necessary_functions(NumGs,_1,NumGsIn,Gs,NumGsOut,GsOut)
+   : ( (NumGs=_1),
+       mshare([[NumGsOut],[GsOut]]),
+       ground([NumGs,NumGsIn,Gs]), linear(NumGsOut), linear(GsOut), shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])]) )
+   => ground([NumGs,NumGsIn,Gs,NumGsOut,GsOut]).
+
+:- true pred add_necessary_functions(NumGs,_1,NumGsIn,Gs,NumGsOut,GsOut)
+   : ( mshare([[NumGsOut],[GsOut]]),
+       ground([NumGs,_1,NumGsIn,Gs]), linear(NumGsOut), linear(GsOut), shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])]) )
+   => ground([NumGs,_1,NumGsIn,Gs,NumGsOut,GsOut]).
+
+add_necessary_functions(NumGs,_1,NumGs,Gs,NumGs,Gs) :-
+    !,
+    true(ground([NumGs,_1,Gs])).
+add_necessary_functions(K,NumVars,NumGsIn,GsIn,NumGsOut,GsOut) :-
+    true((
+        mshare([[NumGsOut],[GsOut],[Gk],[V],[Fk],[Gs],[Gl],[Gk1],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Gk),
+        linear(V),
+        linear(Fk),
+        linear(Gs),
+        linear(Gl),
+        linear(Gk1),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Gk],[Gk]),([V],[V]),([Fk],[Fk]),([Gs],[Gs]),([Gl],[Gl]),([Gk1],[Gk1]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    function(K,GsIn,Gk),
+    true((
+        mshare([[NumGsOut],[GsOut],[V],[Fk],[Gs],[Gl],[Gk1],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(V),
+        linear(Fk),
+        linear(Gs),
+        linear(Gl),
+        linear(Gk1),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([V],[V]),([Fk],[Fk]),([Gs],[Gs]),([Gl],[Gl]),([Gk1],[Gk1]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    function_type(NumVars,NumGsIn,GsIn,Gk,nf,V),
+    !,
+    true((
+        mshare([[NumGsOut],[GsOut],[Fk],[Gs],[Gl],[Gk1],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Fk),
+        linear(Gs),
+        linear(Gl),
+        linear(Gk1),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Fk],[Fk]),([Gs],[Gs]),([Gl],[Gl]),([Gk1],[Gk1]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    false_set(Gk,Fk),
+    true((
+        mshare([[NumGsOut],[GsOut],[Gs],[Gl],[Gk1],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Gs),
+        linear(Gl),
+        linear(Gk1),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Gs],[Gs]),([Gl],[Gl]),([Gk1],[Gk1]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    new_function_CIs(GsIn,function(NumGsIn,Fk,[V],[],[],[],[],[]),NumVars,Gs,Gl),
+    true((
+        mshare([[NumGsOut],[GsOut],[Gk1],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk,Gs,Gl]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Gk1),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Gk1],[Gk1]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    function(K,Gs,Gk1),
+    true((
+        mshare([[NumGsOut],[GsOut],[Gs1],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk,Gs,Gl,Gk1]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(Gs1),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([Gs1],[Gs1]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    update_circuit(Gs,Gl,Gk1,V,Gs,Gs1),
+    true((
+        mshare([[NumGsOut],[GsOut],[NumGs1],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk,Gs,Gl,Gk1,Gs1]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(NumGs1),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([NumGs1],[NumGs1]),([K1],[K1])])
+    )),
+    NumGs1 is NumGsIn+1,
+    true((
+        mshare([[NumGsOut],[GsOut],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk,Gs,Gl,Gk1,Gs1,NumGs1]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([K1],[K1])])
+    )),
+    K1 is K+1,
+    true((
+        mshare([[NumGsOut],[GsOut]]),
+        ground([K,NumVars,NumGsIn,GsIn,Gk,V,Fk,Gs,Gl,Gk1,Gs1,NumGs1,K1]),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    add_necessary_functions(K1,NumVars,NumGs1,Gs1,NumGsOut,GsOut),
+    true(ground([K,NumVars,NumGsIn,GsIn,NumGsOut,GsOut,Gk,V,Fk,Gs,Gl,Gk1,Gs1,NumGs1,K1])).
+add_necessary_functions(K,NumVars,NumGsIn,GsIn,NumGsOut,GsOut) :-
+    true((
+        mshare([[NumGsOut],[GsOut],[K1]]),
+        ground([K,NumVars,NumGsIn,GsIn]),
+        linear(NumGsOut),
+        linear(GsOut),
+        linear(K1),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut]),([K1],[K1])])
+    )),
+    K1 is K+1,
+    true((
+        mshare([[NumGsOut],[GsOut]]),
+        ground([K,NumVars,NumGsIn,GsIn,K1]),
+        linear(NumGsOut),
+        linear(GsOut),
+        shlin2([([NumGsOut],[NumGsOut]),([GsOut],[GsOut])])
+    )),
+    add_necessary_functions(K1,NumVars,NumGsIn,GsIn,NumGsOut,GsOut),
+    true(ground([K,NumVars,NumGsIn,GsIn,NumGsOut,GsOut,K1])).
+
+:- true pred new_function_CIs(GsIn,_A,NumVars,_B,GlOut)
+   : ( (_A=function(_C,_D,[_E],[],[],[],[],[])),
+       mshare([[_B],[GlOut]]),
+       ground([GsIn,NumVars,_C,_D,_E]), linear(_B), linear(GlOut), shlin2([([_B],[_B]),([GlOut],[GlOut])]) )
+   => ground([GsIn,NumVars,_B,GlOut,_C,_D,_E]).
+
+new_function_CIs(GsIn,function(L,Tl,Fl,_1,IPl,ISl,Pl,Sl),NumVars,[GlOut|GsOut],GlOut) :-
+    true((
+        mshare([[GlOut],[GsOut],[CIlo]]),
+        ground([GsIn,NumVars,L,Tl,Fl,_1,IPl,ISl,Pl,Sl]),
+        linear(GlOut),
+        linear(GsOut),
+        linear(CIlo),
+        shlin2([([GlOut],[GlOut]),([GsOut],[GsOut]),([CIlo],[CIlo])])
+    )),
+    new_function_CIs(GsIn,L,Fl,NumVars,GsOut,[],CIlo),
+    true((
+        mshare([[GlOut]]),
+        ground([GsIn,NumVars,L,Tl,Fl,_1,IPl,ISl,Pl,Sl,GsOut,CIlo]),
+        linear(GlOut),
+        shlin2([([GlOut],[GlOut])])
+    )),
+    GlOut=function(L,Tl,Fl,CIlo,IPl,ISl,Pl,Sl),
+    true(ground([GsIn,NumVars,GlOut,L,Tl,Fl,_1,IPl,ISl,Pl,Sl,GsOut,CIlo])).
+
+:- true pred new_function_CIs(_A,_1,_2,_3,_B,CIl,CIlOut)
+   : ( (CIl=[]),
+       mshare([[_B],[CIlOut]]),
+       ground([_A,_1,_2,_3]), linear(_B), linear(CIlOut), shlin2([([_B],[_B]),([CIlOut],[CIlOut])]) )
+   => ground([_A,_1,_2,_3,_B,CIlOut]).
+
+:- true pred new_function_CIs(_A,_1,_2,_3,_B,CIl,CIlOut)
+   : ( mshare([[_B],[CIlOut]]),
+       ground([_A,_1,_2,_3,CIl]), linear(_B), linear(CIlOut), shlin2([([_B],[_B]),([CIlOut],[CIlOut])]) )
+   => ground([_A,_1,_2,_3,_B,CIl,CIlOut]).
+
+:- true pred new_function_CIs(_A,_1,_2,_3,_B,CIl,CIlOut)
+   : ( (CIl=[_C|_D]),
+       mshare([[_B],[CIlOut]]),
+       ground([_A,_1,_2,_3,_C,_D]), linear(_B), linear(CIlOut), shlin2([([_B],[_B]),([CIlOut],[CIlOut])]) )
+   => ground([_A,_1,_2,_3,_B,CIlOut,_C,_D]).
+
+new_function_CIs([],_1,_2,_3,[],CIl,CIl).
+new_function_CIs([function(K,Tk,Fk,CIk,IPk,ISk,Pk,Sk)|GsIn],L,Fl,NumVars,[function(K,Tk,Fk,CIko,IPk,ISk,Pk,Sk)|GsOut],CIlIn,CIlOut) :-
+    true((
+        mshare([[CIlOut],[GsOut],[CIko]]),
+        ground([L,Fl,NumVars,CIlIn,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk]),
+        linear(CIlOut),
+        linear(GsOut),
+        linear(CIko),
+        shlin2([([CIlOut],[CIlOut]),([GsOut],[GsOut]),([CIko],[CIko])])
+    )),
+    set_intersection(Fl,Fk,[]),
+    !,
+    true((
+        mshare([[CIlOut],[GsOut],[CIko]]),
+        ground([L,Fl,NumVars,CIlIn,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk]),
+        linear(CIlOut),
+        linear(GsOut),
+        linear(CIko),
+        shlin2([([CIlOut],[CIlOut]),([GsOut],[GsOut]),([CIko],[CIko])])
+    )),
+    'new_function_CIs/7/2/$disj/1'(L,NumVars,K,CIk,CIko),
+    true((
+        mshare([[CIlOut],[GsOut]]),
+        ground([L,Fl,NumVars,CIlIn,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,CIko]),
+        linear(CIlOut),
+        linear(GsOut),
+        shlin2([([CIlOut],[CIlOut]),([GsOut],[GsOut])])
+    )),
+    new_function_CIs(GsIn,L,Fl,NumVars,GsOut,[K|CIlIn],CIlOut),
+    true(ground([L,Fl,NumVars,CIlIn,CIlOut,GsIn,K,Tk,Fk,CIk,IPk,ISk,Pk,Sk,GsOut,CIko])).
+new_function_CIs([Gk|GsIn],L,Fl,NumVars,[Gk|GsOut],CIlIn,CIlOut) :-
+    true((
+        mshare([[CIlOut],[GsOut]]),
+        ground([L,Fl,NumVars,CIlIn,Gk,GsIn]),
+        linear(CIlOut),
+        linear(GsOut),
+        shlin2([([CIlOut],[CIlOut]),([GsOut],[GsOut])])
+    )),
+    new_function_CIs(GsIn,L,Fl,NumVars,GsOut,CIlIn,CIlOut),
+    true(ground([L,Fl,NumVars,CIlIn,CIlOut,Gk,GsIn,GsOut])).
+
+:- true pred 'new_function_CIs/7/2/$disj/1'(L,NumVars,K,CIk,CIko)
+   : ( mshare([[CIko]]),
+       ground([L,NumVars,K,CIk]), linear(CIko), shlin2([([CIko],[CIko])]) )
+   => ground([L,NumVars,K,CIk,CIko]).
+
+'new_function_CIs/7/2/$disj/1'(L,NumVars,K,CIk,CIko) :-
+    true((
+        mshare([[CIko]]),
+        ground([L,NumVars,K,CIk]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    K>=NumVars,
+    !,
+    true((
+        mshare([[CIko]]),
+        ground([L,NumVars,K,CIk]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    set_union(CIk,[L],CIko),
+    true(ground([L,NumVars,K,CIk,CIko])).
+'new_function_CIs/7/2/$disj/1'(L,NumVars,K,CIk,CIko) :-
+    true((
+        mshare([[CIko]]),
+        ground([L,NumVars,K,CIk]),
+        linear(CIko),
+        shlin2([([CIko],[CIko])])
+    )),
+    CIko=CIk,
+    true(ground([L,NumVars,K,CIk,CIko])).
+
+:- true pred function_type(NumVars,NumGs,Gs,Gk,Type,Vector)
+   : ( (Type=nf),
+       mshare([[Vector]]),
+       ground([NumVars,NumGs,Gs,Gk]), linear(Vector), shlin2([([Vector],[Vector])]) )
+   => ground([NumVars,NumGs,Gs,Gk,Vector]).
+
+function_type(NumVars,NumGs,Gs,Gk,Type,Vector) :-
+    true((
+        mshare([[Vector],[Tk],[_1],[_2]]),
+        ground([NumVars,NumGs,Gs,Gk,Type]),
+        linear(Vector),
+        linear(Tk),
+        linear(_1),
+        linear(_2),
+        shlin2([([Vector],[Vector]),([Tk],[Tk]),([_1],[_1]),([_2],[_2])])
+    )),
+    true_set(Gk,Tk),
+    true((
+        mshare([[Vector],[_1],[_2]]),
+        ground([NumVars,NumGs,Gs,Gk,Type,Tk]),
+        linear(Vector),
+        linear(_1),
+        linear(_2),
+        shlin2([([Vector],[Vector]),([_1],[_1]),([_2],[_2])])
+    )),
+    select_vector(Tk,Gk,NumVars,NumGs,Gs,dummy,0,nf,999,_1,Vector,Type,_2),
+    true(ground([NumVars,NumGs,Gs,Gk,Type,Vector,Tk,_1,_2])).
+
+:- true pred test_bounds(_1,NumGs,_2)
+   : ground([_1,NumGs,_2])
+   => ground([_1,NumGs,_2]).
+
+test_bounds(_1,NumGs,_2) :-
+    true((
+        mshare([[Bound]]),
+        ground([_1,NumGs,_2]),
+        linear(Bound),
+        shlin2([([Bound],[Bound])])
+    )),
+    access(bound,Bound),
+    true((
+        mshare([[Bound]]),
+        ground([_1,NumGs,_2]),
+        shlin2([([Bound],[])])
+    )),
+    NumGs<Bound,
+    true(ground([_1,NumGs,_2,Bound])).
+
+:- true pred update_bounds(_1,NumGs,_2)
+   : ground([_1,NumGs,_2])
+   => ground([_1,NumGs,_2]).
+
+:- true pred update_bounds(_1,NumGs,_2)
+   : ( (NumGs=21),
+       mshare([[_1],[_2]]),
+       linear(_1), linear(_2), shlin2([([_1],[_1]),([_2],[_2])]) )
+   => ( mshare([[_1],[_2]]),
+        linear(_1), linear(_2), shlin2([([_1],[_1]),([_2],[_2])]) ).
+
+:- true pred update_bounds(_1,NumGs,_2)
+   : ( (NumGs=100),
+       mshare([[_1],[_2]]),
+       linear(_1), linear(_2), shlin2([([_1],[_1]),([_2],[_2])]) )
+   => ( mshare([[_1],[_2]]),
+        linear(_1), linear(_2), shlin2([([_1],[_1]),([_2],[_2])]) ).
+
+update_bounds(_1,NumGs,_2) :-
+    true((mshare([[_1],[_2]]),ground([NumGs]),linear(_1),linear(_2),shlin2([([_1],[_1]),([_2],[_2])]);ground([_1,NumGs,_2]))),
+    set(bound,NumGs),
+    true((mshare([[_1],[_2]]),ground([NumGs]),linear(_1),linear(_2),shlin2([([_1],[_1]),([_2],[_2])]);ground([_1,NumGs,_2]))).
+
+:- true pred set(N,A)
+   : ( (N=bound), ground([A]) )
+   => ground([A]).
+
+set(N,A) :-
+    true(ground([N,A])),
+    'set/2/1/$disj/1'(N),
+    true(ground([N,A])),
+    asserta(state_(N,A)),
+    true(ground([N,A])).
+
+:- true pred 'set/2/1/$disj/1'(N)
+   : ground([N])
+   => ground([N]).
+
+'set/2/1/$disj/1'(N) :-
+    true((
+        mshare([[_1]]),
+        ground([N]),
+        linear(_1),
+        shlin2([([_1],[_1])])
+    )),
+    retract(state_(N,_1)),
+    !,
+    true((
+        mshare([[_1]]),
+        ground([N]),
+        shlin2([([_1],[])])
+    )),
+    true,
+    true((
+        mshare([[_1]]),
+        ground([N]),
+        shlin2([([_1],[])])
+    )).
+'set/2/1/$disj/1'(N).
+
+:- true pred access(N,A)
+   : ( (N=bound),
+       mshare([[A]]),
+       linear(A), shlin2([([A],[A])]) )
+   => ( mshare([[A]]),
+        shlin2([([A],[])]) ).
+
+access(N,A) :-
+    true((
+        mshare([[A]]),
+        ground([N]),
+        linear(A),
+        shlin2([([A],[A])])
+    )),
+    state_(N,A),
+    true((
+        mshare([[A]]),
+        ground([N]),
+        shlin2([([A],[])])
+    )).
+
+write_gates([]).
+write_gates([Gi|Gs]) :-
+    function_number(Gi,I),
+    write('gate #'),
+    write(I),
+    write(' inputs:   '),
+    immediate_predecessors(Gi,IPi),
+    write(IPi),
+    nl,
+    write_gates(Gs).
+
+:- true pred function(I,_A,Gi)
+   : ( mshare([[Gi]]),
+       ground([I,_A]), linear(Gi), shlin2([([Gi],[Gi])]) )
+   => ground([I,_A,Gi]).
+
+function(I,[Gi|_1],Gi) :-
+    true(ground([I,Gi,_1])),
+    function_number(Gi,I),
+    !,
+    true(ground([I,Gi,_1])).
+function(I,[_1|Gs],Gi) :-
+    true((
+        mshare([[Gi]]),
+        ground([I,_1,Gs]),
+        linear(Gi),
+        shlin2([([Gi],[Gi])])
+    )),
+    function(I,Gs,Gi),
+    true(ground([I,Gi,_1,Gs])).
+
+:- true pred function_number(_A,I)
+   : ( mshare([[I]]),
+       ground([_A]), linear(I), shlin2([([I],[I])]) )
+   => ground([_A,I]).
+
+:- true pred function_number(_A,I)
+   : ground([_A,I])
+   => ground([_A,I]).
+
+function_number(function(I,_1,_2,_3,_4,_5,_6,_7),I).
+
+:- true pred true_set(_A,T)
+   : ( mshare([[T]]),
+       ground([_A]), linear(T), shlin2([([T],[T])]) )
+   => ground([_A,T]).
+
+true_set(function(_1,T,_2,_3,_4,_5,_6,_7),T).
+
+:- true pred false_set(_A,F)
+   : ( mshare([[F]]),
+       ground([_A]), linear(F), shlin2([([F],[F])]) )
+   => ground([_A,F]).
+
+false_set(function(_1,_2,F,_3,_4,_5,_6,_7),F).
+
+:- true pred conceivable_inputs(_A,CI)
+   : ( mshare([[CI]]),
+       ground([_A]), linear(CI), shlin2([([CI],[CI])]) )
+   => ground([_A,CI]).
+
+conceivable_inputs(function(_1,_2,_3,CI,_4,_5,_6,_7),CI).
+
+:- true pred immediate_predecessors(_A,IP)
+   : ( mshare([[IP]]),
+       ground([_A]), linear(IP), shlin2([([IP],[IP])]) )
+   => ground([_A,IP]).
+
+immediate_predecessors(function(_1,_2,_3,_4,IP,_5,_6,_7),IP).
+
+immediate_successors(function(_1,_2,_3,_4,_5,IS,_6,_7),IS).
+
+predecessors(function(_1,_2,_3,_4,_5,_6,P,_7),P).
+
+successors(function(_1,_2,_3,_4,_5,_6,_7,S),S).
+
+:- true pred set_union(_A,_B,_C)
+   : ( (_A=[_D]),
+       mshare([[_C]]),
+       ground([_B,_D]), linear(_C), shlin2([([_C],[_C])]) )
+   => ground([_B,_C,_D]).
+
+:- true pred set_union(_A,_B,_C)
+   : ( mshare([[_C]]),
+       ground([_A,_B]), linear(_C), shlin2([([_C],[_C])]) )
+   => ground([_A,_B,_C]).
+
+:- true pred set_union(_A,_B,_C)
+   : ( (_B=[_D]),
+       mshare([[_C]]),
+       ground([_A,_D]), linear(_C), shlin2([([_C],[_C])]) )
+   => ground([_A,_C,_D]).
+
+:- true pred set_union(_A,_B,_C)
+   : ( (_A=[_D|_E]),
+       mshare([[_C]]),
+       ground([_B,_D,_E]), linear(_C), shlin2([([_C],[_C])]) )
+   => ground([_B,_C,_D,_E]).
+
+:- true pred set_union(_A,_B,_C)
+   : ( (_B=[_D|_E]),
+       mshare([[_C]]),
+       ground([_A,_D,_E]), linear(_C), shlin2([([_C],[_C])]) )
+   => ground([_A,_C,_D,_E]).
+
+set_union([],[],[]).
+set_union([],[X|L2],[X|L2]).
+set_union([X|L1],[],[X|L1]).
+set_union([X|L1],[X|L2],[X|L3]) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_union(L1,L2,L3),
+    true(ground([X,L1,L2,L3])).
+set_union([X|L1],[Y|L2],[X|L3]) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    X<Y,
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_union(L1,[Y|L2],L3),
+    true(ground([X,L1,Y,L2,L3])).
+set_union([X|L1],[Y|L2],[Y|L3]) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    X>Y,
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_union([X|L1],L2,L3),
+    true(ground([X,L1,Y,L2,L3])).
+
+:- true pred set_intersection(_A,_B,L3)
+   : ( (L3=[]), ground([_A,_B]) )
+   => ground([_A,_B]).
+
+:- true pred set_intersection(_A,_B,L3)
+   : ( (_A=[_C|_D]), ground([_B,L3,_C,_D]) )
+   => ground([_B,L3,_C,_D]).
+
+:- true pred set_intersection(_A,_B,L3)
+   : ( (_B=[_C|_D]), ground([_A,L3,_C,_D]) )
+   => ground([_A,L3,_C,_D]).
+
+:- true pred set_intersection(_A,_B,L3)
+   : ground([_A,_B,L3])
+   => ground([_A,_B,L3]).
+
+set_intersection([],[],[]).
+set_intersection([],[_1|_2],[]).
+set_intersection([_1|_2],[],[]).
+set_intersection([X|L1],[X|L2],[X|L3]) :-
+    true(ground([X,L1,L2,L3])),
+    set_intersection(L1,L2,L3),
+    true(ground([X,L1,L2,L3])).
+set_intersection([X|L1],[Y|L2],L3) :-
+    true(ground([L3,X,L1,Y,L2])),
+    X<Y,
+    true(ground([L3,X,L1,Y,L2])),
+    set_intersection(L1,[Y|L2],L3),
+    true(ground([L3,X,L1,Y,L2])).
+set_intersection([X|L1],[Y|L2],L3) :-
+    true(ground([L3,X,L1,Y,L2])),
+    X>Y,
+    true(ground([L3,X,L1,Y,L2])),
+    set_intersection([X|L1],L2,L3),
+    true(ground([L3,X,L1,Y,L2])).
+
+:- true pred set_difference(_A,_B,L3)
+   : ( (_B=[_C]),
+       mshare([[L3]]),
+       ground([_A,_C]), linear(L3), shlin2([([L3],[L3])]) )
+   => ground([_A,L3,_C]).
+
+:- true pred set_difference(_A,_B,L3)
+   : ( (_A=[_C|_D]),
+       mshare([[L3]]),
+       ground([_B,_C,_D]), linear(L3), shlin2([([L3],[L3])]) )
+   => ground([_B,L3,_C,_D]).
+
+:- true pred set_difference(_A,_B,L3)
+   : ( (_B=[_C|_D]),
+       mshare([[L3]]),
+       ground([_A,_C,_D]), linear(L3), shlin2([([L3],[L3])]) )
+   => ground([_A,L3,_C,_D]).
+
+:- true pred set_difference(_A,_B,L3)
+   : ( mshare([[L3]]),
+       ground([_A,_B]), linear(L3), shlin2([([L3],[L3])]) )
+   => ground([_A,_B,L3]).
+
+set_difference([],[],[]).
+set_difference([],[_1|_2],[]).
+set_difference([X|L1],[],[X|L1]).
+set_difference([X|L1],[X|L2],L3) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_difference(L1,L2,L3),
+    true(ground([L3,X,L1,L2])).
+set_difference([X|L1],[Y|L2],[X|L3]) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    X<Y,
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_difference(L1,[Y|L2],L3),
+    true(ground([X,L1,Y,L2,L3])).
+set_difference([X|L1],[Y|L2],L3) :-
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    X>Y,
+    true((
+        mshare([[L3]]),
+        ground([X,L1,Y,L2]),
+        linear(L3),
+        shlin2([([L3],[L3])])
+    )),
+    set_difference([X|L1],L2,L3),
+    true(ground([L3,X,L1,Y,L2])).
+
+:- true pred set_subset(_A,_1)
+   : ( (_A=[_B|_C]), ground([_1,_B,_C]) )
+   => ground([_1,_B,_C]).
+
+:- true pred set_subset(_A,_1)
+   : ground([_A,_1])
+   => ground([_A,_1]).
+
+set_subset([],_1).
+set_subset([X|L1],[X|L2]) :-
+    true(ground([X,L1,L2])),
+    set_subset(L1,L2),
+    true(ground([X,L1,L2])).
+set_subset([X|L1],[Y|L2]) :-
+    true(ground([X,L1,Y,L2])),
+    X>Y,
+    true(ground([X,L1,Y,L2])),
+    set_subset([X|L1],L2),
+    true(ground([X,L1,Y,L2])).
+
+:- true pred set_member(X,_A)
+   : ground([X,_A])
+   => ground([X,_A]).
+
+set_member(X,[X|_1]).
+set_member(X,[Y|T]) :-
+    true(ground([X,Y,T])),
+    X>Y,
+    true(ground([X,Y,T])),
+    set_member(X,T),
+    true(ground([X,Y,T])).
+
+

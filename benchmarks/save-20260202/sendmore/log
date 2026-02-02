@@ -1,0 +1,204 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.204 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 0.0 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.807 msec.}
+{analyzed by plai in 0.885 msec.}
+}
+{written file results/sendmore/as_shlin2_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 23.072 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.054 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.931 msec.}
+{analyzed by plai in 2.041 msec.}
+}
+{written file results/sendmore/as_shlin2_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.464 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.019 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 0.968 msec.}
+{analyzed by plai in 1.411 msec.}
+}
+{written file results/sendmore/as_shlin2_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 22.775 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.427 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 1.131 msec.}
+{analyzed by plai in 1.655 msec.}
+}
+{written file results/sendmore/as_shlin2_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 22.355 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.364 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.036 msec.}
+{analyzed by plai in 1.482 msec.}
+}
+{written file results/sendmore/as_shlin_opt_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.361 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.356 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.056 msec.}
+{analyzed by plai in 1.504 msec.}
+}
+{written file results/sendmore/as_shlin_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.078 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 0.358 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.012 msec.}
+{analyzed by plai in 1.465 msec.}
+}
+{written file results/sendmore/as_shlin_noindcheck.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 18.623 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.364 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 0.99 msec.}
+{analyzed by plai in 1.436 msec.}
+}
+{written file results/sendmore/as_shlin_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 19.043 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.367 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.349 msec.}
+{analyzed by plai in 1.812 msec.}
+}
+{written file results/sendmore/as_shlin_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.254 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.37 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.278 msec.}
+{analyzed by plai in 1.748 msec.}
+}
+{written file results/sendmore/as_shlin_noindcheck_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 21.771 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.373 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 1.301 msec.}
+{analyzed by plai in 1.766 msec.}
+}
+{written file results/sendmore/as_shlin_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 20.063 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.362 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.842 msec.}
+{analyzed by plai in 1.311 msec.}
+}
+{written file results/sendmore/as_sharing_opt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 20.315 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.36 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.843 msec.}
+{analyzed by plai in 1.288 msec.}
+}
+{written file results/sendmore/as_sharing_noopt.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 20.81 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 0.371 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.979 msec.}
+{analyzed by plai in 1.437 msec.}
+}
+{written file results/sendmore/as_sharing_opt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 20.357 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.365 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 0.961 msec.}
+{analyzed by plai in 1.406 msec.}
+}
+{written file results/sendmore/as_sharing_noopt_mgu.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 22.247 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.361 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.832 msec.}
+{analyzed by plai in 1.277 msec.}
+}
+{written file results/sendmore/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl
+{loaded in 20.49 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/sendmore.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.372 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.353 msec.}
+{analyzed by plai in 1.813 msec.}
+}
+{written file results/sendmore/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

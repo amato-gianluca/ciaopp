@@ -1,0 +1,234 @@
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 18.337 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.323 msec.}
+UNKNOWN CALL: $meta(_55833,_55835)
+UNKNOWN CALL: $meta(_56205,_56212,_56214{fixpoint reached by plai using as_shlin2 with local-control off in 1.387 msec.}
+{analyzed by plai in 1.797 msec.}
+}
+{written file results/perfect/as_shlin2_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 22.879 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.329 msec.}
+UNKNOWN CALL: $meta(_55863,_55865)
+UNKNOWN CALL: $meta(_56235,_56242,_56244{fixpoint reached by plai using as_shlin2 with local-control off in 1.849 msec.}
+{analyzed by plai in 2.269 msec.}
+}
+{written file results/perfect/as_shlin2_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 22.858 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 0.328 msec.}
+UNKNOWN CALL: $meta(_55833,_55835)
+UNKNOWN CALL: $meta(_56201,_56208,_56210{fixpoint reached by plai using as_shlin2 with local-control off in 1.051 msec.}
+{analyzed by plai in 1.467 msec.}
+}
+{written file results/perfect/as_shlin2_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 20.455 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 0.335 msec.}
+UNKNOWN CALL: $meta(_55863,_55865)
+UNKNOWN CALL: $meta(_56231,_56238,_56240{fixpoint reached by plai using as_shlin2 with local-control off in 1.158 msec.}
+{analyzed by plai in 1.579 msec.}
+}
+{written file results/perfect/as_shlin2_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 21.375 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.325 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56193,_56200,_56202{fixpoint reached by plai using as_shlin with local-control off in 1.116 msec.}
+{analyzed by plai in 1.53 msec.}
+}
+{written file results/perfect/as_shlin_opt_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 20.206 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.33 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56193,_56200,_56202{fixpoint reached by plai using as_shlin with local-control off in 1.108 msec.}
+{analyzed by plai in 1.524 msec.}
+}
+{written file results/perfect/as_shlin_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 20.962 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.02 msec.}
+{preprocessed for the plai fixpoint in 0.325 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56189,_56196,_56198{fixpoint reached by plai using as_shlin with local-control off in 1.068 msec.}
+{analyzed by plai in 1.479 msec.}
+}
+{written file results/perfect/as_shlin_noindcheck.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 20.247 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.003 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56189,_56196,_56198{fixpoint reached by plai using as_shlin with local-control off in 1.093 msec.}
+{analyzed by plai in 1.143 msec.}
+}
+{written file results/perfect/as_shlin_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 21.27 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.328 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56193,_56200,_56202{fixpoint reached by plai using as_shlin with local-control off in 1.256 msec.}
+{analyzed by plai in 1.664 msec.}
+}
+{written file results/perfect/as_shlin_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 20.845 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 0.332 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56189,_56196,_56198{fixpoint reached by plai using as_shlin with local-control off in 1.203 msec.}
+{analyzed by plai in 1.628 msec.}
+}
+{written file results/perfect/as_shlin_noindcheck_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 21.096 msec.}
+}
+{Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.328 msec.}
+UNKNOWN CALL: $meta(_55866,_55868)
+UNKNOWN CALL: $meta(_56189,_56196,_56198{fixpoint reached by plai using as_shlin with local-control off in 1.203 msec.}
+{analyzed by plai in 1.62 msec.}
+}
+{written file results/perfect/as_shlin_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 19.989 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.021 msec.}
+{preprocessed for the plai fixpoint in 0.325 msec.}
+UNKNOWN CALL: $meta(_55827,_55829)
+UNKNOWN CALL: $meta(_56131,_56138,_56140{fixpoint reached by plai using as_sharing with local-control off in 0.943 msec.}
+{analyzed by plai in 1.355 msec.}
+}
+{written file results/perfect/as_sharing_opt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 22.049 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.323 msec.}
+UNKNOWN CALL: $meta(_55827,_55829)
+UNKNOWN CALL: $meta(_56127,_56134,_56136{fixpoint reached by plai using as_sharing with local-control off in 0.996 msec.}
+{analyzed by plai in 1.406 msec.}
+}
+{written file results/perfect/as_sharing_noopt.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 23.227 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 0.331 msec.}
+UNKNOWN CALL: $meta(_55857,_55859)
+UNKNOWN CALL: $meta(_56161,_56168,_56170{fixpoint reached by plai using as_sharing with local-control off in 1.075 msec.}
+{analyzed by plai in 1.496 msec.}
+}
+{written file results/perfect/as_sharing_opt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 21.127 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.023 msec.}
+{preprocessed for the plai fixpoint in 0.325 msec.}
+UNKNOWN CALL: $meta(_55857,_55859)
+UNKNOWN CALL: $meta(_56157,_56164,_56166{fixpoint reached by plai using as_sharing with local-control off in 1.088 msec.}
+{analyzed by plai in 1.464 msec.}
+}
+{written file results/perfect/as_sharing_noopt_mgu.pl}
+)
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: share
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 22.033 msec.}
+}
+{Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 0.028 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 0.993 msec.}
+{analyzed by plai in 1.07 msec.}
+}
+{written file results/perfect/share.pl}
+END ANALYSIS -- EXIT CODE: 0
+START ANALYSIS -- CONFIGURATION: shfrlin
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl
+{loaded in 18.585 msec.}
+}
+{Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/perfect.pl]
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 0.332 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 1.503 msec.}
+{analyzed by plai in 1.925 msec.}
+}
+{written file results/perfect/shfrlin.pl}
+END ANALYSIS -- EXIT CODE: 0

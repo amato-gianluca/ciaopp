@@ -444,7 +444,7 @@ mgu_binding_lin0(Lin, Sx, St, _, _, Res) :-
 %
 % With respect to the general definition of matching, we only consider
 % the special case in which the variables in Call (not even provided
-% explicityl input) are a superset of Pv.
+% explicitly in input) are a superset of Pv.
 %-------------------------------------------------------------------------
 
 :- pred match(+Prime, +Pv, +Call, -Match)

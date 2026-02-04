@@ -190,6 +190,7 @@ extract_property((A,B), Property, Terms) :- !,
     append(TermsA, TermsB, Terms).
 
 extract_property(linear(V), linear, [V]) :- !.
+extract_property(ground(L), linear, L) :- !.
 extract_property(_, linear, []) :- !.
 
 extract_property(ground(L), ground, L) :- !.
@@ -204,10 +205,7 @@ count_mshare_args([[]|T], C) :- !, count_mshare_args(T,C).
 count_mshare_args([_|T], C1) :- !, count_mshare_args(T,C), C1 is C + 1.
 count_mshare_args(_, 0) .
 
-count_linear_args([], 0) :- !.
-count_linear_args([_|T], L) :- !,
-    count_linear_args(T,L1),
-    L is L1 + 1.
+count_linear_args(L, C) :- length(L, C).
 
 % Define sumlist/2 if not available
 sumlist([], 0).

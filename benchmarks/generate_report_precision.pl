@@ -189,6 +189,9 @@ extract_property((A,B), Property, Terms) :- !,
     extract_property(B, Property, TermsB),
     append(TermsA, TermsB, Terms).
 
+% TODO: a fail property should be counted as the set of all variables when
+% collecting linear and ground properties.
+
 extract_property(linear(V), linear, [V]) :- !.
 extract_property(ground(L), linear, L) :- !.
 extract_property(_, linear, []) :- !.

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import pandas as pd
-import sys
 import argparse
 import os
 import re
+import sys
+
+import pandas as pd
+
 
 def generate_table(maindir: str):
     PROGRAM_STRING = 'START ANALYSIS'
@@ -28,8 +30,10 @@ def generate_table(maindir: str):
                         domains.append(domain)
                 elif line.startswith(TIME_STRING):
                     match = re.search('([0-9]*\\.[0-9]*)', line)
+                    if not match:
+                        sys.exit("time expected after 'analyzer by plain in' string")
                     time = float(match.group(0))
-                    table_row[domain] = time
+                    table_row[domain] = str(time)
                 elif line.startswith(EXITCODE_STRING):
                     exitcode = line[line.index(':')+2:]
                     if exitcode == "124":
@@ -43,11 +47,10 @@ def generate_table(maindir: str):
     df.to_csv(sys.stdout)
 
 def main():
-    parser = argparse.ArgumentParser(description="Process log and generate a report on execution time")
-    parser.add_argument('-d', '--dir', help='directory where benchmark results are stored')
+    parser = argparse.ArgumentParser(description="Process log and generate a report on execution time.")
+    parser.add_argument('-d', '--dir', default='results', help='directory where benchmark results are stored')
     args = parser.parse_args()
-    dir = args.dir if args.dir else "results"
-    generate_table(dir)
+    generate_table(args.dir)
 
 if __name__ == "__main__":
     main()

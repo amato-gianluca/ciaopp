@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-from matplotlib import pyplot as plt
-import pandas as pd
-import numpy as np
-import sys
 import argparse
 import os
-import re
+
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+
 
 def domain_name(domain):
     if domain == 'share' or domain.startswith('as_sharing_'):
@@ -70,31 +70,32 @@ def show_boxplot(df, domains, property):
     domain_names = [domain_name(dom) for dom in domains]
     domain_options = [domain_option(dom) for dom in domains]
     if all([domain == domain_names[0] for domain in domain_names]):
-        ax.boxplot(df[domains], showfliers=outliers, labels=domain_options)
+        ax.boxplot(df[domains], showfliers=outliers, tick_labels=domain_options)
         ax.set_title(f'{titlename.capitalize()} with domain ' + domain_names[0])
     else:
-        ax.boxplot(df[domains], showfliers=outliers, labels=domain_names)
+        ax.boxplot(df[domains], showfliers=outliers, tick_labels=domain_names)
         ax.set_title(f'Comparing {titlename} of different domains\n(best options for each domain)')
     ax.set_ylabel(ylabel)
     return fig
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate graphs from CSV files")
-    parser.add_argument('-p', '--property', action='store', default='time', help='choose property to graph')
-    parser.add_argument('-o', '--output', action='store', default='', help='base filename for PDF files')
+    parser = argparse.ArgumentParser(description="Generate graphs from report CSV files.")
+    parser.add_argument('-p', '--property', default='time', help='choose property to graph')
+    parser.add_argument('-o', '--output', default='', help='base filename for PDF files')
+    parser.add_argument('-d', '--dir', default="results", help='directory where benchmark results are stored')
     args = parser.parse_args()
 
     if args.property != 'time':
-        df = pd.read_csv('report_precision.csv', index_col=['property', 'program']).dropna()
+        df = pd.read_csv(os.path.join(args.dir, 'report_precision.csv'), index_col=['property', 'program']).dropna()
         if args.property == 'linear':
             df = df.loc['linear'] + df.loc['ground']
         else:
             df = df.loc[args.property]
-        base = df ['share']
+        base = df['share']
         for col in df.columns:
             df[col] = df[col] / base
     else:
-        df = pd.read_csv('report_time.csv', index_col='program')
+        df = pd.read_csv(os.path.join(args.dir, 'report_time.csv'), index_col='program')
         for col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
         df = df.dropna()

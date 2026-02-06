@@ -383,9 +383,10 @@ success_builtin('arg/3', _, arg(X,Y,Z), HvFv_u, Call, Succ) :-
    make_ground(Call, Gv, Call0),
    (
       var(Y) ->
-         mgu(Call0, [], [Y=f(Z, _)], Call1),
+         augment(Call0, [W], Call1),
+         mgu(Call1, [W], [Y=f(Z, W)], Call2),
          sort(HvFv_u, HvFv),
-         project(Call1, HvFv, Succ)
+         project(Call2, HvFv, Succ)
       ;
          functor(Y, _, N),
          (

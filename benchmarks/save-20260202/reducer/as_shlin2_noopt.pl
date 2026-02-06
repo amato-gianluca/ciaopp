@@ -956,6 +956,11 @@ listify(_Expr,[_Op|_LArgs]) :-
     true(ground([_X])).
 
 :- true pred listify_list(I,N,_1,_A)
+   : ( mshare([[_A]]),
+       ground([I,N,_1]), linear(_A), shlin2([([_A],[_A])]) )
+   => ground([I,N,_1,_A]).
+
+:- true pred listify_list(I,N,_1,_A)
    : ( (I=1),
        mshare([[_A]]),
        ground([N,_1]), linear(_A), shlin2([([_A],[_A])]) )
@@ -974,11 +979,6 @@ listify(_Expr,[_Op|_LArgs]) :-
    => ( mshare([[_1]]),
         ground([N,_A]), shlin2([([_1],[])]) ).
 
-:- true pred listify_list(I,N,_1,_A)
-   : ( mshare([[_A]]),
-       ground([I,N,_1]), linear(_A), shlin2([([_A],[_A])]) )
-   => ground([I,N,_1,_A]).
-
 listify_list(I,N,_1,[]) :-
     true((mshare([[_1]]),ground([I,N]),shlin2([([_1],[])]);ground([I,N,_1]))),
     I>N,
@@ -990,13 +990,13 @@ listify_list(I,N,_Expr,[_LA|_LArgs]) :-
     !,
     true((mshare([[_Expr],[_LA],[_LArgs],[_A],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(_A),linear(I1),shlin2([([_Expr],[]),([_LA],[_LA]),([_LArgs],[_LArgs]),([_A],[_A]),([I1],[I1])]);mshare([[_LA],[_LArgs],[_A],[I1]]),ground([I,N,_Expr]),linear(_LA),linear(_LArgs),linear(_A),linear(I1),shlin2([([_LA],[_LA]),([_LArgs],[_LArgs]),([_A],[_A]),([I1],[I1])]))),
     arg(I,_Expr,_A),
-    true((mshare([[_Expr,_A],[_LA],[_LArgs],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(I1),shlin2([([_Expr,_A],[]),([_LA],[_LA]),([_LArgs],[_LArgs]),([I1],[I1])]);mshare([[_LA],[_LArgs],[I1]]),ground([I,N,_Expr,_A]),linear(_LA),linear(_LArgs),linear(I1),shlin2([([_LA],[_LA]),([_LArgs],[_LArgs]),([I1],[I1])]))),
+    true((mshare([[_Expr],[_Expr,_A],[_LA],[_LArgs],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(I1),shlin2([([_Expr],[]),([_Expr,_A],[]),([_LA],[_LA]),([_LArgs],[_LArgs]),([I1],[I1])]);mshare([[_LA],[_LArgs],[I1]]),ground([I,N,_Expr,_A]),linear(_LA),linear(_LArgs),linear(I1),shlin2([([_LA],[_LA]),([_LArgs],[_LArgs]),([I1],[I1])]))),
     listify(_A,_LA),
-    true((mshare([[_Expr,_A],[_LArgs],[I1]]),ground([I,N,_LA]),linear(_LArgs),linear(I1),shlin2([([_Expr,_A],[]),([_LArgs],[_LArgs]),([I1],[I1])]);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]),linear(_LArgs),linear(I1),shlin2([([_LArgs],[_LArgs]),([I1],[I1])]))),
+    true((mshare([[_Expr],[_Expr,_A],[_LArgs],[I1]]),ground([I,N,_LA]),linear(_LArgs),linear(I1),shlin2([([_Expr],[]),([_Expr,_A],[]),([_LArgs],[_LArgs]),([I1],[I1])]);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]),linear(_LArgs),linear(I1),shlin2([([_LArgs],[_LArgs]),([I1],[I1])]))),
     I1 is I+1,
-    true((mshare([[_Expr,_A],[_LArgs]]),ground([I,N,_LA,I1]),linear(_LArgs),shlin2([([_Expr,_A],[]),([_LArgs],[_LArgs])]);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]),linear(_LArgs),shlin2([([_LArgs],[_LArgs])]))),
+    true((mshare([[_Expr],[_Expr,_A],[_LArgs]]),ground([I,N,_LA,I1]),linear(_LArgs),shlin2([([_Expr],[]),([_Expr,_A],[]),([_LArgs],[_LArgs])]);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]),linear(_LArgs),shlin2([([_LArgs],[_LArgs])]))),
     listify_list(I1,N,_Expr,_LArgs),
-    true((mshare([[_Expr,_A]]),ground([I,N,_LA,_LArgs,I1]),shlin2([([_Expr,_A],[])]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
+    true((mshare([[_Expr],[_Expr,_A]]),ground([I,N,_LA,_LArgs,I1]),shlin2([([_Expr],[]),([_Expr,_A],[])]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
 
 :- true pred my_member(X,_A)
    : ( (_A=[-]), ground([X]) )

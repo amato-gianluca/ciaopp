@@ -936,13 +936,13 @@ listify_list(I,N,_Expr,[_LA|_LArgs]) :-
     !,
     true((mshare([[_Expr],[_LA],[_LArgs],[_A],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(_A),linear(I1);mshare([[_LA],[_LArgs],[_A],[I1]]),ground([I,N,_Expr]),linear(_LA),linear(_LArgs),linear(_A),linear(I1))),
     arg(I,_Expr,_A),
-    true((mshare([[_Expr,_A],[_LA],[_LArgs],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(I1);mshare([[_LA],[_LArgs],[I1]]),ground([I,N,_Expr,_A]),linear(_LA),linear(_LArgs),linear(I1))),
+    true((mshare([[_Expr],[_Expr,_A],[_LA],[_LArgs],[I1]]),ground([I,N]),linear(_LA),linear(_LArgs),linear(I1);mshare([[_LA],[_LArgs],[I1]]),ground([I,N,_Expr,_A]),linear(_LA),linear(_LArgs),linear(I1))),
     listify(_A,_LA),
-    true((mshare([[_Expr,_LA,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]),linear(_LArgs),linear(I1);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]),linear(_LArgs),linear(I1))),
+    true((mshare([[_Expr],[_Expr,_LA,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]),linear(_LArgs),linear(I1);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]),linear(_LArgs),linear(I1))),
     I1 is I+1,
-    true((mshare([[_Expr,_LA,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]),linear(_LArgs);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]),linear(_LArgs))),
+    true((mshare([[_Expr],[_Expr,_LA,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]),linear(_LArgs);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]),linear(_LArgs))),
     listify_list(I1,N,_Expr,_LArgs),
-    true((mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs,_A],[_Expr,_A]]),ground([I,N,I1]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
+    true((mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs],[_Expr,_LArgs,_A],[_Expr,_A]]),ground([I,N,I1]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
 
 :- true pred my_member(X,_A)
    : ( (_A=[-]), ground([X]) )

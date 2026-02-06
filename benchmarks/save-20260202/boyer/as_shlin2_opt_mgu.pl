@@ -287,16 +287,6 @@ tautology(Wff,Tlist,Flist) :-
         linear(New), shlin2([([Atom],[]),([New],[New])]) ).
 
 :- true pred rewrite(Atom,New)
-   : ( mshare([[Atom]]),
-       ground([New]), shlin2([([Atom],[])]) )
-   => ( mshare([[Atom]]),
-        ground([New]), shlin2([([Atom],[])]) ).
-
-:- true pred rewrite(Atom,New)
-   : ground([Atom,New])
-   => ground([Atom,New]).
-
-:- true pred rewrite(Atom,New)
    : ( mshare([[New]]),
        ground([Atom]), linear(New), shlin2([([New],[New])]) )
    => ( mshare([[New]]),
@@ -308,16 +298,16 @@ rewrite(Atom,Atom) :-
     !,
     true(ground([Atom])).
 rewrite(Old,New) :-
-    true((mshare([[Old],[New],[F],[N],[Mid]]),linear(New),linear(F),linear(N),linear(Mid),shlin2([([Old],[]),([New],[New]),([F],[F]),([N],[N]),([Mid],[Mid])]);mshare([[Old],[F],[N],[Mid]]),ground([New]),linear(F),linear(N),linear(Mid),shlin2([([Old],[]),([F],[F]),([N],[N]),([Mid],[Mid])]);mshare([[New],[F],[N],[Mid]]),ground([Old]),linear(New),linear(F),linear(N),linear(Mid),shlin2([([New],[New]),([F],[F]),([N],[N]),([Mid],[Mid])]);mshare([[F],[N],[Mid]]),ground([Old,New]),linear(F),linear(N),linear(Mid),shlin2([([F],[F]),([N],[N]),([Mid],[Mid])]))),
+    true((mshare([[Old],[New],[F],[N],[Mid]]),linear(New),linear(F),linear(N),linear(Mid),shlin2([([Old],[]),([New],[New]),([F],[F]),([N],[N]),([Mid],[Mid])]);mshare([[New],[F],[N],[Mid]]),ground([Old]),linear(New),linear(F),linear(N),linear(Mid),shlin2([([New],[New]),([F],[F]),([N],[N]),([Mid],[Mid])]))),
     functor(Old,F,N),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[Old],[Mid]]),ground([New,F,N]),linear(Mid),shlin2([([Old],[]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]);mshare([[Mid]]),ground([Old,New,F,N]),linear(Mid),shlin2([([Mid],[Mid])]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]))),
     functor(Mid,F,N),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[Old],[Mid]]),ground([New,F,N]),linear(Mid),shlin2([([Old],[]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]);mshare([[Mid]]),ground([Old,New,F,N]),linear(Mid),shlin2([([Mid],[Mid])]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]))),
     rewrite_args(N,Old,Mid),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[Old],[Mid]]),ground([New,F,N]),linear(Mid),shlin2([([Old],[]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]);mshare([[Mid]]),ground([Old,New,F,N]),linear(Mid),shlin2([([Mid],[Mid])]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]),linear(New),linear(Mid),shlin2([([Old],[]),([New],[New]),([Mid],[Mid])]);mshare([[New],[Mid]]),ground([Old,F,N]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]))),
     'rewrite/2/2/$disj/1'(New,Mid),
     !,
-    true((mshare([[Old],[New],[New,Mid],[Mid]]),ground([F,N]),linear(New),shlin2([([Old],[]),([New],[New]),([New,Mid],[New,Mid]),([Mid],[])]);mshare([[Old],[Mid]]),ground([New,F,N]),shlin2([([Old],[]),([Mid],[])]);mshare([[New],[New,Mid],[Mid]]),ground([Old,F,N]),linear(New),shlin2([([New],[New]),([New,Mid],[New,Mid]),([Mid],[])]);mshare([[Mid]]),ground([Old,New,F,N]),shlin2([([Mid],[])]))).
+    true((mshare([[Old],[New],[New,Mid],[Mid]]),ground([F,N]),linear(New),shlin2([([Old],[]),([New],[New]),([New,Mid],[New,Mid]),([Mid],[])]);mshare([[New],[New,Mid],[Mid]]),ground([Old,F,N]),linear(New),shlin2([([New],[New]),([New,Mid],[New,Mid]),([Mid],[])]))).
 
 :- true pred 'rewrite/2/2/$disj/1'(New,Mid)
    : ( mshare([[New],[Mid]]),
@@ -325,32 +315,40 @@ rewrite(Old,New) :-
    => ( mshare([[New],[New,Mid],[Mid]]),
         linear(New), shlin2([([New],[New]),([New,Mid],[New,Mid]),([Mid],[])]) ).
 
-:- true pred 'rewrite/2/2/$disj/1'(New,Mid)
-   : ( mshare([[Mid]]),
-       ground([New]), linear(Mid), shlin2([([Mid],[Mid])]) )
-   => ( mshare([[Mid]]),
-        ground([New]), shlin2([([Mid],[])]) ).
-
 'rewrite/2/2/$disj/1'(New,Mid) :-
-    true((mshare([[New],[Mid],[Next]]),linear(New),linear(Mid),linear(Next),shlin2([([New],[New]),([Mid],[Mid]),([Next],[Next])]);mshare([[Mid],[Next]]),ground([New]),linear(Mid),linear(Next),shlin2([([Mid],[Mid]),([Next],[Next])]))),
+    true((
+        mshare([[New],[Mid],[Next]]),
+        linear(New),
+        linear(Mid),
+        linear(Next),
+        shlin2([([New],[New]),([Mid],[Mid]),([Next],[Next])])
+    )),
     equal(Mid,Next),
-    true((mshare([[New],[Mid],[Mid,Next]]),linear(New),shlin2([([New],[New]),([Mid],[]),([Mid,Next],[])]);mshare([[Mid],[Mid,Next]]),ground([New]),shlin2([([Mid],[]),([Mid,Next],[])]))),
+    true((
+        mshare([[New],[Mid],[Mid,Next]]),
+        linear(New),
+        shlin2([([New],[New]),([Mid],[]),([Mid,Next],[])])
+    )),
     rewrite(Next,New),
-    true((mshare([[New],[Mid],[Mid,Next]]),linear(New),shlin2([([New],[New]),([Mid],[]),([Mid,Next],[])]);mshare([[Mid],[Mid,Next]]),ground([New]),shlin2([([Mid],[]),([Mid,Next],[])]))).
+    true((
+        mshare([[New],[Mid],[Mid,Next]]),
+        linear(New),
+        shlin2([([New],[New]),([Mid],[]),([Mid,Next],[])])
+    )).
 'rewrite/2/2/$disj/1'(New,Mid) :-
-    true((mshare([[New],[Mid]]),linear(New),linear(Mid),shlin2([([New],[New]),([Mid],[Mid])]);mshare([[Mid]]),ground([New]),linear(Mid),shlin2([([Mid],[Mid])]))),
+    true((
+        mshare([[New],[Mid]]),
+        linear(New),
+        linear(Mid),
+        shlin2([([New],[New]),([Mid],[Mid])])
+    )),
     New=Mid,
-    true((mshare([[New,Mid]]),linear(New),linear(Mid),shlin2([([New,Mid],[New,Mid])]);ground([New,Mid]))).
-
-:- true pred rewrite_args(N,_1,_2)
-   : ground([N,_1,_2])
-   => ground([N,_1,_2]).
-
-:- true pred rewrite_args(N,_1,_2)
-   : ( mshare([[_2]]),
-       ground([N,_1]), linear(_2), shlin2([([_2],[_2])]) )
-   => ( mshare([[_2]]),
-        ground([N,_1]), linear(_2), shlin2([([_2],[_2])]) ).
+    true((
+        mshare([[New,Mid]]),
+        linear(New),
+        linear(Mid),
+        shlin2([([New,Mid],[New,Mid])])
+    )).
 
 :- true pred rewrite_args(N,_1,_2)
    : ( mshare([[_1],[_2]]),
@@ -358,21 +356,27 @@ rewrite(Old,New) :-
    => ( mshare([[_1],[_2]]),
         ground([N]), linear(_2), shlin2([([_1],[]),([_2],[_2])]) ).
 
+:- true pred rewrite_args(N,_1,_2)
+   : ( mshare([[_2]]),
+       ground([N,_1]), linear(_2), shlin2([([_2],[_2])]) )
+   => ( mshare([[_2]]),
+        ground([N,_1]), linear(_2), shlin2([([_2],[_2])]) ).
+
 rewrite_args(0,_1,_2) :-
     !,
-    true((mshare([[_1],[_2]]),linear(_2),shlin2([([_1],[]),([_2],[_2])]);mshare([[_2]]),ground([_1]),linear(_2),shlin2([([_2],[_2])]);ground([_1,_2]))).
+    true((mshare([[_1],[_2]]),linear(_2),shlin2([([_1],[]),([_2],[_2])]);mshare([[_2]]),ground([_1]),linear(_2),shlin2([([_2],[_2])]))).
 rewrite_args(N,Old,Mid) :-
-    true((mshare([[Old],[Mid],[OldArg],[MidArg],[N1]]),ground([N]),linear(Mid),linear(OldArg),linear(MidArg),linear(N1),shlin2([([Old],[]),([Mid],[Mid]),([OldArg],[OldArg]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[Mid],[OldArg],[MidArg],[N1]]),ground([N,Old]),linear(Mid),linear(OldArg),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([OldArg],[OldArg]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[OldArg],[MidArg],[N1]]),ground([N,Old,Mid]),linear(OldArg),linear(MidArg),linear(N1),shlin2([([OldArg],[OldArg]),([MidArg],[MidArg]),([N1],[N1])]))),
+    true((mshare([[Old],[Mid],[OldArg],[MidArg],[N1]]),ground([N]),linear(Mid),linear(OldArg),linear(MidArg),linear(N1),shlin2([([Old],[]),([Mid],[Mid]),([OldArg],[OldArg]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[Mid],[OldArg],[MidArg],[N1]]),ground([N,Old]),linear(Mid),linear(OldArg),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([OldArg],[OldArg]),([MidArg],[MidArg]),([N1],[N1])]))),
     arg(N,Old,OldArg),
-    true((mshare([[Old,OldArg],[Mid],[MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old,OldArg],[]),([Mid],[Mid]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[Mid],[MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[MidArg],[N1]]),ground([N,Old,Mid,OldArg]),linear(MidArg),linear(N1),shlin2([([MidArg],[MidArg]),([N1],[N1])]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old],[]),([Old,OldArg],[]),([Mid],[Mid]),([MidArg],[MidArg]),([N1],[N1])]);mshare([[Mid],[MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([MidArg],[MidArg]),([N1],[N1])]))),
     arg(N,Mid,MidArg),
-    true((mshare([[Old,OldArg],[Mid,MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old,OldArg],[]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[Mid,MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[N1]]),ground([N,Old,Mid,OldArg,MidArg]),linear(N1),shlin2([([N1],[N1])]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old],[]),([Old,OldArg],[]),([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[Mid],[Mid,MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]))),
     rewrite(OldArg,MidArg),
-    true((mshare([[Old,OldArg],[Mid,MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old,OldArg],[]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[Mid,MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[N1]]),ground([N,Old,Mid,OldArg,MidArg]),linear(N1),shlin2([([N1],[N1])]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg],[N1]]),ground([N]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Old],[]),([Old,OldArg],[]),([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]);mshare([[Mid],[Mid,MidArg],[N1]]),ground([N,Old,OldArg]),linear(Mid),linear(MidArg),linear(N1),shlin2([([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg]),([N1],[N1])]))),
     N1 is N-1,
-    true((mshare([[Old,OldArg],[Mid,MidArg]]),ground([N,N1]),linear(Mid),linear(MidArg),shlin2([([Old,OldArg],[]),([Mid,MidArg],[Mid,MidArg])]);mshare([[Mid,MidArg]]),ground([N,Old,OldArg,N1]),linear(Mid),linear(MidArg),shlin2([([Mid,MidArg],[Mid,MidArg])]);ground([N,Old,Mid,OldArg,MidArg,N1]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg]]),ground([N,N1]),linear(Mid),linear(MidArg),shlin2([([Old],[]),([Old,OldArg],[]),([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg])]);mshare([[Mid],[Mid,MidArg]]),ground([N,Old,OldArg,N1]),linear(Mid),linear(MidArg),shlin2([([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg])]))),
     rewrite_args(N1,Old,Mid),
-    true((mshare([[Old,OldArg],[Mid,MidArg]]),ground([N,N1]),linear(Mid),linear(MidArg),shlin2([([Old,OldArg],[]),([Mid,MidArg],[Mid,MidArg])]);mshare([[Mid,MidArg]]),ground([N,Old,OldArg,N1]),linear(Mid),linear(MidArg),shlin2([([Mid,MidArg],[Mid,MidArg])]);ground([N,Old,Mid,OldArg,MidArg,N1]))).
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg]]),ground([N,N1]),linear(Mid),linear(MidArg),shlin2([([Old],[]),([Old,OldArg],[]),([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg])]);mshare([[Mid],[Mid,MidArg]]),ground([N,Old,OldArg,N1]),linear(Mid),linear(MidArg),shlin2([([Mid],[Mid]),([Mid,MidArg],[Mid,MidArg])]))).
 
 :- true pred truep(Wff,_1)
    : ( mshare([[Wff]]),

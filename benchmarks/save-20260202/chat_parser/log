@@ -1,146 +1,146 @@
 START ANALYSIS -- CONFIGURATION: as_shlin2_opt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 43.009 msec.}
+{loaded in 43.418 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.881 msec.}
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 14.906 msec.}
 {ERROR: Memory allocation failed [in Realloc()]}
 END ANALYSIS -- EXIT CODE: 1
 START ANALYSIS -- CONFIGURATION: as_shlin2_opt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 41.964 msec.}
-}
-{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.03 msec.}
-{preprocessed for the plai fixpoint in 15.031 msec.}
-END ANALYSIS -- EXIT CODE: 124
-START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
-{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 40.37 msec.}
+{loaded in 45.635 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.925 msec.}
+{preprocessed for the plai fixpoint in 14.903 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_shlin2_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
+{loaded in 41.768 msec.}
+}
+{Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
+{init for the plai fixpoint in 0.024 msec.}
+{preprocessed for the plai fixpoint in 14.896 msec.}
 {ERROR: Memory allocation failed [in Realloc()]}
 END ANALYSIS -- EXIT CODE: 1
 START ANALYSIS -- CONFIGURATION: as_shlin2_noopt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 42.117 msec.}
+{loaded in 46.858 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.873 msec.}
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 14.915 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_opt_opt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 44.378 msec.}
+{loaded in 42.19 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 14.882 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 62284.707 msec.}
-{analyzed by plai in 62299.704 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.933 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 62307.534 msec.}
+{analyzed by plai in 62322.589 msec.}
 }
 {written file results/chat_parser/as_shlin_opt_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
 START ANALYSIS -- CONFIGURATION: as_shlin_opt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 38.413 msec.}
+{loaded in 44.997 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.029 msec.}
-{preprocessed for the plai fixpoint in 14.834 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 24226.259 msec.}
-{analyzed by plai in 24241.218 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.872 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 24290.143 msec.}
+{analyzed by plai in 24305.137 msec.}
 }
 {written file results/chat_parser/as_shlin_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
 START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 45.335 msec.}
+{loaded in 44.114 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.836 msec.}
+{preprocessed for the plai fixpoint in 14.842 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_noopt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 45.368 msec.}
+{loaded in 43.134 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.905 msec.}
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 14.863 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_opt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 43.358 msec.}
+{loaded in 42.131 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
 {init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 14.917 msec.}
+{preprocessed for the plai fixpoint in 14.943 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 43.369 msec.}
+{loaded in 41.265 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.883 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 14.84 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 42.783 msec.}
+{loaded in 43.094 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.897 msec.}
+{preprocessed for the plai fixpoint in 14.834 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 44.152 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 14.89 msec.}
-END ANALYSIS -- EXIT CODE: 124
-START ANALYSIS -- CONFIGURATION: as_sharing_noopt
-{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 40.518 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.029 msec.}
-{preprocessed for the plai fixpoint in 14.913 msec.}
-END ANALYSIS -- EXIT CODE: 124
-START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
-{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 39.596 msec.}
-}
-{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 14.911 msec.}
-END ANALYSIS -- EXIT CODE: 124
-START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
-{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 43.396 msec.}
+{loaded in 42.28 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
 {init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 14.884 msec.}
+{preprocessed for the plai fixpoint in 14.867 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
+{loaded in 45.113 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 14.9 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_opt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
+{loaded in 42.885 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
+{init for the plai fixpoint in 0.031 msec.}
+{preprocessed for the plai fixpoint in 14.891 msec.}
+END ANALYSIS -- EXIT CODE: 124
+START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
+{Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
+{loaded in 42.06 msec.}
+}
+{Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 14.882 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 44.741 msec.}
+{loaded in 40.449 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.037 msec.}
-{preprocessed for the plai fixpoint in 14.847 msec.}
+{init for the plai fixpoint in 0.028 msec.}
+{preprocessed for the plai fixpoint in 14.932 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: shfrlin
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl
-{loaded in 44.049 msec.}
+{loaded in 41.34 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/chat_parser.pl]
-{init for the plai fixpoint in 0.029 msec.}
-{preprocessed for the plai fixpoint in 14.857 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 14.933 msec.}
 END ANALYSIS -- EXIT CODE: 124

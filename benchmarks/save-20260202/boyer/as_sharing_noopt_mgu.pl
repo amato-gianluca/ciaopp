@@ -238,16 +238,6 @@ tautology(Wff,Tlist,Flist) :-
    => mshare([[Atom],[New]]).
 
 :- true pred rewrite(Atom,New)
-   : ( mshare([[Atom]]),
-       ground([New]) )
-   => ( mshare([[Atom]]),
-        ground([New]) ).
-
-:- true pred rewrite(Atom,New)
-   : ground([Atom,New])
-   => ground([Atom,New]).
-
-:- true pred rewrite(Atom,New)
    : ( mshare([[New]]),
        ground([Atom]) )
    => ( mshare([[New]]),
@@ -259,47 +249,31 @@ rewrite(Atom,Atom) :-
     !,
     true(ground([Atom])).
 rewrite(Old,New) :-
-    true((mshare([[Old],[New],[F],[N],[Mid]]);mshare([[Old],[F],[N],[Mid]]),ground([New]);mshare([[New],[F],[N],[Mid]]),ground([Old]);mshare([[F],[N],[Mid]]),ground([Old,New]))),
+    true((mshare([[Old],[New],[F],[N],[Mid]]);mshare([[New],[F],[N],[Mid]]),ground([Old]))),
     functor(Old,F,N),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[Old],[Mid]]),ground([New,F,N]);mshare([[New],[Mid]]),ground([Old,F,N]);mshare([[Mid]]),ground([Old,New,F,N]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[New],[Mid]]),ground([Old,F,N]))),
     functor(Mid,F,N),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[Old],[Mid]]),ground([New,F,N]);mshare([[New],[Mid]]),ground([Old,F,N]);mshare([[Mid]]),ground([Old,New,F,N]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[New],[Mid]]),ground([Old,F,N]))),
     rewrite_args(N,Old,Mid),
-    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[Old],[Mid]]),ground([New,F,N]);mshare([[New],[Mid]]),ground([Old,F,N]);mshare([[Mid]]),ground([Old,New,F,N]))),
+    true((mshare([[Old],[New],[Mid]]),ground([F,N]);mshare([[New],[Mid]]),ground([Old,F,N]))),
     'rewrite/2/2/$disj/1'(New,Mid),
     !,
-    true((mshare([[Old],[New],[New,Mid],[Mid]]),ground([F,N]);mshare([[Old],[Mid]]),ground([New,F,N]);mshare([[New],[New,Mid],[Mid]]),ground([Old,F,N]);mshare([[Mid]]),ground([Old,New,F,N]))).
+    true((mshare([[Old],[New],[New,Mid],[Mid]]),ground([F,N]);mshare([[New],[New,Mid],[Mid]]),ground([Old,F,N]))).
 
 :- true pred 'rewrite/2/2/$disj/1'(New,Mid)
    : mshare([[New],[Mid]])
    => mshare([[New],[New,Mid],[Mid]]).
 
-:- true pred 'rewrite/2/2/$disj/1'(New,Mid)
-   : ( mshare([[Mid]]),
-       ground([New]) )
-   => ( mshare([[Mid]]),
-        ground([New]) ).
-
 'rewrite/2/2/$disj/1'(New,Mid) :-
-    true((mshare([[New],[Mid],[Next]]);mshare([[Mid],[Next]]),ground([New]))),
+    true(mshare([[New],[Mid],[Next]])),
     equal(Mid,Next),
-    true((mshare([[New],[Mid],[Mid,Next]]);mshare([[Mid],[Mid,Next]]),ground([New]))),
+    true(mshare([[New],[Mid],[Mid,Next]])),
     rewrite(Next,New),
-    true((mshare([[New],[Mid],[Mid,Next]]);mshare([[Mid],[Mid,Next]]),ground([New]))).
+    true(mshare([[New],[Mid],[Mid,Next]])).
 'rewrite/2/2/$disj/1'(New,Mid) :-
-    true((mshare([[New],[Mid]]);mshare([[Mid]]),ground([New]))),
+    true(mshare([[New],[Mid]])),
     New=Mid,
-    true((mshare([[New,Mid]]);ground([New,Mid]))).
-
-:- true pred rewrite_args(N,_1,_2)
-   : ground([N,_1,_2])
-   => ground([N,_1,_2]).
-
-:- true pred rewrite_args(N,_1,_2)
-   : ( mshare([[_2]]),
-       ground([N,_1]) )
-   => ( mshare([[_2]]),
-        ground([N,_1]) ).
+    true(mshare([[New,Mid]])).
 
 :- true pred rewrite_args(N,_1,_2)
    : ( mshare([[_1],[_2]]),
@@ -307,21 +281,27 @@ rewrite(Old,New) :-
    => ( mshare([[_1],[_2]]),
         ground([N]) ).
 
+:- true pred rewrite_args(N,_1,_2)
+   : ( mshare([[_2]]),
+       ground([N,_1]) )
+   => ( mshare([[_2]]),
+        ground([N,_1]) ).
+
 rewrite_args(0,_1,_2) :-
     !,
-    true((mshare([[_1],[_2]]);mshare([[_2]]),ground([_1]);ground([_1,_2]))).
+    true((mshare([[_1],[_2]]);mshare([[_2]]),ground([_1]))).
 rewrite_args(N,Old,Mid) :-
-    true((mshare([[Old],[Mid],[OldArg],[MidArg],[N1]]),ground([N]);mshare([[Mid],[OldArg],[MidArg],[N1]]),ground([N,Old]);mshare([[OldArg],[MidArg],[N1]]),ground([N,Old,Mid]))),
+    true((mshare([[Old],[Mid],[OldArg],[MidArg],[N1]]),ground([N]);mshare([[Mid],[OldArg],[MidArg],[N1]]),ground([N,Old]))),
     arg(N,Old,OldArg),
-    true((mshare([[Old,OldArg],[Mid],[MidArg],[N1]]),ground([N]);mshare([[Mid],[MidArg],[N1]]),ground([N,Old,OldArg]);mshare([[MidArg],[N1]]),ground([N,Old,Mid,OldArg]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[MidArg],[N1]]),ground([N]);mshare([[Mid],[MidArg],[N1]]),ground([N,Old,OldArg]))),
     arg(N,Mid,MidArg),
-    true((mshare([[Old,OldArg],[Mid,MidArg],[N1]]),ground([N]);mshare([[Mid,MidArg],[N1]]),ground([N,Old,OldArg]);mshare([[N1]]),ground([N,Old,Mid,OldArg,MidArg]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg],[N1]]),ground([N]);mshare([[Mid],[Mid,MidArg],[N1]]),ground([N,Old,OldArg]))),
     rewrite(OldArg,MidArg),
-    true((mshare([[Old,OldArg],[Mid,MidArg],[N1]]),ground([N]);mshare([[Mid,MidArg],[N1]]),ground([N,Old,OldArg]);mshare([[N1]]),ground([N,Old,Mid,OldArg,MidArg]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg],[N1]]),ground([N]);mshare([[Mid],[Mid,MidArg],[N1]]),ground([N,Old,OldArg]))),
     N1 is N-1,
-    true((mshare([[Old,OldArg],[Mid,MidArg]]),ground([N,N1]);mshare([[Mid,MidArg]]),ground([N,Old,OldArg,N1]);ground([N,Old,Mid,OldArg,MidArg,N1]))),
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg]]),ground([N,N1]);mshare([[Mid],[Mid,MidArg]]),ground([N,Old,OldArg,N1]))),
     rewrite_args(N1,Old,Mid),
-    true((mshare([[Old,OldArg],[Mid,MidArg]]),ground([N,N1]);mshare([[Mid,MidArg]]),ground([N,Old,OldArg,N1]);ground([N,Old,Mid,OldArg,MidArg,N1]))).
+    true((mshare([[Old],[Old,OldArg],[Mid],[Mid,MidArg]]),ground([N,N1]);mshare([[Mid],[Mid,MidArg]]),ground([N,Old,OldArg,N1]))).
 
 :- true pred truep(Wff,_1)
    : ( mshare([[Wff]]),

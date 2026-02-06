@@ -7,13 +7,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.568 msec.}
+{loaded in 26.744 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 2.109 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 4680.729 msec.}
-{analyzed by plai in 4682.955 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.076 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 7534.495 msec.}
+{analyzed by plai in 7536.688 msec.}
 }
 {written file results/unify/as_shlin2_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -26,13 +26,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 25.792 msec.}
+{loaded in 26.979 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 1.447 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 562.382 msec.}
-{analyzed by plai in 563.944 msec.}
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 2.097 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 586.657 msec.}
+{analyzed by plai in 588.872 msec.}
 }
 {written file results/unify/as_shlin2_opt_mgu.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -45,13 +45,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 28.329 msec.}
+{loaded in 26.938 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.03 msec.}
-{preprocessed for the plai fixpoint in 2.103 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 4602.249 msec.}
-{analyzed by plai in 4604.478 msec.}
+{init for the plai fixpoint in 0.026 msec.}
+{preprocessed for the plai fixpoint in 2.094 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 7472.419 msec.}
+{analyzed by plai in 7474.641 msec.}
 }
 {written file results/unify/as_shlin2_noopt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -64,13 +64,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.545 msec.}
+{loaded in 27.74 msec.}
 }
 {Analyzing (as_shlin2): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
 {init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 2.081 msec.}
-{fixpoint reached by plai using as_shlin2 with local-control off in 190.729 msec.}
-{analyzed by plai in 192.913 msec.}
+{preprocessed for the plai fixpoint in 2.099 msec.}
+{fixpoint reached by plai using as_shlin2 with local-control off in 205.772 msec.}
+{analyzed by plai in 207.981 msec.}
 }
 {written file results/unify/as_shlin2_noopt_mgu.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -83,13 +83,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 25.74 msec.}
+{loaded in 27.87 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 2.089 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 99.885 msec.}
-{analyzed by plai in 102.085 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.105 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 104.038 msec.}
+{analyzed by plai in 106.249 msec.}
 }
 {written file results/unify/as_shlin_opt_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -102,13 +102,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.77 msec.}
+{loaded in 27.643 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 2.102 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 119.859 msec.}
-{analyzed by plai in 122.078 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.094 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 127.11 msec.}
+{analyzed by plai in 129.316 msec.}
 }
 {written file results/unify/as_shlin_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -121,13 +121,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 25.146 msec.}
+{loaded in 27.838 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 2.074 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 766.403 msec.}
-{analyzed by plai in 768.595 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.099 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 971.54 msec.}
+{analyzed by plai in 973.752 msec.}
 }
 {written file results/unify/as_shlin_noindcheck.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -140,13 +140,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.308 msec.}
+{loaded in 24.651 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.024 msec.}
-{preprocessed for the plai fixpoint in 2.078 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 766.182 msec.}
-{analyzed by plai in 768.374 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.084 msec.}
+{fixpoint reached by plai using as_shlin with local-control off in 972.215 msec.}
+{analyzed by plai in 974.414 msec.}
 }
 {written file results/unify/as_shlin_noopt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -159,11 +159,11 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 27.462 msec.}
+{loaded in 25.808 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.0 msec.}
-{preprocessed for the plai fixpoint in 1.903 msec.}
+{init for the plai fixpoint in 0.025 msec.}
+{preprocessed for the plai fixpoint in 2.103 msec.}
 END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_noindcheck_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl
@@ -174,16 +174,12 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.496 msec.}
+{loaded in 23.202 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 2.094 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 63481.123 msec.}
-{analyzed by plai in 63483.328 msec.}
-}
-{written file results/unify/as_shlin_noindcheck_mgu.pl}
-END ANALYSIS -- EXIT CODE: 0
+{init for the plai fixpoint in 0.03 msec.}
+{preprocessed for the plai fixpoint in 2.052 msec.}
+END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_shlin_noopt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl
 {Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
@@ -193,16 +189,12 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 27.471 msec.}
+{loaded in 28.65 msec.}
 }
 {Analyzing (as_shlin): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.031 msec.}
-{preprocessed for the plai fixpoint in 2.068 msec.}
-{fixpoint reached by plai using as_shlin with local-control off in 63262.604 msec.}
-{analyzed by plai in 63264.797 msec.}
-}
-{written file results/unify/as_shlin_noopt_mgu.pl}
-END ANALYSIS -- EXIT CODE: 0
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 1.942 msec.}
+END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_sharing_opt
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl
 {Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
@@ -212,13 +204,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.54 msec.}
+{loaded in 27.145 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.022 msec.}
-{preprocessed for the plai fixpoint in 2.072 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 736.529 msec.}
-{analyzed by plai in 738.715 msec.}
+{init for the plai fixpoint in 0.032 msec.}
+{preprocessed for the plai fixpoint in 2.086 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 947.601 msec.}
+{analyzed by plai in 949.814 msec.}
 }
 {written file results/unify/as_sharing_opt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -231,13 +223,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 28.61 msec.}
+{loaded in 28.3 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 2.073 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 760.149 msec.}
-{analyzed by plai in 762.342 msec.}
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 2.102 msec.}
+{fixpoint reached by plai using as_sharing with local-control off in 974.942 msec.}
+{analyzed by plai in 977.158 msec.}
 }
 {written file results/unify/as_sharing_noopt.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -250,16 +242,12 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 25.994 msec.}
+{loaded in 26.431 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.027 msec.}
-{preprocessed for the plai fixpoint in 2.086 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 62112.373 msec.}
-{analyzed by plai in 62114.575 msec.}
-}
-{written file results/unify/as_sharing_opt_mgu.pl}
-END ANALYSIS -- EXIT CODE: 0
+{init for the plai fixpoint in 0.022 msec.}
+{preprocessed for the plai fixpoint in 2.252 msec.}
+END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: as_sharing_noopt_mgu
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl
 {Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
@@ -269,16 +257,12 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 26.751 msec.}
+{loaded in 23.579 msec.}
 }
 {Analyzing (as_sharing): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.026 msec.}
-{preprocessed for the plai fixpoint in 2.09 msec.}
-{fixpoint reached by plai using as_sharing with local-control off in 62088.694 msec.}
-{analyzed by plai in 62090.9 msec.}
-}
-{written file results/unify/as_sharing_noopt_mgu.pl}
-END ANALYSIS -- EXIT CODE: 0
+{init for the plai fixpoint in 0.0 msec.}
+{preprocessed for the plai fixpoint in 1.885 msec.}
+END ANALYSIS -- EXIT CODE: 124
 START ANALYSIS -- CONFIGURATION: share
 {Loading current module from /home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl
 {Reading /home/amato/.ciaoroot/v1.25.0-m1/build/cache/core.lib.assertions.native_props.itf
@@ -288,13 +272,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 27.0 msec.}
+{loaded in 27.461 msec.}
 }
 {Analyzing (share_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.028 msec.}
-{preprocessed for the plai fixpoint in 2.126 msec.}
-{fixpoint reached by plai using share_amgu with local-control off in 1859.037 msec.}
-{analyzed by plai in 1861.291 msec.}
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 2.135 msec.}
+{fixpoint reached by plai using share_amgu with local-control off in 1860.712 msec.}
+{analyzed by plai in 1862.961 msec.}
 }
 {written file results/unify/share.pl}
 END ANALYSIS -- EXIT CODE: 0
@@ -307,13 +291,13 @@ WARNING: (lns 80-84) Unqualified predicate call to size/3 assumed to local versi
 WARNING: (lns 85-86) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 WARNING: (lns 130-130) Unqualified predicate call to size/3 assumed to local version, calls to predicate imported from native_props must be qualified
 }
-{loaded in 18.467 msec.}
+{loaded in 25.486 msec.}
 }
 {Analyzing (shfrlin_amgu): [/home/amato/.ciaoroot/v1.25.0-m1/ciaopp/benchmarks/src/unify.pl]
-{init for the plai fixpoint in 0.025 msec.}
-{preprocessed for the plai fixpoint in 2.119 msec.}
-{fixpoint reached by plai using shfrlin_amgu with local-control off in 155.158 msec.}
-{analyzed by plai in 157.401 msec.}
+{init for the plai fixpoint in 0.027 msec.}
+{preprocessed for the plai fixpoint in 2.136 msec.}
+{fixpoint reached by plai using shfrlin_amgu with local-control off in 155.708 msec.}
+{analyzed by plai in 157.956 msec.}
 }
 {written file results/unify/shfrlin.pl}
 END ANALYSIS -- EXIT CODE: 0

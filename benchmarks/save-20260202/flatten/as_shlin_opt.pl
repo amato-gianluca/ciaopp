@@ -532,10 +532,6 @@ copy(Term1,Term2) :-
     true(mshare([[Term1],[Term1,Term2,Set,Sym],[Term1,Term2,Sym],[Term1,Set,Sym],[Term1,Sym],[Term2],[Term2,Sym],[Sym]])).
 
 :- true pred copy2(V1,V2,Sym)
-   : mshare([[V1,V2,Sym],[V1,Sym],[V2,Sym],[Sym]])
-   => mshare([[V1,V2,Sym],[V1,Sym],[V2,Sym],[Sym]]).
-
-:- true pred copy2(V1,V2,Sym)
    : mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]])
    => mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]).
 
@@ -545,30 +541,26 @@ copy(Term1,Term2) :-
    => mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]).
 
 copy2(V1,V2,Sym) :-
-    true((mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]);mshare([[V1],[V1,Sym],[V2],[Sym]]),linear(V2);mshare([[V1,V2,Sym],[V1,Sym],[V2,Sym],[Sym]]))),
+    true((mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]);mshare([[V1],[V1,Sym],[V2],[Sym]]),linear(V2))),
     var(V1),
     !,
-    true((mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]),linear(V1);mshare([[V1],[V1,Sym],[V2],[Sym]]),linear(V1),linear(V2);mshare([[V1,V2,Sym],[V1,Sym],[V2,Sym],[Sym]]),linear(V1))),
+    true((mshare([[V1],[V1,V2,Sym],[V1,Sym],[V2],[V2,Sym],[Sym]]),linear(V1);mshare([[V1],[V1,Sym],[V2],[Sym]]),linear(V1),linear(V2))),
     retrieve_sym(V1,Sym,V2),
     true(mshare([[V1,V2,Sym],[V1,Sym],[V2,Sym],[Sym]])).
 copy2(X1,X2,Sym) :-
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity);mshare([[X1],[X1,Sym],[X2],[Sym],[Name],[Arity]]),linear(X2),linear(Name),linear(Arity);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity);mshare([[X1],[X1,Sym],[X2],[Sym],[Name],[Arity]]),linear(X2),linear(Name),linear(Arity))),
     nonvar(X1),
     !,
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity);mshare([[X1],[X1,Sym],[X2],[Sym],[Name],[Arity]]),linear(X2),linear(Name),linear(Arity);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Name],[Arity]]),linear(Name),linear(Arity);mshare([[X1],[X1,Sym],[X2],[Sym],[Name],[Arity]]),linear(X2),linear(Name),linear(Arity))),
     functor(X1,Name,Arity),
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),ground([Name,Arity]);mshare([[X1],[X1,Sym],[X2],[Sym]]),ground([Name,Arity]),linear(X2);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym]]),ground([Name,Arity]))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),ground([Name,Arity]);mshare([[X1],[X1,Sym],[X2],[Sym]]),ground([Name,Arity]),linear(X2))),
     functor(X2,Name,Arity),
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),ground([Name,Arity]);mshare([[X1],[X1,Sym],[X2],[Sym]]),ground([Name,Arity]),linear(X2);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym]]),ground([Name,Arity]))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),ground([Name,Arity]);mshare([[X1],[X1,Sym],[X2],[Sym]]),ground([Name,Arity]),linear(X2))),
     copy2(X1,X2,Sym,1,Arity),
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),ground([Name,Arity]);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym]]),ground([Name,Arity]))).
-
-:- true pred copy2(_X1,_X2,_Sym,N,Arity)
-   : ( (N=1),
-       mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),
-       ground([Arity]) )
-   => ( mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),
-        ground([Arity]) ).
+    true((
+        mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym]]),
+        ground([Name,Arity])
+    )).
 
 :- true pred copy2(_X1,_X2,_Sym,N,Arity)
    : ( (N=1),
@@ -590,32 +582,29 @@ copy2(X1,X2,Sym) :-
    => ( mshare([[_X1],[_X1,_X2,_Sym],[_X1,_Sym],[_X2],[_X2,_Sym],[_Sym]]),
         ground([N,Arity]) ).
 
-:- true pred copy2(_X1,_X2,_Sym,N,Arity)
-   : ( mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),
-       ground([N,Arity]) )
-   => ( mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),
-        ground([N,Arity]) ).
-
 copy2(_X1,_X2,_Sym,N,Arity) :-
-    true((mshare([[_X1],[_X1,_X2,_Sym],[_X1,_Sym],[_X2],[_X2,_Sym],[_Sym]]),ground([N,Arity]);mshare([[_X1],[_X1,_Sym],[_X2],[_Sym]]),ground([N,Arity]),linear(_X2);mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),ground([N,Arity]))),
+    true((mshare([[_X1],[_X1,_X2,_Sym],[_X1,_Sym],[_X2],[_X2,_Sym],[_Sym]]),ground([N,Arity]);mshare([[_X1],[_X1,_Sym],[_X2],[_Sym]]),ground([N,Arity]),linear(_X2))),
     N>Arity,
     !,
-    true((mshare([[_X1],[_X1,_X2,_Sym],[_X1,_Sym],[_X2],[_X2,_Sym],[_Sym]]),ground([N,Arity]);mshare([[_X1],[_X1,_Sym],[_X2],[_Sym]]),ground([N,Arity]),linear(_X2);mshare([[_X1,_X2,_Sym],[_X1,_Sym],[_X2,_Sym],[_Sym]]),ground([N,Arity]))).
+    true((mshare([[_X1],[_X1,_X2,_Sym],[_X1,_Sym],[_X2],[_X2,_Sym],[_Sym]]),ground([N,Arity]);mshare([[_X1],[_X1,_Sym],[_X2],[_Sym]]),ground([N,Arity]),linear(_X2))).
 copy2(X1,X2,Sym,N,Arity) :-
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1],[X1,Sym],[X2],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1],[X1,Sym],[X2],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg1),linear(Arg2),linear(N1))),
     N=<Arity,
     !,
-    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1],[X1,Sym],[X2],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1,X2,Sym],[X1,Sym],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,Sym],[X2],[X2,Sym],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(Arg1),linear(Arg2),linear(N1);mshare([[X1],[X1,Sym],[X2],[Sym],[Arg1],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg1),linear(Arg2),linear(N1))),
     arg(N,X1,Arg1),
-    true((mshare([[X1,X2,Sym,Arg1],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[Sym],[Arg2],[N1]]),ground([N,Arity]),linear(Arg2),linear(N1);mshare([[X1,X2,Sym,Arg1],[X1,Sym,Arg1],[X2,Sym],[Sym],[Arg2],[N1]]),ground([N,Arity]),linear(Arg2),linear(N1);mshare([[X1,Sym,Arg1],[X1,Arg1],[X2],[Sym],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg2),linear(N1))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,X2,Sym,Arg1],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[Sym],[Arg2],[N1]]),ground([N,Arity]),linear(Arg2),linear(N1);mshare([[X1],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[Sym],[Arg2],[N1]]),ground([N,Arity]),linear(X2),linear(Arg2),linear(N1))),
     arg(N,X2,Arg2),
-    true((mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X1,Arg1],[X2,Sym,Arg2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1);mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X2,Sym,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1);mshare([[X1,Sym,Arg1],[X1,Arg1],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(X2),linear(Arg2),linear(N1))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,X2,Sym,Arg1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[X2,Sym,Arg2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1);mshare([[X1],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(X2),linear(Arg2),linear(N1))),
     copy2(Arg1,Arg2,Sym),
-    true((mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X1,Arg1],[X2,Sym,Arg2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1);mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X2,Sym,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,X2,Sym,Arg1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[X2,Sym,Arg2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1);mshare([[X1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym,Arg2],[X2,Arg2],[Sym],[N1]]),ground([N,Arity]),linear(N1))),
     N1 is N+1,
-    true((mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X1,Arg1],[X2,Sym,Arg2],[X2,Arg2],[Sym]]),ground([N,Arity,N1]);mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X2,Sym,Arg2],[Sym]]),ground([N,Arity,N1]))),
+    true((mshare([[X1],[X1,X2,Sym],[X1,X2,Sym,Arg1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[X2,Sym,Arg2],[X2,Arg2],[Sym]]),ground([N,Arity,N1]);mshare([[X1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym,Arg2],[X2,Arg2],[Sym]]),ground([N,Arity,N1]))),
     copy2(X1,X2,Sym,N1,Arity),
-    true((mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X1,Arg1],[X2,Sym,Arg2],[X2,Arg2],[Sym]]),ground([N,Arity,N1]);mshare([[X1,X2,Sym,Arg1,Arg2],[X1,Sym,Arg1],[X2,Sym,Arg2],[Sym]]),ground([N,Arity,N1]))).
+    true((
+        mshare([[X1],[X1,X2,Sym],[X1,X2,Sym,Arg1],[X1,X2,Sym,Arg1,Arg2],[X1,X2,Sym,Arg2],[X1,Sym],[X1,Sym,Arg1],[X1,Arg1],[X2],[X2,Sym],[X2,Sym,Arg2],[X2,Arg2],[Sym]]),
+        ground([N,Arity,N1])
+    )).
 
 :- true pred retrieve_sym(V,_A,X)
    : ( mshare([[V],[V,_A],[V,_A,X],[_A],[_A,X],[X]]),
@@ -628,22 +617,17 @@ copy2(X1,X2,Sym,N,Arity) :-
    => mshare([[V,_A],[V,_A,X],[_A],[_A,X]]).
 
 :- true pred retrieve_sym(V,_A,X)
-   : ( mshare([[V,_A],[V,_A,X],[_A],[_A,X]]),
-       linear(V) )
-   => mshare([[V,_A],[V,_A,X],[_A],[_A,X]]).
-
-:- true pred retrieve_sym(V,_A,X)
    : ( mshare([[V],[V,_A],[_A],[X]]),
        linear(V), linear(X) )
    => mshare([[V,_A],[V,_A,X],[_A],[_A,X]]).
 
 retrieve_sym(V,[p(W,X)|_Sym],X) :-
-    true((mshare([[V],[V,X],[V,X,_Sym],[V,X,_Sym,W],[V,X,W],[V,_Sym],[V,_Sym,W],[V,W],[X],[X,_Sym],[X,_Sym,W],[X,W],[_Sym],[_Sym,W],[W]]);mshare([[V],[V,X],[V,X,_Sym],[V,X,_Sym,W],[V,X,W],[V,_Sym],[V,_Sym,W],[V,W],[X],[X,_Sym],[X,_Sym,W],[X,W],[_Sym],[_Sym,W],[W]]),linear(V);mshare([[V,X],[V,X,_Sym],[V,X,_Sym,W],[V,X,W],[V,_Sym],[V,_Sym,W],[V,W],[X],[X,_Sym],[X,_Sym,W],[X,W],[_Sym],[_Sym,W],[W]]))),
+    true((mshare([[V],[V,X],[V,X,_Sym],[V,X,_Sym,W],[V,X,W],[V,_Sym],[V,_Sym,W],[V,W],[X],[X,_Sym],[X,_Sym,W],[X,W],[_Sym],[_Sym,W],[W]]);mshare([[V],[V,X],[V,X,_Sym],[V,X,_Sym,W],[V,X,W],[V,_Sym],[V,_Sym,W],[V,W],[X],[X,_Sym],[X,_Sym,W],[X,W],[_Sym],[_Sym,W],[W]]),linear(V))),
     V==W,
     !,
     true((mshare([[V,X,_Sym,W],[V,X,W],[V,_Sym,W],[V,W],[X],[X,_Sym],[_Sym]]);mshare([[V,X,_Sym,W],[V,X,W],[V,_Sym,W],[V,W],[X],[X,_Sym],[_Sym]]),linear(V))).
 retrieve_sym(V,[_1|Sym],X) :-
-    true((mshare([[V],[V,X],[V,X,_1],[V,X,_1,Sym],[V,X,Sym],[V,_1],[V,_1,Sym],[V,Sym],[X],[X,_1],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]]),linear(V);mshare([[V],[V,X,_1],[V,X,_1,Sym],[V,X,Sym],[V,_1],[V,_1,Sym],[V,Sym],[X],[X,_1],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]]),linear(V);mshare([[V],[V,_1],[V,_1,Sym],[V,Sym],[X],[_1],[_1,Sym],[Sym]]),linear(V),linear(X);mshare([[V,X,_1],[V,X,_1,Sym],[V,X,Sym],[V,_1],[V,_1,Sym],[V,Sym],[X,_1],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]]),linear(V))),
+    true((mshare([[V],[V,X],[V,X,_1],[V,X,_1,Sym],[V,X,Sym],[V,_1],[V,_1,Sym],[V,Sym],[X],[X,_1],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]]),linear(V);mshare([[V],[V,X,_1],[V,X,_1,Sym],[V,X,Sym],[V,_1],[V,_1,Sym],[V,Sym],[X],[X,_1],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]]),linear(V);mshare([[V],[V,_1],[V,_1,Sym],[V,Sym],[X],[_1],[_1,Sym],[Sym]]),linear(V),linear(X))),
     retrieve_sym(V,Sym,X),
     true(mshare([[V,X,_1,Sym],[V,X,Sym],[V,_1,Sym],[V,Sym],[X,_1,Sym],[X,Sym],[_1],[_1,Sym],[Sym]])).
 
@@ -765,13 +749,13 @@ varbag(Str,N,Arity,_1,_2) :-
     !,
     true((mshare([[Str],[_1],[_2],[Arg],[_3],[N1]]),ground([N,Arity]),linear(_1),linear(_2),linear(Arg),linear(_3),linear(N1);mshare([[Str],[_1],[Arg],[_3],[N1]]),ground([N,Arity,_2]),linear(_1),linear(Arg),linear(_3),linear(N1))),
     arg(N,Str,Arg),
-    true((mshare([[Str,Arg],[_1],[_2],[_3],[N1]]),ground([N,Arity]),linear(_1),linear(_2),linear(_3),linear(N1);mshare([[Str,Arg],[_1],[_3],[N1]]),ground([N,Arity,_2]),linear(_1),linear(_3),linear(N1))),
+    true((mshare([[Str],[Str,Arg],[_1],[_2],[_3],[N1]]),ground([N,Arity]),linear(_1),linear(_2),linear(_3),linear(N1);mshare([[Str],[Str,Arg],[_1],[_3],[N1]]),ground([N,Arity,_2]),linear(_1),linear(_3),linear(N1))),
     varbag(Arg,_1,_3),
-    true((mshare([[Str,_1,Arg],[Str,Arg],[_1,_3],[_2],[N1]]),ground([N,Arity]),linear(_2),linear(_3),linear(N1);mshare([[Str,_1,Arg],[Str,Arg],[_1,_3],[N1]]),ground([N,Arity,_2]),linear(_3),linear(N1))),
+    true((mshare([[Str],[Str,_1,Arg],[Str,Arg],[_1,_3],[_2],[N1]]),ground([N,Arity]),linear(_2),linear(_3),linear(N1);mshare([[Str],[Str,_1,Arg],[Str,Arg],[_1,_3],[N1]]),ground([N,Arity,_2]),linear(_3),linear(N1))),
     N1 is N+1,
-    true((mshare([[Str,_1,Arg],[Str,Arg],[_1,_3]]),ground([N,Arity,_2,N1]),linear(_3);mshare([[Str,_1,Arg],[Str,Arg],[_1,_3],[_2]]),ground([N,Arity,N1]),linear(_2),linear(_3))),
+    true((mshare([[Str],[Str,_1,Arg],[Str,Arg],[_1,_3]]),ground([N,Arity,_2,N1]),linear(_3);mshare([[Str],[Str,_1,Arg],[Str,Arg],[_1,_3],[_2]]),ground([N,Arity,N1]),linear(_2),linear(_3))),
     varbag(Str,N1,Arity,_3,_2),
-    true((mshare([[Str,_1,Arg],[Str,_1,Arg,_3],[Str,Arg]]),ground([N,Arity,_2,N1]);mshare([[Str,_1,Arg],[Str,_1,Arg,_3],[Str,Arg],[_1,_2,_3]]),ground([N,Arity,N1]),linear(_2))).
+    true((mshare([[Str],[Str,_1,Arg],[Str,_1,Arg,_3],[Str,_1,_3],[Str,Arg]]),ground([N,Arity,_2,N1]);mshare([[Str],[Str,_1,Arg],[Str,_1,Arg,_3],[Str,_1,_3],[Str,Arg],[_1,_2,_3]]),ground([N,Arity,N1]),linear(_2))).
 
 :- true pred inst_vars(Term)
    : ( (Term=(_A,_B)),

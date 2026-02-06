@@ -877,13 +877,13 @@ listify_list(I,N,_Expr,[_LA|_LArgs]) :-
     !,
     true((mshare([[_Expr],[_Expr,_LA],[_Expr,_LA,_LArgs],[_Expr,_LArgs],[_LA],[_LA,_LArgs],[_LArgs],[_A],[I1]]),ground([I,N]);mshare([[_Expr],[_LA],[_LA,_LArgs],[_LArgs],[_A],[I1]]),ground([I,N]);mshare([[_LA],[_LA,_LArgs],[_LArgs],[_A],[I1]]),ground([I,N,_Expr]))),
     arg(I,_Expr,_A),
-    true((mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs,_A],[_Expr,_A],[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N]);mshare([[_Expr,_A],[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N]);mshare([[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N,_Expr,_A]))),
+    true((mshare([[_Expr],[_Expr,_LA],[_Expr,_LA,_LArgs],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs],[_Expr,_LArgs,_A],[_Expr,_A],[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N]);mshare([[_Expr],[_Expr,_A],[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N]);mshare([[_LA],[_LA,_LArgs],[_LArgs],[I1]]),ground([I,N,_Expr,_A]))),
     listify(_A,_LA),
-    true((mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]);mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]))),
+    true((mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs],[_Expr,_LArgs,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]);mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_A],[_LArgs],[I1]]),ground([I,N]);mshare([[_LArgs],[I1]]),ground([I,N,_Expr,_LA,_A]))),
     I1 is I+1,
-    true((mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]);mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]))),
+    true((mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs],[_Expr,_LArgs,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]);mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_A],[_LArgs]]),ground([I,N,I1]);mshare([[_LArgs]]),ground([I,N,_Expr,_LA,_A,I1]))),
     listify_list(I1,N,_Expr,_LArgs),
-    true((mshare([[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs,_A],[_Expr,_A]]),ground([I,N,I1]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
+    true((mshare([[_Expr],[_Expr,_LA,_LArgs,_A],[_Expr,_LA,_A],[_Expr,_LArgs],[_Expr,_LArgs,_A],[_Expr,_A]]),ground([I,N,I1]);ground([I,N,_Expr,_LA,_LArgs,_A,I1]))).
 
 :- true pred my_member(X,_A)
    : ( (_A=[-]), ground([X]) )

@@ -21,6 +21,8 @@ CONSTRAINTS = [
     [ 'as_sharing_noopt', 'as_sharing_noopt_mgu'],
     [ 'as_sharing_opt_mgu', 'as_sharing_noopt_mgu'],
 
+    [ 'as_shlin2_opt', 'as_shlin2_opt_mgu'],
+    [ 'as_shlin_opt_opt', 'as_sharing_opt'],
     [ 'as_sharing_opt', 'share'],
 ]
 

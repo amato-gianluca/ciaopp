@@ -110,7 +110,7 @@ count_properties_in_file(File, Property, TotalCount) :-
     findall(Count, (
         member(Clause, Clauses),
         analyze_clause(Clause, Property, MshareTerms),
-        count_mshare_args(MshareTerms, Count)
+        length(MshareTerms, Count)
     ), Counts),
     sum_list(Counts, TotalCount).
 
@@ -120,7 +120,7 @@ count_properties_in_file(File, Property, TotalCount) :-
     findall(Count, (
         member(Clause, Clauses),
         analyze_clause(Clause, Property, LinearTerms),
-        count_linear_args(LinearTerms, Count)
+        length(LinearTerms, Count)
     ), Counts),
     sum_list(Counts, TotalCount).
 
@@ -130,7 +130,7 @@ count_properties_in_file(File, Property, TotalCount) :-
     findall(Count, (
         member(Clause, Clauses),
         analyze_clause(Clause, Property, MshareTerms),
-        count_linear_args(MshareTerms, Count)
+        length(MshareTerms, Count)
     ), Counts),
     sum_list(Counts, TotalCount).
 
@@ -178,12 +178,12 @@ analyze_body(_, _Vars, _Property, []).
 extract_property((A;B), Vars, mshare, Terms) :- !,
     extract_property(A, Vars, mshare, TermsA),
     extract_property(B, Vars, mshare, TermsB),
-    ord_intersection(TermsA, TermsB, Terms).
+    ord_intersection(TermsA,TermsB,Terms).
 
 extract_property((A;B), Vars, Property, Terms) :- !,
     extract_property(A, Vars, Property, TermsA),
     extract_property(B, Vars, Property, TermsB),
-    merge(TermsA, TermsB, Terms).
+    merge(TermsA,TermsB, Terms).
 
 extract_property((A,B), Vars, Property, Terms) :- !,
     extract_property(A, Vars, Property, TermsA),
@@ -193,19 +193,11 @@ extract_property((A,B), Vars, Property, Terms) :- !,
 extract_property(linear(V), _Vars, linear, [V]) :- !.
 extract_property(ground(L), _Vars, linear, L) :- !.
 extract_property(fails(_), Vars, linear, Vars) :- !.
-extract_property(_, _Vars, linear, []) :- !.
+extract_property(_, _Vars, linear, []).
 
 extract_property(ground(L), _Vars, ground, L) :- !.
 extract_property(fails(_), Vars, ground, Vars) :- !.
-extract_property(_, _Vars, ground, []) :- !.
+extract_property(_, _Vars, ground, []).
 
-extract_property(X, _Vars, Property, Terms) :-
-    X =.. [Property,Terms],
-    !.
-extract_property(_, _Vars, _, []) :- !.
-
-count_mshare_args([[]|T], C) :- !, count_mshare_args(T,C).
-count_mshare_args([_|T], C1) :- !, count_mshare_args(T,C), C1 is C + 1.
-count_mshare_args(_, 0).
-
-count_linear_args(L, C) :- length(L, C).
+extract_property(mshare(Terms), _Vars, mshare, Terms) :- !.
+extract_property(_, _Vars, mshare, []).

@@ -20,6 +20,7 @@ analyze() {
     echo "START ANALYSIS -- CONFIGURATION: $CONFIGURATION" | tee -a "$RESULTDIR/log"
     shift 2
     prlimit --as=$(($MEMORY*1024*1024*1024)) timeout $TIMEOUT ciaopp -o "$RESULTDIR/$CONFIGURATION.pl" -A "$SOURCEDIR/$FILE" $@ 2>&1 | tee -a "$RESULTDIR/log"
+    # TODO: delete partial result files truncated by the timeout condition
     RES=${PIPESTATUS[0]}
     echo "END ANALYSIS -- EXIT CODE: $RES" | tee -a "$RESULTDIR/log"
 }

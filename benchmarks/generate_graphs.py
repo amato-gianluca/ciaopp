@@ -20,7 +20,7 @@ def domain_name(domain):
 
 def domain_option(domain):
     if domain == 'share' or domain == 'shfrlin':
-        return 'builtin'
+        return 'built-in\n(' + domain + '_amgu)'
     elif domain.endswith('_noopt_mgu'):
         return 'base'
     elif domain.endswith('_noopt'):
@@ -64,17 +64,17 @@ def show_boxplot(df, domains, property):
             titlename = 'number of linear variables'
         else:
             titlename = 'number of ground variables'
-        ylabel = 'Ratio w.r.t. builtin Sharing domain (%)'
+        ylabel = 'Ratio w.r.t. built-in Sharing domain (%)'
         outliers = True
 
     domain_names = [domain_name(dom) for dom in domains]
     domain_options = [domain_option(dom) for dom in domains]
     if all([domain == domain_names[0] for domain in domain_names]):
         ax.boxplot(df[domains], showfliers=outliers, tick_labels=domain_options)
-        ax.set_title(f'{titlename.capitalize()} with domain ' + domain_names[0])
+        ax.set_title(f'{titlename.capitalize()} using the ' + domain_names[0] + ' domain')
     else:
         ax.boxplot(df[domains], showfliers=outliers, tick_labels=domain_names)
-        ax.set_title(f'Comparing {titlename} of different domains\n(best options for each domain)')
+        ax.set_title(f'Comparing {titlename} of different domains\n(optimal configuration for each domain)')
     ax.set_ylabel(ylabel)
     return fig
 
@@ -112,6 +112,10 @@ def main():
             plt.show()
     else:
         filename = args.output
+        fig1.set_size_inches(5,3)
+        fig2.set_size_inches(5,3)
+        fig3.set_size_inches(5,3)
+        fig4.set_size_inches(5,3)
         fig1.savefig(filename + '1.pdf', bbox_inches='tight', pad_inches=0)
         fig2.savefig(filename + '2.pdf', bbox_inches='tight', pad_inches=0)
         fig3.savefig(filename + '3.pdf', bbox_inches='tight', pad_inches=0)

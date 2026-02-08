@@ -178,12 +178,18 @@ analyze_body(_, _Vars, _Property, []).
 extract_property((A;B), Vars, mshare, Terms) :- !,
     extract_property(A, Vars, mshare, TermsA),
     extract_property(B, Vars, mshare, TermsB),
-    ord_intersection(TermsA,TermsB,Terms).
+    %merge(TermsA,TermsB,Terms).
+    length(TermsA, LA),
+    length(TermsB, LB),
+    ( LA < LB -> Terms = TermsA ; Terms = TermsB).
 
 extract_property((A;B), Vars, Property, Terms) :- !,
     extract_property(A, Vars, Property, TermsA),
     extract_property(B, Vars, Property, TermsB),
-    merge(TermsA,TermsB, Terms).
+    %ord_intersection(TermsA,TermsB, Terms).
+    length(TermsA, LA),
+    length(TermsB, LB),
+    ( LA < LB -> Terms = TermsB ; Terms = TermsA).
 
 extract_property((A,B), Vars, Property, Terms) :- !,
     extract_property(A, Vars, Property, TermsA),
